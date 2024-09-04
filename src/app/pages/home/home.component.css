@@ -27,12 +27,24 @@
     color: rgb(78, 88, 93);
     padding: 16px 16px;
     border-radius: 10px;
+    transition: 200ms ease all;
+    border: 2px solid transparent;
+}
+
+.sidebar__link:hover {
+    border: 2px solid rgb(91, 141, 195);
+}
+
+.sidebar__link.active:hover {
+    border: 2px solid transparent;
 }
 
 .sidebar__link.active {
     background-color: rgb(91, 141, 195);
     color: white;
 }
+
+
 
 .sidebar__link-text {
     margin-left: 20px;
