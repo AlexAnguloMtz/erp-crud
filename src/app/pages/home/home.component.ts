@@ -71,4 +71,26 @@ export class HomeComponent {
   get isDay(): boolean {
     return getDayPart(new Date()) === DayPart.DAY;
   }
+
+  get formattedDate(): string {
+
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    const date: Date = new Date();
+
+    // Extract day, month, year, hours, and minutes
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    // Determine AM/PM and adjust hours
+    const period = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12 || 12; // Convert to 12-hour format
+
+    // Format the date and time
+    return `${day}/${month}/${year}. ${hours}:${minutes} ${period}`;
+  }
 }
+
