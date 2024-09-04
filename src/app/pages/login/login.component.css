@@ -44,6 +44,13 @@
     transform: translateY(20%);
 }
 
+.login-form__title {
+    display: none;
+    text-align: center;
+    color: #057A03;
+    ;
+}
+
 .login-form__fields {
     margin-top: 40px;
     display: flex;
@@ -93,5 +100,9 @@
 
     .login-form__logo-container {
         display: none;
+    }
+
+    .login-form__title {
+        display: block;
     }
 }
