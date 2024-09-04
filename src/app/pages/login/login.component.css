@@ -49,3 +49,9 @@
     object-fit: cover;
     width: 100%;
 }
+
+.form-error {
+    margin-top: 6px;
+    color: red;
+    font-size: 14px;
+}

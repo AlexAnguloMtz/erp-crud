@@ -82,4 +82,12 @@ export class LoginComponent {
     return this.passwordFieldProps.icon
   }
 
+  get emailError(): string {
+    return 'invalido email'
+  }
+
+  get passwordError(): string {
+    return 'contraseña invalida'
+  }
+
 }

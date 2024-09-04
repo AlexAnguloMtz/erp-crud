@@ -7,20 +7,34 @@
                 <img class="login-form__logo-img" src="images/abarrey_logo.png" alt="logo">
             </div>
             <fieldset class="login-form__fields">
-                <p-floatLabel>
-                    <input pInputText id="email" formControlName="email" [style]="{'width': '100%'}" />
-                    <label for="email">Correo</label>
-                </p-floatLabel>
-                <p-inputGroup>
+                <div>
                     <p-floatLabel>
-                        <input pInputText type="{{ passwordInputType }}" id="password" formControlName="password"
-                            [style]="{'width': '100%'}" />
-                        <label for="password">Contraseña</label>
+                        <input pInputText id="email" formControlName="email" [style]="{'width': '100%'}" />
+                        <label for="email">Correo</label>
                     </p-floatLabel>
-                    <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
-                        (click)="onPasswordVisibilityClick()" [outlined]="true">
-                    </button>
-                </p-inputGroup>
+                    @if (emailError) {
+                    <div class="form-error">
+                        {{ emailError }}
+                    </div>
+                    }
+                </div>
+                <div>
+                    <p-inputGroup>
+                        <p-floatLabel>
+                            <input pInputText type="{{ passwordInputType }}" id="password" formControlName="password"
+                                [style]="{'width': '100%'}" />
+                            <label for="password">Contraseña</label>
+                        </p-floatLabel>
+                        <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
+                            (click)="onPasswordVisibilityClick()" [outlined]="true">
+                        </button>
+                    </p-inputGroup>
+                    @if (passwordError) {
+                    <div class="form-error">
+                        {{ passwordError }}
+                    </div>
+                    }
+                </div>
             </fieldset>
             <div class="login-form__submit-container">
                 <p-button label="Ingresar" type="submit" [style]="{'width': '100%'}" />
