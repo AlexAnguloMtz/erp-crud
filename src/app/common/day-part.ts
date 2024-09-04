@@ -20,7 +20,7 @@ export function getDayPart(date: Date): DayPart {
 
 export function getSalutation(dayPart: DayPart): string {
     if (dayPart === DayPart.DAY) {
-        return 'Buenos días';
+        return 'Buenos dias';
     }
 
     if (dayPart === DayPart.AFTERNOON) {

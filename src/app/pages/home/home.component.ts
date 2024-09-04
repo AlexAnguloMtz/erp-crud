@@ -63,7 +63,7 @@ export class HomeComponent {
   get salutation(): string {
     if (this.status._type === 'base') {
       const salutation = getSalutation(getDayPart(new Date()));
-      return `¡${salutation} ${this.status.user.name}!`
+      return `¡${salutation}, ${this.status.user.name}!`
     }
     return '';
   }
