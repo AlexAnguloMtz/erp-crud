@@ -6,6 +6,10 @@ type LoginCredentials = {
     password: string,
 }
 
+type User = {
+    name: string
+}
+
 class UnauthorizedError extends Error {
     constructor(message: string) {
         super(message);
@@ -23,7 +27,7 @@ class UserExistsError extends Error {
 @Injectable({
     providedIn: 'root'
 })
-export class LoginService {
+export class AuthService {
     logIn(credentials: LoginCredentials): Observable<string> {
         return of('fake-jwt-token')
             .pipe(delay(2000));
@@ -33,5 +37,9 @@ export class LoginService {
         // return defer(() => {
         //    return throwError(() => new UserExistsError("UserExists")).pipe(delay(2000));
         //});
+    }
+
+    getUserData(token: string): Observable<User> {
+        return of({ name: 'Super User' }).pipe(delay(2000));
     }
 }

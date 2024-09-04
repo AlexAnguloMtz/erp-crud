@@ -5,9 +5,14 @@
         </div>
     </nav>
     <div class="content">
-        <div class="profile-img__container">
-            <img class="profile-img" src="images/vegetables.jpg" alt="profile-picture">
-        </div>
+        @if (loading) {
+        } @else {
         <h3 class="salute">¡Bienvenido, Super Usuario!</h3>
+        }
+        @if (isDay) {
+        <app-sun></app-sun>
+        } @else {
+        <app-moon></app-moon>
+        }
     </div>
 </div>

@@ -5,7 +5,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { LoginService } from '../../services/login-service';
+import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
@@ -59,7 +59,7 @@ type LoginFormStatus = BaseStatus | LoggingUser | LoginSuccess
     InputGroupAddonModule,
     ConfirmDialogModule,
   ],
-  providers: [LoginService, ConfirmationService],
+  providers: [AuthService, ConfirmationService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -73,7 +73,7 @@ export class LoginComponent {
     private router: Router,
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService,
-    private loginService: LoginService,
+    private loginService: AuthService,
   ) { }
 
   ngOnInit(): void {
