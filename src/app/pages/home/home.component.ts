@@ -3,6 +3,8 @@ import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { DayPart, getDayPart, getSalutation } from '../../common/day-part';
 import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 type SidebarLink = {
   href: string,
@@ -42,7 +44,11 @@ type HomeStatus = LoadingStatus | BaseStatus
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ButtonModule],
+  imports: [
+    ButtonModule,
+    DividerModule,
+    ProgressSpinnerModule,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -117,6 +123,13 @@ export class HomeComponent {
 
   get links(): Array<SidebarLink> {
     return links;
+  }
+
+  get userPersonalName(): string {
+    if (this.status._type === 'base') {
+      return this.status.user.name
+    }
+    return ''
   }
 
   isActiveLink(link: SidebarLink): boolean {
