@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { LoginService } from '../../services/login-service';
+import { Router } from '@angular/router';
 
 const passwordMinLength: number = 8;
 
@@ -24,12 +25,24 @@ type PasswordFieldProps = {
   icon: 'eye' | 'eye-slash'
 }
 
-enum LoginFormStatus {
-  BASE = 'base',
-  LOGGING_USER = 'logging-user',
-  ERROR = 'error',
-  SUCCESS = 'success'
+type BaseStatus = {
+  _type: 'login-base'
 }
+
+type LoggingUser = {
+  _type: 'login-logging'
+}
+
+type LoginSuccess = {
+  _type: 'login-success'
+}
+
+type LoginError = {
+  _type: 'login-error'
+  error: Error
+}
+
+type LoginFormStatus = BaseStatus | LoggingUser | LoginSuccess | LoginError
 
 @Component({
   selector: 'app-login',
@@ -54,12 +67,13 @@ export class LoginComponent {
   passwordFieldProps: PasswordFieldProps;
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private loginService: LoginService,
   ) { }
 
   ngOnInit(): void {
-    this.loginFormStatus = LoginFormStatus.BASE;
+    this.loginFormStatus = { _type: 'login-base' };
     this.passwordFieldProps = passwordNotVisibleProps;
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -77,10 +91,11 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.loginFormStatus = LoginFormStatus.LOGGING_USER;
+      this.loginFormStatus = { _type: 'login-logging' };
       this.loginService.logIn(this.loginForm.value).subscribe({
         next: (jwt: string) => {
-          console.log(jwt);
+          localStorage.setItem('auth-token', jwt);
+          this.router.navigate(['/home']);
         },
         error: (error) => {
           console.log(error)
@@ -144,7 +159,7 @@ export class LoginComponent {
   }
 
   get loggingUser(): boolean {
-    return this.loginFormStatus === LoginFormStatus.LOGGING_USER;
+    return this.loginFormStatus._type === 'login-logging';
   }
 
 }
