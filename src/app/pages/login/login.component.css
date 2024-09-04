@@ -23,10 +23,7 @@
     width: 90%;
     border-radius: 10px;
     padding: 20px 14px;
-}
-
-.login-form__title {
-    text-align: center;
+    transform: translateY(20%);
 }
 
 .login-form__fields {
@@ -37,5 +34,18 @@
 }
 
 .login-form__submit-container {
-    margin-top: 30px;
+    margin-top: 100px;
+}
+
+.login-form__logo-container {
+    background-color: #057A03;
+    border-radius: 10px;
+    padding: 10px;
+    width: 150px;
+    margin: 0 auto;
+}
+
+.login-form__logo-img {
+    object-fit: cover;
+    width: 100%;
 }
