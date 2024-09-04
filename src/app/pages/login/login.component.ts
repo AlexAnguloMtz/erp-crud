@@ -143,4 +143,8 @@ export class LoginComponent {
     return '';
   }
 
+  get loggingUser(): boolean {
+    return this.loginFormStatus === LoginFormStatus.LOGGING_USER;
+  }
+
 }
