@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+
+const passwordMinLength: number = 8;
 
 const passwordVisibleProps: PasswordFieldProps = {
   type: 'text',
@@ -54,7 +56,7 @@ export class LoginComponent {
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(passwordMinLength)]],
     });
   }
 
@@ -83,11 +85,47 @@ export class LoginComponent {
   }
 
   get emailError(): string {
-    return 'invalido email'
+    const emailControl: FormControl = this.loginForm.get('email') as FormControl;
+
+    if (emailControl.valid) {
+      return '';
+    }
+
+    if (!(emailControl.touched || emailControl.dirty)) {
+      return '';
+    }
+
+    if (emailControl.errors?.['required']) {
+      return 'Email es requerido';
+    }
+
+    if (emailControl.errors?.['email']) {
+      return 'Email inválido';
+    }
+
+    return '';
   }
 
   get passwordError(): string {
-    return 'contraseña invalida'
+    const passwordControl: FormControl = this.loginForm.get('password') as FormControl;
+
+    if (passwordControl.valid) {
+      return '';
+    }
+
+    if (!(passwordControl.touched || passwordControl.dirty)) {
+      return '';
+    }
+
+    if (passwordControl.errors?.['required']) {
+      return 'Contraseña es requerida';
+    }
+
+    if (passwordControl.errors?.['minlength']) {
+      return `Mínimo ${passwordMinLength} caracteres`;
+    }
+
+    return '';
   }
 
 }
