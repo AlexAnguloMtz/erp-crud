@@ -7,6 +7,8 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { LoginService } from '../../services/login-service';
 import { Router } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 const passwordMinLength: number = 8;
 
@@ -55,8 +57,9 @@ type LoginFormStatus = BaseStatus | LoggingUser | LoginSuccess | LoginError
     ButtonModule,
     InputGroupModule,
     InputGroupAddonModule,
+    ToastModule,
   ],
-  providers: [LoginService],
+  providers: [LoginService, MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -69,6 +72,7 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
+    private messageService: MessageService,
     private loginService: LoginService,
   ) { }
 
@@ -99,6 +103,7 @@ export class LoginComponent {
         },
         error: (error) => {
           this.loginFormStatus = { _type: 'login-error', error }
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Credenciales inválidas' });
         }
       })
     } else {
@@ -126,7 +131,7 @@ export class LoginComponent {
     }
 
     if (emailControl.errors?.['required']) {
-      return 'Email es requerido';
+      return 'Ingresa un email';
     }
 
     if (emailControl.errors?.['email']) {
@@ -148,7 +153,7 @@ export class LoginComponent {
     }
 
     if (passwordControl.errors?.['required']) {
-      return 'Contraseña es requerida';
+      return 'Ingresa una contraseña';
     }
 
     if (passwordControl.errors?.['minlength']) {

@@ -30,7 +30,6 @@
     width: 100vw;
     background-color: transparent;
     display: flex;
-    padding: 20px;
     display: flex;
     justify-content: center;
     flex-basis: 40%;
@@ -40,7 +39,7 @@
     background-color: white;
     width: 90%;
     border-radius: 10px;
-    padding: 20px 14px;
+    padding: 24px 18px;
     transform: translateY(20%);
 }
 
