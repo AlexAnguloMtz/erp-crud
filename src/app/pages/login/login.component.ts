@@ -114,6 +114,7 @@ export class LoginComponent {
       acceptIcon: "none",
       rejectVisible: false,
       acceptLabel: 'Cerrar',
+      dismissableMask: true,
     });
   }
 
