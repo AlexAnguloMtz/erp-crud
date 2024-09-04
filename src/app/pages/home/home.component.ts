@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
-import { SunComponent } from '../../components/sun/sun.component';
-import { MoonComponent } from '../../components/moon/moon.component';
 import { DayPart, getDayPart, getSalutation } from '../../common/day-part';
 
 type User = {
@@ -23,7 +21,7 @@ type HomeStatus = LoadingStatus | BaseStatus
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SunComponent, MoonComponent],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

@@ -8,13 +8,21 @@
         @if (loading) {
         } @else {
         <h3 class="salute">{{ salutation }}</h3>
-        @if (isDay) {
-        <div class="sun__container">
-            <app-sun></app-sun>
+        <div class="daytime">
+            @if (isDay) {
+            <div class="sun__container">
+                <img class="sun__img" src="icons/sun.svg" alt="sun">
+            </div>
+            } @else {
+            <div class="moon__container">
+                <img class="moon__img" src="icons/moon.svg" alt="moon">
+            </div>
+            }
+            <div class="daytime__details">
+                <h5 class="daytime__city">Hermosillo</h5>
+                <h6 class="daytime__day-and-time">04/Sep/2024. 06:00 pm</h6>
+            </div>
         </div>
-        } @else {
-        <app-moon></app-moon>
-        }
         }
     </div>
 </div>
