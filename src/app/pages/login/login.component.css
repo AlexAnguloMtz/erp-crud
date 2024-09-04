@@ -6,6 +6,23 @@
     background-repeat: no-repeat;
     background-position: center center;
     position: absolute;
+    flex-basis: 60%;
+}
+
+.background__overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background__logo {
+    display: none;
+    background-color: #057A03;
+    padding: 18px;
+    border-radius: 10px;
 }
 
 .login-form__container {
@@ -16,6 +33,7 @@
     padding: 20px;
     display: flex;
     justify-content: center;
+    flex-basis: 40%;
 }
 
 .login-form {
@@ -54,4 +72,26 @@
     margin-top: 6px;
     color: rgb(235, 61, 61);
     font-size: 14px;
+}
+
+@media screen and (min-width: 900px) {
+    .page {
+        display: flex;
+    }
+
+    .background {
+        position: static;
+    }
+
+    .background__logo {
+        display: block;
+    }
+
+    .login-form__container {
+        position: static;
+    }
+
+    .login-form__logo-container {
+        display: none;
+    }
 }
