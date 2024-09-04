@@ -11,3 +11,10 @@ export function getDayPart(date: Date): DayPart {
         return DayPart.NIGHT;
     }
 }
+
+export function getSalutation(dayPart: DayPart): string {
+    if (dayPart === DayPart.DAY) {
+        return 'Buenos días';
+    }
+    return 'Buenas noches';
+}

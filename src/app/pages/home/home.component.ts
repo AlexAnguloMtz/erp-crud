@@ -3,7 +3,7 @@ import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { SunComponent } from '../../components/sun/sun.component';
 import { MoonComponent } from '../../components/moon/moon.component';
-import { DayPart, getDayPart } from '../../common/day-part';
+import { DayPart, getDayPart, getSalutation } from '../../common/day-part';
 
 type User = {
   name: string
@@ -52,7 +52,7 @@ export class HomeComponent {
   }
 
   get loading(): boolean {
-    return false
+    return this.status._type === 'loading';
   }
 
   get name(): string {
@@ -60,6 +60,14 @@ export class HomeComponent {
       return this.status.user.name;
     }
     return ''
+  }
+
+  get salutation(): string {
+    if (this.status._type === 'base') {
+      const salutation = getSalutation(getDayPart(new Date()));
+      return `${salutation} ${this.status.user.name}`
+    }
+    return '';
   }
 
   get isDay(): boolean {
