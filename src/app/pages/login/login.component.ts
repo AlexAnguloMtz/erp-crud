@@ -5,6 +5,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { LoginService } from '../../services/login-service';
 
 const passwordMinLength: number = 8;
 
@@ -19,8 +20,8 @@ const passwordNotVisibleProps: PasswordFieldProps = {
 }
 
 type PasswordFieldProps = {
-  type: string
-  icon: string
+  type: 'text' | 'password'
+  icon: 'eye' | 'eye-slash'
 }
 
 enum LoginFormStatus {
@@ -42,6 +43,7 @@ enum LoginFormStatus {
     InputGroupModule,
     InputGroupAddonModule,
   ],
+  providers: [LoginService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -51,7 +53,10 @@ export class LoginComponent {
 
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private loginService: LoginService,
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -70,7 +75,14 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      console.log('Formulario enviado', this.loginForm.value);
+      this.loginService.logIn(this.loginForm.value).subscribe({
+        next: (jwt: string) => {
+          console.log(jwt);
+        },
+        error: (error) => {
+          console.log(error)
+        }
+      })
     } else {
       this.loginForm.markAllAsTouched();
     }
