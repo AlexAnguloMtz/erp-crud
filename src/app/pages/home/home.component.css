@@ -25,7 +25,13 @@
 .sidebar__link {
     text-decoration: none;
     color: rgb(78, 88, 93);
-    padding: 10px 16px;
+    padding: 16px 16px;
+    border-radius: 10px;
+}
+
+.sidebar__link.active {
+    background-color: rgb(91, 141, 195);
+    color: white;
 }
 
 .sidebar__link-text {

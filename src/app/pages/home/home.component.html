@@ -3,7 +3,7 @@
         <div class="sidebar">
             <ul class="sidebar__links">
                 @for (link of links; track link.href) {
-                <a href="{{ link.href }}" class="sidebar__link">
+                <a href="{{ link.href }}" class="sidebar__link" [class.active]="isActiveLink(link)">
                     <i class="pi pi-{{ link.icon }} sidebar__link-icon "></i>
                     <span class="sidebar__link-text">
                         {{ link.text }}

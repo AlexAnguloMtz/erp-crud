@@ -12,13 +12,13 @@ type SidebarLink = {
 
 const links: Array<SidebarLink> = [
   {
-    href: '',
+    href: 'home',
     text: 'Inicio',
     icon: 'home',
 
   },
   {
-    href: '',
+    href: 'users',
     text: 'Usuarios',
     icon: 'user',
   },
@@ -117,6 +117,13 @@ export class HomeComponent {
 
   get links(): Array<SidebarLink> {
     return links;
+  }
+
+  isActiveLink(link: SidebarLink): boolean {
+    if (link.href === 'home') {
+      return true
+    }
+    return false
   }
 }
 
