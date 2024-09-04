@@ -9,10 +9,14 @@
                     <input pInputText id="username" [style]="{'width': '100%'}" />
                     <label for="username">Username</label>
                 </p-floatLabel>
-                <p-floatLabel>
-                    <input pInputText id="password" [style]="{'width': '100%'}" />
-                    <label for="password">Contraseña</label>
-                </p-floatLabel>
+                <p-inputGroup>
+                    <p-floatLabel>
+                        <input pInputText type="{{ passwordInputType }}" id="password" [style]="{'width': '100%'}" />
+                        <label for="password">Contraseña</label>
+                    </p-floatLabel>
+                    <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
+                        (click)="onPasswordVisibilityClick()"></button>
+                </p-inputGroup>
             </fieldset>
             <div class="login-form__submit-container">
                 <p-button label="Ingresar" [style]="{'width': '100%'}" />
