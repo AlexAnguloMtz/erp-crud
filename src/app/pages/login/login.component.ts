@@ -49,9 +49,9 @@ enum LoginFormStatus {
 })
 export class LoginComponent {
 
-  passwordFieldProps: PasswordFieldProps = passwordNotVisibleProps
-
   loginForm: FormGroup;
+  loginFormStatus: LoginFormStatus;
+  passwordFieldProps: PasswordFieldProps;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -59,6 +59,8 @@ export class LoginComponent {
   ) { }
 
   ngOnInit(): void {
+    this.loginFormStatus = LoginFormStatus.BASE;
+    this.passwordFieldProps = passwordNotVisibleProps;
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(passwordMinLength)]],
@@ -75,6 +77,7 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
+      this.loginFormStatus = LoginFormStatus.LOGGING_USER;
       this.loginService.logIn(this.loginForm.value).subscribe({
         next: (jwt: string) => {
           console.log(jwt);
