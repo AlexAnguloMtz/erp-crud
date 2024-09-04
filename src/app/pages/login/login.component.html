@@ -2,18 +2,19 @@
     <div class="background">
     </div>
     <div class="login-form__container">
-        <form action="" class="login-form">
+        <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="login-form__logo-container">
                 <img class="login-form__logo-img" src="images/abarrey_logo.png" alt="logo">
             </div>
             <fieldset class="login-form__fields">
                 <p-floatLabel>
-                    <input pInputText id="username" [style]="{'width': '100%'}" />
-                    <label for="username">Username</label>
+                    <input pInputText id="email" formControlName="email" [style]="{'width': '100%'}" />
+                    <label for="email">Correo</label>
                 </p-floatLabel>
                 <p-inputGroup>
                     <p-floatLabel>
-                        <input pInputText type="{{ passwordInputType }}" id="password" [style]="{'width': '100%'}" />
+                        <input pInputText type="{{ passwordInputType }}" id="password" formControlName="password"
+                            [style]="{'width': '100%'}" />
                         <label for="password">Contraseña</label>
                     </p-floatLabel>
                     <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
@@ -22,7 +23,7 @@
                 </p-inputGroup>
             </fieldset>
             <div class="login-form__submit-container">
-                <p-button label="Ingresar" [style]="{'width': '100%'}" />
+                <p-button label="Ingresar" type="submit" [style]="{'width': '100%'}" />
             </div>
         </form>
     </div>
