@@ -2,7 +2,8 @@
     <div class="sidebar__overlay" [class.visible]="sidebarOpen">
         <div class="sidebar">
             <div class="sidebar__close-button-container">
-                <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary" />
+                <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary"
+                    (click)="onCloseSidebarClick()" />
             </div>
             <div class="sidebar__profile">
                 @if (loading) {

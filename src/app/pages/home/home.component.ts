@@ -144,5 +144,9 @@ export class HomeComponent {
   onOpenSidebarClick(): void {
     this.sidebarOpen = true;
   }
+
+  onCloseSidebarClick(): void {
+    this.sidebarOpen = false;
+  }
 }
 
