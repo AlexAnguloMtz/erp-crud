@@ -6,10 +6,17 @@ type LoginCredentials = {
     password: string,
 }
 
-export class UnauthorizedError extends Error {
+class UnauthorizedError extends Error {
     constructor(message: string) {
         super(message);
         this.name = 'UnauthorizedError';
+    }
+}
+
+class UserExistsError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'UserExistsError';
     }
 }
 
@@ -20,8 +27,11 @@ export class LoginService {
     logIn(credentials: LoginCredentials): Observable<string> {
         // return of('fake-jwt-token')
         //     .pipe(delay(2000));
+        // return defer(() => {
+        //     return throwError(() => new UnauthorizedError("Unauthorized")).pipe(delay(2000));
+        // });
         return defer(() => {
-            return throwError(() => new UnauthorizedError("Unauthorized")).pipe(delay(2000));
+            return throwError(() => new UserExistsError("UserExists")).pipe(delay(2000));
         });
     }
 }

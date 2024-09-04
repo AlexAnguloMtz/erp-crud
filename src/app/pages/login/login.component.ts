@@ -12,6 +12,11 @@ import { ConfirmationService } from 'primeng/api';
 
 const passwordMinLength: number = 8;
 
+type LoginError = {
+  header: string,
+  message: string,
+}
+
 const passwordVisibleProps: PasswordFieldProps = {
   type: 'text',
   icon: 'eye-slash',
@@ -67,8 +72,8 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private loginService: LoginService,
     private confirmationService: ConfirmationService,
+    private loginService: LoginService,
   ) { }
 
   ngOnInit(): void {
@@ -108,14 +113,36 @@ export class LoginComponent {
 
   private handleLoginError(error: Error): void {
     this.loginFormStatus = { _type: 'login-base' }
+    const loginError = this.mapLoginError(error);
     this.confirmationService.confirm({
-      header: 'Credenciales inválidas',
-      message: 'El correo o contraseña son incorrectos',
+      header: loginError.header,
+      message: loginError.message,
       acceptIcon: "none",
       rejectVisible: false,
       acceptLabel: 'Cerrar',
       dismissableMask: true,
     });
+  }
+
+  private mapLoginError(error: Error): LoginError {
+    if (error.name === 'UnauthorizedError') {
+      return {
+        header: 'Credenciales inválidas',
+        message: 'El correo o la contraseña son incorrectos.',
+      }
+    }
+
+    if (error.name === 'UserExistsError') {
+      return {
+        header: 'Usuario ya existe',
+        message: 'Ya existe un usuario con estas credenciales.',
+      }
+    }
+
+    return {
+      header: 'Error',
+      message: 'Ocurrió un error inesperado. Intenta de nuevo.',
+    }
   }
 
   get passwordInputType(): string {
