@@ -98,7 +98,7 @@ export class LoginComponent {
           this.router.navigate(['/home']);
         },
         error: (error) => {
-          console.log(error)
+          this.loginFormStatus = { _type: 'login-error', error }
         }
       })
     } else {
