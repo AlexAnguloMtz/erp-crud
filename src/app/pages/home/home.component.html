@@ -1,5 +1,5 @@
 <div class="page">
-    <div class="sidebar__overlay">
+    <div class="sidebar__overlay" [class.visible]="sidebarOpen">
         <div class="sidebar">
             <div class="sidebar__close-button-container">
                 <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary" />
@@ -33,7 +33,7 @@
             <img class="nav__logo-img" src="images/abarrey_logo.png" alt="logo">
         </div>
         <p-button [style]="{'marginLeft': '10px'}" severity="secondary" icon="pi pi-microsoft" [rounded]="true"
-            [text]="true" />
+            [text]="true" (click)="onOpenSidebarClick()" />
     </nav>
     <div class="content">
         @if (loading) {

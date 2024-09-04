@@ -55,6 +55,7 @@ type HomeStatus = LoadingStatus | BaseStatus
 export class HomeComponent {
 
   status: HomeStatus;
+  sidebarOpen: boolean;
 
   constructor(
     private authService: AuthService,
@@ -63,6 +64,7 @@ export class HomeComponent {
 
   ngOnInit() {
     this.status = { _type: 'loading' };
+    this.sidebarOpen = false;
 
     const token: string | null = window.localStorage.getItem('auth-token');
 
@@ -137,6 +139,10 @@ export class HomeComponent {
       return true
     }
     return false
+  }
+
+  onOpenSidebarClick(): void {
+    this.sidebarOpen = true;
   }
 }
 

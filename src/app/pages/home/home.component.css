@@ -1,17 +1,30 @@
 .sidebar__overlay {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0);
     left: 0;
     top: 0;
     bottom: 0;
     right: 0;
     z-index: 1;
+    transition: all 200ms ease;
+    pointer-events: none;
 }
 
-.sidebar {
+.sidebar__overlay.visible {
+    background-color: rgba(0, 0, 0, 0.6);
+    pointer-events: all;
+}
+
+.sidebar__overlay .sidebar {
     background-color: white;
     height: 100%;
     width: 80%;
+    transform: translateX(-100%);
+    transition: all 200ms ease;
+}
+
+.sidebar__overlay.visible .sidebar {
+    transform: translateX(0);
 }
 
 .sidebar__close-button-container {
