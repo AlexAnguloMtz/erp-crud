@@ -6,6 +6,21 @@ import { ButtonModule } from 'primeng/button';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
+const passwordVisibleProps: PasswordFieldProps = {
+  type: 'text',
+  icon: 'eye-slash',
+}
+
+const passwordNotVisibleProps: PasswordFieldProps = {
+  type: 'password',
+  icon: 'eye',
+}
+
+type PasswordFieldProps = {
+  type: string
+  icon: string
+}
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -22,23 +37,22 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  passwordVisible: boolean
+  passwordFieldProps: PasswordFieldProps = passwordNotVisibleProps
 
   onPasswordVisibilityClick() {
-    this.passwordVisible = !this.passwordVisible;
-  }
-
-  get passwordVisibilityIcon(): string {
-    if (this.passwordVisible) {
-      return 'eye-slash'
+    if (this.passwordFieldProps === passwordVisibleProps) {
+      this.passwordFieldProps = passwordNotVisibleProps;
+    } else {
+      this.passwordFieldProps = passwordVisibleProps
     }
-    return 'eye'
   }
 
   get passwordInputType(): string {
-    if (this.passwordVisible) {
-      return 'text'
-    }
-    return 'password'
+    return this.passwordFieldProps.type
   }
+
+  get passwordVisibilityIcon(): string {
+    return this.passwordFieldProps.icon
+  }
+
 }
