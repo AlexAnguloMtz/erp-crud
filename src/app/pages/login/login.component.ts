@@ -7,8 +7,8 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { LoginService } from '../../services/login-service';
 import { Router } from '@angular/router';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 const passwordMinLength: number = 8;
 
@@ -39,12 +39,7 @@ type LoginSuccess = {
   _type: 'login-success'
 }
 
-type LoginError = {
-  _type: 'login-error'
-  error: Error
-}
-
-type LoginFormStatus = BaseStatus | LoggingUser | LoginSuccess | LoginError
+type LoginFormStatus = BaseStatus | LoggingUser | LoginSuccess
 
 @Component({
   selector: 'app-login',
@@ -57,9 +52,9 @@ type LoginFormStatus = BaseStatus | LoggingUser | LoginSuccess | LoginError
     ButtonModule,
     InputGroupModule,
     InputGroupAddonModule,
-    ToastModule,
+    ConfirmDialogModule,
   ],
-  providers: [LoginService, MessageService],
+  providers: [LoginService, ConfirmationService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -72,8 +67,8 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private messageService: MessageService,
     private loginService: LoginService,
+    private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
@@ -94,21 +89,32 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      this.loginFormStatus = { _type: 'login-logging' };
-      this.loginService.logIn(this.loginForm.value).subscribe({
-        next: (jwt: string) => {
-          localStorage.setItem('auth-token', jwt);
-          this.router.navigate(['/home']);
-        },
-        error: (error) => {
-          this.loginFormStatus = { _type: 'login-error', error }
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Credenciales inválidas' });
-        }
-      })
-    } else {
+    if (!this.loginForm.valid) {
       this.loginForm.markAllAsTouched();
+      return;
     }
+
+    this.loginFormStatus = { _type: 'login-logging' };
+    this.loginService.logIn(this.loginForm.value).subscribe({
+      next: (token: string) => this.handleAuthenticationToken(token),
+      error: (error) => this.handleLoginError(error),
+    })
+  }
+
+  private handleAuthenticationToken(token: string): void {
+    localStorage.setItem('auth-token', token);
+    this.router.navigate(['/home']);
+  }
+
+  private handleLoginError(error: Error): void {
+    this.loginFormStatus = { _type: 'login-base' }
+    this.confirmationService.confirm({
+      header: 'Credenciales inválidas',
+      message: 'El correo o contraseña son incorrectos',
+      acceptIcon: "none",
+      rejectVisible: false,
+      acceptLabel: 'Cerrar',
+    });
   }
 
   get passwordInputType(): string {
