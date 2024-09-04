@@ -15,7 +15,8 @@
                         <label for="password">Contraseña</label>
                     </p-floatLabel>
                     <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
-                        (click)="onPasswordVisibilityClick()"></button>
+                        (click)="onPasswordVisibilityClick()" [outlined]="true">
+                    </button>
                 </p-inputGroup>
             </fieldset>
             <div class="login-form__submit-container">
