@@ -46,7 +46,7 @@ export class HomeComponent {
 
     this.authService.getUserData(token!).subscribe({
       next: (user: User) => this.status = { _type: 'base', user },
-      error: (error) => console.log(error.message)
+      error: (error) => console.log(error.message),
     })
   }
 
@@ -70,7 +70,8 @@ export class HomeComponent {
   }
 
   get isDay(): boolean {
-    return getDayPart(new Date()) === DayPart.DAY;
+    const dayPart: DayPart = getDayPart(new Date());
+    return dayPart === DayPart.DAY || dayPart === DayPart.AFTERNOON;
   }
 
   get formattedDate(): string {
