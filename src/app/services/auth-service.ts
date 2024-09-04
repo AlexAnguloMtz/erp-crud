@@ -32,9 +32,6 @@ export class AuthService {
         return of('fake-jwt-token')
             .pipe(delay(2000));
         // return defer(() => {
-        //     return throwError(() => new UnauthorizedError("Unauthorized")).pipe(delay(2000));
-        // });
-        // return defer(() => {
         //    return throwError(() => new UserExistsError("UserExists")).pipe(delay(2000));
         //});
     }

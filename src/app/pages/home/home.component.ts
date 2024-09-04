@@ -4,6 +4,26 @@ import { Router } from '@angular/router';
 import { DayPart, getDayPart, getSalutation } from '../../common/day-part';
 import { ButtonModule } from 'primeng/button';
 
+type SidebarLink = {
+  href: string,
+  text: string,
+  icon: string,
+}
+
+const links: Array<SidebarLink> = [
+  {
+    href: '',
+    text: 'Inicio',
+    icon: 'home',
+
+  },
+  {
+    href: '',
+    text: 'Usuarios',
+    icon: 'user',
+  },
+];
+
 type User = {
   name: string
 }
@@ -93,6 +113,10 @@ export class HomeComponent {
 
     // Format the date and time
     return `${day}/${month}/${year}. ${hours}:${minutes} ${period}`;
+  }
+
+  get links(): Array<SidebarLink> {
+    return links;
   }
 }
 

@@ -1,4 +1,18 @@
 <div class="page">
+    <div class="sidebar__overlay">
+        <div class="sidebar">
+            <ul class="sidebar__links">
+                @for (link of links; track link.href) {
+                <a href="{{ link.href }}" class="sidebar__link">
+                    <i class="pi pi-{{ link.icon }} sidebar__link-icon "></i>
+                    <span class="sidebar__link-text">
+                        {{ link.text }}
+                    </span>
+                </a>
+                }
+            </ul>
+        </div>
+    </div>
     <nav class="nav">
         <div class="nav__logo">
             <img class="nav__logo-img" src="images/abarrey_logo.png" alt="logo">
