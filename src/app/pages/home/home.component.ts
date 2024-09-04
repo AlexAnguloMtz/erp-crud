@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { DayPart, getDayPart, getSalutation } from '../../common/day-part';
+import { ButtonModule } from 'primeng/button';
 
 type User = {
   name: string
@@ -21,7 +22,7 @@ type HomeStatus = LoadingStatus | BaseStatus
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [ButtonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
