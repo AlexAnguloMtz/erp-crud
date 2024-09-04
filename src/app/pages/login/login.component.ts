@@ -71,6 +71,8 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       console.log('Formulario enviado', this.loginForm.value);
+    } else {
+      this.loginForm.markAllAsTouched();
     }
   }
 
