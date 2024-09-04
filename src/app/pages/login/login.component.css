@@ -28,3 +28,14 @@
 .login-form__title {
     text-align: center;
 }
+
+.login-form__fields {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.login-form__submit-container {
+    margin-top: 30px;
+}

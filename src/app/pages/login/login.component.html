@@ -5,10 +5,18 @@
         <form action="" class="login-form">
             <h1 class="login-form__title">Bienvenido</h1>
             <fieldset class="login-form__fields">
-                <input type="text">
-                <input type="text">
+                <p-floatLabel>
+                    <input pInputText id="username" [style]="{'width': '100%'}" />
+                    <label for="username">Username</label>
+                </p-floatLabel>
+                <p-floatLabel>
+                    <input pInputText id="password" [style]="{'width': '100%'}" />
+                    <label for="password">Contraseña</label>
+                </p-floatLabel>
             </fieldset>
-            <button>Ingresar</button>
+            <div class="login-form__submit-container">
+                <p-button label="Ingresar" [style]="{'width': '100%'}" />
+            </div>
         </form>
     </div>
 </div>
