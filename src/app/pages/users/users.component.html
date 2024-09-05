@@ -113,17 +113,19 @@
     <h1 class="title">Usuarios</h1>
     <p-button label="Nuevo" icon="pi pi-plus" (onClick)="onCreateClick()" />
 </div>
-<div class="search__bar-container">
-    <p-inputGroup>
-        <p-inputGroupAddon>
-            <i class="pi pi-search"></i>
-        </p-inputGroupAddon>
-        <input pInputText placeholder="Buscar usuarios" [formControl]="searchControl" />
-    </p-inputGroup>
-</div>
-<div class="sort-dropdown-container">
-    <p-dropdown [options]="sortOptions" [(ngModel)]="selectedSort" optionLabel="name" placeholder="Ordenar por"
-        [style]="{'width': '100%'}" (onChange)="onSortChanged()" />
+<div class="search-controls-container">
+    <div class="search__bar-container">
+        <p-inputGroup>
+            <p-inputGroupAddon>
+                <i class="pi pi-search"></i>
+            </p-inputGroupAddon>
+            <input pInputText placeholder="Buscar usuarios" [formControl]="searchControl" />
+        </p-inputGroup>
+    </div>
+    <div class="sort-dropdown-container">
+        <p-dropdown [options]="sortOptions" [(ngModel)]="selectedSort" optionLabel="name" placeholder="Ordenar por"
+            [style]="{'width': '100%'}" (onChange)="onSortChanged()" />
+    </div>
 </div>
 <div class="paginator-container">
     <p-paginator (onPageChange)="onPageChange($event)" [showFirstLastIcon]="false" [pageLinkSize]="4" [first]="first"

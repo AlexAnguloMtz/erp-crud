@@ -18,7 +18,6 @@
     height: 40vh;
 }
 
-
 .search__bar-container {
     margin: 20px 0 0 0;
 }
@@ -95,13 +94,6 @@
     gap: 22px;
 }
 
-@media screen and (min-width: 570px) {
-    .double-input-container {
-        flex-direction: row;
-        gap: 12px;
-    }
-}
-
 ::ng-deep .p-dialog .p-dialog-header {
     border-bottom: 1px solid rgb(210, 211, 212);
 }
@@ -110,4 +102,18 @@
     padding-bottom: 0;
     padding-left: 0;
     padding-right: 0;
+}
+
+@media screen and (min-width: 570px) {
+    .double-input-container {
+        flex-direction: row;
+        gap: 12px;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    .search-controls-container {
+        display: flex;
+        gap: 12px;
+    }
 }
