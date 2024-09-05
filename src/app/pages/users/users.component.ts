@@ -10,6 +10,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DropdownModule } from 'primeng/dropdown';
 import { PaginatorModule } from 'primeng/paginator';
+import { ButtonModule } from 'primeng/button';
 
 const RECORDS_PER_PAGE: number = 15;
 
@@ -53,6 +54,7 @@ type UsersStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus;
     ReactiveFormsModule,
     DropdownModule,
     PaginatorModule,
+    ButtonModule,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
