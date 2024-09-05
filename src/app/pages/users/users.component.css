@@ -47,3 +47,9 @@
     color: rgb(80, 98, 104);
     font-size: 14px;
 }
+
+.item-form__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
