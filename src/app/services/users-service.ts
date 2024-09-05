@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { defer, delay, Observable, of, throwError } from "rxjs";
 import { PaginatedResponse } from "../common/paginated-response";
 import { PaginatedRequest } from "../common/paginated-request";
+import { Role } from "./auth-service";
 
 type Location = {
     state: string,
@@ -58,14 +59,32 @@ export type UserDetails = {
     zipCode: string,
     email: string,
     phone: string,
-    role: string,
+    role: Role,
 }
 
 const names = ['Juan', 'Ana', 'Carlos', 'María', 'Luis', 'Sofía'];
 const lastNames = ['García', 'Martínez', 'Hernández', 'López', 'Pérez'];
 const phones = ['5512345678', '5523456789', '5534567890', '5545678901', '5556789012', '5567890123', '5578901234', '5589012345'];
 
-const roles = ['Administrador', 'Usuario', 'Moderador', 'Invitado'];
+const roles = [
+    {
+        id: '1',
+        description: 'Super Usuario',
+    },
+    {
+        id: '2',
+        description: 'Administrador',
+    },
+    {
+        id: '3',
+        description: 'Gerente',
+    },
+    {
+        id: '4',
+        description: 'Usuario',
+    },
+];
+
 const emailProviders = ['gmail', 'yahoo', 'yandex', 'outlook'];
 const districts = ['Centro', 'Norte', 'Sur', 'Este', 'Oeste'];
 const streets = ['Avenida Reforma', 'Calle Juárez', 'Avenida 16 de Septiembre', 'Calle Madero', 'Boulevard Ávila Camacho'];

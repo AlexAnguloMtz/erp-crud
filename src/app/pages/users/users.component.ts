@@ -428,7 +428,22 @@ export class UsersComponent {
   }
 
   onRowClick(user: UserDetails): void {
+    this.userForm.patchValue(user);
+    this.createItemVisible = true;
+    if (this.userFormOptionsStatus._type === 'base') {
+      this.userFormOptionsStatus = { _type: 'loading-user-form-options' };
+      this.authService.getRoles().subscribe({
+        next: (roles: Array<Role>) => {
+          this.userFormOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } };
+          this.userForm.get('role')?.setValue(user.role.id);
+        },
+        error: (error) => console.log(error.message),
+      })
+    }
 
+    else if (this.userFormOptionsStatus._type === 'user-form-options-ready') {
+      this.userForm.get('role')?.setValue(user.role.id);
+    }
   }
 
   onUserFormSubmit(): void {
