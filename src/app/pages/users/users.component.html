@@ -12,6 +12,10 @@
         <input pInputText placeholder="Buscar usuarios" [formControl]="searchControl" />
     </p-inputGroup>
 </div>
+<div class="sort-dropdown-container">
+    <p-dropdown [options]="sortOptions" [(ngModel)]="selectedSort" optionLabel="name" placeholder="Ordenar por"
+        [style]="{'width': '100%'}" />
+</div>
 <div class="users">
     @if (loadingSubsequentTime) {
     <div class="users__progress-container">

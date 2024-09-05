@@ -24,3 +24,7 @@
 .title {
     color: rgb(25, 53, 74);
 }
+
+.sort-dropdown-container {
+    margin-top: 20px;
+}
