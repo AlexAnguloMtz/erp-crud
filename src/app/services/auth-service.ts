@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { defer, delay, Observable, of, throwError } from "rxjs";
 
 type LoginCredentials = {
-    username: string,
+    email: string,
     password: string,
 }
 
@@ -27,6 +27,11 @@ class UnauthorizedError extends Error {
 })
 export class AuthService {
     logIn(credentials: LoginCredentials): Observable<string> {
+        if (credentials.email !== 'abarrey_root@gmail.com' && credentials.password !== '12345678') {
+            return defer(() => {
+                return throwError(() => new UnauthorizedError("UnauthorizedError")).pipe(delay(2000));
+            });
+        }
         return of('fake-jwt-token')
             .pipe(delay(2000));
         // return defer(() => {
@@ -35,7 +40,7 @@ export class AuthService {
     }
 
     getUserData(token: string): Observable<User> {
-        return of({ name: 'Super User' }).pipe(delay(2000));
+        return of({ name: 'Usuario Raíz' }).pipe(delay(2000));
     }
 
     getRoles(): Observable<Array<Role>> {
