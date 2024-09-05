@@ -17,7 +17,10 @@
             </div>
             <div class="create-user-input">
                 <label for="create-user-state">Estado</label>
-                <input pInputText id="create-user-state" [style]="{'width': '100%'}" />
+                <input pInputText id="create-user-state" formControlName="state" [style]="{'width': '100%'}" />
+                <div class="form-error">
+                    {{ stateError }}
+                </div>
             </div>
             <div class="create-user-input">
                 <label for="create-user-city">Ciudad</label>
