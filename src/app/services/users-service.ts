@@ -148,16 +148,20 @@ export class UsersService {
     getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
         console.log(JSON.stringify(request));
 
-        const filteredUsers = filter(randomUsers, request);
+        let finalUsers = filter(randomUsers, request);
 
-        const totalItems = filteredUsers.length;
+        if (request.sort) {
+            finalUsers = sort(randomUsers, request.sort);
+        }
+
+        const totalItems = finalUsers.length;
         const pageNumber = request.pageNumber ?? 0;
         const pageSize = request.pageSize ?? 15;
 
         const totalPages = Math.ceil(totalItems / pageSize);
         const start = pageNumber * pageSize;
         const end = start + pageSize;
-        const items = filteredUsers.slice(start, end);
+        const items = finalUsers.slice(start, end);
 
         const response: PaginatedResponse<UserDetails> = {
             pageNumber,
@@ -194,4 +198,31 @@ function filter(users: UserDetails[], request: PaginatedRequest): UserDetails[] 
     }
 
     return filtered;
+}
+
+function sort(users: UserDetails[], sort: string): UserDetails[] {
+    switch (sort) {
+        case 'name-asc':
+            return [...users].sort((a, b) => a.name.localeCompare(b.name));
+        case 'name-desc':
+            return [...users].sort((a, b) => b.name.localeCompare(a.name));
+        case 'last-name-asc':
+            return [...users].sort((a, b) => a.lastName.localeCompare(b.lastName));
+        case 'last-name-desc':
+            return [...users].sort((a, b) => b.lastName.localeCompare(a.lastName));
+        case 'role-asc':
+            return [...users].sort((a, b) => a.role.description.localeCompare(b.role.description));
+        case 'role-desc':
+            return [...users].sort((a, b) => b.role.description.localeCompare(a.role.description));
+        case 'city-asc':
+            return [...users].sort((a, b) => a.city.localeCompare(b.city));
+        case 'city-desc':
+            return [...users].sort((a, b) => b.city.localeCompare(a.city));
+        case 'state-asc':
+            return [...users].sort((a, b) => a.state.localeCompare(b.state));
+        case 'state-desc':
+            return [...users].sort((a, b) => b.state.localeCompare(a.state));
+        default:
+            return users;
+    }
 }
