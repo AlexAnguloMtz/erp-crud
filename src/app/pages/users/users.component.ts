@@ -154,10 +154,6 @@ export class UsersComponent {
     return RECORDS_PER_PAGE
   }
 
-  get createNewVisible(): boolean {
-    return this.createItemVisible;
-  }
-
   get loadingUserFormOptions(): boolean {
     return this.userFormOptionsStatus._type === 'loading-user-form-options';
   }
@@ -449,6 +445,15 @@ export class UsersComponent {
         error: (error) => console.log(error.message),
       })
     }
+  }
+
+  onCancelUserForm(): void {
+    this.createItemVisible = false;
+  }
+
+  onHideUserForm(): void {
+    // TODO 
+    // Implement
   }
 
   private debounceSearch(search: string): void {
