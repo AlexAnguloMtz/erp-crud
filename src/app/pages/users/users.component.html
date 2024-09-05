@@ -24,11 +24,17 @@
             </div>
             <div class="create-user-input">
                 <label for="create-user-city">Ciudad</label>
-                <input pInputText id="create-user-city" [style]="{'width': '100%'}" />
+                <input pInputText id="create-user-city" formControlName="city" [style]="{'width': '100%'}" />
+                <div class="form-error">
+                    {{ cityError }}
+                </div>
             </div>
             <div class="create-user-input">
                 <label for="create-user-district">Colonia</label>
-                <input pInputText id="create-user-district" [style]="{'width': '100%'}" />
+                <input pInputText id="create-user-district" formControlName="district" [style]="{'width': '100%'}" />
+                <div class="form-error">
+                    {{ districtError }}
+                </div>
             </div>
             <div class="create-user-input">
                 <label for="create-user-street">Calle</label>

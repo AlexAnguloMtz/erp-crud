@@ -235,6 +235,51 @@ export class UsersComponent {
     return '';
   }
 
+  get cityError(): string {
+    const control: FormControl = this.userForm.get('city') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['maxlength']) {
+      return 'Máximo 60 caracteres';
+    }
+
+    return '';
+  }
+
+  get districtError(): string {
+    const control: FormControl = this.userForm.get('district') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['maxlength']) {
+      return 'Máximo 60 caracteres';
+    }
+
+    return '';
+  }
+
+
   onUserFormSubmit(): void {
     if (!this.userForm.valid) {
       console.log('invalid')
