@@ -151,7 +151,7 @@ export class UsersService {
         let finalUsers = filter(randomUsers, request);
 
         if (request.sort) {
-            finalUsers = sort(randomUsers, request.sort);
+            finalUsers = sort(finalUsers, request.sort);
         }
 
         const totalItems = finalUsers.length;
