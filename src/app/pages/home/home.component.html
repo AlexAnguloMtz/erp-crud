@@ -1,6 +1,6 @@
 <div class="page">
-    <div class="sidebar__overlay" [class.visible]="sidebarOpen">
-        <div class="sidebar">
+    <div class="sidebar__overlay" [class.visible]="sidebarOpen" (click)="onSidebarOverlayClick()">
+        <div class="sidebar" (click)="onSidebarClick($event)">
             @if (loading) {
             <div class="sidebar__progress-container">
                 <p-progressSpinner class="sidebar__progress" ariaLabel="loading"

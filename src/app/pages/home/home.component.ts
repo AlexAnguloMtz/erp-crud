@@ -148,5 +148,13 @@ export class HomeComponent {
   onCloseSidebarClick(): void {
     this.sidebarOpen = false;
   }
+
+  onSidebarOverlayClick(): void {
+    this.sidebarOpen = false;
+  }
+
+  onSidebarClick(event: Event): void {
+    event.stopPropagation();
+  }
 }
 
