@@ -1,5 +1,11 @@
-<p-dialog header="Usuario" [modal]="true" [(visible)]="createNewVisible" [style]="{ width: '25rem' }">
+<p-dialog header="Usuario" [modal]="true" [visible]="createNewVisible" [style]="{ width: '25rem' }">
     <form action="">
+        <fieldset class="create-user-fields">
+            <div class="create-user-input">
+                <label for="create-user-name">Username</label>
+                <input pInputText id="create-user-name" [style]="{'width': '100%'}" />
+            </div>
+        </fieldset>
         <div class="item-form__actions">
             <p-button label="Cancelar" severity="secondary" />
             <p-button label="Guardar" />

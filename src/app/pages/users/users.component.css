@@ -53,3 +53,16 @@
     justify-content: flex-end;
     gap: 12px;
 }
+
+.create-user-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 0 24px 0;
+}
+
+.create-user-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
