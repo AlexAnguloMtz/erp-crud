@@ -63,6 +63,7 @@ export class UsersComponent {
   searchControl: FormControl;
   selectedSort: SortOption | undefined
   selectedPageNumber: number;
+  lastSeenTotalItems: number;
   debounceTimeout: any;
 
   constructor(
@@ -72,6 +73,7 @@ export class UsersComponent {
   ngOnInit(): void {
     this.searchControl = new FormControl('');
     this.selectedPageNumber = 0;
+    this.lastSeenTotalItems = 0;
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
     this.searchControl.valueChanges.subscribe(search => this.debounceSearch(search))
   }
@@ -107,14 +109,11 @@ export class UsersComponent {
   }
 
   get totalRecords(): number {
-    if (this.status._type !== 'base') {
-      return 0;
-    }
-    return this.status.response.totalItems;
+    return this.lastSeenTotalItems;
   }
 
   get first(): number {
-    return (this.selectedPageNumber) * RECORDS_PER_PAGE + 1;
+    return (this.selectedPageNumber) * RECORDS_PER_PAGE;
   }
 
   get rows(): number {
@@ -144,7 +143,6 @@ export class UsersComponent {
   onPageChange(event: PageEvent) {
     if (event.page !== null && event.page !== undefined) {
       this.selectedPageNumber = event.page;
-      console.log('page ' + event.page)
       this.searchUsers({
         ...this.defaultPaginatedRequest(),
         search: this.searchControl.value,
@@ -172,6 +170,7 @@ export class UsersComponent {
 
   private handleUsers(response: PaginatedResponse<UserPreview>): void {
     this.status = { _type: 'base', response }
+    this.lastSeenTotalItems = response.totalItems
   }
 
   private handleGetUsersError(error: Error): void {
