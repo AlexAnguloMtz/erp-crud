@@ -120,7 +120,7 @@ export class UsersComponent {
     this.selectedPageNumber = 0;
     this.lastSeenTotalItems = 0;
     this.createItemVisible = false;
-    this.userSavedDialogVisible = true;
+    this.userSavedDialogVisible = false;
     this.userFormOptionsStatus = { _type: 'base' }
     this.createUserStatus = { _type: 'user-creation-base' }
     this.userForm = this.createUserForm();
