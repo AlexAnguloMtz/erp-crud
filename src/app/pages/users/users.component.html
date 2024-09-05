@@ -1,5 +1,5 @@
-<p-dialog [draggable]="false" [dismissableMask]="true" (onHide)="onHideUserForm()" header="Usuario" [modal]="true"
-    [(visible)]="createItemVisible" [style]="{'padding-bottom': '0'}">
+<p-dialog class="save-user-dialog" [draggable]="false" [dismissableMask]="true" (onHide)="onHideUserForm()"
+    header="Usuario" [modal]="true" [(visible)]="createItemVisible" [style]="{'padding-bottom': '0'}">
     <form class="create-user-form" [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()">
         <fieldset class="create-user-fields">
             <div class="double-input-container">
@@ -107,8 +107,13 @@
         </div>
     </form>
 </p-dialog>
-<p-dialog [draggable]="false" [dismissableMask]="true" (onHide)="onHideUserSavedDialog()" header="Se guardó el Usuario"
-    [modal]="true" [(visible)]="userSavedDialogVisible"></p-dialog>
+<p-dialog [draggable]="false" [dismissableMask]="true" header="Éxito" [modal]="true"
+    [(visible)]="userSavedDialogVisible">
+    <span class="p-text-secondary block mb-5" [style]="{'minHeight': '100px'}">Se guardó el usuario</span>
+    <div class="flex justify-content-end gap-2" [style]="{'marginTop': '30px'}">
+        <p-button label="Okay" (onClick)="onCloseSavedUserDialog()" />
+    </div>
+</p-dialog>
 @if (loadingFirstTime) {
 <div class="content__progress-container">
     <p-progressSpinner class="content__progress" ariaLabel="loading" [style]="{'width': '100px', 'height': '100px'}" />

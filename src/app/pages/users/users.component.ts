@@ -120,7 +120,7 @@ export class UsersComponent {
     this.selectedPageNumber = 0;
     this.lastSeenTotalItems = 0;
     this.createItemVisible = false;
-    this.userSavedDialogVisible = false;
+    this.userSavedDialogVisible = true;
     this.userFormOptionsStatus = { _type: 'base' }
     this.createUserStatus = { _type: 'user-creation-base' }
     this.userForm = this.createUserForm();
@@ -495,8 +495,8 @@ export class UsersComponent {
     this.userForm.reset();
   }
 
-  onHideUserSavedDialog(): void {
-    this.createUserStatus = { _type: 'user-creation-base' }
+  onCloseSavedUserDialog(): void {
+    this.userSavedDialogVisible = false;
   }
 
   private userCreationCommand(): CreateUserCommand {
