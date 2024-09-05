@@ -82,3 +82,10 @@
     color: rgb(235, 61, 61);
     font-size: 14px;
 }
+
+@media screen and (min-width: 570px) {
+    .double-input-container {
+        display: flex;
+        gap: 12px;
+    }
+}

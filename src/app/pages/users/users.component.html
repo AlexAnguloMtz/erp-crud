@@ -1,75 +1,87 @@
-<p-dialog header="Usuario" [modal]="true" [visible]="createNewVisible" [style]="{ width: '25rem' }">
+<p-dialog header="Usuario" [modal]="true" [visible]="createNewVisible">
     <form [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()">
         <fieldset class="create-user-fields">
-            <div class="create-user-input">
-                <label for="create-user-name">Nombre</label>
-                <input pInputText id="create-user-name" formControlName="name" [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ nameError }}
+            <div class="double-input-container">
+                <div class="create-user-input">
+                    <label for="create-user-name">Nombre</label>
+                    <input pInputText id="create-user-name" formControlName="name" [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ nameError }}
+                    </div>
+                </div>
+                <div class="create-user-input">
+                    <label for="create-user-last-name">Apellido</label>
+                    <input pInputText id="create-user-last-name" formControlName="lastName"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ lastNameError }}
+                    </div>
                 </div>
             </div>
-            <div class="create-user-input">
-                <label for="create-user-last-name">Apellido</label>
-                <input pInputText id="create-user-last-name" formControlName="lastName" [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ lastNameError }}
+            <div class="double-input-container">
+                <div class="create-user-input">
+                    <label for="create-user-state">Estado</label>
+                    <input pInputText id="create-user-state" formControlName="state" [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ stateError }}
+                    </div>
+                </div>
+                <div class="create-user-input">
+                    <label for="create-user-city">Ciudad</label>
+                    <input pInputText id="create-user-city" formControlName="city" [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ cityError }}
+                    </div>
                 </div>
             </div>
-            <div class="create-user-input">
-                <label for="create-user-state">Estado</label>
-                <input pInputText id="create-user-state" formControlName="state" [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ stateError }}
+            <div class="double-input-container">
+                <div class="create-user-input">
+                    <label for="create-user-district">Colonia</label>
+                    <input pInputText id="create-user-district" formControlName="district"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ districtError }}
+                    </div>
+                </div>
+                <div class="create-user-input">
+                    <label for="create-user-street">Calle</label>
+                    <input pInputText id="create-user-street" formControlName="street" [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ streetError }}
+                    </div>
                 </div>
             </div>
-            <div class="create-user-input">
-                <label for="create-user-city">Ciudad</label>
-                <input pInputText id="create-user-city" formControlName="city" [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ cityError }}
+            <div class="double-input-container">
+                <div class="create-user-input">
+                    <label for="create-user-street-number">Número de vivienda</label>
+                    <input pInputText id="create-user-street-number" formControlName="streetNumber"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ streetNumberError }}
+                    </div>
+                </div>
+                <div class="create-user-input">
+                    <label for="create-user-zip-code">Código postal</label>
+                    <input pInputText id="create-user-zip-code" formControlName="zipCode" [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ zipCodeError }}
+                    </div>
                 </div>
             </div>
-            <div class="create-user-input">
-                <label for="create-user-district">Colonia</label>
-                <input pInputText id="create-user-district" formControlName="district" [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ districtError }}
+            <div class="double-input-container">
+                <div class="create-user-input">
+                    <label for="create-user-email">Correo</label>
+                    <input pInputText id="create-user-email" formControlName="email" [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ emailError }}
+                    </div>
                 </div>
-            </div>
-            <div class="create-user-input">
-                <label for="create-user-street">Calle</label>
-                <input pInputText id="create-user-street" formControlName="street" [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ streetError }}
-                </div>
-            </div>
-            <div class="create-user-input">
-                <label for="create-user-street-number">Número de vivienda</label>
-                <input pInputText id="create-user-street-number" formControlName="streetNumber"
-                    [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ streetNumberError }}
-                </div>
-            </div>
-            <div class="create-user-input">
-                <label for="create-user-zip-code">Código postal</label>
-                <input pInputText id="create-user-zip-code" formControlName="zipCode" [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ zipCodeError }}
-                </div>
-            </div>
-            <div class="create-user-input">
-                <label for="create-user-email">Correo</label>
-                <input pInputText id="create-user-email" formControlName="email" [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ emailError }}
-                </div>
-            </div>
-            <div class="create-user-input">
-                <label for="create-user-phone">Teléfono</label>
-                <input pInputText id="create-user-phone" formControlName="phone" [style]="{'width': '100%'}" />
-                <div class="form-error">
-                    {{ phoneError }}
+                <div class="create-user-input">
+                    <label for="create-user-phone">Teléfono</label>
+                    <input pInputText id="create-user-phone" formControlName="phone" [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ phoneError }}
+                    </div>
                 </div>
             </div>
             <div class="create-user-input">
