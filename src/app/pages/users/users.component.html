@@ -16,16 +16,16 @@
     <p-dropdown [options]="sortOptions" [(ngModel)]="selectedSort" optionLabel="name" placeholder="Ordenar por"
         [style]="{'width': '100%'}" (onChange)="onSortChanged()" />
 </div>
+<div class="paginator-container">
+    <p-paginator (onPageChange)="onPageChange($event)" [showFirstLastIcon]="false" [pageLinkSize]="4" [first]="first"
+        [rows]="rows" [totalRecords]="totalRecords" />
+</div>
 <div class="users">
     @if (loadingSubsequentTime) {
     <div class="users__progress-container">
         <p-progressSpinner class="users__progress" ariaLabel="loading" [style]="{'width': '70px', 'height': '70px'}" />
     </div>
     } @else {
-    <div class="paginator-container">
-        <p-paginator (onPageChange)="onPageChange($event)" [showFirstLastIcon]="false" [pageLinkSize]="4"
-            [first]="first" [rows]="rows" [totalRecords]="totalRecords" />
-    </div>
     <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>

@@ -71,7 +71,7 @@ export class UsersComponent {
 
   ngOnInit(): void {
     this.searchControl = new FormControl('');
-    this.selectedPageNumber = 1;
+    this.selectedPageNumber = 0;
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
     this.searchControl.valueChanges.subscribe(search => this.debounceSearch(search))
   }
@@ -114,13 +114,7 @@ export class UsersComponent {
   }
 
   get first(): number {
-    if (this.status._type !== 'base') {
-      return 0;
-    }
-    // TODO
-    // Debug for zero and one
-    console.log('calculated first ' + (this.status.response.pageNumber - 1) * RECORDS_PER_PAGE + 1)
-    return (this.status.response.pageNumber - 1) * RECORDS_PER_PAGE + 1;
+    return (this.selectedPageNumber) * RECORDS_PER_PAGE + 1;
   }
 
   get rows(): number {
@@ -148,9 +142,16 @@ export class UsersComponent {
   }
 
   onPageChange(event: PageEvent) {
-    this.searchUsers({
-      ...this.defaultPaginatedRequest()
-    }, { _type: 'loading-subsequent-time' });
+    if (event.page !== null && event.page !== undefined) {
+      this.selectedPageNumber = event.page;
+      console.log('page ' + event.page)
+      this.searchUsers({
+        ...this.defaultPaginatedRequest(),
+        search: this.searchControl.value,
+        sort: this.selectedSort?.key,
+        pageNumber: this.selectedPageNumber,
+      }, { _type: 'loading-subsequent-time' });
+    }
   }
 
   private debounceSearch(search: string): void {
