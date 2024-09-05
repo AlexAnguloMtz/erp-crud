@@ -18,7 +18,7 @@
 }
 
 .users {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .title {
@@ -27,4 +27,8 @@
 
 .sort-dropdown-container {
     margin-top: 20px;
+}
+
+.paginator-container {
+    margin-top: 10px;
 }

@@ -62,6 +62,7 @@ export class UsersComponent {
   status: UsersStatus;
   searchControl: FormControl;
   selectedSort: SortOption | undefined
+  selectedPageNumber: number;
   debounceTimeout: any;
 
   constructor(
@@ -70,6 +71,7 @@ export class UsersComponent {
 
   ngOnInit(): void {
     this.searchControl = new FormControl('');
+    this.selectedPageNumber = 1;
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
     this.searchControl.valueChanges.subscribe(search => this.debounceSearch(search))
   }
@@ -117,6 +119,7 @@ export class UsersComponent {
     }
     // TODO
     // Debug for zero and one
+    console.log('calculated first ' + (this.status.response.pageNumber - 1) * RECORDS_PER_PAGE + 1)
     return (this.status.response.pageNumber - 1) * RECORDS_PER_PAGE + 1;
   }
 
@@ -175,7 +178,7 @@ export class UsersComponent {
   private defaultPaginatedRequest(): PaginatedRequest {
     return {
       search: '',
-      pageNumber: 0,
+      pageNumber: this.selectedPageNumber,
       pageSize: RECORDS_PER_PAGE,
       sort: '',
     }

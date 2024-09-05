@@ -72,10 +72,10 @@ export class UsersService {
         const randomUsers = createRandomUserPreviews(request.pageSize ?? 15)
 
         const response: PaginatedResponse<UserPreview> = {
-            pageNumber: 0,
+            pageNumber: request.pageNumber ?? 0,
             pageSize: request.pageSize ?? 15,
-            totalPages: 20,
-            totalItems: 100,
+            totalPages: 10,
+            totalItems: 150,
             isLastPage: false,
             items: filter(randomUsers, request),
         }
