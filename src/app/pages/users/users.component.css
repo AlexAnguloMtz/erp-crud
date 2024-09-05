@@ -89,9 +89,15 @@
     font-size: 14px;
 }
 
+.double-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
 @media screen and (min-width: 570px) {
     .double-input-container {
-        display: flex;
+        flex-direction: row;
         gap: 12px;
     }
 }
