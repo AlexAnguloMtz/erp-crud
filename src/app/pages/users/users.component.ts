@@ -461,6 +461,7 @@ export class UsersComponent {
   }
 
   onSortChanged() {
+    this.selectedPageNumber = 0;
     this.lastSeenTotalItems = 0;
     this.searchUsers({
       ...this.defaultPaginatedRequest(),
@@ -519,6 +520,7 @@ export class UsersComponent {
 
     // Set a new timeout
     this.debounceTimeout = setTimeout(() => {
+      this.selectedPageNumber = 0;
       this.lastSeenTotalItems = 0;
       this.searchUsers({
         ...this.defaultPaginatedRequest(),
