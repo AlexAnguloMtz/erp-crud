@@ -1,5 +1,5 @@
-<p-dialog header="Usuario" [modal]="true" [visible]="createNewVisible">
-    <form [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()">
+<p-dialog header="Usuario" [modal]="true" [visible]="createNewVisible" [style]="{'padding-bottom': '0'}">
+    <form class="create-user-form" [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()">
         <fieldset class="create-user-fields">
             <div class="double-input-container">
                 <div class="create-user-input">
