@@ -454,6 +454,7 @@ export class UsersComponent {
   onHideUserForm(): void {
     // TODO 
     // Implement
+    this.userForm.reset();
   }
 
   private debounceSearch(search: string): void {
