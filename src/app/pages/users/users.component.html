@@ -100,36 +100,39 @@
                     {{ roleError }}
                 </div>
             </div>
-            <div class="double-input-container">
-                <p-inputGroup [style]="{'width': '100%'}">
-                    <div class="create-user-input">
-                        <label for="create-user-password">Contraseña</label>
-                        <input pInputText id="create-user-password" type="{{ passwordInputType }}"
-                            formControlName="password" [style]="{'width': '100%'}" />
-                        <div class="form-error">
-                            {{ passwordError }}
-                        </div>
+            <div class="password-field">
+                <div class="create-user-input">
+                    <label for="create-user-password">Contraseña</label>
+                    <input pInputText id="create-user-password" type="{{ passwordInputType }}"
+                        formControlName="password" [style]="{'flex': '1'}" />
+                    @if (passwordError) {
+                    <div class="form-error">
+                        {{ passwordError }}
                     </div>
-                    <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
-                        (click)="onPasswordVisibilityClick()" [text]="true">
-                    </button>
-                </p-inputGroup>
-                <p-inputGroup [style]="{'width': '100%'}">
-                    <div class="create-user-input">
-                        <div class="create-user-input">
-                            <label for="create-user-confirmed-password">Confirmar contraseña</label>
-                            <input pInputText id="create-user-confirmed-password" type="{{ passwordInputType }}"
-                                formControlName="confirmedPassword" [style]="{'width': '100%'}" />
-                            <div class="form-error">
-                                {{ confirmedPasswordError }}
-                            </div>
-                        </div>
+                    } @else {
+                    <div class="transparent">.</div>
+                    }
+                </div>
+                <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
+                    (click)="onPasswordVisibilityClick()" [text]="true">
+                </button>
+            </div>
+            <div class="password-field">
+                <div class="create-user-input">
+                    <label for="create-user-confirmed-password">Confirmar contraseña</label>
+                    <input pInputText id="create-user-confirmed-password" type="{{ passwordInputType }}"
+                        formControlName="confirmedPassword" [style]="{'flex': '1'}" />
+                    @if (confirmedPasswordError) {
+                    <div class="form-error">
+                        {{ confirmedPasswordError }}
                     </div>
-                    <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
-                        (click)="onPasswordVisibilityClick()" [text]="true">
-                    </button>
-                </p-inputGroup>
-
+                    } @else {
+                    <div class="transparent">.</div>
+                    }
+                </div>
+                <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
+                    (click)="onPasswordVisibilityClick()" [text]="true">
+                </button>
             </div>
         </fieldset>
         <div class="item-form__actions">
