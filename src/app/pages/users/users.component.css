@@ -114,6 +114,6 @@
 @media screen and (min-width: 500px) {
     .search-controls-container {
         display: flex;
-        gap: 12px;
+        gap: 10px;
     }
 }
