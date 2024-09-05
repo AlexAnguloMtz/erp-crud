@@ -162,6 +162,13 @@ export class UsersComponent {
     return this.userFormOptionsStatus._type === 'loading-user-form-options';
   }
 
+  get roleOptions(): Array<Role> {
+    if (this.userFormOptionsStatus._type !== 'user-form-options-ready') {
+      return [];
+    }
+    return this.userFormOptionsStatus.userFormOptions.roles;
+  }
+
   formatUserLocation(user: UserPreview): string {
     return `${user.city}, ${user.state.substring(0, 3)}`
   }

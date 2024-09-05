@@ -45,7 +45,8 @@
                         [style]="{'width': '40px', 'height': '40px'}" />
                 </div>
                 } @else {
-                <input pInputText id="create-user-role" [style]="{'width': '100%'}" />
+                <p-dropdown id="create-user-role" [options]="roleOptions" optionLabel="description" placeholder="Rol"
+                    [style]="{'width': '100%'}" />
                 }
             </div>
         </fieldset>
