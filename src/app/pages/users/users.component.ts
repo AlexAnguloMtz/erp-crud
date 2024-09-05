@@ -142,7 +142,7 @@ export class UsersComponent {
       search: '',
       pageNumber: 0,
       pageSize: 15,
-      sort: 'name',
+      sort: '',
     }
   }
 }

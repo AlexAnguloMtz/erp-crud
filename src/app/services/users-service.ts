@@ -62,7 +62,6 @@ export function createRandomUserPreviews(amount: number): UserPreview[] {
     return userPreviews;
 }
 
-
 @Injectable({
     providedIn: 'root'
 })
