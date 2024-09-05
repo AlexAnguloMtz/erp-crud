@@ -112,7 +112,12 @@ export class UsersComponent {
   }
 
   get first(): number {
-    return 5
+    if (this.status._type !== 'base') {
+      return 0;
+    }
+    // TODO
+    // Debug for zero and one
+    return (this.status.response.pageNumber - 1) * RECORDS_PER_PAGE + 1;
   }
 
   get rows(): number {
