@@ -1,5 +1,6 @@
 export type PaginatedRequest = {
-    pageNumber: number
-    pageSize: number
-    sort: string
+    search?: string
+    pageNumber?: number
+    pageSize?: number
+    sort?: string
 }

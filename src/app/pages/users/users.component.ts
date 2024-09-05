@@ -5,7 +5,7 @@ import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginatedRequest } from '../../common/paginated-request';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
@@ -29,7 +29,8 @@ type UsersStatus = LoadingStatus | BaseStatus;
     InputTextModule,
     FormsModule,
     InputGroupModule,
-    InputGroupAddonModule
+    InputGroupAddonModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
@@ -37,26 +38,18 @@ type UsersStatus = LoadingStatus | BaseStatus;
 export class UsersComponent {
 
   status: UsersStatus;
+  searchControl: FormControl;
 
   constructor(
     private usersService: UsersService
   ) { }
 
   ngOnInit(): void {
-    this.status = { _type: 'loading' }
-    const request: PaginatedRequest = { pageNumber: 0, pageSize: 10, sort: '' }
-    this.usersService.getUsers(request).subscribe({
-      next: (users: PaginatedResponse<UserPreview>) => this.handleUsers(users),
-      error: (error) => this.handleGetUsersError(error),
+    this.searchControl = new FormControl('');
+    this.searchUsers(this.defaultPaginatedRequest());
+    this.searchControl.valueChanges.subscribe({
+      next: (search: string) => this.searchUsers({ ...this.defaultPaginatedRequest(), search }),
     })
-  }
-
-  private handleUsers(response: PaginatedResponse<UserPreview>): void {
-    this.status = { _type: 'base', response }
-  }
-
-  private handleGetUsersError(error: Error): void {
-
   }
 
   get loading(): boolean {
@@ -74,4 +67,28 @@ export class UsersComponent {
     return `${user.city}, ${user.state.substring(0, 3)}`
   }
 
+  searchUsers(request: PaginatedRequest): void {
+    this.status = { _type: 'loading' }
+    this.usersService.getUsers(request).subscribe({
+      next: (users: PaginatedResponse<UserPreview>) => this.handleUsers(users),
+      error: (error) => this.handleGetUsersError(error),
+    })
+  }
+
+  private handleUsers(response: PaginatedResponse<UserPreview>): void {
+    this.status = { _type: 'base', response }
+  }
+
+  private handleGetUsersError(error: Error): void {
+    console.log(error.message)
+  }
+
+  private defaultPaginatedRequest(): PaginatedRequest {
+    return {
+      search: '',
+      pageNumber: 0,
+      pageSize: 15,
+      sort: 'name',
+    }
+  }
 }
