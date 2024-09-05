@@ -448,10 +448,7 @@ export class UsersComponent {
 
   get confirmedPasswordError(): string {
     const control: FormControl = this.userForm.get('confirmedPassword') as FormControl;
-
-    if (control.valid) {
-      return '';
-    }
+    const passwordControl = this.userForm.get('password') as FormControl;
 
     if (!(control.touched || control.dirty)) {
       return '';
@@ -465,7 +462,7 @@ export class UsersComponent {
       return 'Mínimo 8 caracteres';
     }
 
-    if (control.value !== this.userForm.get('password')?.value) {
+    if (control.value !== passwordControl.value) {
       return 'Las contraseñas no coinciden'
     }
 
