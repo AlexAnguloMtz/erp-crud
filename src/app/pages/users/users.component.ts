@@ -301,6 +301,27 @@ export class UsersComponent {
     return '';
   }
 
+  get streetNumberError(): string {
+    const control: FormControl = this.userForm.get('streetNumber') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['maxlength']) {
+      return 'Máximo 10 caracteres';
+    }
+
+    return '';
+  }
 
   onUserFormSubmit(): void {
     if (!this.userForm.valid) {
