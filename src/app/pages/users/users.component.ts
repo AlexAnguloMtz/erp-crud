@@ -70,7 +70,11 @@ type CreatingUser = {
   _type: 'creating-user'
 }
 
-type CreateUserStatus = UserCreationBase | CreatingUser
+type UserCreated = {
+  _type: 'user-created'
+}
+
+type CreateUserStatus = UserCreationBase | CreatingUser | UserCreated
 
 @Component({
   selector: 'app-users',
@@ -433,6 +437,8 @@ export class UsersComponent {
     this.usersService.createUser(this.userCreationCommand()).subscribe({
       next: (_: boolean) => {
         console.log(_);
+        this.createItemVisible = false;
+        this.createUserStatus = { _type: 'user-created' }
       },
       error: (error) => console.log(error.message)
     })
