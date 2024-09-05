@@ -16,6 +16,10 @@
     <p-dropdown [options]="sortOptions" [(ngModel)]="selectedSort" optionLabel="name" placeholder="Ordenar por"
         [style]="{'width': '100%'}" (onChange)="onSortChanged()" />
 </div>
+<div class="paginator-container">
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[10, 20, 30]" />
+</div>
 <div class="users">
     @if (loadingSubsequentTime) {
     <div class="users__progress-container">

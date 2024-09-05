@@ -9,6 +9,16 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DropdownModule } from 'primeng/dropdown';
+import { PaginatorModule } from 'primeng/paginator';
+
+const RECORDS_PER_PAGE: number = 15;
+
+type PageEvent = {
+  first?: number;
+  rows?: number;
+  page?: number;
+  pageCount?: number;
+}
 
 type SortOption = {
   name: string,
@@ -42,6 +52,7 @@ type UsersStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus;
     InputGroupAddonModule,
     ReactiveFormsModule,
     DropdownModule,
+    PaginatorModule,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
@@ -93,6 +104,21 @@ export class UsersComponent {
     ];
   }
 
+  get totalRecords(): number {
+    if (this.status._type !== 'base') {
+      return 0;
+    }
+    return this.status.response.totalItems;
+  }
+
+  get first(): number {
+    return 5
+  }
+
+  get rows(): number {
+    return RECORDS_PER_PAGE
+  }
+
   formatUserLocation(user: UserPreview): string {
     return `${user.city}, ${user.state.substring(0, 3)}`
   }
@@ -111,6 +137,10 @@ export class UsersComponent {
       search: this.searchControl.value,
       sort: this.selectedSort?.key,
     }, { _type: 'loading-subsequent-time' });
+  }
+
+  onPageChange(event: PageEvent) {
+    console.log(JSON.stringify(event))
   }
 
   private debounceSearch(search: string): void {
@@ -141,7 +171,7 @@ export class UsersComponent {
     return {
       search: '',
       pageNumber: 0,
-      pageSize: 15,
+      pageSize: RECORDS_PER_PAGE,
       sort: '',
     }
   }
