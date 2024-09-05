@@ -148,7 +148,9 @@ export class UsersComponent {
   }
 
   onPageChange(event: PageEvent) {
-    console.log(JSON.stringify(event))
+    this.searchUsers({
+      ...this.defaultPaginatedRequest()
+    }, { _type: 'loading-subsequent-time' });
   }
 
   private debounceSearch(search: string): void {
