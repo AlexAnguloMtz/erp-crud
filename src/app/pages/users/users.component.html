@@ -94,7 +94,7 @@
                 </div>
                 } @else {
                 <p-dropdown id="create-user-role" formControlName="role" [options]="roleOptions"
-                    optionLabel="description" placeholder="Rol" [style]="{'width': '100%'}" />
+                    optionLabel="description" optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
                 }
                 <div class="form-error">
                     {{ roleError }}

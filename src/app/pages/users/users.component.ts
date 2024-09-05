@@ -409,7 +409,6 @@ export class UsersComponent {
 
   onUserFormSubmit(): void {
     if (!this.userForm.valid) {
-      console.log('invalid')
       this.userForm.markAllAsTouched();
       return;
     }
