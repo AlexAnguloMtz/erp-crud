@@ -38,7 +38,10 @@
             </div>
             <div class="create-user-input">
                 <label for="create-user-street">Calle</label>
-                <input pInputText id="create-user-street" [style]="{'width': '100%'}" />
+                <input pInputText id="create-user-street" formControlName="street" [style]="{'width': '100%'}" />
+                <div class="form-error">
+                    {{ streetError }}
+                </div>
             </div>
             <div class="create-user-input">
                 <label for="create-user-street-number">Número de calle</label>
