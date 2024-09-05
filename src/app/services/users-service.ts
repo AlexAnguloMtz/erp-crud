@@ -117,8 +117,8 @@ function createRandomUserPreview(id: string): UserDetails {
     const email = name.toLocaleLowerCase() + lastName.toLocaleLowerCase() + "@" + emailProvider + ".com"
     return {
         id,
-        name: getRandomItem(names),
-        lastName: getRandomItem(lastNames),
+        name,
+        lastName,
         phone: getRandomItem(phones),
         city: location.city,
         state: location.state,
