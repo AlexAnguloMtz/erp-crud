@@ -93,9 +93,12 @@
                         [style]="{'width': '40px', 'height': '40px'}" />
                 </div>
                 } @else {
-                <p-dropdown id="create-user-role" [options]="roleOptions" optionLabel="description" placeholder="Rol"
-                    [style]="{'width': '100%'}" />
+                <p-dropdown id="create-user-role" formControlName="role" [options]="roleOptions"
+                    optionLabel="description" placeholder="Rol" [style]="{'width': '100%'}" />
                 }
+                <div class="form-error">
+                    {{ roleError }}
+                </div>
             </div>
         </fieldset>
         <div class="item-form__actions">

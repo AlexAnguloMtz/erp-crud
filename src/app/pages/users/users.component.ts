@@ -367,7 +367,6 @@ export class UsersComponent {
     return '';
   }
 
-
   get zipCodeError(): string {
     const control: FormControl = this.userForm.get('zipCode') as FormControl;
 
@@ -390,6 +389,23 @@ export class UsersComponent {
     return '';
   }
 
+  get roleError(): string {
+    const control: FormControl = this.userForm.get('role') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    return '';
+  }
 
   onUserFormSubmit(): void {
     if (!this.userForm.valid) {
@@ -539,6 +555,12 @@ export class UsersComponent {
         [
           Validators.required,
           Validators.pattern(/^\d{5}$/)
+        ]
+      ],
+      role: [
+        '',
+        [
+          Validators.required,
         ]
       ]
     });
