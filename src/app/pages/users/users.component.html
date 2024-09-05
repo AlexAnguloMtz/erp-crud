@@ -103,7 +103,7 @@
         </fieldset>
         <div class="item-form__actions">
             <p-button label="Cancelar" severity="secondary" (click)="onCancelUserForm()" />
-            <p-button label="Guardar" type="submit" />
+            <p-button label="Guardar" type="submit" [loading]="savingUser" />
         </div>
     </form>
 </p-dialog>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserPreview, UsersService } from '../../services/users-service';
+import { CreateUserCommand, UserPreview, UsersService } from '../../services/users-service';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -62,6 +62,16 @@ type UserFormOptionsReady = {
 
 type UserFormOptionsStatus = UserFormOptionsBase | LoadingUserFormOptions | UserFormOptionsReady
 
+type UserCreationBase = {
+  _type: 'user-creation-base'
+}
+
+type CreatingUser = {
+  _type: 'creating-user'
+}
+
+type CreateUserStatus = UserCreationBase | CreatingUser
+
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -93,6 +103,8 @@ export class UsersComponent {
 
   userFormOptionsStatus: UserFormOptionsStatus;
 
+  createUserStatus: CreateUserStatus;
+
   userForm: FormGroup;
 
   constructor(
@@ -107,6 +119,7 @@ export class UsersComponent {
     this.lastSeenTotalItems = 0;
     this.createItemVisible = false;
     this.userFormOptionsStatus = { _type: 'base' }
+    this.createUserStatus = { _type: 'user-creation-base' }
     this.userForm = this.createUserForm();
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
     this.searchControl.valueChanges.subscribe(search => this.debounceSearch(search))
@@ -407,16 +420,22 @@ export class UsersComponent {
     return '';
   }
 
+  get savingUser(): boolean {
+    return this.createUserStatus._type === 'creating-user';
+  }
+
   onUserFormSubmit(): void {
     if (!this.userForm.valid) {
       this.userForm.markAllAsTouched();
       return;
     }
-    // this.loginFormStatus = { _type: 'login-logging' };
-    // this.loginService.logIn(this.loginForm.value).subscribe({
-    //   next: (token: string) => this.handleAuthenticationToken(token),
-    //   error: (error) => this.handleLoginError(error),
-    // })
+    this.createUserStatus = { _type: 'creating-user' }
+    this.usersService.createUser(this.userCreationCommand()).subscribe({
+      next: (_: boolean) => {
+        console.log(_);
+      },
+      error: (error) => console.log(error.message)
+    })
   }
 
   formatUserLocation(user: UserPreview): string {
@@ -468,6 +487,13 @@ export class UsersComponent {
 
   onHideUserForm(): void {
     this.userForm.reset();
+  }
+
+  private userCreationCommand(): CreateUserCommand {
+    return {
+      ...this.userForm.value,
+      roleId: this.userForm.value.role,
+    }
   }
 
   private debounceSearch(search: string): void {

@@ -102,6 +102,7 @@ export class UsersService {
     }
 
     createUser(command: CreateUserCommand): Observable<boolean> {
+        console.log('creating user ' + JSON.stringify(command));
         return of(true).pipe(delay(2000));
     }
 }
