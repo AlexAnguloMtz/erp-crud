@@ -110,7 +110,7 @@
 <p-dialog [draggable]="false" [dismissableMask]="true" header="Éxito" [modal]="true"
     [(visible)]="userSavedDialogVisible">
     <span class="p-text-secondary block mb-5" [style]="{'minHeight': '100px'}">Se guardó el usuario</span>
-    <div class="flex justify-content-end gap-2" [style]="{'marginTop': '30px'}">
+    <div class="user-saved-dialog-actions">
         <p-button label="Okay" (onClick)="onCloseSavedUserDialog()" />
     </div>
 </p-dialog>

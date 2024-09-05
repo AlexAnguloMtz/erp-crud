@@ -104,6 +104,12 @@
     padding-right: 0;
 }
 
+.user-saved-dialog-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
 @media screen and (min-width: 570px) {
     .double-input-container {
         flex-direction: row;
