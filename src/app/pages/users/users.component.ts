@@ -423,6 +423,55 @@ export class UsersComponent {
     return '';
   }
 
+
+  get passwordError(): string {
+    const control: FormControl = this.userForm.get('password') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['minlength']) {
+      return 'Mínimo 8 caracteres';
+    }
+
+    return '';
+  }
+
+  get confirmedPasswordError(): string {
+    const control: FormControl = this.userForm.get('confirmedPassword') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['minlength']) {
+      return 'Mínimo 8 caracteres';
+    }
+
+    if (control.value !== this.userForm.get('password')?.value) {
+      return 'Las contraseñas no coinciden'
+    }
+
+    return '';
+  }
+
   get savingUser(): boolean {
     return this.createUserStatus._type === 'creating-user';
   }
@@ -620,7 +669,21 @@ export class UsersComponent {
         [
           Validators.required,
         ]
-      ]
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+        ]
+      ],
+      confirmedPassword: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+        ]
+      ],
     });
   }
 }

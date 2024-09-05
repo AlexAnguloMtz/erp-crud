@@ -45,6 +45,8 @@ export type CreateUserCommand = {
     email: string,
     phone: string,
     roleId: string,
+    password: string,
+    confirmedPassword: string,
 }
 
 export type UserDetails = {

@@ -100,6 +100,24 @@
                     {{ roleError }}
                 </div>
             </div>
+            <div class="double-input-container">
+                <div class="create-user-input">
+                    <label for="create-user-password">Contraseña</label>
+                    <input pInputText id="create-user-password" formControlName="password"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ passwordError }}
+                    </div>
+                </div>
+                <div class="create-user-input">
+                    <label for="create-user-confirmed-password">Confirmar contraseña</label>
+                    <input pInputText id="create-user-confirmed-password" formControlName="confirmedPassword"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error">
+                        {{ confirmedPasswordError }}
+                    </div>
+                </div>
+            </div>
         </fieldset>
         <div class="item-form__actions">
             <p-button label="Cancelar" severity="secondary" (click)="onCancelUserForm()" />
