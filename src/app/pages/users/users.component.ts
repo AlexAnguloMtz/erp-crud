@@ -11,6 +11,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DropdownModule } from 'primeng/dropdown';
 import { PaginatorModule } from 'primeng/paginator';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 const RECORDS_PER_PAGE: number = 15;
 
@@ -55,6 +56,7 @@ type UsersStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus;
     DropdownModule,
     PaginatorModule,
     ButtonModule,
+    DialogModule,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
@@ -67,6 +69,7 @@ export class UsersComponent {
   selectedPageNumber: number;
   lastSeenTotalItems: number;
   debounceTimeout: any;
+  createItemVisible: boolean;
 
   constructor(
     private usersService: UsersService
@@ -76,6 +79,7 @@ export class UsersComponent {
     this.searchControl = new FormControl('');
     this.selectedPageNumber = 0;
     this.lastSeenTotalItems = 0;
+    this.createItemVisible = false;
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
     this.searchControl.valueChanges.subscribe(search => this.debounceSearch(search))
   }
@@ -122,6 +126,10 @@ export class UsersComponent {
     return RECORDS_PER_PAGE
   }
 
+  get createNewVisible(): boolean {
+    return this.createItemVisible;
+  }
+
   formatUserLocation(user: UserPreview): string {
     return `${user.city}, ${user.state.substring(0, 3)}`
   }
@@ -152,6 +160,10 @@ export class UsersComponent {
         pageNumber: this.selectedPageNumber,
       }, { _type: 'loading-subsequent-time' });
     }
+  }
+
+  onCreateClick(): void {
+    this.createItemVisible = true;
   }
 
   private debounceSearch(search: string): void {

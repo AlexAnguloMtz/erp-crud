@@ -1,3 +1,18 @@
+<p-dialog header="Edit Profile" [modal]="true" [(visible)]="createNewVisible" [style]="{ width: '25rem' }">
+    <span class="p-text-secondary block mb-5">Update your information.</span>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="username" class="font-semibold w-6rem">Username</label>
+        <input pInputText id="username" class="flex-auto" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-5">
+        <label for="email" class="font-semibold w-6rem">Email</label>
+        <input pInputText id="email" class="flex-auto" autocomplete="off" />
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" />
+        <p-button label="Save" />
+    </div>
+</p-dialog>
 @if (loadingFirstTime) {
 <div class="content__progress-container">
     <p-progressSpinner class="content__progress" ariaLabel="loading" [style]="{'width': '100px', 'height': '100px'}" />
@@ -5,7 +20,7 @@
 } @else {
 <div class="top-row">
     <h1 class="title">Usuarios</h1>
-    <p-button label="Nuevo" icon="pi pi-plus" />
+    <p-button label="Nuevo" icon="pi pi-plus" (onClick)="onCreateClick()" />
 </div>
 <div class="search__bar-container">
     <p-inputGroup>
