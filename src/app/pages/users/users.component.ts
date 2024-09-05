@@ -43,6 +43,7 @@ export class UsersComponent {
 
   status: UsersStatus;
   searchControl: FormControl;
+  private debounceTimeout: any;
 
   constructor(
     private usersService: UsersService
@@ -51,9 +52,7 @@ export class UsersComponent {
   ngOnInit(): void {
     this.searchControl = new FormControl('');
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
-    this.searchControl.valueChanges.subscribe({
-      next: (search: string) => this.searchUsers({ ...this.defaultPaginatedRequest(), search }, { _type: 'loading-subsequent-time' }),
-    })
+    this.searchControl.valueChanges.subscribe(search => this.debounceSearch(search))
   }
 
   get loadingFirstTime(): boolean {
@@ -81,6 +80,18 @@ export class UsersComponent {
       next: (users: PaginatedResponse<UserPreview>) => this.handleUsers(users),
       error: (error) => this.handleGetUsersError(error),
     })
+  }
+
+  private debounceSearch(search: string): void {
+    // Clear any existing timeout
+    if (this.debounceTimeout) {
+      clearTimeout(this.debounceTimeout);
+    }
+
+    // Set a new timeout
+    this.debounceTimeout = setTimeout(() => {
+      this.searchUsers({ ...this.defaultPaginatedRequest(), search }, { _type: 'loading-subsequent-time' });
+    }, 500); // Debounce delay
   }
 
   private handleUsers(response: PaginatedResponse<UserPreview>): void {
