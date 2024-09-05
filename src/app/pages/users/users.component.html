@@ -60,7 +60,10 @@
             </div>
             <div class="create-user-input">
                 <label for="create-user-phone">Teléfono</label>
-                <input pInputText id="create-user-phone" [style]="{'width': '100%'}" />
+                <input pInputText id="create-user-phone" formControlName="phone" [style]="{'width': '100%'}" />
+                <div class="form-error">
+                    {{ phoneError }}
+                </div>
             </div>
             <div class="create-user-input">
                 <label for="create-user-role">Rol</label>

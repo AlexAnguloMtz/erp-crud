@@ -349,6 +349,29 @@ export class UsersComponent {
     return '';
   }
 
+  get phoneError(): string {
+    const control: FormControl = this.userForm.get('phone') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['pattern']) {
+      return 'Deben ser 10 dígitos';
+    }
+
+    return '';
+  }
+
+
   onUserFormSubmit(): void {
     if (!this.userForm.valid) {
       console.log('invalid')
