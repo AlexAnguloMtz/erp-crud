@@ -71,3 +71,8 @@
     color: rgb(50, 76, 95);
     font-weight: 500;
 }
+
+.create-user__progress-container {
+    display: flex;
+    justify-content: center;
+}

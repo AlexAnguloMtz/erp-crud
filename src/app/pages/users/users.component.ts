@@ -5,13 +5,14 @@ import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginatedRequest } from '../../common/paginated-request';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DropdownModule } from 'primeng/dropdown';
 import { PaginatorModule } from 'primeng/paginator';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { AuthService, Role } from '../../services/auth-service';
 
 const RECORDS_PER_PAGE: number = 15;
 
@@ -42,6 +43,25 @@ type BaseStatus = {
 
 type UsersStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus;
 
+type UserFormOptions = {
+  roles: Array<Role>
+}
+
+type UserFormOptionsBase = {
+  _type: 'base',
+}
+
+type LoadingUserFormOptions = {
+  _type: 'loading-user-form-options'
+}
+
+type UserFormOptionsReady = {
+  _type: 'user-form-options-ready',
+  userFormOptions: UserFormOptions
+}
+
+type UserFormOptionsStatus = UserFormOptionsBase | LoadingUserFormOptions | UserFormOptionsReady
+
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -71,8 +91,14 @@ export class UsersComponent {
   debounceTimeout: any;
   createItemVisible: boolean;
 
+  userFormOptionsStatus: UserFormOptionsStatus;
+
+  userForm: FormGroup;
+
   constructor(
-    private usersService: UsersService
+    private formBuilder: FormBuilder,
+    private usersService: UsersService,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -80,6 +106,8 @@ export class UsersComponent {
     this.selectedPageNumber = 0;
     this.lastSeenTotalItems = 0;
     this.createItemVisible = false;
+    this.userFormOptionsStatus = { _type: 'base' }
+    this.userForm = this.createUserForm();
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
     this.searchControl.valueChanges.subscribe(search => this.debounceSearch(search))
   }
@@ -130,6 +158,10 @@ export class UsersComponent {
     return this.createItemVisible;
   }
 
+  get loadingUserFormOptions(): boolean {
+    return this.userFormOptionsStatus._type === 'loading-user-form-options';
+  }
+
   formatUserLocation(user: UserPreview): string {
     return `${user.city}, ${user.state.substring(0, 3)}`
   }
@@ -164,6 +196,13 @@ export class UsersComponent {
 
   onCreateClick(): void {
     this.createItemVisible = true;
+    if (this.userFormOptionsStatus._type === 'base') {
+      this.userFormOptionsStatus = { _type: 'loading-user-form-options' };
+      this.authService.getRoles().subscribe({
+        next: (roles: Array<Role>) => this.userFormOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } },
+        error: (error) => console.log(error.message),
+      })
+    }
   }
 
   private debounceSearch(search: string): void {
@@ -198,5 +237,59 @@ export class UsersComponent {
       pageSize: RECORDS_PER_PAGE,
       sort: '',
     }
+  }
+
+  private createUserForm(): FormGroup {
+    return this.formBuilder.group({
+      name: [
+        '',
+        [Validators.required, Validators.maxLength(60)]
+      ],
+      lastName: [
+        '',
+        [Validators.required, Validators.maxLength(60)]
+      ],
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^\d{10}$/)
+        ]
+      ],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email
+        ]
+      ],
+      district: [
+        '',
+        [Validators.required, Validators.maxLength(60)]
+      ],
+      city: [
+        '',
+        [Validators.required, Validators.maxLength(60)]
+      ],
+      state: [
+        '',
+        [Validators.required, Validators.maxLength(60)]
+      ],
+      street: [
+        '',
+        [Validators.required, Validators.maxLength(60)]
+      ],
+      streetNumber: [
+        '',
+        [Validators.required, Validators.maxLength(10)]
+      ],
+      zipCode: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^\d{5}$/)
+        ]
+      ]
+    });
   }
 }

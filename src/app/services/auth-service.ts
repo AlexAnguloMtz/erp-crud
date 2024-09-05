@@ -10,6 +10,11 @@ type User = {
     name: string
 }
 
+export type Role = {
+    id: string
+    description: string,
+}
+
 class UnauthorizedError extends Error {
     constructor(message: string) {
         super(message);
@@ -38,5 +43,26 @@ export class AuthService {
 
     getUserData(token: string): Observable<User> {
         return of({ name: 'Super User' }).pipe(delay(2000));
+    }
+
+    getRoles(): Observable<Array<Role>> {
+        return of([
+            {
+                id: '1',
+                description: 'Super Usuario',
+            },
+            {
+                id: '2',
+                description: 'Administrador',
+            },
+            {
+                id: '3',
+                description: 'Gerente',
+            },
+            {
+                id: '4',
+                description: 'Usuario',
+            },
+        ]).pipe(delay(20000));
     }
 }

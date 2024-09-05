@@ -10,10 +10,6 @@
                 <input pInputText id="create-user-last-name" [style]="{'width': '100%'}" />
             </div>
             <div class="create-user-input">
-                <label for="create-user-role">Rol</label>
-                <input pInputText id="create-user-role" [style]="{'width': '100%'}" />
-            </div>
-            <div class="create-user-input">
                 <label for="create-user-state">Estado</label>
                 <input pInputText id="create-user-state" [style]="{'width': '100%'}" />
             </div>
@@ -22,12 +18,35 @@
                 <input pInputText id="create-user-city" [style]="{'width': '100%'}" />
             </div>
             <div class="create-user-input">
+                <label for="create-user-district">Colonia</label>
+                <input pInputText id="create-user-district" [style]="{'width': '100%'}" />
+            </div>
+            <div class="create-user-input">
+                <label for="create-user-street">Calle</label>
+                <input pInputText id="create-user-street" [style]="{'width': '100%'}" />
+            </div>
+            <div class="create-user-input">
+                <label for="create-user-street-number">Número de calle</label>
+                <input pInputText id="create-user-street-number" [style]="{'width': '100%'}" />
+            </div>
+            <div class="create-user-input">
                 <label for="create-user-email">Correo</label>
                 <input pInputText id="create-user-email" [style]="{'width': '100%'}" />
             </div>
             <div class="create-user-input">
                 <label for="create-user-phone">Teléfono</label>
                 <input pInputText id="create-user-phone" [style]="{'width': '100%'}" />
+            </div>
+            <div class="create-user-input">
+                <label for="create-user-role">Rol</label>
+                @if (loadingUserFormOptions) {
+                <div class="create-user__progress-container">
+                    <p-progressSpinner class="create-user__progress" ariaLabel="loading"
+                        [style]="{'width': '40px', 'height': '40px'}" />
+                </div>
+                } @else {
+                <input pInputText id="create-user-role" [style]="{'width': '100%'}" />
+                }
             </div>
         </fieldset>
         <div class="item-form__actions">
