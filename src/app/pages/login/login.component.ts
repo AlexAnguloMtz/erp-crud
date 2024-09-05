@@ -132,13 +132,6 @@ export class LoginComponent {
       }
     }
 
-    if (error.name === 'UserExistsError') {
-      return {
-        header: 'Usuario ya existe',
-        message: 'Ya existe un usuario con estas credenciales.',
-      }
-    }
-
     return {
       header: 'Error',
       message: 'Ocurrió un error inesperado. Intenta de nuevo.',

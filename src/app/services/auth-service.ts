@@ -22,13 +22,6 @@ class UnauthorizedError extends Error {
     }
 }
 
-class UserExistsError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = 'UserExistsError';
-    }
-}
-
 @Injectable({
     providedIn: 'root'
 })

@@ -3,6 +3,20 @@ import { defer, delay, Observable, of, throwError } from "rxjs";
 import { PaginatedResponse } from "../common/paginated-response";
 import { PaginatedRequest } from "../common/paginated-request";
 
+export type CreateUserCommand = {
+    name: string,
+    lastName: string,
+    state: string,
+    city: string,
+    district: string,
+    street: string,
+    streetNumber: string,
+    zipCode: string,
+    email: string,
+    phone: string,
+    roleId: string,
+}
+
 export type UserPreview = {
     id: string
     name: string
@@ -87,6 +101,9 @@ export class UsersService {
         //});
     }
 
+    createUser(command: CreateUserCommand): Observable<boolean> {
+        return of(true).pipe(delay(2000));
+    }
 }
 
 function filter(users: Array<UserPreview>, request: PaginatedRequest): Array<UserPreview> {
