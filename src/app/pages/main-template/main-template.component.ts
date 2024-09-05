@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RouterOutlet } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 type SidebarLink = {
   href: string,
@@ -29,13 +30,13 @@ type MainTemplateStatus = LoadingStatus | BaseStatus
 
 const links: Array<SidebarLink> = [
   {
-    href: 'home',
+    href: '/home',
     text: 'Inicio',
     icon: 'home',
 
   },
   {
-    href: 'users',
+    href: '/home/users',
     text: 'Usuarios',
     icon: 'user',
   },
@@ -48,7 +49,8 @@ const links: Array<SidebarLink> = [
     ButtonModule,
     DividerModule,
     ProgressSpinnerModule,
-    RouterOutlet
+    RouterOutlet,
+    RouterModule,
   ],
   templateUrl: './main-template.component.html',
   styleUrl: './main-template.component.css'
