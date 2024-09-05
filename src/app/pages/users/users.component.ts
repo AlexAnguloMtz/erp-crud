@@ -105,6 +105,14 @@ export class UsersComponent {
     })
   }
 
+  onSortChanged() {
+    this.searchUsers({
+      ...this.defaultPaginatedRequest(),
+      search: this.searchControl.value,
+      sort: this.selectedSort?.key,
+    }, { _type: 'loading-subsequent-time' });
+  }
+
   private debounceSearch(search: string): void {
     // Clear any existing timeout
     if (this.debounceTimeout) {
@@ -113,7 +121,11 @@ export class UsersComponent {
 
     // Set a new timeout
     this.debounceTimeout = setTimeout(() => {
-      this.searchUsers({ ...this.defaultPaginatedRequest(), search }, { _type: 'loading-subsequent-time' });
+      this.searchUsers({
+        ...this.defaultPaginatedRequest(),
+        search,
+        sort: this.selectedSort?.key
+      }, { _type: 'loading-subsequent-time' });
     }, 500); // Debounce delay
   }
 

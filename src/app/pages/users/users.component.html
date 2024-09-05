@@ -14,7 +14,7 @@
 </div>
 <div class="sort-dropdown-container">
     <p-dropdown [options]="sortOptions" [(ngModel)]="selectedSort" optionLabel="name" placeholder="Ordenar por"
-        [style]="{'width': '100%'}" />
+        [style]="{'width': '100%'}" (onChange)="onSortChanged()" />
 </div>
 <div class="users">
     @if (loadingSubsequentTime) {

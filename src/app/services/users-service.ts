@@ -68,6 +68,8 @@ export function createRandomUserPreviews(amount: number): UserPreview[] {
 })
 export class UsersService {
     getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserPreview>> {
+        console.log(JSON.stringify(request))
+
         const randomUsers = createRandomUserPreviews(request.pageSize ?? 15)
 
         const response: PaginatedResponse<UserPreview> = {
