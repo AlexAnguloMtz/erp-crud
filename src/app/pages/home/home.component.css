@@ -108,6 +108,13 @@
     padding: 16px 12px;
 }
 
+.content__progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
 .title {
     color: rgb(25, 53, 74);
 }

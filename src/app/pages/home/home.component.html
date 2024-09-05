@@ -39,6 +39,10 @@
     </nav>
     <div class="content">
         @if (loading) {
+        <div class="content__progress-container">
+            <p-progressSpinner class="content__progress" ariaLabel="loading"
+                [style]="{'width': '100px', 'height': '100px'}" />
+        </div>
         } @else {
         <h1 class="title">Inicio</h1>
         <div class="daytime">
