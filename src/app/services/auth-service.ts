@@ -37,6 +37,6 @@ export class AuthService {
     }
 
     getUserData(token: string): Observable<User> {
-        return of({ name: 'Super User' }).pipe(delay(2000));
+        return of({ name: 'Super User' }).pipe(delay(20000));
     }
 }

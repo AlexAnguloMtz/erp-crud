@@ -23,6 +23,17 @@
     transition: all 200ms ease;
 }
 
+.sidebar__progress-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar__progress {
+    transform: translateY(-50%);
+}
+
 .sidebar__overlay.visible .sidebar {
     transform: translateX(0);
 }
