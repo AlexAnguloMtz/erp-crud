@@ -70,11 +70,7 @@ type CreatingUser = {
   _type: 'creating-user'
 }
 
-type UserCreated = {
-  _type: 'user-created'
-}
-
-type CreateUserStatus = UserCreationBase | CreatingUser | UserCreated
+type CreateUserStatus = UserCreationBase | CreatingUser
 
 @Component({
   selector: 'app-users',
@@ -111,6 +107,8 @@ export class UsersComponent {
 
   userForm: FormGroup;
 
+  userSavedDialogVisible: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private usersService: UsersService,
@@ -122,6 +120,7 @@ export class UsersComponent {
     this.selectedPageNumber = 0;
     this.lastSeenTotalItems = 0;
     this.createItemVisible = false;
+    this.userSavedDialogVisible = false;
     this.userFormOptionsStatus = { _type: 'base' }
     this.createUserStatus = { _type: 'user-creation-base' }
     this.userForm = this.createUserForm();
@@ -438,7 +437,8 @@ export class UsersComponent {
       next: (_: boolean) => {
         console.log(_);
         this.createItemVisible = false;
-        this.createUserStatus = { _type: 'user-created' }
+        this.createUserStatus = { _type: 'user-creation-base' }
+        this.userSavedDialogVisible = true;
       },
       error: (error) => console.log(error.message)
     })
@@ -493,6 +493,10 @@ export class UsersComponent {
 
   onHideUserForm(): void {
     this.userForm.reset();
+  }
+
+  onHideUserSavedDialog(): void {
+    this.createUserStatus = { _type: 'user-creation-base' }
   }
 
   private userCreationCommand(): CreateUserCommand {

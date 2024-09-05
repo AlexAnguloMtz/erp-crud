@@ -107,6 +107,8 @@
         </div>
     </form>
 </p-dialog>
+<p-dialog [draggable]="false" [dismissableMask]="true" (onHide)="onHideUserSavedDialog()" header="Se guardó el Usuario"
+    [modal]="true" [(visible)]="userSavedDialogVisible"></p-dialog>
 @if (loadingFirstTime) {
 <div class="content__progress-container">
     <p-progressSpinner class="content__progress" ariaLabel="loading" [style]="{'width': '100px', 'height': '100px'}" />
