@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { defer, delay, Observable, of, throwError } from "rxjs";
 import { PaginatedResponse } from "../common/paginated-response";
+import { PaginatedRequest } from "../common/paginated-request";
 
 export type UserPreview = {
     id: string
@@ -66,12 +67,12 @@ export function createRandomUserPreviews(amount: number): UserPreview[] {
     providedIn: 'root'
 })
 export class UsersService {
-    getUsers(): Observable<PaginatedResponse<UserPreview>> {
-        const randomUsers = createRandomUserPreviews(100)
+    getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserPreview>> {
+        const randomUsers = createRandomUserPreviews(request.pageSize)
 
         const response: PaginatedResponse<UserPreview> = {
             pageNumber: 0,
-            pageSize: 10,
+            pageSize: request.pageSize,
             totalPages: 20,
             totalItems: 100,
             isLastPage: false,

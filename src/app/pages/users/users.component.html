@@ -4,6 +4,14 @@
 </div>
 } @else {
 <h1 class="title">Usuarios</h1>
+<div class="search__bar-container">
+    <p-inputGroup>
+        <p-inputGroupAddon>
+            <i class="pi pi-search"></i>
+        </p-inputGroupAddon>
+        <input pInputText placeholder="Buscar usuarios" />
+    </p-inputGroup>
+</div>
 <div class="users">
     <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
