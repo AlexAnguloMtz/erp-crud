@@ -16,6 +16,21 @@ import { AuthService, Role } from '../../services/auth-service';
 
 const RECORDS_PER_PAGE: number = 15;
 
+const passwordVisibleProps: PasswordFieldProps = {
+  type: 'text',
+  icon: 'eye-slash',
+}
+
+const passwordNotVisibleProps: PasswordFieldProps = {
+  type: 'password',
+  icon: 'eye',
+}
+
+type PasswordFieldProps = {
+  type: 'text' | 'password'
+  icon: 'eye' | 'eye-slash'
+}
+
 type PageEvent = {
   first?: number;
   rows?: number;
@@ -109,6 +124,8 @@ export class UsersComponent {
 
   userSavedDialogVisible: boolean;
 
+  passwordFieldProps: PasswordFieldProps;
+
   constructor(
     private formBuilder: FormBuilder,
     private usersService: UsersService,
@@ -121,6 +138,7 @@ export class UsersComponent {
     this.lastSeenTotalItems = 0;
     this.createItemVisible = false;
     this.userSavedDialogVisible = false;
+    this.passwordFieldProps = passwordNotVisibleProps;
     this.userFormOptionsStatus = { _type: 'base' }
     this.createUserStatus = { _type: 'user-creation-base' }
     this.userForm = this.createUserForm();
@@ -157,6 +175,15 @@ export class UsersComponent {
       { name: 'Estado (Descendente)', key: 'state-desc' },
     ];
   }
+
+  get passwordInputType(): string {
+    return this.passwordFieldProps.type
+  }
+
+  get passwordVisibilityIcon(): string {
+    return this.passwordFieldProps.icon
+  }
+
 
   get totalRecords(): number {
     return this.lastSeenTotalItems;
@@ -471,6 +498,14 @@ export class UsersComponent {
 
   get savingUser(): boolean {
     return this.createUserStatus._type === 'creating-user';
+  }
+
+  onPasswordVisibilityClick() {
+    if (this.passwordFieldProps === passwordVisibleProps) {
+      this.passwordFieldProps = passwordNotVisibleProps;
+    } else {
+      this.passwordFieldProps = passwordVisibleProps
+    }
   }
 
   onRowClick(user: UserDetails): void {

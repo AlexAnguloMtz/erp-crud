@@ -101,22 +101,35 @@
                 </div>
             </div>
             <div class="double-input-container">
-                <div class="create-user-input">
-                    <label for="create-user-password">Contraseña</label>
-                    <input pInputText id="create-user-password" formControlName="password"
-                        [style]="{'width': '100%'}" />
-                    <div class="form-error">
-                        {{ passwordError }}
+                <p-inputGroup [style]="{'width': '100%'}">
+                    <div class="create-user-input">
+                        <label for="create-user-password">Contraseña</label>
+                        <input pInputText id="create-user-password" type="{{ passwordInputType }}"
+                            formControlName="password" [style]="{'width': '100%'}" />
+                        <div class="form-error">
+                            {{ passwordError }}
+                        </div>
                     </div>
-                </div>
-                <div class="create-user-input">
-                    <label for="create-user-confirmed-password">Confirmar contraseña</label>
-                    <input pInputText id="create-user-confirmed-password" formControlName="confirmedPassword"
-                        [style]="{'width': '100%'}" />
-                    <div class="form-error">
-                        {{ confirmedPasswordError }}
+                    <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
+                        (click)="onPasswordVisibilityClick()" [text]="true">
+                    </button>
+                </p-inputGroup>
+                <p-inputGroup [style]="{'width': '100%'}">
+                    <div class="create-user-input">
+                        <div class="create-user-input">
+                            <label for="create-user-confirmed-password">Confirmar contraseña</label>
+                            <input pInputText id="create-user-confirmed-password" type="{{ passwordInputType }}"
+                                formControlName="confirmedPassword" [style]="{'width': '100%'}" />
+                            <div class="form-error">
+                                {{ confirmedPasswordError }}
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
+                        (click)="onPasswordVisibilityClick()" [text]="true">
+                    </button>
+                </p-inputGroup>
+
             </div>
         </fieldset>
         <div class="item-form__actions">
