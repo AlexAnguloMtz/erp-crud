@@ -461,6 +461,7 @@ export class UsersComponent {
   }
 
   onSortChanged() {
+    this.lastSeenTotalItems = 0;
     this.searchUsers({
       ...this.defaultPaginatedRequest(),
       search: this.searchControl.value,
@@ -518,6 +519,7 @@ export class UsersComponent {
 
     // Set a new timeout
     this.debounceTimeout = setTimeout(() => {
+      this.lastSeenTotalItems = 0;
       this.searchUsers({
         ...this.defaultPaginatedRequest(),
         search,
