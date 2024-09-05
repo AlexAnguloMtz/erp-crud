@@ -3,6 +3,36 @@ import { defer, delay, Observable, of, throwError } from "rxjs";
 import { PaginatedResponse } from "../common/paginated-response";
 import { PaginatedRequest } from "../common/paginated-request";
 
+type Location = {
+    state: string,
+    city: string,
+}
+
+const locations: Location[] = [
+    { state: 'CDMX', city: 'Ciudad de México' },
+    { state: 'JAL', city: 'Guadalajara' },
+    { state: 'NL', city: 'Monterrey' },
+    { state: 'PUE', city: 'Puebla' },
+    { state: 'QR', city: 'Cancún' },
+    { state: 'TAM', city: 'Tampico' },
+    { state: 'BC', city: 'Tijuana' },
+    { state: 'MOR', city: 'Morelia' },
+    { state: 'VER', city: 'Veracruz' },
+    { state: 'SON', city: 'Hermosillo' },
+    { state: 'SLP', city: 'San Luis Potosí' },
+    { state: 'YUC', city: 'Mérida' },
+    { state: 'OAX', city: 'Oaxaca' },
+    { state: 'AGU', city: 'Aguascalientes' },
+    { state: 'DUR', city: 'Durango' },
+    { state: 'COL', city: 'Colima' },
+    { state: 'CHH', city: 'Chihuahua' },
+    { state: 'NAY', city: 'Tepic' },
+    { state: 'GRO', city: 'Acapulco' },
+    { state: 'ZAC', city: 'Zacatecas' },
+    { state: 'TLAX', city: 'Tlaxcala' }
+];
+
+
 export type CreateUserCommand = {
     name: string,
     lastName: string,
@@ -35,8 +65,7 @@ export type UserDetails = {
 const names = ['Juan', 'Ana', 'Carlos', 'María', 'Luis', 'Sofía'];
 const lastNames = ['García', 'Martínez', 'Hernández', 'López', 'Pérez'];
 const phones = ['5512345678', '5523456789', '5534567890', '5545678901', '5556789012', '5567890123', '5578901234', '5589012345'];
-const cities = ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Cancún'];
-const states = ['CDMX', 'JAL', 'NL', 'PUE', 'QR'];
+
 const roles = ['Administrador', 'Usuario', 'Moderador', 'Invitado'];
 const emails = ['usuario1@gmail.com', 'usuario2@gmail.com', 'usuario3@gmail.com', 'usuario4@gmail.com'];
 const districts = ['Centro', 'Norte', 'Sur', 'Este', 'Oeste'];
@@ -50,13 +79,14 @@ function getRandomItem<T>(items: T[]): T {
 }
 
 function createRandomUserPreview(id: string): UserDetails {
+    const location = getRandomItem(locations);
     return {
         id,
         name: getRandomItem(names),
         lastName: getRandomItem(lastNames),
         phone: getRandomItem(phones),
-        city: getRandomItem(cities),
-        state: getRandomItem(states),
+        city: location.city,
+        state: location.state,
         role: getRandomItem(roles),
         email: getRandomItem(emails),
         district: getRandomItem(districts),
