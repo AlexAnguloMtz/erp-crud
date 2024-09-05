@@ -63,6 +63,6 @@ export class AuthService {
                 id: '4',
                 description: 'Usuario',
             },
-        ]).pipe(delay(20000));
+        ]).pipe(delay(2000));
     }
 }

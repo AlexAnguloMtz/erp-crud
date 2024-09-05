@@ -76,3 +76,9 @@
     display: flex;
     justify-content: center;
 }
+
+.form-error {
+    margin-top: 4px;
+    color: rgb(235, 61, 61);
+    font-size: 14px;
+}

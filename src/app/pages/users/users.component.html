@@ -1,9 +1,12 @@
 <p-dialog header="Usuario" [modal]="true" [visible]="createNewVisible" [style]="{ width: '25rem' }">
-    <form action="">
+    <form [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()">
         <fieldset class="create-user-fields">
             <div class="create-user-input">
                 <label for="create-user-name">Nombre</label>
-                <input pInputText id="create-user-name" [style]="{'width': '100%'}" />
+                <input pInputText id="create-user-name" formControlName="name" [style]="{'width': '100%'}" />
+                <div class="form-error">
+                    {{ nameError }}
+                </div>
             </div>
             <div class="create-user-input">
                 <label for="create-user-last-name">Apellido</label>
@@ -52,7 +55,7 @@
         </fieldset>
         <div class="item-form__actions">
             <p-button label="Cancelar" severity="secondary" />
-            <p-button label="Guardar" />
+            <p-button label="Guardar" type="submit" />
         </div>
     </form>
 </p-dialog>

@@ -169,6 +169,41 @@ export class UsersComponent {
     return this.userFormOptionsStatus.userFormOptions.roles;
   }
 
+  get nameError(): string {
+    const emailControl: FormControl = this.userForm.get('name') as FormControl;
+
+    if (emailControl.valid) {
+      return '';
+    }
+
+    if (!(emailControl.touched || emailControl.dirty)) {
+      return '';
+    }
+
+    if (emailControl.errors?.['required']) {
+      return 'Ingresa un nombre';
+    }
+
+    if (emailControl.errors?.['maxlength']) {
+      return 'Máximo 60 caracteres';
+    }
+
+    return '';
+  }
+
+  onUserFormSubmit(): void {
+    if (!this.userForm.valid) {
+      console.log('invalid')
+      this.userForm.markAllAsTouched();
+      return;
+    }
+    // this.loginFormStatus = { _type: 'login-logging' };
+    // this.loginService.logIn(this.loginForm.value).subscribe({
+    //   next: (token: string) => this.handleAuthenticationToken(token),
+    //   error: (error) => this.handleLoginError(error),
+    // })
+  }
+
   formatUserLocation(user: UserPreview): string {
     return `${user.city}, ${user.state.substring(0, 3)}`
   }
