@@ -118,4 +118,8 @@ export class MainTemplateComponent {
   onSidebarClick(event: Event): void {
     event.stopPropagation();
   }
+
+  onSidebarLinkClick(): void {
+    this.sidebarOpen = false;
+  }
 }
