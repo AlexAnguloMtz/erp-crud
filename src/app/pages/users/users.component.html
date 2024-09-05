@@ -17,8 +17,8 @@
         [style]="{'width': '100%'}" (onChange)="onSortChanged()" />
 </div>
 <div class="paginator-container">
-    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalRecords"
-        [rowsPerPageOptions]="[10, 20, 30]" />
+    <p-paginator (onPageChange)="onPageChange($event)" [showFirstLastIcon]="false" [pageLinkSize]="4" [first]="first"
+        [rows]="rows" [totalRecords]="totalRecords" />
 </div>
 <div class="users">
     @if (loadingSubsequentTime) {
