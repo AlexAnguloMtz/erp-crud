@@ -107,3 +107,33 @@
 .content {
     padding: 16px 12px;
 }
+
+@media screen and (min-width: 800px) {
+    .sidebar__overlay {
+        position: relative;
+        pointer-events: all;
+    }
+
+    .nav__sidebar-button {
+        display: none;
+    }
+
+    .sidebar-and-content-container {
+        display: flex;
+        margin-top: 3px;
+    }
+
+    .content {
+        flex: 1;
+    }
+
+    .sidebar__overlay .sidebar {
+        transform: translateX(0);
+        width: 230px;
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar__close-button-container {
+        display: none;
+    }
+}

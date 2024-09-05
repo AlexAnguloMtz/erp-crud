@@ -1,44 +1,46 @@
 <div class="page">
-    <div class="sidebar__overlay" [class.visible]="sidebarOpen" (click)="onSidebarOverlayClick()">
-        <div class="sidebar" (click)="onSidebarClick($event)">
-            @if (loading) {
-            <div class="sidebar__progress-container">
-                <p-progressSpinner class="sidebar__progress" ariaLabel="loading"
-                    [style]="{'width': '80px', 'height': '80px'}" />
-            </div>
-            } @else {
-            <div class="sidebar__close-button-container">
-                <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary"
-                    (click)="onCloseSidebarClick()" />
-            </div>
-            <div class="sidebar__profile">
-                <h3 class="sidebar__user">
-                    {{ userPersonalName }}
-                </h3>
-            </div>
-            <p-divider />
-            <ul class="sidebar__links">
-                @for (link of links; track link.href) {
-                <a (click)="onSidebarLinkClick()" routerLink="{{ link.href }}" class="sidebar__link"
-                    [class.active]="isActiveLink(link)">
-                    <i class="pi pi-{{ link.icon }} sidebar__link-icon "></i>
-                    <span class="sidebar__link-text">
-                        {{ link.text }}
-                    </span>
-                </a>
-                }
-            </ul>
-            }
-        </div>
-    </div>
     <nav class="nav">
         <div class="nav__logo">
             <img class="nav__logo-img" src="images/abarrey_logo.png" alt="logo">
         </div>
-        <p-button [style]="{'marginLeft': '10px'}" severity="secondary" icon="pi pi-microsoft" [rounded]="true"
-            [text]="true" (click)="onOpenSidebarClick()" />
+        <p-button class="nav__sidebar-button" [style]="{'marginLeft': '10px'}" severity="secondary"
+            icon="pi pi-microsoft" [rounded]="true" [text]="true" (click)="onOpenSidebarClick()" />
     </nav>
-    <div class="content">
-        <router-outlet />
+    <div class="sidebar-and-content-container">
+        <div class="sidebar__overlay" [class.visible]="sidebarOpen" (click)="onSidebarOverlayClick()">
+            <div class="sidebar" (click)="onSidebarClick($event)">
+                @if (loading) {
+                <div class="sidebar__progress-container">
+                    <p-progressSpinner class="sidebar__progress" ariaLabel="loading"
+                        [style]="{'width': '80px', 'height': '80px'}" />
+                </div>
+                } @else {
+                <div class="sidebar__close-button-container">
+                    <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary"
+                        (click)="onCloseSidebarClick()" />
+                </div>
+                <div class="sidebar__profile">
+                    <h3 class="sidebar__user">
+                        {{ userPersonalName }}
+                    </h3>
+                </div>
+                <p-divider />
+                <ul class="sidebar__links">
+                    @for (link of links; track link.href) {
+                    <a (click)="onSidebarLinkClick()" routerLink="{{ link.href }}" class="sidebar__link"
+                        [class.active]="isActiveLink(link)">
+                        <i class="pi pi-{{ link.icon }} sidebar__link-icon "></i>
+                        <span class="sidebar__link-text">
+                            {{ link.text }}
+                        </span>
+                    </a>
+                    }
+                </ul>
+                }
+            </div>
+        </div>
+        <div class="content">
+            <router-outlet />
+        </div>
     </div>
 </div>
