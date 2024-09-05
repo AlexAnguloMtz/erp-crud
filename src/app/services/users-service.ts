@@ -81,21 +81,31 @@ export function createRandomUserPreviews(amount: number): UserDetails[] {
 })
 export class UsersService {
     getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
-        console.log(JSON.stringify(request))
+        console.log(JSON.stringify(request));
 
-        const randomUsers = createRandomUserPreviews(request.pageSize ?? 15)
+        const randomUsers = createRandomUserPreviews(150);
+
+        const filteredUsers = filter(randomUsers, request);
+
+        const totalItems = filteredUsers.length;
+        const pageNumber = request.pageNumber ?? 0;
+        const pageSize = request.pageSize ?? 15;
+
+        const totalPages = Math.ceil(totalItems / pageSize);
+        const start = pageNumber * pageSize;
+        const end = start + pageSize;
+        const items = filteredUsers.slice(start, end);
 
         const response: PaginatedResponse<UserDetails> = {
-            pageNumber: request.pageNumber ?? 0,
-            pageSize: request.pageSize ?? 15,
-            totalPages: 10,
-            totalItems: 150,
-            isLastPage: false,
-            items: filter(randomUsers, request),
-        }
+            pageNumber,
+            pageSize,
+            totalPages,
+            totalItems,
+            isLastPage: pageNumber >= totalPages - 1,
+            items
+        };
 
-        return of(response)
-            .pipe(delay(2000));
+        return of(response).pipe(delay(2000));
         // return defer(() => {
         //    return throwError(() => new UserExistsError("UserExists")).pipe(delay(2000));
         //});
@@ -107,10 +117,18 @@ export class UsersService {
     }
 }
 
-function filter(users: Array<UserDetails>, request: PaginatedRequest): Array<UserDetails> {
-    let filtered = [...users]
+function filter(users: UserDetails[], request: PaginatedRequest): UserDetails[] {
+    let filtered = [...users];
+
+    // Apply search filter if the search property is defined and not empty
     if (request.search) {
-        filtered = filtered.filter(x => x.name.toLocaleLowerCase().includes(request.search?.toLocaleLowerCase()!))
+        const searchTerm = request.search.toLowerCase();
+        filtered = filtered.filter(x =>
+            (x.name && x.name.toLowerCase().includes(searchTerm)) ||
+            (x.lastName && x.lastName.toLowerCase().includes(searchTerm)) ||
+            (x.email && x.email.toLowerCase().includes(searchTerm))
+        );
     }
-    return filtered
-} 
+
+    return filtered;
+}
