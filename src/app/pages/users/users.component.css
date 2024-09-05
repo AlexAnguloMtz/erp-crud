@@ -5,6 +5,14 @@
     height: 70vh;
 }
 
+.users__progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+}
+
+
 .search__bar-container {
     margin: 20px 0 0 0;
 }

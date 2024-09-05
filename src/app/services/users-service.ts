@@ -76,7 +76,7 @@ export class UsersService {
             totalPages: 20,
             totalItems: 100,
             isLastPage: false,
-            items: randomUsers,
+            items: filter(randomUsers, request),
         }
 
         return of(response)
@@ -87,3 +87,11 @@ export class UsersService {
     }
 
 }
+
+function filter(users: Array<UserPreview>, request: PaginatedRequest): Array<UserPreview> {
+    let filtered = [...users]
+    if (request.search) {
+        filtered = filtered.filter(x => x.name.toLocaleLowerCase().includes(request.search?.toLocaleLowerCase()!))
+    }
+    return filtered
+} 

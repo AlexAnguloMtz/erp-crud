@@ -9,8 +9,12 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
-type LoadingStatus = {
-  _type: 'loading';
+type LoadingFirstTime = {
+  _type: 'loading-first-time';
+}
+
+type LoadingSubsequentTime = {
+  _type: 'loading-subsequent-time';
 }
 
 type BaseStatus = {
@@ -18,7 +22,7 @@ type BaseStatus = {
   response: PaginatedResponse<UserPreview>;
 }
 
-type UsersStatus = LoadingStatus | BaseStatus;
+type UsersStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus;
 
 @Component({
   selector: 'app-users',
@@ -46,14 +50,18 @@ export class UsersComponent {
 
   ngOnInit(): void {
     this.searchControl = new FormControl('');
-    this.searchUsers(this.defaultPaginatedRequest());
+    this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
     this.searchControl.valueChanges.subscribe({
-      next: (search: string) => this.searchUsers({ ...this.defaultPaginatedRequest(), search }),
+      next: (search: string) => this.searchUsers({ ...this.defaultPaginatedRequest(), search }, { _type: 'loading-subsequent-time' }),
     })
   }
 
-  get loading(): boolean {
-    return this.status._type === 'loading';
+  get loadingFirstTime(): boolean {
+    return this.status._type === 'loading-first-time';
+  }
+
+  get loadingSubsequentTime(): boolean {
+    return this.status._type === 'loading-subsequent-time';
   }
 
   get users(): Array<UserPreview> {
@@ -67,8 +75,8 @@ export class UsersComponent {
     return `${user.city}, ${user.state.substring(0, 3)}`
   }
 
-  searchUsers(request: PaginatedRequest): void {
-    this.status = { _type: 'loading' }
+  searchUsers(request: PaginatedRequest, loadingStatus: LoadingFirstTime | LoadingSubsequentTime): void {
+    this.status = loadingStatus;
     this.usersService.getUsers(request).subscribe({
       next: (users: PaginatedResponse<UserPreview>) => this.handleUsers(users),
       error: (error) => this.handleGetUsersError(error),
