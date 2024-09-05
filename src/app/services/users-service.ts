@@ -185,7 +185,7 @@ function filter(users: UserDetails[], request: PaginatedRequest): UserDetails[] 
 
     // Apply search filter if the search property is defined and not empty
     if (request.search) {
-        const searchTerm = request.search.toLowerCase();
+        const searchTerm = request.search.toLowerCase().trim();
         filtered = filtered.filter(x =>
             (x.name && x.name.toLowerCase().includes(searchTerm)) ||
             (x.lastName && x.lastName.toLowerCase().includes(searchTerm)) ||
