@@ -66,7 +66,7 @@ const lastNames = ['García', 'Martínez', 'Hernández', 'López', 'Pérez'];
 const phones = ['5512345678', '5523456789', '5534567890', '5545678901', '5556789012', '5567890123', '5578901234', '5589012345'];
 
 const roles = ['Administrador', 'Usuario', 'Moderador', 'Invitado'];
-const emails = ['usuario1@gmail.com', 'usuario2@gmail.com', 'usuario3@gmail.com', 'usuario4@gmail.com'];
+const emailProviders = ['gmail', 'yahoo', 'yandex', 'outlook'];
 const districts = ['Centro', 'Norte', 'Sur', 'Este', 'Oeste'];
 const streets = ['Avenida Reforma', 'Calle Juárez', 'Avenida 16 de Septiembre', 'Calle Madero', 'Boulevard Ávila Camacho'];
 const streetNumbers = ['100', '200', '300', '400', '500'];
@@ -77,8 +77,23 @@ function getRandomItem<T>(items: T[]): T {
     return items[randomIndex];
 }
 
+function removeAccents(str: string): string {
+    const accentsMap: { [key: string]: string } = {
+        'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u',
+        'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U', 'Ü': 'U',
+        'ñ': 'n', 'Ñ': 'N'
+    };
+
+    return str.replace(/[áéíóúüÁÉÍÓÚÜñÑ]/g, match => accentsMap[match] || match);
+}
+
+
 function createRandomUserPreview(id: string): UserDetails {
     const location = getRandomItem(locations);
+    const name = getRandomItem(names)
+    const lastName = getRandomItem(lastNames)
+    const emailProvider = getRandomItem(emailProviders)
+    const email = name.toLocaleLowerCase() + lastName.toLocaleLowerCase() + "@" + emailProvider + ".com"
     return {
         id,
         name: getRandomItem(names),
@@ -87,7 +102,7 @@ function createRandomUserPreview(id: string): UserDetails {
         city: location.city,
         state: location.state,
         role: getRandomItem(roles),
-        email: getRandomItem(emails),
+        email: removeAccents(email),
         district: getRandomItem(districts),
         street: getRandomItem(streets),
         streetNumber: getRandomItem(streetNumbers),
