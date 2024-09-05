@@ -115,7 +115,7 @@
 }
 
 .row:hover {
-    background-color: rgb(196, 230, 250);
+    background-color: #e0ecfc;
 }
 
 @media screen and (min-width: 570px) {
