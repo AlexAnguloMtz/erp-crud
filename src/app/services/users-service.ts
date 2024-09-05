@@ -10,28 +10,27 @@ type Location = {
 
 const locations: Location[] = [
     { state: 'CDMX', city: 'Ciudad de México' },
-    { state: 'JAL', city: 'Guadalajara' },
-    { state: 'NL', city: 'Monterrey' },
-    { state: 'PUE', city: 'Puebla' },
-    { state: 'QR', city: 'Cancún' },
-    { state: 'TAM', city: 'Tampico' },
-    { state: 'BC', city: 'Tijuana' },
-    { state: 'MOR', city: 'Morelia' },
-    { state: 'VER', city: 'Veracruz' },
-    { state: 'SON', city: 'Hermosillo' },
-    { state: 'SLP', city: 'San Luis Potosí' },
-    { state: 'YUC', city: 'Mérida' },
-    { state: 'OAX', city: 'Oaxaca' },
-    { state: 'AGU', city: 'Aguascalientes' },
-    { state: 'DUR', city: 'Durango' },
-    { state: 'COL', city: 'Colima' },
-    { state: 'CHH', city: 'Chihuahua' },
-    { state: 'NAY', city: 'Tepic' },
-    { state: 'GRO', city: 'Acapulco' },
-    { state: 'ZAC', city: 'Zacatecas' },
-    { state: 'TLAX', city: 'Tlaxcala' }
+    { state: 'Jalisco', city: 'Guadalajara' },
+    { state: 'Nuevo León', city: 'Monterrey' },
+    { state: 'Puebla', city: 'Puebla' },
+    { state: 'Quintana Roo', city: 'Cancún' },
+    { state: 'Tamaulipas', city: 'Tampico' },
+    { state: 'Baja California', city: 'Tijuana' },
+    { state: 'Michoacán', city: 'Morelia' },
+    { state: 'Veracruz', city: 'Veracruz' },
+    { state: 'Sonora', city: 'Hermosillo' },
+    { state: 'San Luis Potosí', city: 'San Luis Potosí' },
+    { state: 'Yucatán', city: 'Mérida' },
+    { state: 'Oaxaca', city: 'Oaxaca' },
+    { state: 'Aguascalientes', city: 'Aguascalientes' },
+    { state: 'Durango', city: 'Durango' },
+    { state: 'Colima', city: 'Colima' },
+    { state: 'Chihuahua', city: 'Chihuahua' },
+    { state: 'Nayarit', city: 'Tepic' },
+    { state: 'Guerrero', city: 'Acapulco' },
+    { state: 'Zacatecas', city: 'Zacatecas' },
+    { state: 'Tlaxcala', city: 'Tlaxcala' }
 ];
-
 
 export type CreateUserCommand = {
     name: string,
