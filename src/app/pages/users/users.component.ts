@@ -427,7 +427,7 @@ export class UsersComponent {
     return this.createUserStatus._type === 'creating-user';
   }
 
-  onRowClick(id: string): void {
+  onRowClick(user: UserDetails): void {
   }
 
   onUserFormSubmit(): void {

@@ -67,6 +67,7 @@ function createRandomUserPreview(id: string): UserDetails {
         zipCode: getRandomItem(zipCodes),
     };
 }
+
 export function createRandomUserPreviews(amount: number): UserDetails[] {
     const userPreviews: UserDetails[] = [];
     for (let i = 0; i < amount; i++) {
