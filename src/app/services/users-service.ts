@@ -44,8 +44,8 @@ function getRandomId(): string {
 function createRandomUserPreview(): UserPreview {
     return {
         id: getRandomId(),
-        name: getRandomItem(names),
-        lastName: getRandomItem(lastNames),
+        name: getRandomItem(names) + " " + getRandomItem(names),
+        lastName: getRandomItem(lastNames) + " " + getRandomItem(lastNames),
         phone: getRandomItem(phones),
         city: getRandomItem(cities),
         state: getRandomItem(states),

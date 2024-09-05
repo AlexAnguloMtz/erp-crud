@@ -452,8 +452,6 @@ export class UsersComponent {
   }
 
   onHideUserForm(): void {
-    // TODO 
-    // Implement
     this.userForm.reset();
   }
 
