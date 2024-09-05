@@ -27,7 +27,7 @@ class UnauthorizedError extends Error {
 })
 export class AuthService {
     logIn(credentials: LoginCredentials): Observable<string> {
-        if (credentials.email !== 'abarrey_root@gmail.com' && credentials.password !== '12345678') {
+        if (credentials.email !== 'abarrey_root@gmail.com' || credentials.password !== '12345678') {
             return defer(() => {
                 return throwError(() => new UnauthorizedError("UnauthorizedError")).pipe(delay(2000));
             });
