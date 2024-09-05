@@ -10,7 +10,10 @@
             </div>
             <div class="create-user-input">
                 <label for="create-user-last-name">Apellido</label>
-                <input pInputText id="create-user-last-name" [style]="{'width': '100%'}" />
+                <input pInputText id="create-user-last-name" formControlName="lastName" [style]="{'width': '100%'}" />
+                <div class="form-error">
+                    {{ lastNameError }}
+                </div>
             </div>
             <div class="create-user-input">
                 <label for="create-user-state">Estado</label>

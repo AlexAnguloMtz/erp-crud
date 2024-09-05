@@ -170,21 +170,43 @@ export class UsersComponent {
   }
 
   get nameError(): string {
-    const emailControl: FormControl = this.userForm.get('name') as FormControl;
+    const control: FormControl = this.userForm.get('name') as FormControl;
 
-    if (emailControl.valid) {
+    if (control.valid) {
       return '';
     }
 
-    if (!(emailControl.touched || emailControl.dirty)) {
+    if (!(control.touched || control.dirty)) {
       return '';
     }
 
-    if (emailControl.errors?.['required']) {
-      return 'Ingresa un nombre';
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
     }
 
-    if (emailControl.errors?.['maxlength']) {
+    if (control.errors?.['maxlength']) {
+      return 'Máximo 60 caracteres';
+    }
+
+    return '';
+  }
+
+  get lastNameError(): string {
+    const control: FormControl = this.userForm.get('lastName') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['maxlength']) {
       return 'Máximo 60 caracteres';
     }
 
