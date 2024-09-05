@@ -97,10 +97,7 @@ export class MainTemplateComponent {
   }
 
   isActiveLink(link: SidebarLink): boolean {
-    if (link.href === 'home') {
-      return true
-    }
-    return false
+    return this.router.isActive(link.href, { paths: 'exact', matrixParams: 'ignored', queryParams: 'ignored', fragment: 'ignored' });
   }
 
   onOpenSidebarClick(): void {
