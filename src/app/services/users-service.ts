@@ -32,19 +32,17 @@ export type UserDetails = {
     role: string,
 }
 
-const names = ['John', 'Jane', 'Alice', 'Bob', 'Charlie', 'Diana'];
-const lastNames = ['Smith', 'Doe', 'Johnson', 'Williams', 'Jones'];
-const phones = ['555-1234', '555-5678', '555-8765', '555-4321'];
-const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'];
-const states = ['NY', 'CA', 'IL', 'TX', 'AZ'];
-const roles = ['Admin', 'User', 'Moderator', 'Guest'];
-const emails = ['firstemail@gmail.com', 'secondemail@gmail.com', 'thirdemail@gmail.com', 'fourthemail@gmail.com'];
-
-// Added arrays for missing fields
-const districts = ['Downtown', 'Midtown', 'Uptown', 'Suburb', 'Countryside'];
-const streets = ['Main St', 'Elm St', 'Maple Ave', 'Oak Dr', 'Pine Rd'];
-const streetNumbers = ['101', '202', '303', '404', '505'];
-const zipCodes = ['10001', '90001', '60601', '77001', '85001'];
+const names = ['Juan', 'Ana', 'Carlos', 'María', 'Luis', 'Sofía'];
+const lastNames = ['García', 'Martínez', 'Hernández', 'López', 'Pérez'];
+const phones = ['5512345678', '5523456789', '5534567890', '5545678901', '5556789012', '5567890123', '5578901234', '5589012345'];
+const cities = ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Cancún'];
+const states = ['CDMX', 'JAL', 'NL', 'PUE', 'QR'];
+const roles = ['Administrador', 'Usuario', 'Moderador', 'Invitado'];
+const emails = ['usuario1@gmail.com', 'usuario2@gmail.com', 'usuario3@gmail.com', 'usuario4@gmail.com'];
+const districts = ['Centro', 'Norte', 'Sur', 'Este', 'Oeste'];
+const streets = ['Avenida Reforma', 'Calle Juárez', 'Avenida 16 de Septiembre', 'Calle Madero', 'Boulevard Ávila Camacho'];
+const streetNumbers = ['100', '200', '300', '400', '500'];
+const zipCodes = ['01000', '08000', '64000', '72000', '77500'];
 
 function getRandomItem<T>(items: T[]): T {
     const randomIndex = Math.floor(Math.random() * items.length);
@@ -76,14 +74,14 @@ export function createRandomUserPreviews(amount: number): UserDetails[] {
     return userPreviews;
 }
 
+const randomUsers = createRandomUserPreviews(150);
+
 @Injectable({
     providedIn: 'root'
 })
 export class UsersService {
     getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
         console.log(JSON.stringify(request));
-
-        const randomUsers = createRandomUserPreviews(150);
 
         const filteredUsers = filter(randomUsers, request);
 

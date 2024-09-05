@@ -428,6 +428,7 @@ export class UsersComponent {
   }
 
   onRowClick(user: UserDetails): void {
+
   }
 
   onUserFormSubmit(): void {
