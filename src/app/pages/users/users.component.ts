@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CreateUserCommand, UserPreview, UsersService } from '../../services/users-service';
+import { CreateUserCommand, UserDetails, UsersService } from '../../services/users-service';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -38,7 +38,7 @@ type LoadingSubsequentTime = {
 
 type BaseStatus = {
   _type: 'base',
-  response: PaginatedResponse<UserPreview>;
+  response: PaginatedResponse<UserDetails>;
 }
 
 type UsersStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus;
@@ -136,7 +136,7 @@ export class UsersComponent {
     return this.status._type === 'loading-subsequent-time';
   }
 
-  get users(): Array<UserPreview> {
+  get users(): Array<UserDetails> {
     if (this.status._type !== 'base') {
       return [];
     }
@@ -447,14 +447,14 @@ export class UsersComponent {
     })
   }
 
-  formatUserLocation(user: UserPreview): string {
+  formatUserLocation(user: UserDetails): string {
     return `${user.city}, ${user.state.substring(0, 3)}`
   }
 
   searchUsers(request: PaginatedRequest, loadingStatus: LoadingFirstTime | LoadingSubsequentTime): void {
     this.status = loadingStatus;
     this.usersService.getUsers(request).subscribe({
-      next: (users: PaginatedResponse<UserPreview>) => this.handleUsers(users),
+      next: (users: PaginatedResponse<UserDetails>) => this.handleUsers(users),
       error: (error) => this.handleGetUsersError(error),
     })
   }
@@ -525,7 +525,7 @@ export class UsersComponent {
     }, 500); // Debounce delay
   }
 
-  private handleUsers(response: PaginatedResponse<UserPreview>): void {
+  private handleUsers(response: PaginatedResponse<UserDetails>): void {
     this.status = { _type: 'base', response }
     this.lastSeenTotalItems = response.totalItems
   }

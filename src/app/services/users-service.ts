@@ -17,15 +17,19 @@ export type CreateUserCommand = {
     roleId: string,
 }
 
-export type UserPreview = {
-    id: string
-    name: string
-    lastName: string
-    email: string
-    phone: string
-    city: string
-    state: string
-    role: string
+export type UserDetails = {
+    id: string,
+    name: string,
+    lastName: string,
+    state: string,
+    city: string,
+    district: string,
+    street: string,
+    streetNumber: string,
+    zipCode: string,
+    email: string,
+    phone: string,
+    role: string,
 }
 
 const names = ['John', 'Jane', 'Alice', 'Bob', 'Charlie', 'Diana'];
@@ -36,27 +40,35 @@ const states = ['NY', 'CA', 'IL', 'TX', 'AZ'];
 const roles = ['Admin', 'User', 'Moderator', 'Guest'];
 const emails = ['firstemail@gmail.com', 'secondemail@gmail.com', 'thirdemail@gmail.com', 'fourthemail@gmail.com'];
 
+// Added arrays for missing fields
+const districts = ['Downtown', 'Midtown', 'Uptown', 'Suburb', 'Countryside'];
+const streets = ['Main St', 'Elm St', 'Maple Ave', 'Oak Dr', 'Pine Rd'];
+const streetNumbers = ['101', '202', '303', '404', '505'];
+const zipCodes = ['10001', '90001', '60601', '77001', '85001'];
+
 function getRandomItem<T>(items: T[]): T {
     const randomIndex = Math.floor(Math.random() * items.length);
     return items[randomIndex];
-
 }
 
-function createRandomUserPreview(id: string): UserPreview {
+function createRandomUserPreview(id: string): UserDetails {
     return {
         id,
-        name: getRandomItem(names) + " " + getRandomItem(names),
-        lastName: getRandomItem(lastNames) + " " + getRandomItem(lastNames),
+        name: getRandomItem(names),
+        lastName: getRandomItem(lastNames),
         phone: getRandomItem(phones),
         city: getRandomItem(cities),
         state: getRandomItem(states),
         role: getRandomItem(roles),
         email: getRandomItem(emails),
+        district: getRandomItem(districts),
+        street: getRandomItem(streets),
+        streetNumber: getRandomItem(streetNumbers),
+        zipCode: getRandomItem(zipCodes),
     };
 }
-
-export function createRandomUserPreviews(amount: number): UserPreview[] {
-    const userPreviews: UserPreview[] = [];
+export function createRandomUserPreviews(amount: number): UserDetails[] {
+    const userPreviews: UserDetails[] = [];
     for (let i = 0; i < amount; i++) {
         userPreviews.push(createRandomUserPreview(String(i)));
     }
@@ -67,12 +79,12 @@ export function createRandomUserPreviews(amount: number): UserPreview[] {
     providedIn: 'root'
 })
 export class UsersService {
-    getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserPreview>> {
+    getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
         console.log(JSON.stringify(request))
 
         const randomUsers = createRandomUserPreviews(request.pageSize ?? 15)
 
-        const response: PaginatedResponse<UserPreview> = {
+        const response: PaginatedResponse<UserDetails> = {
             pageNumber: request.pageNumber ?? 0,
             pageSize: request.pageSize ?? 15,
             totalPages: 10,
@@ -94,7 +106,7 @@ export class UsersService {
     }
 }
 
-function filter(users: Array<UserPreview>, request: PaginatedRequest): Array<UserPreview> {
+function filter(users: Array<UserDetails>, request: PaginatedRequest): Array<UserDetails> {
     let filtered = [...users]
     if (request.search) {
         filtered = filtered.filter(x => x.name.toLocaleLowerCase().includes(request.search?.toLocaleLowerCase()!))
