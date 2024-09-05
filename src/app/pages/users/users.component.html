@@ -52,6 +52,13 @@
                 </div>
             </div>
             <div class="create-user-input">
+                <label for="create-user-zip-code">Código postal</label>
+                <input pInputText id="create-user-zip-code" formControlName="zipCode" [style]="{'width': '100%'}" />
+                <div class="form-error">
+                    {{ zipCodeError }}
+                </div>
+            </div>
+            <div class="create-user-input">
                 <label for="create-user-email">Correo</label>
                 <input pInputText id="create-user-email" formControlName="email" [style]="{'width': '100%'}" />
                 <div class="form-error">

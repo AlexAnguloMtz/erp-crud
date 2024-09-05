@@ -372,6 +372,29 @@ export class UsersComponent {
   }
 
 
+  get zipCodeError(): string {
+    const control: FormControl = this.userForm.get('zipCode') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['pattern']) {
+      return 'Deben ser 5 dígitos';
+    }
+
+    return '';
+  }
+
+
   onUserFormSubmit(): void {
     if (!this.userForm.valid) {
       console.log('invalid')
