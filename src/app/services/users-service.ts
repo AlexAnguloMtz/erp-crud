@@ -5,6 +5,7 @@ import { PaginatedResponse } from "../common/paginated-response";
 export type UserPreview = {
     name: string
     lastName: string
+    email: string
     phone: string
     city: string
     state: string
@@ -17,6 +18,7 @@ const phones = ['555-1234', '555-5678', '555-8765', '555-4321'];
 const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'];
 const states = ['NY', 'CA', 'IL', 'TX', 'AZ'];
 const roles = ['Admin', 'User', 'Moderator', 'Guest'];
+const emails = ['firstemail@gmail.com', 'secondemail@gmail.com', 'thirdemail@gmail.com', 'fourthemail@gmail.com'];
 
 function getRandomItem<T>(items: T[]): T {
     const randomIndex = Math.floor(Math.random() * items.length);
@@ -31,6 +33,7 @@ function createRandomUserPreview(): UserPreview {
         city: getRandomItem(cities),
         state: getRandomItem(states),
         role: getRandomItem(roles),
+        email: getRandomItem(emails),
     };
 }
 
