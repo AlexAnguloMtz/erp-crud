@@ -53,7 +53,10 @@
             </div>
             <div class="create-user-input">
                 <label for="create-user-email">Correo</label>
-                <input pInputText id="create-user-email" [style]="{'width': '100%'}" />
+                <input pInputText id="create-user-email" formControlName="email" [style]="{'width': '100%'}" />
+                <div class="form-error">
+                    {{ emailError }}
+                </div>
             </div>
             <div class="create-user-input">
                 <label for="create-user-phone">Teléfono</label>

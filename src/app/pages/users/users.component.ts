@@ -323,6 +323,32 @@ export class UsersComponent {
     return '';
   }
 
+  get emailError(): string {
+    const control: FormControl = this.userForm.get('email') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['email']) {
+      return 'Correo inválido';
+    }
+
+    if (control.errors?.['maxlength']) {
+      return 'Máximo 60 caracteres';
+    }
+
+    return '';
+  }
+
   onUserFormSubmit(): void {
     if (!this.userForm.valid) {
       console.log('invalid')
@@ -434,7 +460,8 @@ export class UsersComponent {
         '',
         [
           Validators.required,
-          Validators.email
+          Validators.email,
+          Validators.maxLength(60),
         ]
       ],
       district: [
