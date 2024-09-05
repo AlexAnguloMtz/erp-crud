@@ -3,28 +3,7 @@ import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { DayPart, getDayPart, getSalutation } from '../../common/day-part';
 import { ButtonModule } from 'primeng/button';
-import { DividerModule } from 'primeng/divider';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
-type SidebarLink = {
-  href: string,
-  text: string,
-  icon: string,
-}
-
-const links: Array<SidebarLink> = [
-  {
-    href: 'home',
-    text: 'Inicio',
-    icon: 'home',
-
-  },
-  {
-    href: 'users',
-    text: 'Usuarios',
-    icon: 'user',
-  },
-];
 
 type User = {
   name: string
@@ -46,7 +25,6 @@ type HomeStatus = LoadingStatus | BaseStatus
   standalone: true,
   imports: [
     ButtonModule,
-    DividerModule,
     ProgressSpinnerModule,
   ],
   templateUrl: './home.component.html',
@@ -55,7 +33,6 @@ type HomeStatus = LoadingStatus | BaseStatus
 export class HomeComponent {
 
   status: HomeStatus;
-  sidebarOpen: boolean;
 
   constructor(
     private authService: AuthService,
@@ -64,7 +41,6 @@ export class HomeComponent {
 
   ngOnInit() {
     this.status = { _type: 'loading' };
-    this.sidebarOpen = false;
 
     const token: string | null = window.localStorage.getItem('auth-token');
 
@@ -80,13 +56,6 @@ export class HomeComponent {
 
   get loading(): boolean {
     return this.status._type === 'loading';
-  }
-
-  get name(): string {
-    if (this.status._type === 'base') {
-      return this.status.user.name;
-    }
-    return ''
   }
 
   get salutation(): string {
@@ -123,38 +92,10 @@ export class HomeComponent {
     return `${day}/${month}/${year}. ${hours}:${minutes} ${period}`;
   }
 
-  get links(): Array<SidebarLink> {
-    return links;
-  }
-
   get userPersonalName(): string {
     if (this.status._type === 'base') {
       return this.status.user.name
     }
     return ''
   }
-
-  isActiveLink(link: SidebarLink): boolean {
-    if (link.href === 'home') {
-      return true
-    }
-    return false
-  }
-
-  onOpenSidebarClick(): void {
-    this.sidebarOpen = true;
-  }
-
-  onCloseSidebarClick(): void {
-    this.sidebarOpen = false;
-  }
-
-  onSidebarOverlayClick(): void {
-    this.sidebarOpen = false;
-  }
-
-  onSidebarClick(event: Event): void {
-    event.stopPropagation();
-  }
 }
-
