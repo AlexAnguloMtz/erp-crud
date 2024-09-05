@@ -20,6 +20,9 @@
     <p-paginator (onPageChange)="onPageChange($event)" [showFirstLastIcon]="false" [pageLinkSize]="4" [first]="first"
         [rows]="rows" [totalRecords]="totalRecords" />
 </div>
+<div class="total-items-container">
+    <p class="total-items">{{lastSeenTotalItems}} resultados</p>
+</div>
 <div class="users">
     @if (loadingSubsequentTime) {
     <div class="users__progress-container">

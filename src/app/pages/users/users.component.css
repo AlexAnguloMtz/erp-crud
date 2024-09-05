@@ -32,3 +32,12 @@
 .paginator-container {
     margin-top: 10px;
 }
+
+.total-items-container {
+    margin-top: 10px;
+}
+
+.total-items {
+    color: rgb(80, 98, 104);
+    font-size: 14px;
+}
