@@ -427,6 +427,9 @@ export class UsersComponent {
     return this.createUserStatus._type === 'creating-user';
   }
 
+  onRowClick(id: string): void {
+  }
+
   onUserFormSubmit(): void {
     if (!this.userForm.valid) {
       this.userForm.markAllAsTouched();

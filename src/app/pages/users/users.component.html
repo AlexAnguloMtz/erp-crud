@@ -162,7 +162,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user>
-            <tr class="row">
+            <tr class="row" (click)="onRowClick(user.id)">
                 <td>{{ user.name }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.role }}</td>

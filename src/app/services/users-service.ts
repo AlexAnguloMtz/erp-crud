@@ -42,22 +42,9 @@ function getRandomItem<T>(items: T[]): T {
 
 }
 
-function getRandomId(): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    const charactersLength = characters.length;
-
-    for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * charactersLength);
-        result += characters[randomIndex];
-    }
-
-    return result;
-}
-
-function createRandomUserPreview(): UserPreview {
+function createRandomUserPreview(id: string): UserPreview {
     return {
-        id: getRandomId(),
+        id,
         name: getRandomItem(names) + " " + getRandomItem(names),
         lastName: getRandomItem(lastNames) + " " + getRandomItem(lastNames),
         phone: getRandomItem(phones),
@@ -71,7 +58,7 @@ function createRandomUserPreview(): UserPreview {
 export function createRandomUserPreviews(amount: number): UserPreview[] {
     const userPreviews: UserPreview[] = [];
     for (let i = 0; i < amount; i++) {
-        userPreviews.push(createRandomUserPreview());
+        userPreviews.push(createRandomUserPreview(String(i)));
     }
     return userPreviews;
 }
