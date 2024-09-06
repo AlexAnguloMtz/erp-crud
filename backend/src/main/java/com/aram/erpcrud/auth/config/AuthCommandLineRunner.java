@@ -38,12 +38,16 @@ public class AuthCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (authRoleRepository.count() == 0) {
-            authRoleRepository.saveAll(allRoles());
-        }
+        try {
+            if (authRoleRepository.count() == 0) {
+                authRoleRepository.saveAll(allRoles());
+            }
 
-        if (authUserRepository.count() == 0) {
-            authUserRepository.save(rootUser());
+            if (authUserRepository.count() == 0) {
+                authUserRepository.save(rootUser());
+            }
+        } catch (Exception exception) {
+            throw new RuntimeException("could not create roles and root user", exception);
         }
     }
 
