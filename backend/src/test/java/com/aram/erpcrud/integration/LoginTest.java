@@ -51,11 +51,11 @@ public class LoginTest {
 
         String responseBody = login(requestDto, HttpStatus.OK);
         LoginResponse responseDto = fromJson(responseBody, LoginResponse.class);
-        Optional<String> parsedSubject = jwtHandler.parseSubject(responseDto.accessToken());
+        Optional<String> subject = jwtHandler.parseSubject(responseDto.accessToken());
 
         assertTrue(jwtHandler.isValidToken(responseDto.accessToken()));
-        assertTrue(parsedSubject.isPresent());
-        assertEquals(parsedSubject.get(), requestDto.email());
+        assertTrue(subject.isPresent());
+        assertEquals(subject.get(), requestDto.email());
     }
 
     private String login(LoginCommand dto, HttpStatus expectedStatus) throws Exception {
