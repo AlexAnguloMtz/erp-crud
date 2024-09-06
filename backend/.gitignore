@@ -35,3 +35,8 @@ build/
 ### env files ###
 *.env
 .env.*
+
+## http client files ##
+*.http
+*.rest
+http-calls
