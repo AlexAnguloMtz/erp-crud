@@ -1,6 +1,6 @@
 spring:
   application:
-    name: erpcrud
+    name: aram-erp-crud
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}
@@ -11,3 +11,7 @@ spring:
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
     show-sql: ${SPRING_JPA_SHOW_SQL}
+
+jwt:
+  access-tokens-base-64-secret: ${JWT_ACCESS_TOKENS_BASE_64_SECRET}
+  validity-milliseconds: ${JWT_VALIDITY_MILLISECONDS}
