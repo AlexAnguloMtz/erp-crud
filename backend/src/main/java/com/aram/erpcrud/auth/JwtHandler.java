@@ -47,7 +47,7 @@ public class JwtHandler {
         }
     }
 
-    public boolean validateToken(String token) {
+    public boolean isValidToken(String token) {
         try {
 
             Claims claims = parseClaims(token);
@@ -67,16 +67,16 @@ public class JwtHandler {
         }
     }
 
-    public String resolveToken(String authorizationHeader) {
+    public Optional<String> readToken(String authorizationHeader) {
         if (authorizationHeader == null) {
-            return null;
+            return Optional.empty();
         }
 
         if (!authorizationHeader.startsWith("Bearer ")) {
-            return null;
+            return Optional.empty();
         }
 
-        return authorizationHeader.substring(7);
+        return Optional.of(authorizationHeader.substring(7));
     }
 
     private Claims parseClaims(String token) {
