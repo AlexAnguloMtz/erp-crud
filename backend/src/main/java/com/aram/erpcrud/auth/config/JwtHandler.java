@@ -1,4 +1,4 @@
-package com.aram.erpcrud.auth;
+package com.aram.erpcrud.auth.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,10 +27,11 @@ public class JwtHandler {
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
-    public String createToken(String username, Map<String, Object> claims) {
+    public String createToken(String subject, String role) {
         return Jwts.builder()
                 .issuer(applicationName)
-                .subject(username)
+                .subject(subject)
+                .claim("role", role)
                 .audience().add(applicationName).and()
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + validityInMilliseconds))
@@ -38,7 +39,7 @@ public class JwtHandler {
                 .compact();
     }
 
-    public Optional<String> parseUsername(String token) {
+    public Optional<String> parseSubject(String token) {
         try {
              Claims claims = parseClaims(token);
              return Optional.ofNullable(claims.getSubject());

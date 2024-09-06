@@ -1,4 +1,4 @@
-package com.aram.erpcrud.auth;
+package com.aram.erpcrud.auth.config;
 
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -53,7 +53,7 @@ public class JwtFilter extends GenericFilterBean {
 
         // Extract the username from the token
         // If no username is present, continue with the next filter
-        Optional<String> username = jwtHandler.parseUsername(tokenOptional.get());
+        Optional<String> username = jwtHandler.parseSubject(tokenOptional.get());
         if (username.isEmpty()) {
             filterChain.doFilter(request, response);
             return;

@@ -15,3 +15,8 @@ spring:
 jwt:
   access-tokens-base-64-secret: ${JWT_ACCESS_TOKENS_BASE_64_SECRET}
   validity-milliseconds: ${JWT_VALIDITY_MILLISECONDS}
+
+config:
+  root-user:
+    email: ${CONFIG_ROOT_USER_EMAIL}
+    password: ${CONFIG_ROOT_USER_PASSWORD}
