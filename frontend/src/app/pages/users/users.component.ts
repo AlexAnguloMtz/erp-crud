@@ -14,8 +14,15 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { AuthService, Role } from '../../services/auth-service';
 import { Router } from '@angular/router';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 const RECORDS_PER_PAGE: number = 15;
+
+type DisplayableError = {
+  header: string,
+  message: string,
+}
 
 const passwordVisibleProps: PasswordFieldProps = {
   type: 'text',
@@ -103,7 +110,9 @@ type CreateUserStatus = UserCreationBase | CreatingUser
     PaginatorModule,
     ButtonModule,
     DialogModule,
+    ConfirmDialogModule,
   ],
+  providers: [ConfirmationService],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
@@ -130,6 +139,7 @@ export class UsersComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService,
     private usersService: UsersService,
     private authService: AuthService,
   ) { }
@@ -547,7 +557,7 @@ export class UsersComponent {
         this.createUserStatus = { _type: 'user-creation-base' }
         this.userSavedDialogVisible = true;
       },
-      error: (error) => console.log(error.message)
+      error: (error) => this.handleUserCreationError(error),
     })
   }
 
@@ -642,12 +652,39 @@ export class UsersComponent {
     console.log(error.message)
   }
 
+  private handleUserCreationError(error: Error): void {
+    this.createUserStatus = { _type: 'user-creation-base' }
+    const err = this.mapUserCreationError(error);
+    this.confirmationService.confirm({
+      header: err.header,
+      message: err.message,
+      acceptIcon: "none",
+      rejectVisible: false,
+      acceptLabel: 'Cerrar',
+      dismissableMask: true,
+    });
+  }
+
   private defaultPaginatedRequest(): PaginatedRequest {
     return {
       search: '',
       pageNumber: this.selectedPageNumber,
       pageSize: RECORDS_PER_PAGE,
       sort: '',
+    }
+  }
+
+  private mapUserCreationError(error: Error): DisplayableError {
+    if (error.name === 'UserExistsError') {
+      return {
+        header: 'Usuario ya existe',
+        message: 'El correo ya pertenece a otro usuario.',
+      }
+    }
+
+    return {
+      header: 'Error',
+      message: 'Ocurrió un error inesperado. Intenta de nuevo.',
     }
   }
 
