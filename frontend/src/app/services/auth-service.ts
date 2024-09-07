@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { catchError, defer, delay, Observable, of, throwError } from "rxjs";
 
@@ -46,7 +46,7 @@ export class AuthService {
     }
 
     getRoles(token: string): Observable<Array<Role>> {
-        const headers = { 'Authorization': 'Bearer my-token' }
+        const headers = { 'Authorization': `Bearer ${token}` }
         return this.http.get<Array<Role>>(this.rolesUrl, { headers });
     }
 }

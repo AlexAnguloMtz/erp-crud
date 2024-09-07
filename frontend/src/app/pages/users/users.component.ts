@@ -558,7 +558,7 @@ export class UsersComponent {
 
   searchUsers(request: PaginatedRequest, loadingStatus: LoadingFirstTime | LoadingSubsequentTime): void {
     this.status = loadingStatus;
-    this.usersService.getUsers(request).subscribe({
+    this.usersService.getUsers(localStorage.getItem('auth-token')!, request).subscribe({
       next: (users: PaginatedResponse<UserDetails>) => this.handleUsers(users),
       error: (error) => this.handleGetUsersError(error),
     })

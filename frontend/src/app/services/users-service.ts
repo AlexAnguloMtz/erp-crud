@@ -9,35 +9,6 @@ type User = {
     name: string
 }
 
-type Location = {
-    state: string,
-    city: string,
-}
-
-const locations: Location[] = [
-    { state: 'CDMX', city: 'Ciudad de México' },
-    { state: 'Jalisco', city: 'Guadalajara' },
-    { state: 'Nuevo León', city: 'Monterrey' },
-    { state: 'Puebla', city: 'Puebla' },
-    { state: 'Quintana Roo', city: 'Cancún' },
-    { state: 'Tamaulipas', city: 'Tampico' },
-    { state: 'Baja California', city: 'Tijuana' },
-    { state: 'Michoacán', city: 'Morelia' },
-    { state: 'Veracruz', city: 'Veracruz' },
-    { state: 'Sonora', city: 'Hermosillo' },
-    { state: 'San Luis Potosí', city: 'San Luis Potosí' },
-    { state: 'Yucatán', city: 'Mérida' },
-    { state: 'Oaxaca', city: 'Oaxaca' },
-    { state: 'Aguascalientes', city: 'Aguascalientes' },
-    { state: 'Durango', city: 'Durango' },
-    { state: 'Colima', city: 'Colima' },
-    { state: 'Chihuahua', city: 'Chihuahua' },
-    { state: 'Nayarit', city: 'Tepic' },
-    { state: 'Guerrero', city: 'Acapulco' },
-    { state: 'Zacatecas', city: 'Zacatecas' },
-    { state: 'Tlaxcala', city: 'Tlaxcala' }
-];
-
 export type CreateUserCommand = {
     name: string,
     lastName: string,
@@ -69,129 +40,33 @@ export type UserDetails = {
     role: Role,
 }
 
-const names = ['Juan', 'Ana', 'Carlos', 'María', 'Luis', 'Sofía'];
-const lastNames = ['García', 'Martínez', 'Hernández', 'López', 'Pérez'];
-const phones = ['5512345678', '5523456789', '5534567890', '5545678901', '5556789012', '5567890123', '5578901234', '5589012345'];
-
-const roles = [
-    {
-        id: '1',
-        description: 'Super Usuario',
-    },
-    {
-        id: '2',
-        description: 'Administrador',
-    },
-    {
-        id: '3',
-        description: 'Gerente',
-    },
-    {
-        id: '4',
-        description: 'Usuario',
-    },
-];
-
-const emailProviders = ['gmail', 'yahoo', 'yandex', 'outlook'];
-const districts = ['Centro', 'Norte', 'Sur', 'Este', 'Oeste'];
-const streets = ['Avenida Reforma', 'Calle Juárez', 'Avenida 16 de Septiembre', 'Calle Madero', 'Boulevard Ávila Camacho'];
-const streetNumbers = ['100', '200', '300', '400', '500'];
-const zipCodes = ['01000', '08000', '64000', '72000', '77500'];
-
-function getRandomItem<T>(items: T[]): T {
-    const randomIndex = Math.floor(Math.random() * items.length);
-    return items[randomIndex];
-}
-
-function removeAccents(str: string): string {
-    const accentsMap: { [key: string]: string } = {
-        'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u',
-        'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U', 'Ü': 'U',
-        'ñ': 'n', 'Ñ': 'N'
-    };
-
-    return str.replace(/[áéíóúüÁÉÍÓÚÜñÑ]/g, match => accentsMap[match] || match);
-}
-
-function createRandomUserPreview(id: string): UserDetails {
-    const location = getRandomItem(locations);
-    const name = getRandomItem(names)
-    const lastName = getRandomItem(lastNames)
-    const emailProvider = getRandomItem(emailProviders)
-    const email = name.toLocaleLowerCase() + lastName.toLocaleLowerCase() + "@" + emailProvider + ".com"
-    return {
-        id,
-        name,
-        lastName,
-        phone: getRandomItem(phones),
-        city: location.city,
-        state: location.state,
-        role: getRandomItem(roles),
-        email: removeAccents(email),
-        district: getRandomItem(districts),
-        street: getRandomItem(streets),
-        streetNumber: getRandomItem(streetNumbers),
-        zipCode: getRandomItem(zipCodes),
-    };
-}
-
-export function createRandomUserPreviews(amount: number): UserDetails[] {
-    const userPreviews: UserDetails[] = [];
-    for (let i = 0; i < amount; i++) {
-        userPreviews.push(createRandomUserPreview(String(i)));
-    }
-    return userPreviews;
-}
-
-const randomUsers = createRandomUserPreviews(150);
-
 @Injectable({
     providedIn: 'root'
 })
 export class UsersService {
+
+    private usersUrl = 'http://localhost:8080/api/v1/users';
 
     private meUrl = 'http://localhost:8080/api/v1/users/me';
 
     constructor(private http: HttpClient) { }
 
     getMe(token: string): Observable<User> {
-        console.log('sending token ' + token);
-        return this.http.get<User>(this.meUrl, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-    }
-
-    getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
-        let finalUsers = filter(randomUsers, request);
-
-        if (request.sort) {
-            finalUsers = sort(finalUsers, request.sort);
-        }
-
-        const totalItems = finalUsers.length;
-        const pageNumber = request.pageNumber ?? 0;
-        const pageSize = request.pageSize ?? 15;
-
-        const totalPages = Math.ceil(totalItems / pageSize);
-        const start = pageNumber * pageSize;
-        const end = start + pageSize;
-        const items = finalUsers.slice(start, end);
-
-        const response: PaginatedResponse<UserDetails> = {
-            pageNumber,
-            pageSize,
-            totalPages,
-            totalItems,
-            isLastPage: pageNumber >= totalPages - 1,
-            items
+        const headers = {
+            'Authorization': `Bearer ${token}`,
         };
 
-        return of(response).pipe(delay(2000));
-        // return defer(() => {
-        //    return throwError(() => new UserExistsError("UserExists")).pipe(delay(2000));
-        //});
+        return this.http.get<User>(this.meUrl, { headers });
+    }
+
+    getUsers(token: string, request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+        };
+
+        const queryString = paginatedRequestToQueryString(request);
+
+        return this.http.get<PaginatedResponse<UserDetails>>(this.usersUrl + queryString, { headers });
     }
 
     createUser(command: CreateUserCommand): Observable<boolean> {
@@ -199,45 +74,14 @@ export class UsersService {
     }
 }
 
-function filter(users: UserDetails[], request: PaginatedRequest): UserDetails[] {
-    let filtered = [...users];
+function paginatedRequestToQueryString(params: PaginatedRequest): string {
+    const searchParams = new URLSearchParams();
 
-    // Apply search filter if the search property is defined and not empty
-    if (request.search) {
-        const searchTerm = request.search.toLowerCase().trim();
-        filtered = filtered.filter(x =>
-            (x.name && x.name.toLowerCase().includes(searchTerm)) ||
-            (x.lastName && x.lastName.toLowerCase().includes(searchTerm)) ||
-            (x.email && x.email.toLowerCase().includes(searchTerm))
-        );
+    for (const [key, value] of Object.entries(params)) {
+        if (value != null && value != '') {
+            searchParams.append(key, value.toString());
+        }
     }
 
-    return filtered;
-}
-
-function sort(users: UserDetails[], sort: string): UserDetails[] {
-    switch (sort) {
-        case 'name-asc':
-            return [...users].sort((a, b) => a.name.localeCompare(b.name));
-        case 'name-desc':
-            return [...users].sort((a, b) => b.name.localeCompare(a.name));
-        case 'last-name-asc':
-            return [...users].sort((a, b) => a.lastName.localeCompare(b.lastName));
-        case 'last-name-desc':
-            return [...users].sort((a, b) => b.lastName.localeCompare(a.lastName));
-        case 'role-asc':
-            return [...users].sort((a, b) => a.role.description.localeCompare(b.role.description));
-        case 'role-desc':
-            return [...users].sort((a, b) => b.role.description.localeCompare(a.role.description));
-        case 'city-asc':
-            return [...users].sort((a, b) => a.city.localeCompare(b.city));
-        case 'city-desc':
-            return [...users].sort((a, b) => b.city.localeCompare(a.city));
-        case 'state-asc':
-            return [...users].sort((a, b) => a.state.localeCompare(b.state));
-        case 'state-desc':
-            return [...users].sort((a, b) => b.state.localeCompare(a.state));
-        default:
-            return users;
-    }
+    return searchParams.toString() ? `?${searchParams.toString()}` : '';
 }
