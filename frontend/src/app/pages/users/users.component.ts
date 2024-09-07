@@ -541,9 +541,8 @@ export class UsersComponent {
       return;
     }
     this.createUserStatus = { _type: 'creating-user' }
-    this.usersService.createUser(this.userCreationCommand()).subscribe({
-      next: (_: boolean) => {
-        console.log(_);
+    this.usersService.createUser(localStorage.getItem('auth-token')!, this.userCreationCommand()).subscribe({
+      next: () => {
         this.createItemVisible = false;
         this.createUserStatus = { _type: 'user-creation-base' }
         this.userSavedDialogVisible = true;

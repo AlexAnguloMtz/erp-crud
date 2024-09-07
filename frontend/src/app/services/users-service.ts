@@ -69,8 +69,13 @@ export class UsersService {
         return this.http.get<PaginatedResponse<UserDetails>>(this.usersUrl + queryString, { headers });
     }
 
-    createUser(command: CreateUserCommand): Observable<boolean> {
-        return of(true).pipe(delay(2000));
+    createUser(token: string, command: CreateUserCommand): Observable<void> {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        });
+
+        return this.http.post<void>(this.usersUrl, command, { headers });
     }
 }
 
