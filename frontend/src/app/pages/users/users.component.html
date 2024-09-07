@@ -93,8 +93,8 @@
                         [style]="{'width': '40px', 'height': '40px'}" />
                 </div>
                 } @else {
-                <p-dropdown id="create-user-role" formControlName="role" [options]="roleOptions"
-                    optionLabel="description" optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
+                <p-dropdown id="create-user-role" formControlName="role" [options]="roleOptions" optionLabel="name"
+                    optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
                 }
                 <div class="form-error">
                     {{ roleError }}
@@ -199,7 +199,7 @@
             <tr class="row" (click)="onRowClick(user)">
                 <td>{{ user.name }}</td>
                 <td>{{ user.lastName }}</td>
-                <td>{{ user.role.description }}</td>
+                <td>{{ user.role.name }}</td>
                 <td>{{ formatUserLocation(user) }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>

@@ -1,5 +1,7 @@
 package com.aram.erpcrud.users.payload;
 
+import com.aram.erpcrud.auth.payload.RolePublicDetails;
+
 public record UserPreview (
         String id,
         String name,
@@ -8,5 +10,5 @@ public record UserPreview (
         String city,
         String phone,
         String email,
-        String role
+        RolePublicDetails rolePublicDetails
 ) { }
