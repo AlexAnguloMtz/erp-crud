@@ -1,9 +1,9 @@
 package com.aram.erpcrud.auth.config;
 
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,16 +11,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Optional;
 
 @Component
 @Slf4j
-public class JwtFilter extends GenericFilterBean {
+public class JwtFilter extends OncePerRequestFilter {
+
+    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final JwtHandler jwtHandler;
     private final UserDetailsService userDetailsService;
@@ -31,15 +33,14 @@ public class JwtFilter extends GenericFilterBean {
     }
 
     @Override
-    public void doFilter(
-            ServletRequest request,
-            ServletResponse response,
-            FilterChain filterChain
+    public void doFilterInternal(
+            HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
     ) throws IOException, ServletException {
 
         // Extract the JWT token from the request header
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        Optional<String> tokenOptional = jwtHandler.readToken(httpRequest.getHeader("Authorization"));
+        Optional<String> tokenOptional = jwtHandler.readToken(request.getHeader(AUTHORIZATION_HEADER));
 
         // If no token is present, continue with the next filter
         if (tokenOptional.isEmpty()) {
