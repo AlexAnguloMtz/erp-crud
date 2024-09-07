@@ -3,6 +3,7 @@ package com.aram.erpcrud.auth.rest;
 import com.aram.erpcrud.auth.application.LoginCommandHandler;
 import com.aram.erpcrud.auth.payload.LoginCommand;
 import com.aram.erpcrud.auth.payload.LoginResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginCommand command) {
+    public ResponseEntity<LoginResponse> login(@Valid  @RequestBody LoginCommand command) {
         return new ResponseEntity<>(loginCommandHandler.handle(command), HttpStatus.OK);
     }
 }

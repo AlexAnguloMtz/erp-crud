@@ -2,6 +2,7 @@ package com.aram.erpcrud.users.rest;
 
 import com.aram.erpcrud.users.application.UserFacade;
 import com.aram.erpcrud.users.payload.CreateUserCommand;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody CreateUserCommand command) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUserCommand command) {
         usersFacade.createUser(command);
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
