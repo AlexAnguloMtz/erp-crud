@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class AuthExceptionHandler {
+public class AuthControllerAdvice {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handle(BadCredentialsException exception) {

@@ -20,3 +20,15 @@ config:
   root-user:
     email: ${CONFIG_ROOT_USER_EMAIL}
     password: ${CONFIG_ROOT_USER_PASSWORD}
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.web: DEBUG
+    org.springframework.security.config: DEBUG
+    org.springframework.security.authentication: DEBUG
+    org.springframework.security.access: DEBUG
+    org.springframework.security.core: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework: INFO

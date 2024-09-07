@@ -16,7 +16,7 @@ public class AuthUser {
     @Id
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private AuthRole role;
 

@@ -31,7 +31,6 @@ public class LoginCommandHandler {
     }
 
     public LoginResponse handle(LoginCommand command) {
-        log.error("received " + command);
         Optional<AuthUser> userOptional = authUserRepository.findByEmail(command.email());
         if (userOptional.isEmpty()) {
             throw new BadCredentialsException("bad credentials");

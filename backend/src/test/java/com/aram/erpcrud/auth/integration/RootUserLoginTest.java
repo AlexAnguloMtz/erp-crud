@@ -1,11 +1,10 @@
-package com.aram.erpcrud.integration;
+package com.aram.erpcrud.auth.integration;
 
 import com.aram.erpcrud.auth.config.JwtHandler;
 import com.aram.erpcrud.auth.payload.LoginResponse;
 import com.aram.erpcrud.auth.payload.LoginCommand;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LoginTest {
+public class RootUserLoginTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -67,11 +66,19 @@ public class LoginTest {
             .getResponse().getContentAsString();
     }
 
-    private <T> String toJson(T t) throws JsonProcessingException {
-        return mapper.writeValueAsString(t);
+    private <T> String toJson(T t){
+        try {
+            return mapper.writeValueAsString(t);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private <T> T fromJson(String body, Class<T> clazz) throws JsonProcessingException {
-        return mapper.readValue(body, clazz);
+    private <T> T fromJson(String body, Class<T> clazz)  {
+        try {
+            return mapper.readValue(body, clazz);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

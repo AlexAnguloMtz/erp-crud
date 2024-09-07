@@ -3,7 +3,7 @@ package com.aram.erpcrud.auth.config;
 import com.aram.erpcrud.auth.domain.AuthRole;
 import com.aram.erpcrud.auth.domain.AuthUser;
 import com.aram.erpcrud.auth.domain.AuthUserRepository;
-import com.aram.erpcrud.auth.domain.RoleRepository;
+import com.aram.erpcrud.auth.domain.AuthRoleRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,14 +20,14 @@ public class AuthCommandLineRunner implements CommandLineRunner {
     private final String rootUserPassword;
     private final PasswordEncoder passwordEncoder;
     private final AuthUserRepository authUserRepository;
-    private final RoleRepository authRoleRepository;
+    private final AuthRoleRepository authRoleRepository;
 
     public AuthCommandLineRunner(
             @Value("${config.root-user.email}") String rootUserEmail,
             @Value("${config.root-user.password}") String rootUserPassword,
             PasswordEncoder passwordEncoder,
             AuthUserRepository authUserRepository,
-            RoleRepository roleRepository
+            AuthRoleRepository roleRepository
     ) {
         this.rootUserEmail = rootUserEmail;
         this.rootUserPassword = rootUserPassword;
