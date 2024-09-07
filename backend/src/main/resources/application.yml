@@ -17,6 +17,8 @@ jwt:
   validity-milliseconds: ${JWT_VALIDITY_MILLISECONDS}
 
 config:
+  cors:
+    allowed-origins: ${CONFIG_CORS_ALLOWED_ORIGINS}
   root-user:
     email: ${CONFIG_ROOT_USER_EMAIL}
     password: ${CONFIG_ROOT_USER_PASSWORD}
