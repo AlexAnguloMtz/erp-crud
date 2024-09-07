@@ -1,12 +1,19 @@
 import { Injectable } from "@angular/core";
-import { defer, delay, Observable, of, throwError } from "rxjs";
+import { catchError, defer, delay, Observable, of, throwError } from "rxjs";
 import { PaginatedResponse } from "../common/paginated-response";
 import { PaginatedRequest } from "../common/paginated-request";
 import { Role } from "./auth-service";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 
 type User = {
     name: string
+}
+
+class UserExistsError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'UserExistsError';
+    }
 }
 
 export type CreateUserCommand = {
@@ -70,12 +77,19 @@ export class UsersService {
     }
 
     createUser(token: string, command: CreateUserCommand): Observable<void> {
-        const headers = new HttpHeaders({
+        const headers = {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
-        });
+        };
 
-        return this.http.post<void>(this.usersUrl, command, { headers });
+        return this.http.post<void>(this.usersUrl, command, { headers }).pipe(
+            catchError(error => {
+                if (error instanceof HttpErrorResponse && error.status === 409) {
+                    return throwError(() => new Error('User already exists.'));
+                }
+                return throwError(() => new Error('An unexpected error occurred.'));
+            })
+        );
     }
 }
 

@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { catchError, defer, delay, Observable, of, throwError } from "rxjs";
 
@@ -37,7 +37,7 @@ export class AuthService {
     logIn(credentials: LoginCredentials): Observable<AuthenticationResponse> {
         return this.http.post<AuthenticationResponse>(this.loginUrl, credentials).pipe(
             catchError((error) => {
-                if (error.status === 403) {
+                if (error instanceof HttpErrorResponse && error.status === 403) {
                     return throwError(() => new BadCredentialsError('BadCredentials'));
                 }
                 return throwError(() => new Error());
