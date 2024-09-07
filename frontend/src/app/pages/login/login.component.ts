@@ -5,7 +5,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { AuthService } from '../../services/auth-service';
+import { AuthenticationResponse, AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
@@ -101,13 +101,13 @@ export class LoginComponent {
 
     this.loginFormStatus = { _type: 'login-logging' };
     this.loginService.logIn(this.loginForm.value).subscribe({
-      next: (token: string) => this.handleAuthenticationToken(token),
+      next: (response: AuthenticationResponse) => this.handleAuthenticationResponse(response),
       error: (error) => this.handleLoginError(error),
     })
   }
 
-  private handleAuthenticationToken(token: string): void {
-    localStorage.setItem('auth-token', token);
+  private handleAuthenticationResponse(response: AuthenticationResponse): void {
+    localStorage.setItem('auth-token', response.accessToken);
     this.router.navigate(['/home']);
   }
 
@@ -125,7 +125,7 @@ export class LoginComponent {
   }
 
   private mapLoginError(error: Error): LoginError {
-    if (error.name === 'UnauthorizedError') {
+    if (error.name === 'BadCredentialsError') {
       return {
         header: 'Credenciales inválidas',
         message: 'El correo o la contraseña son incorrectos.',

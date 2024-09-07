@@ -1,13 +1,14 @@
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { defer, delay, Observable, of, throwError } from "rxjs";
+import { catchError, defer, delay, Observable, of, throwError } from "rxjs";
 
 type LoginCredentials = {
     email: string,
     password: string,
 }
 
-type User = {
-    name: string
+export type AuthenticationResponse = {
+    accessToken: string
 }
 
 export type Role = {
@@ -15,10 +16,10 @@ export type Role = {
     description: string,
 }
 
-class UnauthorizedError extends Error {
+class BadCredentialsError extends Error {
     constructor(message: string) {
         super(message);
-        this.name = 'UnauthorizedError';
+        this.name = 'BadCredentialsError';
     }
 }
 
@@ -26,41 +27,26 @@ class UnauthorizedError extends Error {
     providedIn: 'root'
 })
 export class AuthService {
-    logIn(credentials: LoginCredentials): Observable<string> {
-        if (credentials.email !== 'abarrey_root@gmail.com' || credentials.password !== '12345678') {
-            return defer(() => {
-                return throwError(() => new UnauthorizedError("UnauthorizedError")).pipe(delay(2000));
-            });
-        }
-        return of('fake-jwt-token')
-            .pipe(delay(2000));
-        // return defer(() => {
-        //    return throwError(() => new UserExistsError("UserExists")).pipe(delay(2000));
-        //});
+
+    private loginUrl = 'http://localhost:8080/api/v1/auth/login';
+
+    private rolesUrl = 'http://localhost:8080/api/v1/auth/roles';
+
+    constructor(private http: HttpClient) { }
+
+    logIn(credentials: LoginCredentials): Observable<AuthenticationResponse> {
+        return this.http.post<AuthenticationResponse>(this.loginUrl, credentials).pipe(
+            catchError((error) => {
+                if (error.status === 403) {
+                    return throwError(() => new BadCredentialsError('BadCredentials'));
+                }
+                return throwError(() => new Error());
+            })
+        );
     }
 
-    getUserData(token: string): Observable<User> {
-        return of({ name: 'Usuario Raíz' }).pipe(delay(2000));
-    }
-
-    getRoles(): Observable<Array<Role>> {
-        return of([
-            {
-                id: '1',
-                description: 'Super Usuario',
-            },
-            {
-                id: '2',
-                description: 'Administrador',
-            },
-            {
-                id: '3',
-                description: 'Gerente',
-            },
-            {
-                id: '4',
-                description: 'Usuario',
-            },
-        ]).pipe(delay(2000));
+    getRoles(token: string): Observable<Array<Role>> {
+        const headers = { 'Authorization': 'Bearer my-token' }
+        return this.http.get<Array<Role>>(this.rolesUrl, { headers });
     }
 }

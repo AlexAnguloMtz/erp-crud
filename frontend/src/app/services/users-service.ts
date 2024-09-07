@@ -3,6 +3,11 @@ import { defer, delay, Observable, of, throwError } from "rxjs";
 import { PaginatedResponse } from "../common/paginated-response";
 import { PaginatedRequest } from "../common/paginated-request";
 import { Role } from "./auth-service";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+
+type User = {
+    name: string
+}
 
 type Location = {
     state: string,
@@ -108,7 +113,6 @@ function removeAccents(str: string): string {
     return str.replace(/[áéíóúüÁÉÍÓÚÜñÑ]/g, match => accentsMap[match] || match);
 }
 
-
 function createRandomUserPreview(id: string): UserDetails {
     const location = getRandomItem(locations);
     const name = getRandomItem(names)
@@ -145,9 +149,21 @@ const randomUsers = createRandomUserPreviews(150);
     providedIn: 'root'
 })
 export class UsersService {
-    getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
-        console.log(JSON.stringify(request));
 
+    private meUrl = 'http://localhost:8080/api/v1/users/me';
+
+    constructor(private http: HttpClient) { }
+
+    getMe(token: string): Observable<User> {
+        console.log('sending token ' + token);
+        return this.http.get<User>(this.meUrl, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    }
+
+    getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
         let finalUsers = filter(randomUsers, request);
 
         if (request.sort) {
@@ -179,7 +195,6 @@ export class UsersService {
     }
 
     createUser(command: CreateUserCommand): Observable<boolean> {
-        console.log('creating user ' + JSON.stringify(command));
         return of(true).pipe(delay(2000));
     }
 }

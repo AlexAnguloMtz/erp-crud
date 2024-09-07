@@ -6,6 +6,7 @@ import { DividerModule } from 'primeng/divider';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule, Routes } from '@angular/router';
+import { UsersService } from '../../services/users-service';
 
 type SidebarLink = {
   href: string,
@@ -62,6 +63,7 @@ export class MainTemplateComponent {
 
   constructor(
     private authService: AuthService,
+    private usersService: UsersService,
     private router: Router,
   ) { }
 
@@ -73,9 +75,10 @@ export class MainTemplateComponent {
 
     if (!token) {
       this.router.navigate(['/login']);
+      return;
     }
 
-    this.authService.getUserData(token!).subscribe({
+    this.usersService.getMe(token!).subscribe({
       next: (user: User) => this.status = { _type: 'base', user },
       error: (error) => console.log(error.message),
     })

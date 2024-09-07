@@ -13,6 +13,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { AuthService, Role } from '../../services/auth-service';
+import { Router } from '@angular/router';
 
 const RECORDS_PER_PAGE: number = 15;
 
@@ -127,12 +128,19 @@ export class UsersComponent {
   passwordFieldProps: PasswordFieldProps;
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private usersService: UsersService,
     private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
+    const token: string | null = window.localStorage.getItem('auth-token');
+
+    if (!token) {
+      this.router.navigate(['/login']);
+    }
+
     this.searchControl = new FormControl('');
     this.selectedPageNumber = 0;
     this.lastSeenTotalItems = 0;
@@ -513,7 +521,7 @@ export class UsersComponent {
     this.createItemVisible = true;
     if (this.userFormOptionsStatus._type === 'base') {
       this.userFormOptionsStatus = { _type: 'loading-user-form-options' };
-      this.authService.getRoles().subscribe({
+      this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
         next: (roles: Array<Role>) => {
           this.userFormOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } };
           this.userForm.get('role')?.setValue(user.role.id);
@@ -582,7 +590,7 @@ export class UsersComponent {
     this.createItemVisible = true;
     if (this.userFormOptionsStatus._type === 'base') {
       this.userFormOptionsStatus = { _type: 'loading-user-form-options' };
-      this.authService.getRoles().subscribe({
+      this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
         next: (roles: Array<Role>) => this.userFormOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } },
         error: (error) => console.log(error.message),
       })
