@@ -114,6 +114,10 @@ public class GetUsersQueryHandler {
     }
 
     private UserSort toUserSort(String sort) {
+        if (sort == null) {
+            return UserSort.NameAsc;
+        }
+
         return switch (sort) {
             case "name-desc" -> UserSort.NameDesc;
             case "lastName-asc" -> UserSort.LastNameAsc;
