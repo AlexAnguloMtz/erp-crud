@@ -23,7 +23,15 @@
             <div class="double-input-container">
                 <div class="create-user-input">
                     <label for="create-user-state">Estado</label>
-                    <input pInputText id="create-user-state" formControlName="state" [style]="{'width': '100%'}" />
+                    @if (loadingStatesOptions) {
+                    <div class="create-user__progress-container">
+                        <p-progressSpinner class="create-user__progress" ariaLabel="loading"
+                            [style]="{'width': '40px', 'height': '40px'}" />
+                    </div>
+                    } @else {
+                    <p-dropdown id="create-user-state" formControlName="state" [options]="stateOptions"
+                        optionLabel="name" optionValue="id" placeholder="Estado" [style]="{'width': '100%'}" />
+                    }
                     <div class="form-error">
                         {{ stateError }}
                     </div>

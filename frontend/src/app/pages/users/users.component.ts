@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CreateUserCommand, UserDetails, UsersService } from '../../services/users-service';
+import { CreateUserCommand, State, UserDetails, UsersService } from '../../services/users-service';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -16,6 +16,7 @@ import { AuthService, Role } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { LocationsService } from '../../services/locations-service';
 
 const RECORDS_PER_PAGE: number = 15;
 
@@ -66,24 +67,39 @@ type BaseStatus = {
 
 type UsersStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus;
 
-type UserFormOptions = {
+type RolesOptions = {
   roles: Array<Role>
 }
 
-type UserFormOptionsBase = {
+type RoleOptionsBase = {
   _type: 'base',
 }
 
-type LoadingUserFormOptions = {
+type LoadingRoleOptions = {
   _type: 'loading-user-form-options'
 }
 
-type UserFormOptionsReady = {
+type RoleOptionsReady = {
   _type: 'user-form-options-ready',
-  userFormOptions: UserFormOptions
+  userFormOptions: RolesOptions
 }
 
-type UserFormOptionsStatus = UserFormOptionsBase | LoadingUserFormOptions | UserFormOptionsReady
+type StatesOptionsBase = {
+  _type: 'base',
+}
+
+type LoadingStatesOptions = {
+  _type: 'loading-states-options'
+}
+
+type StatesOptionsReady = {
+  _type: 'states-options-ready',
+  states: Array<State>
+}
+
+type RoleOptionsStatus = RoleOptionsBase | LoadingRoleOptions | RoleOptionsReady
+
+type StatesOptionsStatus = StatesOptionsBase | LoadingStatesOptions | StatesOptionsReady
 
 type UserCreationBase = {
   _type: 'user-creation-base'
@@ -126,7 +142,9 @@ export class UsersComponent {
   debounceTimeout: any;
   createItemVisible: boolean;
 
-  userFormOptionsStatus: UserFormOptionsStatus;
+  roleOptionsStatus: RoleOptionsStatus;
+
+  stateOptionsStatus: StatesOptionsStatus;
 
   createUserStatus: CreateUserStatus;
 
@@ -142,6 +160,7 @@ export class UsersComponent {
     private confirmationService: ConfirmationService,
     private usersService: UsersService,
     private authService: AuthService,
+    private locationsService: LocationsService,
   ) { }
 
   ngOnInit(): void {
@@ -157,7 +176,8 @@ export class UsersComponent {
     this.createItemVisible = false;
     this.userSavedDialogVisible = false;
     this.passwordFieldProps = passwordNotVisibleProps;
-    this.userFormOptionsStatus = { _type: 'base' }
+    this.roleOptionsStatus = { _type: 'base' }
+    this.stateOptionsStatus = { _type: 'base' }
     this.createUserStatus = { _type: 'user-creation-base' }
     this.userForm = this.createUserForm();
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
@@ -216,14 +236,25 @@ export class UsersComponent {
   }
 
   get loadingUserFormOptions(): boolean {
-    return this.userFormOptionsStatus._type === 'loading-user-form-options';
+    return this.roleOptionsStatus._type === 'loading-user-form-options';
+  }
+
+  get loadingStatesOptions(): boolean {
+    return this.stateOptionsStatus._type === 'loading-states-options';
   }
 
   get roleOptions(): Array<Role> {
-    if (this.userFormOptionsStatus._type !== 'user-form-options-ready') {
+    if (this.roleOptionsStatus._type !== 'user-form-options-ready') {
       return [];
     }
-    return this.userFormOptionsStatus.userFormOptions.roles;
+    return this.roleOptionsStatus.userFormOptions.roles;
+  }
+
+  get stateOptions(): Array<State> {
+    if (this.stateOptionsStatus._type !== 'states-options-ready') {
+      return [];
+    }
+    return this.stateOptionsStatus.states;
   }
 
   get nameError(): string {
@@ -529,19 +560,41 @@ export class UsersComponent {
   onRowClick(user: UserDetails): void {
     this.userForm.patchValue(user);
     this.createItemVisible = true;
-    if (this.userFormOptionsStatus._type === 'base') {
-      this.userFormOptionsStatus = { _type: 'loading-user-form-options' };
+    this.loadRolesOnRowClick(user.role.id);
+    this.loadStatesOnRowClick(user.state.id);
+  }
+
+  private loadRolesOnRowClick(roleId: string) {
+    if (this.roleOptionsStatus._type === 'base') {
+      this.roleOptionsStatus = { _type: 'loading-user-form-options' };
       this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
         next: (roles: Array<Role>) => {
-          this.userFormOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } };
-          this.userForm.get('role')?.setValue(user.role.id);
+          this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } };
+          this.userForm.get('role')?.setValue(roleId);
         },
         error: (error) => console.log(error.message),
       })
     }
 
-    else if (this.userFormOptionsStatus._type === 'user-form-options-ready') {
-      this.userForm.get('role')?.setValue(user.role.id);
+    else if (this.roleOptionsStatus._type === 'user-form-options-ready') {
+      this.userForm.get('role')?.setValue(roleId);
+    }
+  }
+
+  private loadStatesOnRowClick(stateId: string) {
+    if (this.stateOptionsStatus._type === 'base') {
+      this.stateOptionsStatus = { _type: 'loading-states-options' };
+      this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
+        next: (states: Array<State>) => {
+          this.stateOptionsStatus = { _type: 'states-options-ready', states };
+          this.userForm.get('state')?.setValue(stateId);
+        },
+        error: (error) => console.log(error.message),
+      })
+    }
+
+    else if (this.stateOptionsStatus._type === 'states-options-ready') {
+      this.userForm.get('state')?.setValue(stateId);
     }
   }
 
@@ -562,7 +615,7 @@ export class UsersComponent {
   }
 
   formatUserLocation(user: UserDetails): string {
-    return `${user.city}, ${user.state.substring(0, 3)}`
+    return `${user.city}, ${user.state.id}`
   }
 
   searchUsers(request: PaginatedRequest, loadingStatus: LoadingFirstTime | LoadingSubsequentTime): void {
@@ -597,10 +650,18 @@ export class UsersComponent {
 
   onCreateClick(): void {
     this.createItemVisible = true;
-    if (this.userFormOptionsStatus._type === 'base') {
-      this.userFormOptionsStatus = { _type: 'loading-user-form-options' };
+    if (this.roleOptionsStatus._type === 'base') {
+      this.roleOptionsStatus = { _type: 'loading-user-form-options' };
       this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
-        next: (roles: Array<Role>) => this.userFormOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } },
+        next: (roles: Array<Role>) => this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } },
+        error: (error) => console.log(error.message),
+      })
+    }
+
+    if (this.stateOptionsStatus._type === 'base') {
+      this.stateOptionsStatus = { _type: 'loading-states-options' };
+      this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
+        next: (states: Array<State>) => this.stateOptionsStatus = { _type: 'states-options-ready', states },
         error: (error) => console.log(error.message),
       })
     }

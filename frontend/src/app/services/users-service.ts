@@ -16,6 +16,11 @@ class UserExistsError extends Error {
     }
 }
 
+export type State = {
+    id: string,
+    name: string,
+}
+
 export type CreateUserCommand = {
     name: string,
     lastName: string,
@@ -36,7 +41,7 @@ export type UserDetails = {
     id: string,
     name: string,
     lastName: string,
-    state: string,
+    state: State,
     city: string,
     district: string,
     street: string,
