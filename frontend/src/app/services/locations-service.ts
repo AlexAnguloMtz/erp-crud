@@ -13,15 +13,29 @@ export class LocationsService {
 
     constructor(private http: HttpClient) { }
 
-    getStates(token: string): Observable<Array<State>> {
-        const headers = {
-            'Authorization': `Bearer ${token}`
-        }
+    // getStates(token: string): Observable<Array<State>> {
+    //     const headers = {
+    //         'Authorization': `Bearer ${token}`
+    //     }
 
-        return this.http.get<Array<State>>(this.statesUrl, { headers }).pipe(
-            catchError((error) => {
-                return throwError(() => new Error());
-            })
+    //     return this.http.get<Array<State>>(this.statesUrl, { headers }).pipe(
+    //         catchError((error) => {
+    //             return throwError(() => new Error());
+    //         })
+    //     );
+    // }
+
+    getStates(token: string): Observable<Array<State>> {
+        const states: Array<State> = [
+            { id: 'AGU', name: 'Aguascalientes' },
+            { id: 'BCN', name: 'Baja California' },
+            { id: 'BCS', name: 'Baja California Sur' },
+            { id: 'CAM', name: 'Campeche' },
+            { id: 'SON', name: 'Sonora' }
+        ];
+
+        return of(states).pipe(
+            delay(10000)
         );
     }
 }
