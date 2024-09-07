@@ -9,7 +9,6 @@ import com.aram.erpcrud.auth.payload.CreateAccountCommand;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class SimpleAuthService implements AuthService {

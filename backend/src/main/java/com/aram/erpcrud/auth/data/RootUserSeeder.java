@@ -42,7 +42,12 @@ public class RootUserSeeder {
     public void seed() {
         if (authUserRepository.count() == 0) {
             AuthUser rootUserAccount = authUserRepository.save(rootUserAccount());
-            PersonalDetails rootUserPersonalDetails = createRootUserPersonalDetails(rootUserAccount);
+
+            PersonalDetails rootUserPersonalDetails = createRootUserPersonalDetails(
+                UUID.randomUUID().toString(),
+                rootUserAccount.getId()
+            );
+
             personalDetailsRepository.save(rootUserPersonalDetails);
         }
     }
@@ -61,10 +66,10 @@ public class RootUserSeeder {
         );
     }
 
-    private PersonalDetails createRootUserPersonalDetails(AuthUser rootUserAccount) {
+    private PersonalDetails createRootUserPersonalDetails(String id, String accountId) {
         return new PersonalDetails(
-                UUID.randomUUID().toString(),
-                rootUserAccount.getId(),
+                id,
+                accountId,
                 "Usuario Raiz",
                 "Apellido",
                 "Estado",
