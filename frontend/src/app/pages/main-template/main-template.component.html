@@ -5,6 +5,9 @@
         </div>
         <p-button class="nav__sidebar-button" [style]="{'marginLeft': '10px'}" severity="secondary"
             icon="pi pi-microsoft" [rounded]="true" [text]="true" (click)="onOpenSidebarClick()" />
+        <div class="nav-spacer"></div>
+        <p-menu #menu [model]="items" [popup]="true" />
+        <p-button outlined="true" rounded="true" (onClick)="menu.toggle($event)" icon="pi pi-user" />
     </nav>
     <div class="sidebar-and-content-container">
         <div class="sidebar__overlay" [class.visible]="sidebarOpen" (click)="onSidebarOverlayClick()">

@@ -6,6 +6,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { UsersService } from '../../services/users-service';
+import { MenuItem } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { ToastModule } from 'primeng/toast';
 
 type SidebarLink = {
   href: string,
@@ -55,12 +58,15 @@ const links: Array<SidebarLink> = [
     ProgressSpinnerModule,
     RouterOutlet,
     RouterModule,
+    MenuModule,
+    ToastModule,
   ],
   templateUrl: './main-template.component.html',
   styleUrl: './main-template.component.css'
 })
 export class MainTemplateComponent {
 
+  items: MenuItem[] | undefined;
   sidebarOpen: boolean;
   status: MainTemplateStatus;
 
@@ -70,6 +76,19 @@ export class MainTemplateComponent {
   ) { }
 
   ngOnInit(): void {
+    this.items = [
+      {
+        label: 'Opciones',
+        items: [
+          {
+            label: 'Cerrar sesión',
+            icon: 'pi pi-sign-out',
+            command: () => this.onLogoutClick(),
+          }
+        ]
+      }
+    ];
+
     this.sidebarOpen = false;
 
     const token: string | null = window.localStorage.getItem('auth-token');
@@ -127,6 +146,12 @@ export class MainTemplateComponent {
 
   onRetryGetMe(): void {
     this.getMe(localStorage.getItem('auth-token')!);
+  }
+
+  onLogoutClick(): void {
+    localStorage.removeItem('auth-token');
+    this.router.navigate(['/login']);
+    console.log('should be logged out')
   }
 
   private handleGetMeError(error: any): void {

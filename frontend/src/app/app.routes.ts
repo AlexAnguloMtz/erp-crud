@@ -7,6 +7,11 @@ import { UsersComponent } from './pages/users/users.component';
 export const routes: Routes = [
     {
         path: '',
+        redirectTo: '/login',
+        pathMatch: 'full'
+    },
+    {
+        path: 'login',
         component: LoginComponent
     },
     {
