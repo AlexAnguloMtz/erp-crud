@@ -209,10 +209,10 @@ export class UsersComponent {
 
   get sortOptions(): Array<SortOption> {
     return [
-      { name: 'Nombre (Ascendente)', key: 'name-asc' },
-      { name: 'Nombre (Descendente)', key: 'name-desc' },
-      { name: 'Apellido (Ascendente)', key: 'lastName-asc' },
-      { name: 'Apellido (Descendente)', key: 'lastName-desc' },
+      { name: 'Nombre (A - Z)', key: 'name-asc' },
+      { name: 'Nombre (Z - A)', key: 'name-desc' },
+      { name: 'Apellido (A - Z)', key: 'lastName-asc' },
+      { name: 'Apellido (Z - A)', key: 'lastName-desc' },
     ];
   }
 
@@ -607,6 +607,12 @@ export class UsersComponent {
       this.userForm.markAllAsTouched();
       return;
     }
+
+    if (this.userForm.get('password')?.value !== this.userForm.get('confirmedPassword')?.value) {
+      this.userForm.markAllAsTouched();
+      return;
+    }
+
     this.createUserStatus = { _type: 'creating-user' }
     this.usersService.createUser(localStorage.getItem('auth-token')!, this.userCreationCommand()).subscribe({
       next: () => {
