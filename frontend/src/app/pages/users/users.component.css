@@ -144,6 +144,18 @@
     background-color: #e0ecfc;
 }
 
+.zero-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.zero-items-text {
+    color: rgb(101, 105, 109);
+}
+
 .zero-items-img-container {
     width: 200px;
     height: 200px;
