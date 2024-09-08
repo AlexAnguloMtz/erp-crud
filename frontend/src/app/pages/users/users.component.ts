@@ -97,11 +97,15 @@ type StatesOptionsReady = {
   states: Array<State>
 }
 
+type LoadRolesError = {
+  _type: 'error'
+}
+
 type LoadStatesError = {
   _type: 'error'
 }
 
-type RoleOptionsStatus = RoleOptionsBase | LoadingRoleOptions | RoleOptionsReady
+type RoleOptionsStatus = RoleOptionsBase | LoadingRoleOptions | RoleOptionsReady | LoadRolesError
 
 type StatesOptionsStatus = StatesOptionsBase | LoadingStatesOptions | StatesOptionsReady | LoadStatesError
 
@@ -256,6 +260,10 @@ export class UsersComponent {
 
   get loadingStatesError(): boolean {
     return this.stateOptionsStatus._type === 'error';
+  }
+
+  get loadingRolesError(): boolean {
+    return this.roleOptionsStatus._type === 'error';
   }
 
   get stateOptions(): Array<State> {
@@ -579,7 +587,7 @@ export class UsersComponent {
         next: (roles: Array<Role>) => {
           this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } };
         },
-        error: (error) => console.log(error.message),
+        error: (_) => this.roleOptionsStatus = { _type: 'error' },
       })
     }
 
@@ -655,8 +663,10 @@ export class UsersComponent {
     if (this.roleOptionsStatus._type === 'base') {
       this.roleOptionsStatus = { _type: 'loading-user-form-options' };
       this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
-        next: (roles: Array<Role>) => this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } },
-        error: (error) => console.log(error.message),
+        next: (roles: Array<Role>) => {
+          this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } }
+        },
+        error: (_) => this.roleOptionsStatus = { _type: 'error' },
       })
     }
 
@@ -667,6 +677,14 @@ export class UsersComponent {
         error: (_) => this.stateOptionsStatus = { _type: 'error' },
       })
     }
+  }
+
+  onRetryLoadRoles(): void {
+    this.roleOptionsStatus = { _type: 'loading-user-form-options' }
+    this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
+      next: (roles: Array<Role>) => this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } },
+      error: (_) => this.roleOptionsStatus = { _type: 'error' },
+    });
   }
 
   onRetryLoadStates(): void {

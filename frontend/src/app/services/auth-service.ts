@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, defer, delay, Observable, of, throwError } from "rxjs";
+import { catchError, defer, delay, Observable, of, switchMap, throwError } from "rxjs";
 
 type LoginCredentials = {
     email: string,
