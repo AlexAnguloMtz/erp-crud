@@ -204,6 +204,12 @@
     <div class="users__progress-container">
         <p-progressSpinner class="users__progress" ariaLabel="loading" [style]="{'width': '70px', 'height': '70px'}" />
     </div>
+    } @else if (lastSeenTotalItems == 0) {
+    <div class="zero-items">
+        <div class="zero-items-img-container">
+            <img class="zero-items-img" src="images/search.svg" alt="zero-items">
+        </div>
+    </div>
     } @else {
     <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">

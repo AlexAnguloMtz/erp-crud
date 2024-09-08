@@ -144,6 +144,16 @@
     background-color: #e0ecfc;
 }
 
+.zero-items-img-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.zero-items-img {
+    width: 100%;
+}
+
 @media screen and (min-width: 570px) {
     .double-input-container {
         flex-direction: row;
