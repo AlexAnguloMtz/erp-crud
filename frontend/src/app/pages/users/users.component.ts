@@ -211,14 +211,8 @@ export class UsersComponent {
     return [
       { name: 'Nombre (Ascendente)', key: 'name-asc' },
       { name: 'Nombre (Descendente)', key: 'name-desc' },
-      { name: 'Apellido (Ascendente)', key: 'last-name-asc' },
-      { name: 'Apellido (Descendente)', key: 'last-name-desc' },
-      { name: 'Rol (Ascendente)', key: 'role-asc' },
-      { name: 'Rol (Descendente)', key: 'role-desc' },
-      { name: 'Ciudad (Ascendente)', key: 'city-asc' },
-      { name: 'Ciudad (Descendente)', key: 'city-desc' },
-      { name: 'Estado (Ascendente)', key: 'state-asc' },
-      { name: 'Estado (Descendente)', key: 'state-desc' },
+      { name: 'Apellido (Ascendente)', key: 'lastName-asc' },
+      { name: 'Apellido (Descendente)', key: 'lastName-desc' },
     ];
   }
 
