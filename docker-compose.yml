@@ -35,6 +35,8 @@ services:
       context: ./frontend
       dockerfile: web.Dockerfile
     container_name: erp_web
+    env_file:
+      - ./frontend/.env
     ports:
       - "4200:80"
     depends_on:

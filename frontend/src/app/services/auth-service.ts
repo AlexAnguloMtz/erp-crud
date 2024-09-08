@@ -29,9 +29,9 @@ class BadCredentialsError extends Error {
 })
 export class AuthService {
 
-    private loginUrl = environment.API_HOST + '/api/v1/auth/login';
+    private loginUrl = environment.apiUrl + '/api/v1/auth/login';
 
-    private rolesUrl = environment.API_HOST + '/api/v1/auth/roles';
+    private rolesUrl = environment.apiUrl + '/api/v1/auth/roles';
 
     constructor(private http: HttpClient) { }
 

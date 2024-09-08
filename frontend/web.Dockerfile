@@ -13,7 +13,7 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy everything else
 COPY . .
 
 # Build the Angular app with the production configuration

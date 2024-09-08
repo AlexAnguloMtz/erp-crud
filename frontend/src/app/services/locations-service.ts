@@ -9,7 +9,7 @@ import { environment } from "../../environments/environment";
 })
 export class LocationsService {
 
-    private statesUrl = environment.API_HOST + '/api/v1/locations/states';
+    private statesUrl = environment.apiUrl + '/api/v1/locations/states';
 
     constructor(private http: HttpClient) { }
 

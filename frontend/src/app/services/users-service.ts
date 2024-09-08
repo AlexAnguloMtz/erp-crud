@@ -58,9 +58,9 @@ export type UserDetails = {
 })
 export class UsersService {
 
-    private usersUrl = environment.API_HOST + '/api/v1/users';
+    private usersUrl = environment.apiUrl + '/api/v1/users';
 
-    private meUrl = environment.API_HOST + '/api/v1/users/me';
+    private meUrl = environment.apiUrl + '/api/v1/users/me';
 
     constructor(private http: HttpClient) { }
 
