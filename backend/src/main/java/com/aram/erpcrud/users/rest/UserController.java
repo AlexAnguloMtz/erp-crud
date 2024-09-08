@@ -3,7 +3,7 @@ package com.aram.erpcrud.users.rest;
 import com.aram.erpcrud.common.PageResponse;
 import com.aram.erpcrud.users.application.UserFacade;
 import com.aram.erpcrud.users.payload.GetMeResponse;
-import com.aram.erpcrud.users.payload.UserPreview;
+import com.aram.erpcrud.users.payload.FullUserDetails;
 import com.aram.erpcrud.users.payload.CreateUserCommand;
 import com.aram.erpcrud.users.payload.GetUsersQuery;
 import jakarta.validation.Valid;
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<PageResponse<UserPreview>> getUsers(
+    public ResponseEntity<PageResponse<FullUserDetails>> getUsers(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) @Min(0) Integer pageNumber,
             @RequestParam(required = false) @Min(1) @Max(50) Integer pageSize,

@@ -1,8 +1,10 @@
 package com.aram.erpcrud.auth.application;
 
+import com.aram.erpcrud.auth.domain.AuthRole;
 import com.aram.erpcrud.auth.domain.AuthUser;
 import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import com.aram.erpcrud.auth.payload.AccountPublicDetails;
+import com.aram.erpcrud.auth.payload.RolePublicDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,7 +28,14 @@ public class GetAccountsQueryHandler {
         return new AccountPublicDetails(
             authUser.getId(),
             authUser.getEmail(),
-            authUser.getRole().getDescription()
+            toRolePublicDetails(authUser.getRole())
+        );
+    }
+
+    private RolePublicDetails toRolePublicDetails(AuthRole role) {
+        return new RolePublicDetails(
+                role.getId(),
+                role.getName()
         );
     }
 

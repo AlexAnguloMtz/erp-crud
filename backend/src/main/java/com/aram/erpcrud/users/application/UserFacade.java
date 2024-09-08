@@ -2,7 +2,7 @@ package com.aram.erpcrud.users.application;
 
 import com.aram.erpcrud.common.PageResponse;
 import com.aram.erpcrud.users.payload.GetMeResponse;
-import com.aram.erpcrud.users.payload.UserPreview;
+import com.aram.erpcrud.users.payload.FullUserDetails;
 import com.aram.erpcrud.users.payload.CreateUserCommand;
 import com.aram.erpcrud.users.payload.GetUsersQuery;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class UserFacade {
         createUserCommandHandler.handle(command);
     }
 
-    public PageResponse<UserPreview> getUsers(GetUsersQuery getUsersQuery) {
+    public PageResponse<FullUserDetails> getUsers(GetUsersQuery getUsersQuery) {
         return getUsersQueryHandler.handle(getUsersQuery);
     }
 

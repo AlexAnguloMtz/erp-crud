@@ -4,7 +4,7 @@ import com.aram.erpcrud.auth.domain.AuthRole;
 import com.aram.erpcrud.auth.domain.AuthRoleRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,16 +24,10 @@ public class RolesSeeder {
     }
 
     private Iterable<AuthRole> allRoles() {
-        return allRolesNames().stream()
-            .map(x -> new AuthRole(UUID.randomUUID().toString(), x))
-            .toList();
-    }
-
-    private Collection<String> allRolesNames() {
         return Set.of(
-            "ROLE_SUPER_USER",
-            "ROLE_ADMIN",
-            "ROLE_USER"
+            new AuthRole(UUID.randomUUID().toString(), "ROLE_SUPER_USER", "Super Usuario"),
+            new AuthRole(UUID.randomUUID().toString(), "ROLE_ADMIN", "Administrador"),
+            new AuthRole(UUID.randomUUID().toString(), "ROLE_USER", "Usuario")
         );
     }
 }

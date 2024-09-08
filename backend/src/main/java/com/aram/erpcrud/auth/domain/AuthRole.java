@@ -17,5 +17,8 @@ public class AuthRole {
     private String id;
 
     @Column(nullable = false, unique = true)
-    private String description;
+    private String canonicalName;
+
+    @Column(nullable = false, unique = true)
+    private String name;
 }

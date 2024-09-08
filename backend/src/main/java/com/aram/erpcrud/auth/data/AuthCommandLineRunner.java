@@ -6,10 +6,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthCommandLineRunner implements CommandLineRunner {
 
+    private final StatesSeeder stateSeeder;
     private final RolesSeeder rolesSeeder;
     private final RootUserSeeder rootUserSeeder;
 
-    public AuthCommandLineRunner(RolesSeeder rolesSeeder, RootUserSeeder rootUserSeeder) {
+    public AuthCommandLineRunner(
+            StatesSeeder stateSeeder,
+            RolesSeeder rolesSeeder,
+            RootUserSeeder rootUserSeeder
+    ) {
+        this.stateSeeder = stateSeeder;
         this.rolesSeeder = rolesSeeder;
         this.rootUserSeeder = rootUserSeeder;
     }
@@ -24,6 +30,7 @@ public class AuthCommandLineRunner implements CommandLineRunner {
     }
 
     private void doRun() {
+        stateSeeder.seed();
         rolesSeeder.seed();
         rootUserSeeder.seed();
     }

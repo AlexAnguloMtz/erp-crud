@@ -3,6 +3,8 @@ package com.aram.erpcrud.users.application;
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.auth.payload.AccountCreationResponse;
 import com.aram.erpcrud.auth.payload.CreateAccountCommand;
+import com.aram.erpcrud.locations.LocationsService;
+import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import com.aram.erpcrud.users.payload.CreateUserCommand;
@@ -15,10 +17,12 @@ import java.util.UUID;
 public class CreateUserCommandHandler {
 
     private final AuthService authService;
+    private final LocationsService locationsService;
     private final PersonalDetailsRepository personalDetailsRepository;
 
-    public CreateUserCommandHandler(AuthService authService, PersonalDetailsRepository personalDetailsRepository) {
+    public CreateUserCommandHandler(AuthService authService, LocationsService locationsService, PersonalDetailsRepository personalDetailsRepository) {
         this.authService = authService;
+        this.locationsService = locationsService;
         this.personalDetailsRepository = personalDetailsRepository;
     }
 
@@ -26,22 +30,24 @@ public class CreateUserCommandHandler {
     public void handle(CreateUserCommand command) {
         CreateAccountCommand createAccountCommand = new CreateAccountCommand(command.roleId(), command.email(), command.password());
         AccountCreationResponse accountCreationResponse = authService.createAccount(createAccountCommand);
-        PersonalDetails personalDetails = toPersonalDetails(accountCreationResponse.accountId(), command);
+        State state = locationsService.findStateById(command.state());
+        PersonalDetails personalDetails = toPersonalDetails(accountCreationResponse.accountId(), command, state);
         personalDetailsRepository.save(personalDetails);
     }
 
-    private PersonalDetails toPersonalDetails(String accountId, CreateUserCommand command) {
-        return new PersonalDetails(
-            UUID.randomUUID().toString(),
-            accountId,
-            command.name(),
-            command.lastName(),
-            command.state(),
-            command.city(),
-            command.district(),
-            command.streetNumber(),
-            command.phone(),
-            command.zipCode()
-        );
+    private PersonalDetails toPersonalDetails(String accountId, CreateUserCommand command, State state) {
+        return PersonalDetails.builder()
+                .id(UUID.randomUUID().toString())
+                .accountId(accountId)
+                .name(command.name())
+                .lastName(command.lastName())
+                .state(state)
+                .city(command.city())
+                .district(command.district())
+                .street(command.street())
+                .streetNumber(command.streetNumber())
+                .phone(command.phone())
+                .zipCode(command.zipCode())
+                .build();
     }
 }

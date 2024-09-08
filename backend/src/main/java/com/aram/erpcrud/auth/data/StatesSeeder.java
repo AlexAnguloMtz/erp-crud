@@ -2,14 +2,16 @@ package com.aram.erpcrud.auth.data;
 
 import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.domain.StateRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class StateSeeder {
+@Component
+public class StatesSeeder {
 
     private final StateRepository stateRepository;
 
-    public StateSeeder(StateRepository stateRepository) {
+    public StatesSeeder(StateRepository stateRepository) {
         this.stateRepository = stateRepository;
     }
 

@@ -18,7 +18,7 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of(new SimpleGrantedAuthority(authUser.getRole().getDescription()));
+        return Set.of(new SimpleGrantedAuthority(authUser.getRole().getCanonicalName()));
     }
 
     @Override

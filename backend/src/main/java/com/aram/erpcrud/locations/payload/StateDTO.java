@@ -1,4 +1,4 @@
 package com.aram.erpcrud.locations.payload;
 
-public class StateDTO {
+public record StateDTO(String id, String name) {
 }

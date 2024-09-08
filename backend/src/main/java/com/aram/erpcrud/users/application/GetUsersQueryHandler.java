@@ -2,16 +2,20 @@ package com.aram.erpcrud.users.application;
 
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.auth.payload.AccountPublicDetails;
+import com.aram.erpcrud.auth.payload.RolePublicDetails;
 import com.aram.erpcrud.common.PageResponse;
 import com.aram.erpcrud.common.SafePagination;
+import com.aram.erpcrud.locations.domain.State;
+import com.aram.erpcrud.locations.payload.StateDTO;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
-import com.aram.erpcrud.users.payload.UserPreview;
+import com.aram.erpcrud.users.payload.FullUserDetails;
 import com.aram.erpcrud.users.payload.GetUsersQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class GetUsersQueryHandler {
 
@@ -55,11 +60,11 @@ public class GetUsersQueryHandler {
         this.safePagination = safePagination;
     }
 
-    public PageResponse<UserPreview> handle(GetUsersQuery query) {
+    public PageResponse<FullUserDetails> handle(GetUsersQuery query) {
         Page<PersonalDetails> personalDetailsPage = findPage(query);
         List<String> accountIds = getAccountIds(personalDetailsPage.getContent());
         List<AccountPublicDetails> accounts = authService.findAccounts(accountIds);
-        List<UserPreview> userPreviews = assembleUserPreviews(accounts, personalDetailsPage.getContent());
+        List<FullUserDetails> users = assembleUserPreviews(accounts, personalDetailsPage.getContent());
 
         return new PageResponse<>(
             personalDetailsPage.getNumber(),
@@ -67,7 +72,7 @@ public class GetUsersQueryHandler {
             personalDetailsPage.getTotalElements(),
             personalDetailsPage.getTotalPages(),
             personalDetailsPage.isLast(),
-            userPreviews
+            users
         );
     }
 
@@ -91,8 +96,8 @@ public class GetUsersQueryHandler {
         return personalDetails.stream().map(PersonalDetails::getAccountId).toList();
     }
 
-    private List<UserPreview> assembleUserPreviews(List<AccountPublicDetails> accounts, List<PersonalDetails> personalDetails) {
-        List<UserPreview> userPreviews = new ArrayList<>();
+    private List<FullUserDetails> assembleUserPreviews(List<AccountPublicDetails> accounts, List<PersonalDetails> personalDetails) {
+        List<FullUserDetails> userPreviews = new ArrayList<>();
         for (PersonalDetails somePersonalDetails : personalDetails) {
             Optional<AccountPublicDetails> accountOptional = findAccountForPersonalDetails(accounts, somePersonalDetails);
             AccountPublicDetails accountPublicDetails = accountOptional.orElse(emptyAccountDetails());
@@ -128,24 +133,32 @@ public class GetUsersQueryHandler {
 
     private Optional<AccountPublicDetails> findAccountForPersonalDetails(List<AccountPublicDetails> accounts, PersonalDetails personalDetails) {
         return accounts.stream()
-                .filter(x -> x.id().equals(personalDetails.getAccountId()))
-                .findFirst();
+            .filter(x -> x.id().equals(personalDetails.getAccountId()))
+            .findFirst();
     }
 
-    private UserPreview toUserPreview(AccountPublicDetails accountPublicDetails, PersonalDetails personalDetails) {
-        return new UserPreview(
+    private FullUserDetails toUserPreview(AccountPublicDetails accountPublicDetails, PersonalDetails personalDetails) {
+        return new FullUserDetails(
                 personalDetails.getId(),
                 personalDetails.getName(),
                 personalDetails.getLastName(),
-                personalDetails.getState(),
+                toDto(personalDetails.getState()),
                 personalDetails.getCity(),
+                personalDetails.getDistrict(),
+                personalDetails.getStreet(),
+                personalDetails.getStreetNumber(),
+                personalDetails.getZipCode(),
                 personalDetails.getPhone(),
                 accountPublicDetails.email(),
-                accountPublicDetails.role()
+                accountPublicDetails.rolePublicDetails()
         );
     }
 
     private AccountPublicDetails emptyAccountDetails() {
-        return new AccountPublicDetails("", "", "");
+        return new AccountPublicDetails("N/A", "N/A", new RolePublicDetails("N/A", "N/A"));
+    }
+
+    private StateDTO toDto(State state) {
+        return new StateDTO(state.getId(), state.getName());
     }
 }

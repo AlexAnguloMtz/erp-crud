@@ -1,4 +1,7 @@
 package com.aram.erpcrud.locations;
 
-public class LocationsService {
+import com.aram.erpcrud.locations.domain.State;
+
+public interface LocationsService {
+    State findStateById(String id);
 }

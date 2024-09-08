@@ -4,6 +4,8 @@ import com.aram.erpcrud.auth.domain.AuthRole;
 import com.aram.erpcrud.auth.domain.AuthRoleRepository;
 import com.aram.erpcrud.auth.domain.AuthUser;
 import com.aram.erpcrud.auth.domain.AuthUserRepository;
+import com.aram.erpcrud.locations.domain.State;
+import com.aram.erpcrud.locations.domain.StateRepository;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +24,7 @@ public class RootUserSeeder {
     private final AuthUserRepository authUserRepository;
     private final AuthRoleRepository authRoleRepository;
     private final PersonalDetailsRepository personalDetailsRepository;
+    private final StateRepository stateRepository;
 
     public RootUserSeeder(
             @Value("${config.root-user.email}") String rootUserEmail,
@@ -29,7 +32,8 @@ public class RootUserSeeder {
             PasswordEncoder passwordEncoder,
             AuthUserRepository authUserRepository,
             AuthRoleRepository authRoleRepository,
-            PersonalDetailsRepository personalDetailsRepository
+            PersonalDetailsRepository personalDetailsRepository,
+            StateRepository stateRepository
     ) {
         this.rootUserEmail = rootUserEmail;
         this.rootUserPassword = rootUserPassword;
@@ -37,6 +41,7 @@ public class RootUserSeeder {
         this.authUserRepository = authUserRepository;
         this.authRoleRepository = authRoleRepository;
         this.personalDetailsRepository = personalDetailsRepository;
+        this.stateRepository = stateRepository;
     }
 
     public void seed() {
@@ -53,7 +58,7 @@ public class RootUserSeeder {
     }
 
     private AuthUser rootUserAccount() {
-        Optional<AuthRole> superUserRoleOptional = authRoleRepository.findByDescription("ROLE_SUPER_USER");
+        Optional<AuthRole> superUserRoleOptional = authRoleRepository.findByCanonicalName("ROLE_SUPER_USER");
         if (superUserRoleOptional.isEmpty()) {
             throw new RuntimeException("Could not find root user role");
         }
@@ -67,17 +72,23 @@ public class RootUserSeeder {
     }
 
     private PersonalDetails createRootUserPersonalDetails(String id, String accountId) {
-        return new PersonalDetails(
-                id,
-                accountId,
-                "Usuario Raiz",
-                "Apellido",
-                "Estado",
-                "Ciudad",
-                "Colonia",
-                "0",
-                "0000000000",
-                "00000"
-        );
+        Optional<State> stateOptional = stateRepository.findById("SON");
+        if (stateOptional.isEmpty()) {
+            throw new RuntimeException("Could not find root user state");
+        }
+
+        return PersonalDetails.builder()
+                .id(id)
+                .accountId(accountId)
+                .name("Usuario Raiz")
+                .lastName("Apellido")
+                .state(stateOptional.get())
+                .city("Hermosillo")
+                .district("Colonia")
+                .street("Calle")
+                .streetNumber("Num Calle")
+                .phone("0000000000")
+                .zipCode("00000")
+                .build();
     }
 }

@@ -1,4 +1,4 @@
 package com.aram.erpcrud.auth.payload;
 
-public class RolePublicDetails {
+public record RolePublicDetails(String id, String name) {
 }

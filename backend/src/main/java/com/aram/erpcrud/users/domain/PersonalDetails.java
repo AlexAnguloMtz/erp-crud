@@ -1,15 +1,12 @@
 package com.aram.erpcrud.users.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.aram.erpcrud.locations.domain.State;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class PersonalDetails {
@@ -26,14 +23,18 @@ public class PersonalDetails {
     @Column
     private String lastName;
 
-    @Column
-    private String state;
+    @ManyToOne
+    @JoinColumn(name = "state_id", nullable = false)
+    private State state;
 
     @Column
     private String city;
 
     @Column
     private String district;
+
+    @Column
+    private String street;
 
     @Column
     private String streetNumber;
