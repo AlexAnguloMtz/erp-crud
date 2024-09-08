@@ -22,6 +22,9 @@ RUN ng build --configuration production
 # Stage 2: Serve the Angular app using Nginx
 FROM nginx:alpine
 
+# Copy nginx config
+COPY ./scripts/default.conf /etc/nginx/conf.d/default.conf
+
 # Copy the built Angular app from the build stage
 COPY --from=build /app/dist/erp/browser /usr/share/nginx/html
 
