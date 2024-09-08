@@ -18,7 +18,11 @@ type BaseStatus = {
   user: User,
 }
 
-type HomeStatus = LoadingStatus | BaseStatus
+type LoadError = {
+  _type: 'load-error'
+}
+
+type HomeStatus = LoadingStatus | BaseStatus | LoadError
 
 @Component({
   selector: 'app-home',
@@ -40,8 +44,6 @@ export class HomeComponent {
   ) { }
 
   ngOnInit() {
-    this.status = { _type: 'loading' };
-
     const token: string | null = localStorage.getItem('auth-token');
 
     if (!token) {
@@ -49,10 +51,24 @@ export class HomeComponent {
       return;
     }
 
-    this.usersService.getMe(token!).subscribe({
+    this.getMe(token);
+  }
+
+  getMe(token: string): void {
+    this.status = { _type: 'loading' };
+    this.usersService.getMe(token).subscribe({
       next: (user: User) => this.status = { _type: 'base', user },
-      error: (error) => console.log(error.message),
+      error: (_) => this.status = { _type: 'load-error' },
     })
+  }
+
+  onRetryGetMe(): void {
+    this.getMe(localStorage.getItem('auth-token')!);
+  }
+
+
+  get loadError(): boolean {
+    return this.status._type === 'load-error';
   }
 
   get loading(): boolean {

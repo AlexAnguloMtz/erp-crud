@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { catchError, defer, delay, Observable, of, throwError } from "rxjs";
+import { catchError, defer, delay, Observable, of, switchMap, throwError } from "rxjs";
 import { PaginatedResponse } from "../common/paginated-response";
 import { PaginatedRequest } from "../common/paginated-request";
 import { Role } from "./auth-service";

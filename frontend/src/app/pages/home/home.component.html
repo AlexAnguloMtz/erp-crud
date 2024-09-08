@@ -2,6 +2,17 @@
 <div class="content__progress-container">
     <p-progressSpinner class="content__progress" ariaLabel="loading" [style]="{'width': '100px', 'height': '100px'}" />
 </div>
+} @else if (loadError) {
+<div class="load-me-error">
+    <div class="load-me-error-img-container">
+        <img class="load-me-error-img" src="images/me-error.svg" alt="error-loading">
+    </div>
+    <div class="load-me-error-text-and-actions">
+        <h4 class="load-me-error-text">Error al cargar</h4>
+        <p-button (click)="onRetryGetMe()" class="load-me-error-retry" label="Reintentar"
+            icon="pi pi-refresh"></p-button>
+    </div>
+</div>
 } @else {
 <h1 class="title">Inicio</h1>
 <div class="daytime">

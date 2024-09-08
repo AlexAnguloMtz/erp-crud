@@ -45,6 +45,34 @@
     font-weight: 500;
 }
 
+.load-me-error-img-container {
+    width: 200px;
+    height: 200px;
+}
+
+.load-me-error {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+}
+
+.load-me-error-text {
+    color: rgb(74, 95, 99);
+}
+
+.load-me-error-img {
+    width: 100%;
+}
+
+.load-me-error-text-and-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 @keyframes rotate {
     from {
         transform: rotate(0deg);
