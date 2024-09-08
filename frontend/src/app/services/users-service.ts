@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
-import { catchError, defer, delay, Observable, of, switchMap, throwError } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 import { PaginatedResponse } from "../common/paginated-response";
 import { PaginatedRequest } from "../common/paginated-request";
 import { Role } from "./auth-service";
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { environment } from "../../environments/environment";
 
 type User = {
     name: string
@@ -57,9 +58,9 @@ export type UserDetails = {
 })
 export class UsersService {
 
-    private usersUrl = 'http://localhost:8080/api/v1/users';
+    private usersUrl = environment.API_HOST + '/api/v1/users';
 
-    private meUrl = 'http://localhost:8080/api/v1/users/me';
+    private meUrl = environment.API_HOST + '/api/v1/users/me';
 
     constructor(private http: HttpClient) { }
 

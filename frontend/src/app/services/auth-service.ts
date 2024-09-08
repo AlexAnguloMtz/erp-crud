@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, defer, delay, Observable, of, switchMap, throwError } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
+import { environment } from "../../environments/environment";
 
 type LoginCredentials = {
     email: string,
@@ -28,9 +29,9 @@ class BadCredentialsError extends Error {
 })
 export class AuthService {
 
-    private loginUrl = 'http://localhost:8080/api/v1/auth/login';
+    private loginUrl = environment.API_HOST + '/api/v1/auth/login';
 
-    private rolesUrl = 'http://localhost:8080/api/v1/auth/roles';
+    private rolesUrl = environment.API_HOST + '/api/v1/auth/roles';
 
     constructor(private http: HttpClient) { }
 

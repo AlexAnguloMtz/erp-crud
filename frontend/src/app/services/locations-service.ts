@@ -1,15 +1,15 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, defer, delay, Observable, of, throwError } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 import { State } from "./users-service";
-
+import { environment } from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class LocationsService {
 
-    private statesUrl = 'http://localhost:8080/api/v1/locations/states';
+    private statesUrl = environment.API_HOST + '/api/v1/locations/states';
 
     constructor(private http: HttpClient) { }
 
