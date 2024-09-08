@@ -30,5 +30,15 @@ services:
     env_file:
       - ./backend/.env
 
+  erp_web:
+    build:
+      context: ./frontend
+      dockerfile: web.Dockerfile
+    container_name: erp_web
+    ports:
+      - "4200:80"
+    depends_on:
+      - erp_backend
+
 volumes:
   erp_data:
