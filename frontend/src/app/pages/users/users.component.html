@@ -28,6 +28,12 @@
                         <p-progressSpinner class="create-user__progress" ariaLabel="loading"
                             [style]="{'width': '40px', 'height': '40px'}" />
                     </div>
+                    } @else if (loadingStatesError) {
+                    <div class="dropdown-load-error">
+                        <div>Error de carga</div>
+                        <p-button (click)="onRetryLoadStates()" [outlined]="true" icon="pi pi-refresh"
+                            severity="secondary" />
+                    </div>
                     } @else {
                     <p-dropdown id="create-user-state" formControlName="state" [options]="stateOptions"
                         optionLabel="name" optionValue="id" placeholder="Estado" [style]="{'width': '100%'}" />

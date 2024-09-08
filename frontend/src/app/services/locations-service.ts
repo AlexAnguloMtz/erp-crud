@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, defer, delay, Observable, of, throwError } from "rxjs";
+import { catchError, defer, delay, Observable, of, switchMap, throwError } from "rxjs";
 import { State } from "./users-service";
 
 
@@ -8,6 +8,8 @@ import { State } from "./users-service";
     providedIn: 'root'
 })
 export class LocationsService {
+
+    counter = 0
 
     private statesUrl = 'http://localhost:8080/api/v1/locations/states';
 
@@ -26,16 +28,14 @@ export class LocationsService {
     // }
 
     getStates(token: string): Observable<Array<State>> {
-        const states: Array<State> = [
-            { id: 'AGU', name: 'Aguascalientes' },
-            { id: 'BCN', name: 'Baja California' },
-            { id: 'BCS', name: 'Baja California Sur' },
-            { id: 'CAM', name: 'Campeche' },
-            { id: 'SON', name: 'Sonora' }
-        ];
-
-        return of(states).pipe(
-            delay(10000)
-        );
+        this.counter = this.counter + 1
+        if (this.counter === 4) {
+            return of([{ name: 'Sonora', id: 'SON' }, { name: 'Ciudad de México', id: 'CDMX' }])
+        }
+        return of([])
+            .pipe(
+                delay(2000),
+                switchMap(() => throwError(() => new Error('An error occurred')))
+            );
     }
 }

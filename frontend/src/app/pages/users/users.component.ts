@@ -97,9 +97,13 @@ type StatesOptionsReady = {
   states: Array<State>
 }
 
+type LoadStatesError = {
+  _type: 'error'
+}
+
 type RoleOptionsStatus = RoleOptionsBase | LoadingRoleOptions | RoleOptionsReady
 
-type StatesOptionsStatus = StatesOptionsBase | LoadingStatesOptions | StatesOptionsReady
+type StatesOptionsStatus = StatesOptionsBase | LoadingStatesOptions | StatesOptionsReady | LoadStatesError
 
 type UserCreationBase = {
   _type: 'user-creation-base'
@@ -248,6 +252,10 @@ export class UsersComponent {
       return [];
     }
     return this.roleOptionsStatus.userFormOptions.roles;
+  }
+
+  get loadingStatesError(): boolean {
+    return this.stateOptionsStatus._type === 'error';
   }
 
   get stateOptions(): Array<State> {
@@ -570,15 +578,12 @@ export class UsersComponent {
       this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
         next: (roles: Array<Role>) => {
           this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } };
-          this.userForm.get('role')?.setValue(roleId);
         },
         error: (error) => console.log(error.message),
       })
     }
 
-    else if (this.roleOptionsStatus._type === 'user-form-options-ready') {
-      this.userForm.get('role')?.setValue(roleId);
-    }
+    this.userForm.get('role')?.setValue(roleId);
   }
 
   private loadStatesOnRowClick(stateId: string) {
@@ -587,15 +592,12 @@ export class UsersComponent {
       this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
         next: (states: Array<State>) => {
           this.stateOptionsStatus = { _type: 'states-options-ready', states };
-          this.userForm.get('state')?.setValue(stateId);
         },
-        error: (error) => console.log(error.message),
+        error: (_) => this.stateOptionsStatus = { _type: 'error' },
       })
     }
 
-    else if (this.stateOptionsStatus._type === 'states-options-ready') {
-      this.userForm.get('state')?.setValue(stateId);
-    }
+    this.userForm.get('state')?.setValue(stateId);
   }
 
   onUserFormSubmit(): void {
@@ -662,9 +664,17 @@ export class UsersComponent {
       this.stateOptionsStatus = { _type: 'loading-states-options' };
       this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
         next: (states: Array<State>) => this.stateOptionsStatus = { _type: 'states-options-ready', states },
-        error: (error) => console.log(error.message),
+        error: (_) => this.stateOptionsStatus = { _type: 'error' },
       })
     }
+  }
+
+  onRetryLoadStates(): void {
+    this.stateOptionsStatus = { _type: 'loading-states-options' }
+    this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
+      next: (states: Array<State>) => this.stateOptionsStatus = { _type: 'states-options-ready', states },
+      error: (_) => this.stateOptionsStatus = { _type: 'error' },
+    })
   }
 
   onCancelUserForm(): void {

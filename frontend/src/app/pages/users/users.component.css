@@ -110,6 +110,12 @@
     color: transparent;
 }
 
+.dropdown-load-error {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 ::ng-deep .save-user-dialog .p-dialog .p-dialog-header {
     border-bottom: 1px solid rgb(210, 211, 212);
 }
@@ -118,6 +124,10 @@
     padding-bottom: 0;
     padding-left: 0;
     padding-right: 0;
+}
+
+::ng-deep .dropdown-load-error .p-button {
+    font-size: 14px;
 }
 
 .user-saved-dialog-actions {
