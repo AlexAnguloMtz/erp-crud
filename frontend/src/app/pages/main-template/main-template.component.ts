@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth-service';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RouterOutlet } from '@angular/router';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { UsersService } from '../../services/users-service';
 
 type SidebarLink = {
@@ -27,7 +26,11 @@ type BaseStatus = {
   user: User,
 }
 
-type MainTemplateStatus = LoadingStatus | BaseStatus
+type ErrorStatus = {
+  _type: 'error',
+}
+
+type MainTemplateStatus = LoadingStatus | BaseStatus | ErrorStatus
 
 const links: Array<SidebarLink> = [
   {
@@ -62,14 +65,12 @@ export class MainTemplateComponent {
   status: MainTemplateStatus;
 
   constructor(
-    private authService: AuthService,
     private usersService: UsersService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.sidebarOpen = false;
-    this.status = { _type: 'loading' }
 
     const token: string | null = window.localStorage.getItem('auth-token');
 
@@ -78,14 +79,15 @@ export class MainTemplateComponent {
       return;
     }
 
-    this.usersService.getMe(token!).subscribe({
-      next: (user: User) => this.status = { _type: 'base', user },
-      error: (error) => console.log(error.message),
-    })
+    this.getMe(token);
   }
 
   get loading(): boolean {
     return this.status._type === 'loading';
+  }
+
+  get loadError(): boolean {
+    return this.status._type === 'error';
   }
 
   get links(): Array<SidebarLink> {
@@ -121,5 +123,21 @@ export class MainTemplateComponent {
 
   onSidebarLinkClick(): void {
     this.sidebarOpen = false;
+  }
+
+  onRetryGetMe(): void {
+    this.getMe(localStorage.getItem('auth-token')!);
+  }
+
+  private handleGetMeError(error: any): void {
+    this.status = { _type: 'error' }
+  }
+
+  private getMe(token: string): void {
+    this.status = { _type: 'loading' }
+    this.usersService.getMe(token).subscribe({
+      next: (user: User) => this.status = { _type: 'base', user },
+      error: (error) => this.handleGetMeError(error),
+    })
   }
 }

@@ -108,6 +108,29 @@
     padding: 16px 12px;
 }
 
+.load-error {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 30%;
+}
+
+.load-error-img-container {
+    width: 150px;
+    margin: 0 auto;
+}
+
+.load-error-img {
+    width: 100%;
+}
+
+.load-error-text {
+    color: rgb(101, 105, 109);
+    margin-bottom: 20px;
+}
+
 @media screen and (min-width: 800px) {
     .sidebar__overlay {
         position: relative;

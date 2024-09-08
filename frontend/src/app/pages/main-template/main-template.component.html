@@ -14,6 +14,15 @@
                     <p-progressSpinner class="sidebar__progress" ariaLabel="loading"
                         [style]="{'width': '80px', 'height': '80px'}" />
                 </div>
+                } @else if (loadError) {
+                <div class="load-error">
+                    <div class="load-error-img-container">
+                        <img src="images/load-error.svg" alt="load-error">
+                    </div>
+                    <h4 class="load-error-text">No se pudo cargar</h4>
+                    <p-button label="Reintentar" icon="pi pi-refresh" (click)="onRetryGetMe()"></p-button>
+                </div>
+
                 } @else {
                 <div class="sidebar__close-button-container">
                     <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary"

@@ -90,7 +90,6 @@ export class UsersService {
         return this.http.post<void>(this.usersUrl, command, { headers }).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 409) {
-                    console.log('user exists')
                     return throwError(() => new UserExistsError('User already exists.'));
                 }
                 return throwError(() => new Error('An unexpected error occurred.'));
