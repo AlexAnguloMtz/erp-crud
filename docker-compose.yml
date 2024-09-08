@@ -34,11 +34,13 @@ services:
     build:
       context: ./frontend
       dockerfile: web.Dockerfile
+      args:
+        API_URL: ${API_URL}
     container_name: erp_web
-    env_file:
-      - ./frontend/.env
     ports:
       - "4200:80"
+    env_file:
+      - ./frontend/.env
     depends_on:
       - erp_backend
 
