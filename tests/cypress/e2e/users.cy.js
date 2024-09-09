@@ -211,6 +211,12 @@ describe('users module', () => {
         describe('structure validations', () => {
             const testCases = [
                 {
+                    testName: 'Email must have a valid structure',
+                    prepareInput: (input) => input.values.email = 'fake-email',
+                    errorSelector: 'email',
+                    expectedError: 'Correo inválido',
+                },
+                {
                     testName: 'Zip code must be exactly 5 digits',
                     prepareInput: (input) => input.values.zipCode = 'abcde',
                     errorSelector: 'zip-code',
@@ -226,9 +232,11 @@ describe('users module', () => {
 
             testCases.forEach(test => runInvalidCreateUserInputTest(test));
         })
-
-
     });
+
+    context('delete user', () => {
+
+    })
 });
 
 // ######################## Helper functions ########################
