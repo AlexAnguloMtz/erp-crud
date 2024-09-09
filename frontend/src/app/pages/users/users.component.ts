@@ -671,6 +671,11 @@ export class UsersComponent {
     this.createUserStatus = { _type: 'creating-user' }
     this.usersService.createUser(localStorage.getItem('auth-token')!, this.userCreationCommand()).subscribe({
       next: () => {
+        this.searchUsers({
+          ...this.defaultPaginatedRequest(),
+          search: this.searchControl.value,
+          sort: this.selectedSort?.key,
+        }, { _type: 'loading-subsequent-time' });
         this.createItemVisible = false;
         this.createUserStatus = { _type: 'user-creation-base' }
         this.userSavedDialogVisible = true;
