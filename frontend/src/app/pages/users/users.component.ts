@@ -621,11 +621,11 @@ export class UsersComponent {
     this.userToUpdateId = user.id;
     this.updateUserForm.patchValue(user);
     this.updateItemVisible = true;
-    this.loadRolesOnRowClick(user.role.id);
-    this.loadStatesOnRowClick(user.state.id);
+    this.loadRolesOnRowClick(user.role.id, this.updateUserForm);
+    this.loadStatesOnRowClick(user.state.id, this.updateUserForm);
   }
 
-  private loadRolesOnRowClick(roleId: string) {
+  private loadRolesOnRowClick(roleId: string, form: FormGroup) {
     if (this.roleOptionsStatus._type === 'base') {
       this.roleOptionsStatus = { _type: 'loading-user-form-options' };
       this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
@@ -636,10 +636,10 @@ export class UsersComponent {
       })
     }
 
-    this.userForm.get('role')?.setValue(roleId);
+    form.get('role')?.setValue(roleId);
   }
 
-  private loadStatesOnRowClick(stateId: string) {
+  private loadStatesOnRowClick(stateId: string, form: FormGroup) {
     if (this.stateOptionsStatus._type === 'base') {
       this.stateOptionsStatus = { _type: 'loading-states-options' };
       this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
@@ -650,7 +650,7 @@ export class UsersComponent {
       })
     }
 
-    this.userForm.get('state')?.setValue(stateId);
+    form.get('state')?.setValue(stateId);
   }
 
   onCreateUserSubmit(): void {

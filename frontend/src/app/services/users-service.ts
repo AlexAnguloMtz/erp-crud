@@ -120,11 +120,7 @@ export class UsersService {
 
         const url = `${this.usersUrl}/${id}`;
 
-        console.log('updating user with id and values: ')
-        console.log(id)
-        console.log(JSON.stringify(command))
-
-        return this.http.patch<void>(url, command, { headers }).pipe(
+        return this.http.put<void>(url, command, { headers }).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 409) {
                     return throwError(() => new UserExistsError('User already exists.'));
