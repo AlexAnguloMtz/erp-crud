@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CreateUserCommand, State, UpdateUserCommand, UserDetails, UsersService } from '../../services/users-service';
+import { CreateUserCommand, State, UpdateUserCommand, UpdateUserResponse, UserDetails, UsersService } from '../../services/users-service';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -683,8 +683,15 @@ export class UsersComponent {
 
     this.updateUserStatus = { _type: 'updating-user' }
     this.usersService.updateUser(localStorage.getItem('auth-token')!, this.userToUpdateId, this.userUpdateCommand()).subscribe({
-      next: (user: UserDetails) => {
-        this.updateUserRow(user);
+      next: (response: UpdateUserResponse) => {
+
+        // Set new jwt if user changed their own email, 
+        // so they can keep working without interruption 
+        if (response.jwt) {
+          localStorage.setItem('auth-token', response.jwt);
+        }
+
+        this.updateUserRow(response.user);
         this.updateItemVisible = false;
         this.updateUserStatus = { _type: 'user-update-base' }
         this.userSavedDialogVisible = true;

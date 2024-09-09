@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  erp_database:
+    build:
+      context: ./backend
+      dockerfile: database.Dockerfile
+    container_name: erp_database
+    ports:
+      - "5432:5432"
+    volumes:
+      - erp_data:/var/lib/postgresql/data
+    env_file:
+      - ./backend/.env
+    healthcheck:
+      test: [ "CMD-SHELL", "/usr/local/bin/postgres-healthcheck.sh" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  erp_backend:
+    build:
+      context: ./backend
+      dockerfile: app.Dockerfile
+    container_name: erp_backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      erp_database:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env
+
+volumes:
+  erp_data:

@@ -67,6 +67,11 @@ export type UserDetails = {
     role: Role,
 }
 
+export type UpdateUserResponse = {
+    user: UserDetails,
+    jwt: string | undefined
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -112,7 +117,7 @@ export class UsersService {
         );
     }
 
-    updateUser(token: string, id: string, command: UpdateUserCommand): Observable<UserDetails> {
+    updateUser(token: string, id: string, command: UpdateUserCommand): Observable<UpdateUserResponse> {
         const headers = {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -120,7 +125,7 @@ export class UsersService {
 
         const url = `${this.usersUrl}/${id}`;
 
-        return this.http.put<UserDetails>(url, command, { headers }).pipe(
+        return this.http.put<UpdateUserResponse>(url, command, { headers }).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 409) {
                     return throwError(() => new UserExistsError('User already exists.'));
