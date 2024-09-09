@@ -129,9 +129,19 @@ type UpdatingUser = {
   _type: 'updating-user'
 }
 
+type DeleteUserBase = {
+  _type: 'delete-user-base'
+}
+
+type DeletingUser = {
+  _type: 'deleting-user'
+}
+
 type CreateUserStatus = UserCreationBase | CreatingUser
 
 type UpdateUserStatus = UserUpdateBase | UpdatingUser
+
+type DeleteUserStatus = DeleteUserBase | DeletingUser
 
 @Component({
   selector: 'app-users',
@@ -171,6 +181,7 @@ export class UsersComponent {
 
   createUserStatus: CreateUserStatus;
   updateUserStatus: UpdateUserStatus;
+  deleteUserStatus: DeleteUserStatus;
 
   userForm: FormGroup;
 
@@ -181,6 +192,8 @@ export class UsersComponent {
   passwordFieldProps: PasswordFieldProps;
 
   userToUpdateId: string;
+
+  userDeletedDialogVisible: boolean;
 
   constructor(
     private router: Router,
@@ -204,11 +217,13 @@ export class UsersComponent {
     this.lastSeenTotalItems = 0;
     this.createItemVisible = false;
     this.userSavedDialogVisible = false;
+    this.userDeletedDialogVisible = false;
     this.passwordFieldProps = passwordNotVisibleProps;
     this.roleOptionsStatus = { _type: 'base' }
     this.stateOptionsStatus = { _type: 'base' }
     this.createUserStatus = { _type: 'user-creation-base' }
     this.updateUserStatus = { _type: 'user-update-base' }
+    this.deleteUserStatus = { _type: 'delete-user-base' }
     this.userForm = this.createUserForm();
     this.updateUserForm = this.createUpdateUserForm();
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
@@ -818,6 +833,43 @@ export class UsersComponent {
     this.userSavedDialogVisible = false;
   }
 
+  onCloseDeletedUserDialog(): void {
+    this.userDeletedDialogVisible = false;
+  }
+
+  onDeleteUser(): void {
+    this.deleteUserStatus = { _type: 'deleting-user' }
+    if (this.userToUpdateId) {
+      this.usersService.deleteUserById(localStorage.getItem('auth-token')!, this.userToUpdateId!).subscribe({
+        next: () => {
+          this.deleteUserStatus = { _type: 'delete-user-base' }
+          this.updateItemVisible = false;
+          this.removeDeletedRow();
+          this.userDeletedDialogVisible = true;
+        },
+        error: (error) => {
+
+        }
+      });
+    }
+  }
+
+  private removeDeletedRow(): void {
+    if (this.status._type !== 'base') {
+      return;
+    }
+
+    if (!this.userToUpdateId) {
+      return;
+    }
+
+    this.status.response.items = this.status.response.items.filter(x => x.id !== this.userToUpdateId);
+  }
+
+  get deletingUser(): boolean {
+    return this.deleteUserStatus._type === 'deleting-user';
+  }
+
   private userCreationCommand(): CreateUserCommand {
     return {
       ...this.userForm.value,
@@ -851,6 +903,7 @@ export class UsersComponent {
   }
 
   private handleUsers(response: PaginatedResponse<UserDetails>): void {
+    console.log(JSON.stringify(response));
     this.status = { _type: 'base', response }
     this.lastSeenTotalItems = response.totalItems
   }

@@ -54,9 +54,8 @@
     position: sticky;
     bottom: 0;
     background-color: white;
-    padding: 20px 0;
+    padding: 20px 22px;
     border-top: 1px solid rgb(210, 211, 212);
-    padding-right: 22px;
 }
 
 .create-user-fields {
@@ -130,6 +129,10 @@
     text-align: center;
     color: rgb(70, 72, 72);
     margin-bottom: 20px;
+}
+
+.item-form__spacer {
+    flex: 1;
 }
 
 ::ng-deep .save-user-dialog .p-dialog .p-dialog-header {

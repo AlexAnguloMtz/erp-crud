@@ -157,7 +157,7 @@
             </div>
         </fieldset>
         <div class="item-form__actions">
-            <p-button label="Cerrar" severity="secondary" (click)="onCancelUserForm()" />
+            <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelUserForm()" />
             <p-button label="Guardar" type="submit" [loading]="savingUser" />
         </div>
     </form>
@@ -286,7 +286,10 @@
             </div>
         </fieldset>
         <div class="item-form__actions">
-            <p-button label="Cerrar" severity="secondary" (click)="onCancelUpdateUserForm()" />
+            <p-button label="Eliminar" severity="danger" outlined="true" (click)="onDeleteUser()"
+                [loading]="deletingUser" />
+            <div class="item-form__spacer"></div>
+            <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelUpdateUserForm()" />
             <p-button label="Guardar" type="submit" [loading]="updatingUser" />
         </div>
     </form>
@@ -296,6 +299,13 @@
     <span class="p-text-secondary block mb-5" [style]="{'minHeight': '100px'}">Se guardó el usuario</span>
     <div class="user-saved-dialog-actions">
         <p-button label="Okay" (onClick)="onCloseSavedUserDialog()" />
+    </div>
+</p-dialog>
+<p-dialog [draggable]="false" [dismissableMask]="true" header="Eliminado" [modal]="true"
+    [(visible)]="userDeletedDialogVisible">
+    <span class="p-text-secondary block mb-5" [style]="{'minHeight': '100px'}">Se eliminó el usuario</span>
+    <div class="user-saved-dialog-actions">
+        <p-button label="Okay" (onClick)="onCloseDeletedUserDialog()" />
     </div>
 </p-dialog>
 @if (loadingFirstTime) {

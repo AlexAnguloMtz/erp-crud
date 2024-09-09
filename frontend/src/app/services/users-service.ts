@@ -125,7 +125,6 @@ export class UsersService {
         };
 
         return this.http.post<void>(this.usersUrl, command, { headers }).pipe(
-            retry(5),
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 409) {
                     return throwError(() => new UserExistsError('User already exists.'));
@@ -144,7 +143,6 @@ export class UsersService {
         const url = `${this.usersUrl}/${id}`;
 
         return this.http.put<UpdateUserResponse>(url, command, { headers }).pipe(
-            retry(5),
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 409) {
                     return throwError(() => new UserExistsError('User already exists.'));
@@ -152,6 +150,16 @@ export class UsersService {
                 return throwError(() => new Error('An unexpected error occurred.'));
             })
         );
+    }
+
+    deleteUserById(token: string, id: string) {
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+        };
+
+        const url = `${this.usersUrl}/${id}`;
+
+        return this.http.delete<UpdateUserResponse>(url, { headers });
     }
 }
 

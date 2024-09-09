@@ -37,7 +37,6 @@ export class AuthService {
 
     logIn(credentials: LoginCredentials): Observable<AuthenticationResponse> {
         return this.http.post<AuthenticationResponse>(this.loginUrl, credentials).pipe(
-            retry(5),
             catchError((error) => {
                 if (error instanceof HttpErrorResponse && error.status === 403) {
                     return throwError(() => new BadCredentialsError('BadCredentials'));
@@ -49,6 +48,8 @@ export class AuthService {
 
     getRoles(token: string): Observable<Array<Role>> {
         const headers = { 'Authorization': `Bearer ${token}` }
-        return this.http.get<Array<Role>>(this.rolesUrl, { headers });
+        return this.http.get<Array<Role>>(this.rolesUrl, { headers }).pipe(
+            retry(5)
+        );
     }
 }
