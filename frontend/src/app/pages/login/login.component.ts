@@ -77,6 +77,11 @@ export class LoginComponent {
   ) { }
 
   ngOnInit(): void {
+    const token = localStorage.getItem('auth-token');
+    if (token) {
+      this.router.navigate(['/home']);
+    }
+
     this.loginFormStatus = { _type: 'login-base' };
     this.passwordFieldProps = passwordNotVisibleProps;
     this.loginForm = this.formBuilder.group({
