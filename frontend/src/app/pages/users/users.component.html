@@ -333,6 +333,12 @@
     <div class="users__progress-container">
         <p-progressSpinner class="users__progress" ariaLabel="loading" [style]="{'width': '70px', 'height': '70px'}" />
     </div>
+    } @else if (loadUsersError) {
+    <div class="load-users-error">
+        <img class="load-users-error-img" src="images/load-error-3.svg" alt="load-users-error">
+        <h4 class="load-users-error-text">Error al cargar</h4>
+        <p-button (click)="onRetryLoadUsers()" icon="pi pi-refresh" label="Reintentar"></p-button>
+    </div>
     } @else if (lastSeenTotalItems == 0) {
     <div class="zero-items">
         <div class="zero-items-img-container">

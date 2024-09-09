@@ -65,7 +65,11 @@ type BaseStatus = {
   response: PaginatedResponse<UserDetails>;
 }
 
-type UsersStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus;
+type LoadUsersError = {
+  _type: 'load-users-error'
+}
+
+type UsersStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus | LoadUsersError;
 
 type RolesOptions = {
   roles: Array<Role>
@@ -735,6 +739,15 @@ export class UsersComponent {
     }, { _type: 'loading-subsequent-time' });
   }
 
+  onRetryLoadUsers(): void {
+    this.searchUsers({
+      ...this.defaultPaginatedRequest(),
+      search: this.searchControl.value,
+      sort: this.selectedSort?.key,
+      pageNumber: this.selectedPageNumber,
+    }, { _type: 'loading-subsequent-time' });
+  }
+
   onPageChange(event: PageEvent) {
     if (event.page !== null && event.page !== undefined) {
       this.selectedPageNumber = event.page;
@@ -838,7 +851,11 @@ export class UsersComponent {
   }
 
   private handleGetUsersError(error: Error): void {
-    console.log(error.message)
+    this.status = { _type: 'load-users-error' };
+  }
+
+  get loadUsersError() {
+    return this.status._type === 'load-users-error';
   }
 
   private handleUserCreationError(error: Error): void {

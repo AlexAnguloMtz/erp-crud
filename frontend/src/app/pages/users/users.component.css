@@ -116,6 +116,22 @@
     justify-content: space-between;
 }
 
+.load-users-error {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.load-users-error-img {
+    width: 100%;
+}
+
+.load-users-error-text {
+    text-align: center;
+    color: rgb(70, 72, 72);
+    margin-bottom: 20px;
+}
+
 ::ng-deep .save-user-dialog .p-dialog .p-dialog-header {
     border-bottom: 1px solid rgb(210, 211, 212);
 }
