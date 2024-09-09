@@ -28,10 +28,39 @@ describe('users module', () => {
             cy.get('#user-saved-dialog').should('contain', 'Se guardó el usuario');
         });
 
-        it('', () => {
-        });
+        describe('cannot create user with invalid data', () => {
+            const testCases = [
+                {
+                    testName: 'Name is required',
+                    prepareInput: (input) => input.values.name = '',
+                    errorSelector: 'name',
+                    expectedError: 'Valor requerido',
+                },
+            ];
 
-        it('', () => {
+            testCases.forEach(test => {
+                it(test.testName, () => {
+                    const input = {
+                        values: validUser(),
+                        selectState: true,
+                        selectRole: true
+                    };
+
+                    test.prepareInput(input);
+
+                    cy.get('#create-new').click();
+
+                    fillCreateUserForm({
+                        values: input.values,
+                        selectState: input.selectState,
+                        selectRole: input.selectRole
+                    })
+
+                    cy.get('#create-user-submit').click();
+
+                    cy.get(`.form-error.${test.errorSelector}`).should('contain', test.expectedError);
+                })
+            })
         });
     });
 });
@@ -57,17 +86,17 @@ const validUser = () => {
 
 function fillCreateUserForm({ values, selectState, selectRole }) {
     cy.get('#create-user-form').within(() => {
-        cy.get('#create-user-name').type(values.name);
-        cy.get('#create-user-last-name').type(values.lastName);
-        cy.get('#create-user-city').type(values.city);
-        cy.get('#create-user-district').type(values.district);
-        cy.get('#create-user-street').type(values.street);
-        cy.get('#create-user-street-number').type(values.streetNumber);
-        cy.get('#create-user-zip-code').type(values.zipcode);
-        cy.get('#create-user-email').type(values.email);
-        cy.get('#create-user-phone').type(values.phone);
-        cy.get('#create-user-password').type(values.password);
-        cy.get('#create-user-confirmed-password').type(values.confirmedPassword);
+        type('#create-user-name', values.name);
+        type('#create-user-last-name', values.lastName);
+        type('#create-user-city', values.city);
+        type('#create-user-district', values.district);
+        type('#create-user-street', values.street);
+        type('#create-user-street-number', values.streetNumber);
+        type('#create-user-zip-code', values.zipcode);
+        type('#create-user-email', values.email);
+        type('#create-user-phone', values.phone);
+        type('#create-user-password', values.password);
+        type('#create-user-confirmed-password', values.confirmedPassword);
     });
 
     if (selectState) {
@@ -93,3 +122,9 @@ function clickRandomDropdownValue(id) {
             cy.wrap(randomChild).click();
         });
 }
+
+const type = (selector, value) => {
+    if (value !== undefined && value !== null && value !== '') {
+        cy.get(selector).type(value);
+    }
+};
