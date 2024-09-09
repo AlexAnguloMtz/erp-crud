@@ -1,8 +1,10 @@
 package com.aram.erpcrud.users.application;
 
 import com.aram.erpcrud.auth.AuthService;
+import com.aram.erpcrud.auth.config.JwtHandler;
 import com.aram.erpcrud.auth.payload.AccountPublicDetails;
 import com.aram.erpcrud.auth.payload.UpdateAccountCommand;
+import com.aram.erpcrud.auth.payload.UpdateAccountResponse;
 import com.aram.erpcrud.locations.LocationsService;
 import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.payload.StateDTO;
@@ -10,6 +12,7 @@ import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import com.aram.erpcrud.users.payload.FullUserDetails;
 import com.aram.erpcrud.users.payload.UpdateUserCommand;
+import com.aram.erpcrud.users.payload.UpdateUserResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -26,7 +29,7 @@ public class UpdateUserCommandHandler {
 
     public UpdateUserCommandHandler(
             AuthService authService,
-            PersonalDetailsRepository personalDetailsRepository, LocationsService locationsService
+            PersonalDetailsRepository personalDetailsRepository, LocationsService locationsService, JwtHandler jwtHandler
     ) {
         this.authService = authService;
         this.personalDetailsRepository = personalDetailsRepository;
@@ -34,7 +37,7 @@ public class UpdateUserCommandHandler {
     }
 
     @Transactional
-    public FullUserDetails handle(String id, UpdateUserCommand command) {
+    public UpdateUserResponse handle(String id, String requestingUserEmail, UpdateUserCommand command) {
         Optional<AccountPublicDetails> accountOptional = authService.findAccountById(id);
         if (accountOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -47,8 +50,8 @@ public class UpdateUserCommandHandler {
 
         State state = locationsService.findStateById(command.state());
 
-        UpdateAccountCommand updateAccountCommand = toAccountPublicDetails(id, command);
-        AccountPublicDetails updatedAccount = authService.updateAccount(updateAccountCommand);
+        UpdateAccountCommand updateAccountCommand = toAccountPublicDetails(id, requestingUserEmail, command);
+        UpdateAccountResponse updateAccountResponse = authService.updateAccount(updateAccountCommand);
 
         PersonalDetails personalDetails = personalDetailsOptional.get();
 
@@ -64,7 +67,7 @@ public class UpdateUserCommandHandler {
 
         personalDetailsRepository.save(personalDetails);
 
-        return new FullUserDetails(
+        FullUserDetails fullUserDetails = new FullUserDetails(
                 id,
                 personalDetails.getName(),
                 personalDetails.getLastName(),
@@ -75,16 +78,19 @@ public class UpdateUserCommandHandler {
                 personalDetails.getStreetNumber(),
                 personalDetails.getZipCode(),
                 personalDetails.getPhone(),
-                updatedAccount.email(),
-                updatedAccount.rolePublicDetails()
+                updateAccountResponse.email(),
+                updateAccountResponse.rolePublicDetails()
         );
+
+        return new UpdateUserResponse(fullUserDetails, updateAccountResponse.jwt());
     }
 
-    private UpdateAccountCommand toAccountPublicDetails(String id, UpdateUserCommand command) {
+    private UpdateAccountCommand toAccountPublicDetails(String id, String requestingUserEmail, UpdateUserCommand command) {
         return new UpdateAccountCommand(
             id,
             command.email(),
-            command.roleId()
+            command.roleId(),
+            requestingUserEmail
         );
     }
 

@@ -41,7 +41,8 @@ public class LoginCommandHandler {
             throw new BadCredentialsException("bad credentials");
         }
 
-        String token = jwtHandler.createToken(user.getEmail(), user.getPassword());
+        String token = jwtHandler.createToken(user.getEmail(), user.getRole().getCanonicalName());
+
         return new LoginResponse(token);
     }
 

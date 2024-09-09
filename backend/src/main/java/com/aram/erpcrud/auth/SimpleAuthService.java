@@ -1,10 +1,7 @@
 package com.aram.erpcrud.auth;
 
 import com.aram.erpcrud.auth.application.*;
-import com.aram.erpcrud.auth.payload.AccountCreationResponse;
-import com.aram.erpcrud.auth.payload.AccountPublicDetails;
-import com.aram.erpcrud.auth.payload.CreateAccountCommand;
-import com.aram.erpcrud.auth.payload.UpdateAccountCommand;
+import com.aram.erpcrud.auth.payload.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -54,7 +51,7 @@ public class SimpleAuthService implements AuthService {
     }
 
     @Override
-    public AccountPublicDetails updateAccount(UpdateAccountCommand command) {
+    public UpdateAccountResponse updateAccount(UpdateAccountCommand command) {
         return updateAccountCommandHandler.handle(command);
     }
 }

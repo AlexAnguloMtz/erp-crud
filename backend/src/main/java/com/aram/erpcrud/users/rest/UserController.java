@@ -1,12 +1,8 @@
 package com.aram.erpcrud.users.rest;
 
 import com.aram.erpcrud.common.PageResponse;
-import com.aram.erpcrud.users.payload.UpdateUserCommand;
+import com.aram.erpcrud.users.payload.*;
 import com.aram.erpcrud.users.application.UserFacade;
-import com.aram.erpcrud.users.payload.GetMeResponse;
-import com.aram.erpcrud.users.payload.FullUserDetails;
-import com.aram.erpcrud.users.payload.CreateUserCommand;
-import com.aram.erpcrud.users.payload.GetUsersQuery;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -33,11 +29,12 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FullUserDetails> updateUser(
+    public ResponseEntity<UpdateUserResponse> updateUser(
             @Valid @RequestBody UpdateUserCommand command,
-            @PathVariable String id
+            @PathVariable String id,
+            Principal principal
     ) {
-        return new ResponseEntity<>(usersFacade.updateUser(id, command), HttpStatus.OK);
+        return new ResponseEntity<>(usersFacade.updateUser(id, principal.getName(), command), HttpStatus.OK);
     }
 
     @GetMapping("/me")

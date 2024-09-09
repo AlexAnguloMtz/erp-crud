@@ -1,9 +1,6 @@
 package com.aram.erpcrud.auth;
 
-import com.aram.erpcrud.auth.payload.AccountCreationResponse;
-import com.aram.erpcrud.auth.payload.AccountPublicDetails;
-import com.aram.erpcrud.auth.payload.CreateAccountCommand;
-import com.aram.erpcrud.auth.payload.UpdateAccountCommand;
+import com.aram.erpcrud.auth.payload.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,5 +15,5 @@ public interface AuthService {
 
     Optional<AccountPublicDetails> findAccountById(String id);
 
-    AccountPublicDetails updateAccount(UpdateAccountCommand command);
+    UpdateAccountResponse updateAccount(UpdateAccountCommand command);
 }
