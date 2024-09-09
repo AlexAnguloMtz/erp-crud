@@ -34,7 +34,7 @@ services:
         API_URL: ${API_URL}
     container_name: erp_web
     ports:
-      - "4200:80"
+      - "80:80"
     depends_on:
       - erp_backend
 
