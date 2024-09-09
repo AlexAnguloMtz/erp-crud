@@ -108,4 +108,10 @@
     .login-form__title {
         display: block;
     }
+
+    .login-form {
+        transform: translateY(0);
+        margin-top: 20%;
+    }
+
 }
