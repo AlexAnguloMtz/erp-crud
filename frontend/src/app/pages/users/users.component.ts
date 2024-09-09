@@ -909,7 +909,6 @@ export class UsersComponent {
   }
 
   private handleUsers(response: PaginatedResponse<UserDetails>): void {
-    console.log(JSON.stringify(response));
     this.status = { _type: 'base', response }
     this.lastSeenTotalItems = response.totalItems
   }
