@@ -1,6 +1,8 @@
+import { WEB_URL } from '../environment/environment';
+
 describe('Login Page Tests', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200/login');
+    cy.visit(WEB_URL + '/login');
   });
 
   it('visits login page', () => {
@@ -62,6 +64,6 @@ describe('Login Page Tests', () => {
     cy.get('#email').type('abarrey_root@gmail.com');
     cy.get('#password').type('12345678');
     cy.get('#submit').click();
-    cy.url().should('eq', 'http://localhost:4200/home');
+    cy.url().should('eq', WEB_URL + '/home');
   });
 });

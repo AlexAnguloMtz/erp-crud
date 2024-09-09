@@ -1,14 +1,15 @@
+import { WEB_URL } from '../environment/environment';
 import { faker } from '@faker-js/faker';
 
 describe('users module', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:4200/login');
+        cy.visit(WEB_URL + '/login');
 
         cy.get('#email').type('abarrey_root@gmail.com');
         cy.get('#password').type('12345678');
         cy.get('#submit').click();
 
-        cy.url().should('eq', 'http://localhost:4200/home');
+        cy.url().should('eq', WEB_URL + '/home');
 
         cy.get('#module-users').click();
     });
