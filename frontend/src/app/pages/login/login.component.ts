@@ -10,10 +10,10 @@ import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 
-const emailMaxLength: number = 50;
+const emailMaxLength: number = 60;
 
 const passwordMinLength: number = 8;
-const passwordMaxLength: number = 50;
+const passwordMaxLength: number = 60;
 
 type LoginError = {
   header: string,

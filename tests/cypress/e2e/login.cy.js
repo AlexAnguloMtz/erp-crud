@@ -22,10 +22,10 @@ describe('Login Page Tests', () => {
   });
 
   it('fails on long email', () => {
-    cy.get('#email').type('a'.repeat(51) + '@example.com');
+    cy.get('#email').type('a'.repeat(61) + '@example.com');
     cy.get('#password').type('ValidPassword123');
     cy.get('#submit').click();
-    cy.get('#email-error').should('contain', 'Máximo 50 caracteres');
+    cy.get('#email-error').should('contain', 'Máximo 60 caracteres');
   });
 
   it('fails on empty password', () => {
@@ -44,9 +44,9 @@ describe('Login Page Tests', () => {
 
   it('fails on long password', () => {
     cy.get('#email').type('valid.email@example.com');
-    cy.get('#password').type('a'.repeat(51));
+    cy.get('#password').type('a'.repeat(61));
     cy.get('#submit').click();
-    cy.get('#password-error').should('contain', 'Máximo 50 caracteres');
+    cy.get('#password-error').should('contain', 'Máximo 60 caracteres');
   });
 
   it('hides password by default', () => {

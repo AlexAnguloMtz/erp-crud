@@ -594,6 +594,10 @@ export class UsersComponent {
       return 'Mínimo 8 caracteres';
     }
 
+    if (control.errors?.['maxlength']) {
+      return 'Máximo 60 caracteres';
+    }
+
     return '';
   }
 
@@ -611,6 +615,10 @@ export class UsersComponent {
 
     if (control.errors?.['minlength']) {
       return 'Mínimo 8 caracteres';
+    }
+
+    if (control.errors?.['maxlength']) {
+      return 'Máximo 60 caracteres';
     }
 
     if (control.value !== passwordControl.value) {
@@ -1027,6 +1035,7 @@ export class UsersComponent {
         [
           Validators.required,
           Validators.minLength(8),
+          Validators.maxLength(60),
         ]
       ],
       confirmedPassword: [
@@ -1034,6 +1043,7 @@ export class UsersComponent {
         [
           Validators.required,
           Validators.minLength(8),
+          Validators.maxLength(60),
         ]
       ],
     });

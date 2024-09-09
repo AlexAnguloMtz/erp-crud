@@ -28,7 +28,7 @@ describe('users module', () => {
             cy.get('#user-saved-dialog').should('contain', 'Se guardó el usuario');
         });
 
-        describe('cannot create user with invalid data', () => {
+        describe('empty fields validations', () => {
             const testCases = [
                 {
                     testName: 'Name is required',
@@ -134,6 +134,83 @@ describe('users module', () => {
                 })
             })
         });
+
+        describe('max length validations', () => {
+            const testCases = [
+                {
+                    testName: 'Name max length',
+                    prepareInput: (input) => input.values.name = 'x'.repeat(61),
+                    errorSelector: 'name',
+                    expectedError: 'Máximo 60 caracteres',
+                },
+                {
+                    testName: 'Last name max lenght',
+                    prepareInput: (input) => input.values.lastName = 'x'.repeat(61),
+                    errorSelector: 'last-name',
+                    expectedError: 'Máximo 60 caracteres',
+                },
+                {
+                    testName: 'City max length',
+                    prepareInput: (input) => input.values.city = 'x'.repeat(61),
+                    errorSelector: 'city',
+                    expectedError: 'Máximo 60 caracteres',
+                },
+                {
+                    testName: 'District max length',
+                    prepareInput: (input) => input.values.district = 'x'.repeat(61),
+                    errorSelector: 'district',
+                    expectedError: 'Máximo 60 caracteres',
+                },
+                {
+                    testName: 'Street max length',
+                    prepareInput: (input) => input.values.street = 'x'.repeat(61),
+                    errorSelector: 'street',
+                    expectedError: 'Máximo 60 caracteres',
+                },
+                {
+                    testName: 'Street number max length',
+                    prepareInput: (input) => input.values.streetNumber = 'x'.repeat(11),
+                    errorSelector: 'street-number',
+                    expectedError: 'Máximo 10 caracteres',
+                },
+                {
+                    testName: 'Password max length',
+                    prepareInput: (input) => input.values.password = 'x'.repeat(61),
+                    errorSelector: 'password',
+                    expectedError: 'Máximo 60 caracteres',
+                },
+                {
+                    testName: 'Confirmed password max length',
+                    prepareInput: (input) => input.values.confirmedPassword = 'x'.repeat(61),
+                    errorSelector: 'confirmed-password',
+                    expectedError: 'Máximo 60 caracteres',
+                },
+            ];
+
+            testCases.forEach(test => {
+                it(test.testName, () => {
+                    const input = {
+                        values: validUser(),
+                        selectState: true,
+                        selectRole: true
+                    };
+
+                    test.prepareInput(input);
+
+                    cy.get('#create-new').click();
+
+                    fillCreateUserForm({
+                        values: input.values,
+                        selectState: input.selectState,
+                        selectRole: input.selectRole
+                    })
+
+                    cy.get('#create-user-submit').click();
+
+                    cy.get(`.form-error.${test.errorSelector}`).should('contain', test.expectedError);
+                })
+            })
+        });
     });
 });
 
@@ -157,19 +234,17 @@ const validUser = () => {
 }
 
 function fillCreateUserForm({ values, selectState, selectRole }) {
-    cy.get('#create-user-form').within(() => {
-        type('#create-user-name', values.name);
-        type('#create-user-last-name', values.lastName);
-        type('#create-user-city', values.city);
-        type('#create-user-district', values.district);
-        type('#create-user-street', values.street);
-        type('#create-user-street-number', values.streetNumber);
-        type('#create-user-zip-code', values.zipCode);
-        type('#create-user-email', values.email);
-        type('#create-user-phone', values.phone);
-        type('#create-user-password', values.password);
-        type('#create-user-confirmed-password', values.confirmedPassword);
-    });
+    type('#create-user-form #create-user-name-field', values.name);
+    type('#create-user-form #create-user-last-name', values.lastName);
+    type('#create-user-form #create-user-city', values.city);
+    type('#create-user-form #create-user-district', values.district);
+    type('#create-user-form #create-user-street', values.street);
+    type('#create-user-form #create-user-street-number', values.streetNumber);
+    type('#create-user-form #create-user-zip-code', values.zipCode);
+    type('#create-user-form #create-user-email', values.email);
+    type('#create-user-form #create-user-phone', values.phone);
+    type('#create-user-form #create-user-password', values.password);
+    type('#create-user-form #create-user-confirmed-password', values.confirmedPassword);
 
     if (selectState) {
         clickRandomDropdownValue('#create-user-state');
@@ -197,6 +272,6 @@ function clickRandomDropdownValue(id) {
 
 const type = (selector, value) => {
     if (value !== undefined && value !== null && value !== '') {
-        cy.get(selector).type(value);
+        cy.get(selector).clear({ force: true }).type(value, { force: true });
     }
 };
