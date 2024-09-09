@@ -21,7 +21,7 @@
                         <input pInputText id="email" formControlName="email" [style]="{'width': '100%'}" />
                         <label for="email">Correo</label>
                     </p-floatLabel>
-                    <div class="form-error">
+                    <div id="email-error" class="form-error">
                         {{ emailError }}
                     </div>
                 </div>
@@ -32,17 +32,18 @@
                                 [style]="{'width': '100%'}" />
                             <label for="password">Contraseña</label>
                         </p-floatLabel>
-                        <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
+                        <button id="password-toggle" type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}"
                             (click)="onPasswordVisibilityClick()" [text]="true">
                         </button>
                     </p-inputGroup>
-                    <div class="form-error">
+                    <div id="password-error" class="form-error">
                         {{ passwordError }}
                     </div>
                 </div>
             </fieldset>
             <div class="login-form__submit-container">
-                <p-button label="Ingresar" type="submit" [style]="{'width': '100%'}" [loading]="loggingUser" />
+                <p-button label="Ingresar" type="submit" id="submit" [style]="{'width': '100%'}"
+                    [loading]="loggingUser" />
             </div>
         </form>
     </div>

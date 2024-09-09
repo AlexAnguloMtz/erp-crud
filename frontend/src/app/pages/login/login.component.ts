@@ -10,7 +10,10 @@ import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 
+const emailMaxLength: number = 50;
+
 const passwordMinLength: number = 8;
+const passwordMaxLength: number = 50;
 
 type LoginError = {
   header: string,
@@ -85,8 +88,20 @@ export class LoginComponent {
     this.loginFormStatus = { _type: 'login-base' };
     this.passwordFieldProps = passwordNotVisibleProps;
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(passwordMinLength)]],
+      email: [
+        '', [
+          Validators.required,
+          Validators.email,
+          Validators.maxLength(emailMaxLength)
+        ]
+      ],
+      password: [
+        '', [
+          Validators.required,
+          Validators.minLength(passwordMinLength),
+          Validators.maxLength(passwordMaxLength)
+        ]
+      ],
     });
   }
 
@@ -170,6 +185,10 @@ export class LoginComponent {
       return 'Email inválido';
     }
 
+    if (emailControl.errors?.['maxlength']) {
+      return `Máximo ${emailMaxLength} caracteres`;
+    }
+
     return '';
   }
 
@@ -190,6 +209,10 @@ export class LoginComponent {
 
     if (passwordControl.errors?.['minlength']) {
       return `Mínimo ${passwordMinLength} caracteres`;
+    }
+
+    if (passwordControl.errors?.['maxlength']) {
+      return `Máximo ${passwordMaxLength} caracteres`;
     }
 
     return '';

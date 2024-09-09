@@ -81,6 +81,7 @@ export class MainTemplateComponent {
         label: 'Opciones',
         items: [
           {
+            id: 'logout',
             label: 'Cerrar sesión',
             icon: 'pi pi-sign-out',
             command: () => this.onLogoutClick(),
