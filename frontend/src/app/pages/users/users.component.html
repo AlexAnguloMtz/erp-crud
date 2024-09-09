@@ -1,5 +1,5 @@
 <p-confirmDialog />
-<p-dialog class="save-user-dialog" [draggable]="false" [dismissableMask]="true" (onHide)="onHideUserForm()"
+<p-dialog class="save-user-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideUserForm()"
     header="Usuario" [modal]="true" [(visible)]="createItemVisible" [style]="{'padding-bottom': '0'}">
     <form class="create-user-form" [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()">
         <fieldset class="create-user-fields">
@@ -157,7 +157,7 @@
             </div>
         </fieldset>
         <div class="item-form__actions">
-            <p-button label="Cancelar" severity="secondary" (click)="onCancelUserForm()" />
+            <p-button label="Cerrar" severity="secondary" (click)="onCancelUserForm()" />
             <p-button label="Guardar" type="submit" [loading]="savingUser" />
         </div>
     </form>
