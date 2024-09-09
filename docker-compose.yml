@@ -5,8 +5,6 @@ services:
       context: ./backend
       dockerfile: database.Dockerfile
     container_name: erp_database
-    ports:
-      - "5432:5432"
     volumes:
       - erp_data:/var/lib/postgresql/data
     env_file:
@@ -22,8 +20,6 @@ services:
       context: ./backend
       dockerfile: app.Dockerfile
     container_name: erp_backend
-    ports:
-      - "8081:8080"
     depends_on:
       erp_database:
         condition: service_healthy
