@@ -27,8 +27,8 @@ public class UserFacade {
         createUserCommandHandler.handle(command);
     }
 
-    public void updateUser(String id, UpdateUserCommand command) {
-        updateUserCommandHandler.handle(id, command);
+    public FullUserDetails updateUser(String id, UpdateUserCommand command) {
+        return updateUserCommandHandler.handle(id, command);
     }
 
     public PageResponse<FullUserDetails> getUsers(GetUsersQuery getUsersQuery) {

@@ -33,12 +33,11 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(
+    public ResponseEntity<FullUserDetails> updateUser(
             @Valid @RequestBody UpdateUserCommand command,
             @PathVariable String id
     ) {
-        usersFacade.updateUser(id, command);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(usersFacade.updateUser(id, command), HttpStatus.OK);
     }
 
     @GetMapping("/me")

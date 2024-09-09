@@ -1,7 +1,6 @@
 package com.aram.erpcrud.auth;
 
 import com.aram.erpcrud.auth.application.*;
-import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import com.aram.erpcrud.auth.payload.AccountCreationResponse;
 import com.aram.erpcrud.auth.payload.AccountPublicDetails;
 import com.aram.erpcrud.auth.payload.CreateAccountCommand;
@@ -55,7 +54,7 @@ public class SimpleAuthService implements AuthService {
     }
 
     @Override
-    public void updateAccount(UpdateAccountCommand command) {
-        updateAccountCommandHandler.handle(command);
+    public AccountPublicDetails updateAccount(UpdateAccountCommand command) {
+        return updateAccountCommandHandler.handle(command);
     }
 }

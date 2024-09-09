@@ -5,8 +5,10 @@ import com.aram.erpcrud.auth.payload.AccountPublicDetails;
 import com.aram.erpcrud.auth.payload.UpdateAccountCommand;
 import com.aram.erpcrud.locations.LocationsService;
 import com.aram.erpcrud.locations.domain.State;
+import com.aram.erpcrud.locations.payload.StateDTO;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.users.payload.FullUserDetails;
 import com.aram.erpcrud.users.payload.UpdateUserCommand;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,7 @@ public class UpdateUserCommandHandler {
     }
 
     @Transactional
-    public void handle(String id, UpdateUserCommand command) {
+    public FullUserDetails handle(String id, UpdateUserCommand command) {
         Optional<AccountPublicDetails> accountOptional = authService.findAccountById(id);
         if (accountOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -46,7 +48,7 @@ public class UpdateUserCommandHandler {
         State state = locationsService.findStateById(command.state());
 
         UpdateAccountCommand updateAccountCommand = toAccountPublicDetails(id, command);
-        authService.updateAccount(updateAccountCommand);
+        AccountPublicDetails updatedAccount = authService.updateAccount(updateAccountCommand);
 
         PersonalDetails personalDetails = personalDetailsOptional.get();
 
@@ -61,6 +63,21 @@ public class UpdateUserCommandHandler {
         personalDetails.setPhone(command.phone());
 
         personalDetailsRepository.save(personalDetails);
+
+        return new FullUserDetails(
+                id,
+                personalDetails.getName(),
+                personalDetails.getLastName(),
+                toStateDto(personalDetails.getState()),
+                personalDetails.getCity(),
+                personalDetails.getDistrict(),
+                personalDetails.getStreet(),
+                personalDetails.getStreetNumber(),
+                personalDetails.getZipCode(),
+                personalDetails.getPhone(),
+                updatedAccount.email(),
+                updatedAccount.rolePublicDetails()
+        );
     }
 
     private UpdateAccountCommand toAccountPublicDetails(String id, UpdateUserCommand command) {
@@ -69,5 +86,9 @@ public class UpdateUserCommandHandler {
             command.email(),
             command.roleId()
         );
+    }
+
+    private StateDTO toStateDto(State state) {
+        return new StateDTO(state.getId(), state.getName());
     }
 }
