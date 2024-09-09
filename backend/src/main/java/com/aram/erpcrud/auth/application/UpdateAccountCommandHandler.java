@@ -37,6 +37,12 @@ public class UpdateAccountCommandHandler {
         }
 
         AuthUser authUser = authUserOptional.get();
+
+        Optional<AuthUser> authUserByEmailOptional = authUserRepository.findByEmail(command.email());
+        if (authUserByEmailOptional.isPresent() && !authUser.getId().equals(authUserByEmailOptional.get().getId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "email belongs to another user");
+        }
+
         boolean changedSelf = command.requestingUserEmail().equals(authUserOptional.get().getEmail());
 
         Optional<AuthRole> authRoleOptional = authRoleRepository.findById(command.roleId());
