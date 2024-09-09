@@ -683,12 +683,26 @@ export class UsersComponent {
 
     this.updateUserStatus = { _type: 'updating-user' }
     this.usersService.updateUser(localStorage.getItem('auth-token')!, this.userToUpdateId, this.userUpdateCommand()).subscribe({
-      next: () => {
+      next: (user: UserDetails) => {
+        this.updateUserRow(user);
         this.updateItemVisible = false;
         this.updateUserStatus = { _type: 'user-update-base' }
         this.userSavedDialogVisible = true;
       },
       error: (error) => this.handleUserUpdateError(error),
+    })
+  }
+
+  private updateUserRow(user: UserDetails): void {
+    if (this.status._type !== 'base') {
+      return;
+    }
+
+    this.status.response.items = this.status.response.items.map(x => {
+      if (x.id == user.id) {
+        return user;
+      }
+      return x;
     })
   }
 
