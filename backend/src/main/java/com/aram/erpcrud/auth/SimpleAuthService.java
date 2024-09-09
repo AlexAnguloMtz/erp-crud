@@ -15,19 +15,22 @@ public class SimpleAuthService implements AuthService {
     private final GetAccountByEmailQueryHandler getAccountByEmailQueryHandler;
     private final GetAccountByIdQueryHandler getAccountByIdQueryHandler;
     private final UpdateAccountCommandHandler updateAccountCommandHandler;
+    private final DeleteAccountByIdHandler deleteAccountByIdHandler;
 
     public SimpleAuthService(
             CreateAccountCommandHandler createAccountCommandHandler,
             GetAccountsQueryHandler getAccountsQueryHandler,
             GetAccountByEmailQueryHandler getAccountByEmailQueryHandler,
             GetAccountByIdQueryHandler getAccountByIdQueryHandler,
-            UpdateAccountCommandHandler updateAccountCommandHandler
+            UpdateAccountCommandHandler updateAccountCommandHandler,
+            DeleteAccountByIdHandler deleteAccountByIdHandler
     ) {
         this.createAccountCommandHandler = createAccountCommandHandler;
         this.getAccountsQueryHandler = getAccountsQueryHandler;
         this.getAccountByEmailQueryHandler = getAccountByEmailQueryHandler;
         this.getAccountByIdQueryHandler = getAccountByIdQueryHandler;
         this.updateAccountCommandHandler = updateAccountCommandHandler;
+        this.deleteAccountByIdHandler = deleteAccountByIdHandler;
     }
 
     @Override
@@ -53,5 +56,10 @@ public class SimpleAuthService implements AuthService {
     @Override
     public UpdateAccountResponse updateAccount(UpdateAccountCommand command) {
         return updateAccountCommandHandler.handle(command);
+    }
+
+    @Override
+    public void deleteAccountById(String id) {
+        deleteAccountByIdHandler.handle(id);
     }
 }

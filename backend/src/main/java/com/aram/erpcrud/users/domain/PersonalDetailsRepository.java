@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface PersonalDetailsRepository extends JpaRepository<PersonalDetails, String>, JpaSpecificationExecutor<PersonalDetails> {
     Optional<PersonalDetails> findByAccountId(String accountId);
+    void deleteByAccountId(String id);
 }

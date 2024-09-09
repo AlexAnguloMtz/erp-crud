@@ -16,4 +16,6 @@ public interface AuthService {
     Optional<AccountPublicDetails> findAccountById(String id);
 
     UpdateAccountResponse updateAccount(UpdateAccountCommand command);
+
+    void deleteAccountById(String id);
 }

@@ -43,6 +43,12 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
+        usersFacade.deleteUserById(id);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping
     public ResponseEntity<PageResponse<FullUserDetails>> getUsers(
             @RequestParam(required = false) String search,

@@ -8,6 +8,7 @@ import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import com.aram.erpcrud.auth.payload.RolePublicDetails;
 import com.aram.erpcrud.auth.payload.UpdateAccountCommand;
 import com.aram.erpcrud.auth.payload.UpdateAccountResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,6 +31,7 @@ public class UpdateAccountCommandHandler {
         this.jwtHandler = jwtHandler;
     }
 
+    @Transactional
     public UpdateAccountResponse handle(UpdateAccountCommand command) {
         Optional<AuthUser> authUserOptional = authUserRepository.findById(command.id());
         if (authUserOptional.isEmpty()) {

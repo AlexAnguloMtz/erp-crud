@@ -11,16 +11,20 @@ public class UserFacade {
     private final GetUsersQueryHandler getUsersQueryHandler;
     private final GetMeQueryHandler getMeQueryHandler;
     private final UpdateUserCommandHandler updateUserCommandHandler;
+    private final DeleteUserByIdHandler deleteUserByIdHandler;
 
     public UserFacade(
             CreateUserCommandHandler createUserCommandHandler,
             GetUsersQueryHandler getUsersQueryHandler,
-            GetMeQueryHandler getMeQueryHandler, UpdateUserCommandHandler updateUserCommandHandler
+            GetMeQueryHandler getMeQueryHandler,
+            UpdateUserCommandHandler updateUserCommandHandler,
+            DeleteUserByIdHandler deleteUserByIdHandler
     ) {
         this.createUserCommandHandler = createUserCommandHandler;
         this.getUsersQueryHandler = getUsersQueryHandler;
         this.getMeQueryHandler = getMeQueryHandler;
         this.updateUserCommandHandler = updateUserCommandHandler;
+        this.deleteUserByIdHandler = deleteUserByIdHandler;
     }
 
     public void createUser(CreateUserCommand command) {
@@ -37,5 +41,9 @@ public class UserFacade {
 
     public GetMeResponse getMe(String email) {
         return getMeQueryHandler.handle(email);
+    }
+
+    public void deleteUserById(String id) {
+        deleteUserByIdHandler.handle(id);
     }
 }
