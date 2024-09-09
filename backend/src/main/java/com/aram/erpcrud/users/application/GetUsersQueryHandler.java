@@ -139,7 +139,7 @@ public class GetUsersQueryHandler {
 
     private FullUserDetails toUserPreview(AccountPublicDetails accountPublicDetails, PersonalDetails personalDetails) {
         return new FullUserDetails(
-                personalDetails.getId(),
+                accountPublicDetails.id(),
                 personalDetails.getName(),
                 personalDetails.getLastName(),
                 toDto(personalDetails.getState()),

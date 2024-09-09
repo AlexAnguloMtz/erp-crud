@@ -1,6 +1,7 @@
 package com.aram.erpcrud.users.rest;
 
 import com.aram.erpcrud.common.PageResponse;
+import com.aram.erpcrud.users.payload.UpdateUserCommand;
 import com.aram.erpcrud.users.application.UserFacade;
 import com.aram.erpcrud.users.payload.GetMeResponse;
 import com.aram.erpcrud.users.payload.FullUserDetails;
@@ -29,6 +30,15 @@ public class UserController {
     public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUserCommand command) {
         usersFacade.createUser(command);
         return new ResponseEntity<>(null, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateUser(
+            @Valid @RequestBody UpdateUserCommand command,
+            @PathVariable String id
+    ) {
+        usersFacade.updateUser(id, command);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @GetMapping("/me")

@@ -6,6 +6,7 @@ import com.aram.erpcrud.auth.domain.AuthUser;
 import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import com.aram.erpcrud.auth.payload.AccountCreationResponse;
 import com.aram.erpcrud.auth.payload.CreateAccountCommand;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,7 @@ public class CreateAccountCommandHandler {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public AccountCreationResponse handle(CreateAccountCommand command) {
         Optional<AuthUser> userOptional = authUserRepository.findByEmail(command.email());
         if (userOptional.isPresent()) {

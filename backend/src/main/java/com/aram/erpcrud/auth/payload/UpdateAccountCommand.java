@@ -1,4 +1,8 @@
 package com.aram.erpcrud.auth.payload;
 
-public class UpdateAccountCommand {
+public record UpdateAccountCommand(
+        String id,
+        String email,
+        String roleId
+) {
 }

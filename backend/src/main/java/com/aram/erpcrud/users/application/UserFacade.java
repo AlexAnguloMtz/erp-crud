@@ -1,10 +1,7 @@
 package com.aram.erpcrud.users.application;
 
 import com.aram.erpcrud.common.PageResponse;
-import com.aram.erpcrud.users.payload.GetMeResponse;
-import com.aram.erpcrud.users.payload.FullUserDetails;
-import com.aram.erpcrud.users.payload.CreateUserCommand;
-import com.aram.erpcrud.users.payload.GetUsersQuery;
+import com.aram.erpcrud.users.payload.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,19 +10,25 @@ public class UserFacade {
     private final CreateUserCommandHandler createUserCommandHandler;
     private final GetUsersQueryHandler getUsersQueryHandler;
     private final GetMeQueryHandler getMeQueryHandler;
+    private final UpdateUserCommandHandler updateUserCommandHandler;
 
     public UserFacade(
             CreateUserCommandHandler createUserCommandHandler,
             GetUsersQueryHandler getUsersQueryHandler,
-            GetMeQueryHandler getMeQueryHandler
+            GetMeQueryHandler getMeQueryHandler, UpdateUserCommandHandler updateUserCommandHandler
     ) {
         this.createUserCommandHandler = createUserCommandHandler;
         this.getUsersQueryHandler = getUsersQueryHandler;
         this.getMeQueryHandler = getMeQueryHandler;
+        this.updateUserCommandHandler = updateUserCommandHandler;
     }
 
     public void createUser(CreateUserCommand command) {
         createUserCommandHandler.handle(command);
+    }
+
+    public void updateUser(String id, UpdateUserCommand command) {
+        updateUserCommandHandler.handle(id, command);
     }
 
     public PageResponse<FullUserDetails> getUsers(GetUsersQuery getUsersQuery) {
