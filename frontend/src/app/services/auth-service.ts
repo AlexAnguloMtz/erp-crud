@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, Observable, throwError } from "rxjs";
+import { catchError, Observable, retry, throwError } from "rxjs";
 import { environment } from "../../environments/environment";
 
 type LoginCredentials = {
@@ -37,6 +37,7 @@ export class AuthService {
 
     logIn(credentials: LoginCredentials): Observable<AuthenticationResponse> {
         return this.http.post<AuthenticationResponse>(this.loginUrl, credentials).pipe(
+            retry(5),
             catchError((error) => {
                 if (error instanceof HttpErrorResponse && error.status === 403) {
                     return throwError(() => new BadCredentialsError('BadCredentials'));

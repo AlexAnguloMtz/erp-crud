@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, Observable, throwError } from "rxjs";
+import { catchError, Observable, retry, throwError } from "rxjs";
 import { State } from "./users-service";
 import { environment } from "../../environments/environment";
 
@@ -19,6 +19,7 @@ export class LocationsService {
         }
 
         return this.http.get<Array<State>>(this.statesUrl, { headers }).pipe(
+            retry(5),
             catchError((error) => {
                 return throwError(() => new Error());
             })
