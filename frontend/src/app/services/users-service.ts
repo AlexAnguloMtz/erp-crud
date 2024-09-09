@@ -38,6 +38,20 @@ export type CreateUserCommand = {
     confirmedPassword: string,
 }
 
+export type UpdateUserCommand = {
+    name: string,
+    lastName: string,
+    state: string,
+    city: string,
+    district: string,
+    street: string,
+    streetNumber: string,
+    zipCode: string,
+    email: string,
+    phone: string,
+    roleId: string,
+}
+
 export type UserDetails = {
     id: string,
     name: string,
@@ -89,6 +103,28 @@ export class UsersService {
         };
 
         return this.http.post<void>(this.usersUrl, command, { headers }).pipe(
+            catchError(error => {
+                if (error instanceof HttpErrorResponse && error.status === 409) {
+                    return throwError(() => new UserExistsError('User already exists.'));
+                }
+                return throwError(() => new Error('An unexpected error occurred.'));
+            })
+        );
+    }
+
+    updateUser(token: string, id: string, command: UpdateUserCommand): Observable<void> {
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
+
+        const url = `${this.usersUrl}/${id}`;
+
+        console.log('updating user with id and values: ')
+        console.log(id)
+        console.log(JSON.stringify(command))
+
+        return this.http.patch<void>(url, command, { headers }).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 409) {
                     return throwError(() => new UserExistsError('User already exists.'));

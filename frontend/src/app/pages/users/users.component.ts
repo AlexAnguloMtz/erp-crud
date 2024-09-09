@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CreateUserCommand, State, UserDetails, UsersService } from '../../services/users-service';
+import { CreateUserCommand, State, UpdateUserCommand, UserDetails, UsersService } from '../../services/users-service';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -117,7 +117,17 @@ type CreatingUser = {
   _type: 'creating-user'
 }
 
+type UserUpdateBase = {
+  _type: 'user-update-base'
+}
+
+type UpdatingUser = {
+  _type: 'updating-user'
+}
+
 type CreateUserStatus = UserCreationBase | CreatingUser
+
+type UpdateUserStatus = UserUpdateBase | UpdatingUser
 
 @Component({
   selector: 'app-users',
@@ -149,18 +159,24 @@ export class UsersComponent {
   lastSeenTotalItems: number;
   debounceTimeout: any;
   createItemVisible: boolean;
+  updateItemVisible: boolean;
 
   roleOptionsStatus: RoleOptionsStatus;
 
   stateOptionsStatus: StatesOptionsStatus;
 
   createUserStatus: CreateUserStatus;
+  updateUserStatus: UpdateUserStatus;
 
   userForm: FormGroup;
+
+  updateUserForm: FormGroup;
 
   userSavedDialogVisible: boolean;
 
   passwordFieldProps: PasswordFieldProps;
+
+  userToUpdateId: string;
 
   constructor(
     private router: Router,
@@ -178,6 +194,7 @@ export class UsersComponent {
       this.router.navigate(['/login']);
     }
 
+    this.userToUpdateId = '';
     this.searchControl = new FormControl('');
     this.selectedPageNumber = 0;
     this.lastSeenTotalItems = 0;
@@ -187,7 +204,9 @@ export class UsersComponent {
     this.roleOptionsStatus = { _type: 'base' }
     this.stateOptionsStatus = { _type: 'base' }
     this.createUserStatus = { _type: 'user-creation-base' }
+    this.updateUserStatus = { _type: 'user-update-base' }
     this.userForm = this.createUserForm();
+    this.updateUserForm = this.createUpdateUserForm();
     this.searchUsers(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
     this.searchControl.valueChanges.subscribe(search => this.debounceSearch(search))
   }
@@ -267,8 +286,35 @@ export class UsersComponent {
     return this.stateOptionsStatus.states;
   }
 
-  get nameError(): string {
-    const control: FormControl = this.userForm.get('name') as FormControl;
+  get creationErrors(): { [key: string]: string } {
+    const errors: { [key: string]: string } = this.commonUserFormErrors(this.userForm);
+    errors['password'] = this.passwordError();
+    errors['confirmedPassword'] = this.confirmedPasswordError();
+    return errors
+  }
+
+  get updateErrors(): { [key: string]: string } {
+    return this.commonUserFormErrors(this.userForm);
+  }
+
+  private commonUserFormErrors(form: FormGroup): { [key: string]: string } {
+    const errors: { [key: string]: string } = {};
+    errors['name'] = this.nameError(form);
+    errors['lastName'] = this.lastNameError(form);
+    errors['state'] = this.stateError(form);
+    errors['city'] = this.cityError(form);
+    errors['district'] = this.districtError(form);
+    errors['street'] = this.streetError(form);
+    errors['streetNumber'] = this.streetNumberError(form);
+    errors['email'] = this.emailError(form);
+    errors['phone'] = this.phoneError(form);
+    errors['zipCode'] = this.zipCodeError(form);
+    errors['role'] = this.roleError(form);
+    return errors
+  }
+
+  private nameError(form: FormGroup): string {
+    const control: FormControl = form.get('name') as FormControl;
 
     if (control.valid) {
       return '';
@@ -289,8 +335,8 @@ export class UsersComponent {
     return '';
   }
 
-  get lastNameError(): string {
-    const control: FormControl = this.userForm.get('lastName') as FormControl;
+  private lastNameError(form: FormGroup): string {
+    const control: FormControl = form.get('lastName') as FormControl;
 
     if (control.valid) {
       return '';
@@ -311,8 +357,8 @@ export class UsersComponent {
     return '';
   }
 
-  get stateError(): string {
-    const control: FormControl = this.userForm.get('state') as FormControl;
+  private stateError(form: FormGroup): string {
+    const control: FormControl = form.get('state') as FormControl;
 
     if (control.valid) {
       return '';
@@ -333,8 +379,8 @@ export class UsersComponent {
     return '';
   }
 
-  get cityError(): string {
-    const control: FormControl = this.userForm.get('city') as FormControl;
+  private cityError(form: FormGroup): string {
+    const control: FormControl = form.get('city') as FormControl;
 
     if (control.valid) {
       return '';
@@ -355,8 +401,8 @@ export class UsersComponent {
     return '';
   }
 
-  get districtError(): string {
-    const control: FormControl = this.userForm.get('district') as FormControl;
+  private districtError(form: FormGroup): string {
+    const control: FormControl = form.get('district') as FormControl;
 
     if (control.valid) {
       return '';
@@ -377,8 +423,8 @@ export class UsersComponent {
     return '';
   }
 
-  get streetError(): string {
-    const control: FormControl = this.userForm.get('street') as FormControl;
+  private streetError(form: FormGroup): string {
+    const control: FormControl = form.get('street') as FormControl;
 
     if (control.valid) {
       return '';
@@ -399,8 +445,8 @@ export class UsersComponent {
     return '';
   }
 
-  get streetNumberError(): string {
-    const control: FormControl = this.userForm.get('streetNumber') as FormControl;
+  private streetNumberError(form: FormGroup): string {
+    const control: FormControl = form.get('streetNumber') as FormControl;
 
     if (control.valid) {
       return '';
@@ -421,8 +467,8 @@ export class UsersComponent {
     return '';
   }
 
-  get emailError(): string {
-    const control: FormControl = this.userForm.get('email') as FormControl;
+  private emailError(form: FormGroup): string {
+    const control: FormControl = form.get('email') as FormControl;
 
     if (control.valid) {
       return '';
@@ -447,8 +493,8 @@ export class UsersComponent {
     return '';
   }
 
-  get phoneError(): string {
-    const control: FormControl = this.userForm.get('phone') as FormControl;
+  private phoneError(form: FormGroup): string {
+    const control: FormControl = form.get('phone') as FormControl;
 
     if (control.valid) {
       return '';
@@ -469,8 +515,8 @@ export class UsersComponent {
     return '';
   }
 
-  get zipCodeError(): string {
-    const control: FormControl = this.userForm.get('zipCode') as FormControl;
+  private zipCodeError(form: FormGroup): string {
+    const control: FormControl = form.get('zipCode') as FormControl;
 
     if (control.valid) {
       return '';
@@ -491,8 +537,8 @@ export class UsersComponent {
     return '';
   }
 
-  get roleError(): string {
-    const control: FormControl = this.userForm.get('role') as FormControl;
+  private roleError(form: FormGroup): string {
+    const control: FormControl = form.get('role') as FormControl;
 
     if (control.valid) {
       return '';
@@ -510,7 +556,7 @@ export class UsersComponent {
   }
 
 
-  get passwordError(): string {
+  private passwordError(): string {
     const control: FormControl = this.userForm.get('password') as FormControl;
 
     if (control.valid) {
@@ -532,7 +578,7 @@ export class UsersComponent {
     return '';
   }
 
-  get confirmedPasswordError(): string {
+  private confirmedPasswordError(): string {
     const control: FormControl = this.userForm.get('confirmedPassword') as FormControl;
     const passwordControl = this.userForm.get('password') as FormControl;
 
@@ -559,6 +605,10 @@ export class UsersComponent {
     return this.createUserStatus._type === 'creating-user';
   }
 
+  get updatingUser(): boolean {
+    return this.updateUserStatus._type === 'updating-user';
+  }
+
   onPasswordVisibilityClick() {
     if (this.passwordFieldProps === passwordVisibleProps) {
       this.passwordFieldProps = passwordNotVisibleProps;
@@ -568,8 +618,9 @@ export class UsersComponent {
   }
 
   onRowClick(user: UserDetails): void {
-    this.userForm.patchValue(user);
-    this.createItemVisible = true;
+    this.userToUpdateId = user.id;
+    this.updateUserForm.patchValue(user);
+    this.updateItemVisible = true;
     this.loadRolesOnRowClick(user.role.id);
     this.loadStatesOnRowClick(user.state.id);
   }
@@ -602,7 +653,7 @@ export class UsersComponent {
     this.userForm.get('state')?.setValue(stateId);
   }
 
-  onUserFormSubmit(): void {
+  onCreateUserSubmit(): void {
     if (!this.userForm.valid) {
       this.userForm.markAllAsTouched();
       return;
@@ -621,6 +672,23 @@ export class UsersComponent {
         this.userSavedDialogVisible = true;
       },
       error: (error) => this.handleUserCreationError(error),
+    })
+  }
+
+  onUpdateUserSubmit(): void {
+    if (!this.updateUserForm.valid) {
+      this.updateUserForm.markAllAsTouched();
+      return;
+    }
+
+    this.updateUserStatus = { _type: 'updating-user' }
+    this.usersService.updateUser(localStorage.getItem('auth-token')!, this.userToUpdateId, this.userUpdateCommand()).subscribe({
+      next: () => {
+        this.updateItemVisible = false;
+        this.updateUserStatus = { _type: 'user-update-base' }
+        this.userSavedDialogVisible = true;
+      },
+      error: (error) => this.handleUserUpdateError(error),
     })
   }
 
@@ -699,6 +767,10 @@ export class UsersComponent {
     this.createItemVisible = false;
   }
 
+  onCancelUpdateUserForm(): void {
+    this.updateItemVisible = false;
+  }
+
   onHideUserForm(): void {
     this.userForm.reset();
   }
@@ -711,6 +783,13 @@ export class UsersComponent {
     return {
       ...this.userForm.value,
       roleId: this.userForm.value.role,
+    }
+  }
+
+  private userUpdateCommand(): UpdateUserCommand {
+    return {
+      ...this.updateUserForm.value,
+      roleId: this.updateUserForm.value.role,
     }
   }
 
@@ -743,7 +822,16 @@ export class UsersComponent {
 
   private handleUserCreationError(error: Error): void {
     this.createUserStatus = { _type: 'user-creation-base' }
-    const err = this.mapUserCreationError(error);
+    this.handleUserError(error);
+  }
+
+  private handleUserUpdateError(error: Error): void {
+    this.updateUserStatus = { _type: 'user-update-base' }
+    this.handleUserError(error);
+  }
+
+  private handleUserError(error: Error): void {
+    const err = this.mapSaveUserError(error);
     this.confirmationService.confirm({
       header: err.header,
       message: err.message,
@@ -754,16 +842,7 @@ export class UsersComponent {
     });
   }
 
-  private defaultPaginatedRequest(): PaginatedRequest {
-    return {
-      search: '',
-      pageNumber: this.selectedPageNumber,
-      pageSize: RECORDS_PER_PAGE,
-      sort: '',
-    }
-  }
-
-  private mapUserCreationError(error: Error): DisplayableError {
+  private mapSaveUserError(error: Error): DisplayableError {
     if (error.name === 'UserExistsError') {
       return {
         header: 'Usuario ya existe',
@@ -774,6 +853,15 @@ export class UsersComponent {
     return {
       header: 'Error',
       message: 'Ocurrió un error inesperado. Intenta de nuevo.',
+    }
+  }
+
+  private defaultPaginatedRequest(): PaginatedRequest {
+    return {
+      search: '',
+      pageNumber: this.selectedPageNumber,
+      pageSize: RECORDS_PER_PAGE,
+      sort: '',
     }
   }
 
@@ -850,5 +938,12 @@ export class UsersComponent {
         ]
       ],
     });
+  }
+
+  private createUpdateUserForm(): FormGroup {
+    const userForm: FormGroup = this.createUserForm();
+    userForm.removeControl('password');
+    userForm.removeControl('confirmedPassword')
+    return userForm;
   }
 }
