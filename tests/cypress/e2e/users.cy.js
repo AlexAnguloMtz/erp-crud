@@ -233,10 +233,6 @@ describe('users module', () => {
             testCases.forEach(test => runInvalidCreateUserInputTest(test));
         })
     });
-
-    context('delete user', () => {
-
-    })
 });
 
 // ######################## Helper functions ########################
