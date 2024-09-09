@@ -17,8 +17,7 @@ describe('users module', () => {
         it('user was created successfully', () => {
             cy.get('#create-new').click();
 
-            fillUserForm({
-                selector: '#create-user-form',
+            fillCreateUserForm({
                 values: validUser(),
                 selectState: true,
                 selectRole: true
@@ -37,6 +36,8 @@ describe('users module', () => {
     });
 });
 
+// ######################## Helper functions ########################
+
 const validUser = () => {
     const password = faker.internet.password();
     return {
@@ -54,8 +55,8 @@ const validUser = () => {
     }
 }
 
-function fillUserForm({ selector, values, selectState, selectRole }) {
-    cy.get(selector).within(() => {
+function fillCreateUserForm({ values, selectState, selectRole }) {
+    cy.get('#create-user-form').within(() => {
         cy.get('#create-user-name').type(values.name);
         cy.get('#create-user-last-name').type(values.lastName);
         cy.get('#create-user-city').type(values.city);
