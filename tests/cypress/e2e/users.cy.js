@@ -36,6 +36,78 @@ describe('users module', () => {
                     errorSelector: 'name',
                     expectedError: 'Valor requerido',
                 },
+                {
+                    testName: 'Last name is required',
+                    prepareInput: (input) => input.values.lastName = '',
+                    errorSelector: 'last-name',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'State is required',
+                    prepareInput: (input) => input.selectState = false,
+                    errorSelector: 'state',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'City is required',
+                    prepareInput: (input) => input.values.city = '',
+                    errorSelector: 'city',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'District is required',
+                    prepareInput: (input) => input.values.district = '',
+                    errorSelector: 'district',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'Street is required',
+                    prepareInput: (input) => input.values.street = '',
+                    errorSelector: 'street',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'Street number is required',
+                    prepareInput: (input) => input.values.streetNumber = '',
+                    errorSelector: 'street-number',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'Phone is required',
+                    prepareInput: (input) => input.values.phone = '',
+                    errorSelector: 'phone',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'Zip code is required',
+                    prepareInput: (input) => input.values.zipCode = '',
+                    errorSelector: 'zip-code',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'Email is required',
+                    prepareInput: (input) => input.values.email = '',
+                    errorSelector: 'email',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'Role is required',
+                    prepareInput: (input) => input.selectRole = false,
+                    errorSelector: 'role',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'Password is required',
+                    prepareInput: (input) => input.values.password = '',
+                    errorSelector: 'password',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'Confirmed password is required',
+                    prepareInput: (input) => input.values.confirmedPassword = '',
+                    errorSelector: 'confirmed-password',
+                    expectedError: 'Valor requerido',
+                },
             ];
 
             testCases.forEach(test => {
@@ -76,7 +148,7 @@ const validUser = () => {
         district: faker.location.secondaryAddress(),
         street: faker.location.street(),
         streetNumber: faker.location.buildingNumber(),
-        zipcode: faker.string.numeric(5),
+        zipCode: faker.string.numeric(5),
         email: faker.internet.email(),
         phone: faker.string.numeric(10),
         password: password,
@@ -92,7 +164,7 @@ function fillCreateUserForm({ values, selectState, selectRole }) {
         type('#create-user-district', values.district);
         type('#create-user-street', values.street);
         type('#create-user-street-number', values.streetNumber);
-        type('#create-user-zip-code', values.zipcode);
+        type('#create-user-zip-code', values.zipCode);
         type('#create-user-email', values.email);
         type('#create-user-phone', values.phone);
         type('#create-user-password', values.password);

@@ -11,6 +11,7 @@ import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
 
 type SidebarLink = {
+  id: string
   href: string,
   text: string,
   icon: string,
@@ -37,12 +38,14 @@ type MainTemplateStatus = LoadingStatus | BaseStatus | ErrorStatus
 
 const links: Array<SidebarLink> = [
   {
+    id: 'module-home',
     href: '/home',
     text: 'Inicio',
     icon: 'home',
 
   },
   {
+    id: 'module-users',
     href: '/home/users',
     text: 'Usuarios',
     icon: 'user',

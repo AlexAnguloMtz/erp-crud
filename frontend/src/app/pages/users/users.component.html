@@ -1,13 +1,13 @@
 <p-confirmDialog />
 <p-dialog class="save-user-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideUserForm()"
     header="Usuario" [modal]="true" [(visible)]="createItemVisible" [style]="{'padding-bottom': '0'}">
-    <form class="create-user-form" [formGroup]="userForm" (ngSubmit)="onCreateUserSubmit()">
+    <form id="create-user-form" class="create-user-form" [formGroup]="userForm" (ngSubmit)="onCreateUserSubmit()">
         <fieldset class="create-user-fields">
             <div class="double-input-container">
                 <div class="create-user-input">
                     <label for="create-user-name">Nombre</label>
                     <input pInputText id="create-user-name" formControlName="name" [style]="{'width': '100%'}" />
-                    <div class="form-error">
+                    <div class="form-error name">
                         {{ creationErrors['name'] }}
                     </div>
                 </div>
@@ -15,7 +15,7 @@
                     <label for="create-user-last-name">Apellido</label>
                     <input pInputText id="create-user-last-name" formControlName="lastName"
                         [style]="{'width': '100%'}" />
-                    <div class="form-error">
+                    <div class="form-error last-name">
                         {{ creationErrors['lastName'] }}
                     </div>
                 </div>
@@ -38,14 +38,14 @@
                     <p-dropdown id="create-user-state" formControlName="state" [options]="stateOptions"
                         optionLabel="name" optionValue="id" placeholder="Estado" [style]="{'width': '100%'}" />
                     }
-                    <div class="form-error">
+                    <div class="form-error state">
                         {{ creationErrors['state'] }}
                     </div>
                 </div>
                 <div class="create-user-input">
                     <label for="create-user-city">Ciudad</label>
                     <input pInputText id="create-user-city" formControlName="city" [style]="{'width': '100%'}" />
-                    <div class="form-error">
+                    <div class="form-error city">
                         {{ creationErrors['city'] }}
                     </div>
                 </div>
@@ -55,14 +55,14 @@
                     <label for="create-user-district">Colonia</label>
                     <input pInputText id="create-user-district" formControlName="district"
                         [style]="{'width': '100%'}" />
-                    <div class="form-error">
+                    <div class="form-error district">
                         {{ creationErrors['district'] }}
                     </div>
                 </div>
                 <div class="create-user-input">
                     <label for="create-user-street">Calle</label>
                     <input pInputText id="create-user-street" formControlName="street" [style]="{'width': '100%'}" />
-                    <div class="form-error">
+                    <div class="form-error street">
                         {{ creationErrors['street'] }}
                     </div>
                 </div>
@@ -72,14 +72,14 @@
                     <label for="create-user-street-number">Número de vivienda</label>
                     <input pInputText id="create-user-street-number" formControlName="streetNumber"
                         [style]="{'width': '100%'}" />
-                    <div class="form-error">
+                    <div class="form-error street-number">
                         {{ creationErrors['streetNumber'] }}
                     </div>
                 </div>
                 <div class="create-user-input">
                     <label for="create-user-zip-code">Código postal</label>
                     <input pInputText id="create-user-zip-code" formControlName="zipCode" [style]="{'width': '100%'}" />
-                    <div class="form-error">
+                    <div class="form-error zip-code">
                         {{ creationErrors['zipCode'] }}
                     </div>
                 </div>
@@ -88,14 +88,14 @@
                 <div class="create-user-input">
                     <label for="create-user-email">Correo</label>
                     <input pInputText id="create-user-email" formControlName="email" [style]="{'width': '100%'}" />
-                    <div class="form-error">
+                    <div class="form-error email">
                         {{ creationErrors['email'] }}
                     </div>
                 </div>
                 <div class="create-user-input">
                     <label for="create-user-phone">Teléfono</label>
                     <input pInputText id="create-user-phone" formControlName="phone" [style]="{'width': '100%'}" />
-                    <div class="form-error">
+                    <div class="form-error phone">
                         {{ creationErrors['phone'] }}
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                 <p-dropdown id="create-user-role" formControlName="role" [options]="roleOptions" optionLabel="name"
                     optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
                 }
-                <div class="form-error">
+                <div class="form-error role">
                     {{ creationErrors['role'] }}
                 </div>
             </div>
@@ -127,7 +127,7 @@
                     <input pInputText id="create-user-password" type="{{ passwordInputType }}"
                         formControlName="password" [style]="{'flex': '1'}" />
                     @if (creationErrors['password']) {
-                    <div class="form-error">
+                    <div class="form-error password">
                         {{ creationErrors['password'] }}
                     </div>
                     } @else {
@@ -144,7 +144,7 @@
                     <input pInputText id="create-user-confirmed-password" type="{{ passwordInputType }}"
                         formControlName="confirmedPassword" [style]="{'flex': '1'}" />
                     @if (creationErrors['confirmedPassword']) {
-                    <div class="form-error">
+                    <div class="form-error confirmed-password">
                         {{ creationErrors['confirmedPassword'] }}
                     </div>
                     } @else {
@@ -158,25 +158,25 @@
         </fieldset>
         <div class="item-form__actions">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelUserForm()" />
-            <p-button label="Guardar" type="submit" [loading]="savingUser" />
+            <p-button id="create-user-submit" label="Guardar" type="submit" [loading]="savingUser" />
         </div>
     </form>
 </p-dialog>
 <p-dialog class="save-user-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideUserForm()"
     header="Usuario" [modal]="true" [(visible)]="updateItemVisible" [style]="{'padding-bottom': '0'}">
-    <form class="create-user-form" [formGroup]="updateUserForm" (ngSubmit)="onUpdateUserSubmit()">
+    <form id="update-user-form" class="create-user-form" [formGroup]="updateUserForm" (ngSubmit)="onUpdateUserSubmit()">
         <fieldset class="create-user-fields">
             <div class="double-input-container">
                 <div class="create-user-input">
-                    <label for="create-user-name">Nombre</label>
-                    <input pInputText id="create-user-name" formControlName="name" [style]="{'width': '100%'}" />
+                    <label for="update-user-name">Nombre</label>
+                    <input pInputText id="update-user-name" formControlName="name" [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['name'] }}
                     </div>
                 </div>
                 <div class="create-user-input">
-                    <label for="create-user-last-name">Apellido</label>
-                    <input pInputText id="create-user-last-name" formControlName="lastName"
+                    <label for="update-user-last-name">Apellido</label>
+                    <input pInputText id="update-user-last-name" formControlName="lastName"
                         [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['lastName'] }}
@@ -198,7 +198,7 @@
                             severity="secondary" />
                     </div>
                     } @else {
-                    <p-dropdown id="create-user-state" formControlName="state" [options]="stateOptions"
+                    <p-dropdown id="update-user-state" formControlName="state" [options]="stateOptions"
                         optionLabel="name" optionValue="id" placeholder="Estado" [style]="{'width': '100%'}" />
                     }
                     <div class="form-error">
@@ -206,8 +206,8 @@
                     </div>
                 </div>
                 <div class="create-user-input">
-                    <label for="create-user-city">Ciudad</label>
-                    <input pInputText id="create-user-city" formControlName="city" [style]="{'width': '100%'}" />
+                    <label for="update-user-city">Ciudad</label>
+                    <input pInputText id="update-user-city" formControlName="city" [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['city'] }}
                     </div>
@@ -215,16 +215,16 @@
             </div>
             <div class="double-input-container">
                 <div class="create-user-input">
-                    <label for="create-user-district">Colonia</label>
-                    <input pInputText id="create-user-district" formControlName="district"
+                    <label for="update-user-district">Colonia</label>
+                    <input pInputText id="update-user-district" formControlName="district"
                         [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['district'] }}
                     </div>
                 </div>
                 <div class="create-user-input">
-                    <label for="create-user-street">Calle</label>
-                    <input pInputText id="create-user-street" formControlName="street" [style]="{'width': '100%'}" />
+                    <label for="update-user-street">Calle</label>
+                    <input pInputText id="update-user-street" formControlName="street" [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['street'] }}
                     </div>
@@ -232,16 +232,16 @@
             </div>
             <div class="double-input-container">
                 <div class="create-user-input">
-                    <label for="create-user-street-number">Número de vivienda</label>
-                    <input pInputText id="create-user-street-number" formControlName="streetNumber"
+                    <label for="update-user-street-number">Número de vivienda</label>
+                    <input pInputText id="update-user-street-number" formControlName="streetNumber"
                         [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['streetNumber'] }}
                     </div>
                 </div>
                 <div class="create-user-input">
-                    <label for="create-user-zip-code">Código postal</label>
-                    <input pInputText id="create-user-zip-code" formControlName="zipCode" [style]="{'width': '100%'}" />
+                    <label for="update-user-zip-code">Código postal</label>
+                    <input pInputText id="update-user-zip-code" formControlName="zipCode" [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['zipCode'] }}
                     </div>
@@ -249,15 +249,15 @@
             </div>
             <div class="double-input-container">
                 <div class="create-user-input">
-                    <label for="create-user-email">Correo</label>
-                    <input pInputText id="create-user-email" formControlName="email" [style]="{'width': '100%'}" />
+                    <label for="update-user-email">Correo</label>
+                    <input pInputText id="update-user-email" formControlName="email" [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['email'] }}
                     </div>
                 </div>
                 <div class="create-user-input">
-                    <label for="create-user-phone">Teléfono</label>
-                    <input pInputText id="create-user-phone" formControlName="phone" [style]="{'width': '100%'}" />
+                    <label for="update-user-phone">Teléfono</label>
+                    <input pInputText id="update-user-phone" formControlName="phone" [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['phone'] }}
                     </div>
@@ -277,7 +277,7 @@
                         severity="secondary" />
                 </div>
                 } @else {
-                <p-dropdown id="create-user-role" formControlName="role" [options]="roleOptions" optionLabel="name"
+                <p-dropdown id="update-user-role" formControlName="role" [options]="roleOptions" optionLabel="name"
                     optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
                 }
                 <div class="form-error">
@@ -294,7 +294,7 @@
         </div>
     </form>
 </p-dialog>
-<p-dialog [draggable]="false" [dismissableMask]="true" header="Éxito" [modal]="true"
+<p-dialog id="user-saved-dialog" [draggable]="false" [dismissableMask]="true" header="Éxito" [modal]="true"
     [(visible)]="userSavedDialogVisible">
     <span class="p-text-secondary block mb-5" [style]="{'minHeight': '100px'}">Se guardó el usuario</span>
     <div class="user-saved-dialog-actions">
@@ -315,7 +315,7 @@
 } @else {
 <div class="top-row">
     <h1 class="title">Usuarios</h1>
-    <p-button label="Nuevo" icon="pi pi-plus" (onClick)="onCreateClick()" />
+    <p-button label="Nuevo" id="create-new" icon="pi pi-plus" (onClick)="onCreateClick()" />
 </div>
 <div class="search-controls-container">
     <div class="search__bar-container">
