@@ -847,9 +847,7 @@ export class UsersComponent {
           this.removeDeletedRow();
           this.userDeletedDialogVisible = true;
         },
-        error: (error) => {
-
-        }
+        error: (error) => this.handleUserDeleteError(error),
       });
     }
   }
@@ -923,6 +921,11 @@ export class UsersComponent {
 
   private handleUserUpdateError(error: Error): void {
     this.updateUserStatus = { _type: 'user-update-base' }
+    this.handleUserError(error);
+  }
+
+  private handleUserDeleteError(error: Error): void {
+    this.deleteUserStatus = { _type: 'delete-user-base' }
     this.handleUserError(error);
   }
 
