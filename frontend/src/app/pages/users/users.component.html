@@ -1,4 +1,4 @@
-<p-confirmDialog />
+<p-confirmDialog id="message-dialog" />
 <p-dialog class="save-user-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideUserForm()"
     header="Usuario" [modal]="true" [(visible)]="createItemVisible" [style]="{'padding-bottom': '0'}">
     <form id="create-user-form" class="create-user-form" [formGroup]="userForm" (ngSubmit)="onCreateUserSubmit()">
@@ -298,7 +298,7 @@
     [(visible)]="userSavedDialogVisible">
     <span class="p-text-secondary block mb-5" [style]="{'minHeight': '100px'}">Se guardó el usuario</span>
     <div class="user-saved-dialog-actions">
-        <p-button label="Okay" (onClick)="onCloseSavedUserDialog()" />
+        <p-button id="close-saved-user-dialog" label="Okay" (onClick)="onCloseSavedUserDialog()" />
     </div>
 </p-dialog>
 <p-dialog [draggable]="false" [dismissableMask]="true" header="Eliminado" [modal]="true"

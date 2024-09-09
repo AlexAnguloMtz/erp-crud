@@ -28,6 +28,46 @@ describe('users module', () => {
             cy.get('#user-saved-dialog').should('contain', 'Se guardó el usuario');
         });
 
+        it('two users cannot have the same email', () => {
+            // Save first user
+            const firstUser = validUser();
+
+            cy.get('#create-new').click();
+
+            fillCreateUserForm({
+                values: firstUser,
+                selectState: true,
+                selectRole: true
+            });
+
+            cy.get('#create-user-submit').click();
+
+            cy.get('#user-saved-dialog').should('contain', 'Se guardó el usuario');
+
+            cy.get("#close-saved-user-dialog").click();
+
+            // Try to save second user with same email
+            const secondUser = validUser();
+
+            secondUser.email = firstUser.email;
+
+            cy.get('#create-new').click();
+
+            fillCreateUserForm({
+                values: firstUser,
+                selectState: true,
+                selectRole: true
+            });
+
+            cy.get('#create-user-submit').click();
+
+            // Check error message for duplicated email
+            cy.get('#message-dialog').within(() => {
+                cy.contains('Usuario ya existe').should('exist');
+                cy.contains('El correo ya pertenece a otro usuario').should('exist');
+            });
+        })
+
         describe('empty fields validations', () => {
             const testCases = [
                 {
@@ -110,30 +150,8 @@ describe('users module', () => {
                 },
             ];
 
-            testCases.forEach(test => {
-                it(test.testName, () => {
-                    const input = {
-                        values: validUser(),
-                        selectState: true,
-                        selectRole: true
-                    };
-
-                    test.prepareInput(input);
-
-                    cy.get('#create-new').click();
-
-                    fillCreateUserForm({
-                        values: input.values,
-                        selectState: input.selectState,
-                        selectRole: input.selectRole
-                    })
-
-                    cy.get('#create-user-submit').click();
-
-                    cy.get(`.form-error.${test.errorSelector}`).should('contain', test.expectedError);
-                })
-            })
-        });
+            testCases.forEach(test => runInvalidCreateUserInputTest(test));
+        })
 
         describe('max length validations', () => {
             const testCases = [
@@ -187,30 +205,29 @@ describe('users module', () => {
                 },
             ];
 
-            testCases.forEach(test => {
-                it(test.testName, () => {
-                    const input = {
-                        values: validUser(),
-                        selectState: true,
-                        selectRole: true
-                    };
+            testCases.forEach(test => runInvalidCreateUserInputTest(test));
+        })
 
-                    test.prepareInput(input);
+        describe('structure validations', () => {
+            const testCases = [
+                {
+                    testName: 'Zip code must be exactly 5 digits',
+                    prepareInput: (input) => input.values.zipCode = 'abcde',
+                    errorSelector: 'zip-code',
+                    expectedError: 'Deben ser 5 dígitos',
+                },
+                {
+                    testName: 'Phone must be exactly 10 digits',
+                    prepareInput: (input) => input.values.phone = 'abcdefghij',
+                    errorSelector: 'phone',
+                    expectedError: 'Deben ser 10 dígitos',
+                },
+            ];
 
-                    cy.get('#create-new').click();
+            testCases.forEach(test => runInvalidCreateUserInputTest(test));
+        })
 
-                    fillCreateUserForm({
-                        values: input.values,
-                        selectState: input.selectState,
-                        selectRole: input.selectRole
-                    })
 
-                    cy.get('#create-user-submit').click();
-
-                    cy.get(`.form-error.${test.errorSelector}`).should('contain', test.expectedError);
-                })
-            })
-        });
     });
 });
 
@@ -234,25 +251,27 @@ const validUser = () => {
 }
 
 function fillCreateUserForm({ values, selectState, selectRole }) {
-    type('#create-user-form #create-user-name-field', values.name);
-    type('#create-user-form #create-user-last-name', values.lastName);
-    type('#create-user-form #create-user-city', values.city);
-    type('#create-user-form #create-user-district', values.district);
-    type('#create-user-form #create-user-street', values.street);
-    type('#create-user-form #create-user-street-number', values.streetNumber);
-    type('#create-user-form #create-user-zip-code', values.zipCode);
-    type('#create-user-form #create-user-email', values.email);
-    type('#create-user-form #create-user-phone', values.phone);
-    type('#create-user-form #create-user-password', values.password);
-    type('#create-user-form #create-user-confirmed-password', values.confirmedPassword);
+    cy.get('#create-user-form').within(() => {
+        type('#create-user-name-field', values.name);
+        type('#create-user-last-name', values.lastName);
+        type('#create-user-city', values.city);
+        type('#create-user-district', values.district);
+        type('#create-user-street', values.street);
+        type('#create-user-street-number', values.streetNumber);
+        type('#create-user-zip-code', values.zipCode);
+        type('#create-user-email', values.email);
+        type('#create-user-phone', values.phone);
+        type('#create-user-password', values.password);
+        type('#create-user-confirmed-password', values.confirmedPassword);
 
-    if (selectState) {
-        clickRandomDropdownValue('#create-user-state');
-    }
+        if (selectState) {
+            clickRandomDropdownValue('#create-user-state');
+        }
 
-    if (selectRole) {
-        clickRandomDropdownValue('#create-user-role');
-    }
+        if (selectRole) {
+            clickRandomDropdownValue('#create-user-role');
+        }
+    });
 }
 
 function clickRandomDropdownValue(id) {
@@ -275,3 +294,27 @@ const type = (selector, value) => {
         cy.get(selector).clear({ force: true }).type(value, { force: true });
     }
 };
+
+function runInvalidCreateUserInputTest(test) {
+    it(test.testName, () => {
+        const input = {
+            values: validUser(),
+            selectState: true,
+            selectRole: true
+        };
+
+        test.prepareInput(input);
+
+        cy.get('#create-new').click();
+
+        fillCreateUserForm({
+            values: input.values,
+            selectState: input.selectState,
+            selectRole: input.selectRole
+        })
+
+        cy.get('#create-user-submit').click();
+
+        cy.get(`.form-error.${test.errorSelector}`).should('contain', test.expectedError);
+    })
+}
