@@ -72,6 +72,13 @@ export type UpdateUserResponse = {
     jwt: string | undefined
 }
 
+export class ForbiddenError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'ForbiddenError';
+    }
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -88,7 +95,14 @@ export class UsersService {
             'Authorization': `Bearer ${token}`,
         };
 
-        return this.http.get<User>(this.meUrl, { headers });
+        return this.http.get<User>(this.meUrl, { headers }).pipe(
+            catchError(error => {
+                if (error instanceof HttpErrorResponse && error.status === 403) {
+                    return throwError(() => new ForbiddenError('ForbiddenError'));
+                }
+                return throwError(() => new Error('An unexpected error occurred.'));
+            })
+        );
     }
 
     getUsers(token: string, request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {

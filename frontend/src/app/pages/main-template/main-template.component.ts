@@ -151,10 +151,14 @@ export class MainTemplateComponent {
   onLogoutClick(): void {
     localStorage.removeItem('auth-token');
     this.router.navigate(['/login']);
-    console.log('should be logged out')
   }
 
   private handleGetMeError(error: any): void {
+    if (error.name === 'ForbiddenError') {
+      localStorage.removeItem('auth-token');
+      this.router.navigate(['/login']);
+      return;
+    }
     this.status = { _type: 'error' }
   }
 
