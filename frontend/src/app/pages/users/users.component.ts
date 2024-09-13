@@ -18,7 +18,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { LocationsService } from '../../services/locations-service';
 
-const RECORDS_PER_PAGE: number = 15;
+const RECORDS_PER_PAGE: number = 10;
 
 type DisplayableError = {
   header: string,
