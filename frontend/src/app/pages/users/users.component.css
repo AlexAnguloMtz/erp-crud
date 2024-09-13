@@ -159,6 +159,10 @@
     font-size: 12px;
 }
 
+::ng-deep .p-paginator {
+    justify-content: flex-end;
+}
+
 .user-saved-dialog-actions {
     margin-top: 30px;
     display: flex;
