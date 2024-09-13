@@ -330,10 +330,7 @@
             [style]="{'width': '100%', 'height': '26px', 'padding': '0'}" (onChange)="onSortChanged()" />
     </div>
 </div>
-<div class="paginator-container">
-    <p-paginator (onPageChange)="onPageChange($event)" [showFirstLastIcon]="false" [pageLinkSize]="4" [first]="first"
-        [rows]="rows" [totalRecords]="totalRecords" class="custom-paginator" />
-</div>
+
 <div class="total-items-container">
     <p class="total-items">{{lastSeenTotalItems}} resultados</p>
 </div>
@@ -388,3 +385,7 @@
     }
 </div>
 }
+<div class="paginator-container">
+    <p-paginator (onPageChange)="onPageChange($event)" [showFirstLastIcon]="false" [pageLinkSize]="4" [first]="first"
+        [rows]="rows" [totalRecords]="totalRecords" class="custom-paginator" />
+</div>
