@@ -17,7 +17,7 @@ import { ConfirmationService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
-const RECORDS_PER_PAGE: number = 10;
+const RECORDS_PER_PAGE: number = 15;
 
 export type CrudItem = {
   id: string

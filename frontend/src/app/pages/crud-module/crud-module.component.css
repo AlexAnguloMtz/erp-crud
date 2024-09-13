@@ -165,3 +165,16 @@
         margin-top: 0;
     }
 }
+
+@media screen and (min-width: 800px) {
+    .table-container {
+        max-height: 350px;
+        overflow-y: scroll;
+    }
+}
+
+@media screen and (min-width: 800px) and (min-height: 350px) {
+    .table-container {
+        max-height: calc(100vh - 250px);
+    }
+}
