@@ -198,6 +198,11 @@
     font-size: 12px;
 }
 
+.table-headers th {
+    background-color: rgb(70, 94, 112);
+    color: white;
+}
+
 .row {
     font-size: 12px;
 }
