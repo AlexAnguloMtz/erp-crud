@@ -313,7 +313,7 @@ export class UsersComponent {
   }
 
   get updateErrors(): { [key: string]: string } {
-    return this.commonUserFormErrors(this.userForm);
+    return this.commonUserFormErrors(this.updateUserForm);
   }
 
   private commonUserFormErrors(form: FormGroup): { [key: string]: string } {
