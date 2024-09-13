@@ -50,6 +50,12 @@ const links: Array<SidebarLink> = [
     text: 'Usuarios',
     icon: 'user',
   },
+  {
+    id: 'module-products',
+    href: '/home/products',
+    text: 'Productos',
+    icon: 'user',
+  },
 ];
 
 @Component({

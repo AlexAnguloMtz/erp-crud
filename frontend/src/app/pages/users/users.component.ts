@@ -316,6 +316,11 @@ export class UsersComponent {
     return this.commonUserFormErrors(this.updateUserForm);
   }
 
+  get formattedResults(): string {
+    let noun = this.lastSeenTotalItems === 1 ? 'resultado' : 'resultados';
+    return `${this.lastSeenTotalItems} ${noun}`;
+  }
+
   private commonUserFormErrors(form: FormGroup): { [key: string]: string } {
     const errors: { [key: string]: string } = {};
     errors['name'] = this.nameError(form);
