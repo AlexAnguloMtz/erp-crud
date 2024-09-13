@@ -378,6 +378,8 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
       return;
     }
 
+    // Item was deleted, so we remove it from the user interface
+    this.lastSeenTotalItems = this.lastSeenTotalItems - 1;
     this.status.response.items = this.status.response.items.filter(x => x.id !== id);
   }
 
