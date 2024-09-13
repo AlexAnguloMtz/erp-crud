@@ -17,7 +17,7 @@
 <p-dialog class="save-item-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideItemForm()"
     header="{{ formTitle }}" [modal]="true" [(visible)]="updateItemVisible" [style]="{'padding-bottom': '0'}">
     <form id="update-item-form" class="create-item-form" [formGroup]="updateItemForm" (ngSubmit)="onUpdateItemSubmit()">
-        <fieldset class="create-item-fields">
+        <fieldset class="create-item-fields" [ngStyle]="updateItemFieldsStyle">
             <ng-container
                 *ngTemplateOutlet="updateItemFieldsTemplate;  context: { errors: updateErrors(), formGroup: updateItemForm }">
             </ng-container>
