@@ -1,0 +1,177 @@
+<ng-template #rowTemplate let-item>
+    <td>{{ item.name }}</td>
+    <td>{{ item.lastName }}</td>
+    <td>{{ item.role.name }}</td>
+    <td>{{ formatUserLocation(item) }}</td>
+    <td>{{ item.email }}</td>
+    <td>{{ item.phone }}</td>
+</ng-template>
+
+<ng-template #createItemFieldsTemplate let-creationErrors="creationErrors" let-formGroup="formGroup">
+    <div class="double-input-container">
+        <div class="create-user-input">
+            <label for="create-user-name-field">Nombre</label>
+            <input pInputText id="create-user-name-field" [formControl]="formGroup.get('name')"
+                [style]="{'width': '100%'}" />
+            <div class="form-error name">
+                {{ creationErrors['name'] }}
+            </div>
+        </div>
+        <div class="create-user-input">
+            <label for="create-user-last-name">Apellido</label>
+            <input pInputText id="create-user-last-name" [formControl]="formGroup.get('lastName')"
+                [style]="{'width': '100%'}" />
+            <div class="form-error last-name">
+                {{ creationErrors['lastName'] }}
+            </div>
+        </div>
+    </div>
+    <div class="double-input-container">
+        <div class="create-user-input">
+            <label for="create-user-state">Estado</label>
+            @if (loadingStatesOptions) {
+            <div class="create-user__progress-container">
+                <p-progressSpinner class="create-user__progress" ariaLabel="loading"
+                    [style]="{'width': '40px', 'height': '40px'}" />
+            </div>
+            } @else if (loadingStatesError) {
+            <div class="dropdown-load-error">
+                <div>Error de carga</div>
+                <p-button (click)="onRetryLoadStates()" [outlined]="true" icon="pi pi-refresh" severity="secondary" />
+            </div>
+            } @else {
+            <p-dropdown id="create-user-state" [formControl]="formGroup.get('state')" [options]="stateOptions"
+                optionLabel="name" optionValue="id" placeholder="Estado" [style]="{'width': '100%'}" />
+            }
+            <div class="form-error state">
+                {{ creationErrors['state'] }}
+            </div>
+        </div>
+        <div class="create-user-input">
+            <label for="create-user-city">Ciudad</label>
+            <input pInputText id="create-user-city" [formControl]="formGroup.get('city')" [style]="{'width': '100%'}" />
+            <div class="form-error city">
+                {{ creationErrors['city'] }}
+            </div>
+        </div>
+    </div>
+    <div class="double-input-container">
+        <div class="create-user-input">
+            <label for="create-user-district">Colonia</label>
+            <input pInputText id="create-user-district" [formControl]="formGroup.get('district')"
+                [style]="{'width': '100%'}" />
+            <div class="form-error district">
+                {{ creationErrors['district'] }}
+            </div>
+        </div>
+        <div class="create-user-input">
+            <label for="create-user-street">Calle</label>
+            <input pInputText id="create-user-street" [formControl]="formGroup.get('street')"
+                [style]="{'width': '100%'}" />
+            <div class="form-error street">
+                {{ creationErrors['street'] }}
+            </div>
+        </div>
+    </div>
+    <div class="double-input-container">
+        <div class="create-user-input">
+            <label for="create-user-street-number">Número de vivienda</label>
+            <input pInputText id="create-user-street-number" [formControl]="formGroup.get('streetNumber')"
+                [style]="{'width': '100%'}" />
+            <div class="form-error street-number">
+                {{ creationErrors['streetNumber'] }}
+            </div>
+        </div>
+        <div class="create-user-input">
+            <label for="create-user-zip-code">Código postal</label>
+            <input pInputText id="create-user-zip-code" [formControl]="formGroup.get('zipCode')"
+                [style]="{'width': '100%'}" />
+            <div class="form-error zip-code">
+                {{ creationErrors['zipCode'] }}
+            </div>
+        </div>
+    </div>
+    <div class="double-input-container">
+        <div class="create-user-input">
+            <label for="create-user-email">Correo</label>
+            <input pInputText id="create-user-email" [formControl]="formGroup.get('email')"
+                [style]="{'width': '100%'}" />
+            <div class="form-error email">
+                {{ creationErrors['email'] }}
+            </div>
+        </div>
+        <div class="create-user-input">
+            <label for="create-user-phone">Teléfono</label>
+            <input pInputText id="create-user-phone" [formControl]="formGroup.get('phone')"
+                [style]="{'width': '100%'}" />
+            <div class="form-error phone">
+                {{ creationErrors['phone'] }}
+            </div>
+        </div>
+    </div>
+    <div class="create-user-input">
+        <label for="create-user-role">Rol</label>
+        @if (loadingRolesOptions) {
+        <div class="create-user__progress-container">
+            <p-progressSpinner class="create-user__progress" ariaLabel="loading"
+                [style]="{'width': '40px', 'height': '40px'}" />
+        </div>
+        } @else if (loadingRolesError) {
+        <div class="dropdown-load-error">
+            <div>Error de carga</div>
+            <p-button (click)="onRetryLoadRoles()" [outlined]="true" icon="pi pi-refresh" severity="secondary" />
+        </div>
+        } @else {
+        <p-dropdown id="create-user-role" [formControl]="formGroup.get('role')" [options]="roleOptions"
+            optionLabel="name" optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
+        }
+        <div class="form-error role">
+            {{ creationErrors['role'] }}
+        </div>
+    </div>
+    <div class="password-field">
+        <div class="create-user-input">
+            <label for="create-user-password">Contraseña</label>
+            <input pInputText id="create-user-password" type="{{ passwordInputType }}"
+                [formControl]="formGroup.get('password')" [style]="{'flex': '1'}" />
+            @if (creationErrors['password']) {
+            <div class="form-error password">
+                {{ creationErrors['password'] }}
+            </div>
+            } @else {
+            <div class="transparent">.</div>
+            }
+        </div>
+        <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}" (click)="onPasswordVisibilityClick()"
+            [text]="true">
+        </button>
+    </div>
+    <div class="password-field">
+        <div class="create-user-input">
+            <label for="create-user-confirmed-password">Confirmar contraseña</label>
+            <input pInputText id="create-user-confirmed-password" type="{{ passwordInputType }}"
+                [formControl]="formGroup.get('confirmedPassword')" [style]="{'flex': '1'}" />
+            @if (creationErrors['confirmedPassword']) {
+            <div class="form-error confirmed-password">
+                {{ creationErrors['confirmedPassword'] }}
+            </div>
+            } @else {
+            <div class="transparent">.</div>
+            }
+        </div>
+        <button type="button" pButton icon="pi pi-{{ passwordVisibilityIcon }}" (click)="onPasswordVisibilityClick()"
+            [text]="true">
+        </button>
+    </div>
+</ng-template>
+
+
+<app-crud-module [title]="'Usuarios'" [formTitle]="'Usuario'" [createItemCreationForm]="createCreationForm()"
+    [createItemUpdateForm]="createUpdateForm()" [getItems]="getItems()" [sortOptions]="sortOptions"
+    [tableHeaders]="tableHeaders" [rowTemplate]="rowTemplate" [createItemFieldsTemplate]="createItemFieldsTemplate"
+    [getCreationErrors]="getCreationErrors()" [getUpdateErrors]="getUpdateErrors()"
+    [loadOptionsOnRowClick]="loadOptionsOnRowClick()" [onCreateNewClick]="onCreateNewClick()"
+    [mapSaveItemError]="mapSaveItemError()" [createItem]="createItem()" [updateItem]="updateItem()"
+    [mapFormToCreationDto]="mapFormToCreationDto()" [mapFormToUpdateDto]="mapFormToUpdateDto()"
+    [deleteItemById]="deleteItemById()">
+</app-crud-module>

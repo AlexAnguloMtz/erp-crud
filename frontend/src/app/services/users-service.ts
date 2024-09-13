@@ -152,14 +152,14 @@ export class UsersService {
         );
     }
 
-    deleteUserById(token: string, id: string) {
+    deleteUserById(token: string, id: string): Observable<void> {
         const headers = {
             'Authorization': `Bearer ${token}`,
         };
 
         const url = `${this.usersUrl}/${id}`;
 
-        return this.http.delete<UpdateUserResponse>(url, { headers });
+        return this.http.delete<void>(url, { headers });
     }
 }
 

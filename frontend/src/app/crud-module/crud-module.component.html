@@ -1,35 +1,12 @@
-<!-- create-user-input -->
-<!-- double input container -->
-<!-- 
- <fieldset class="create-item-fields"></fieldset>
-  <div class="create-item-input">
-                    <label for="update-user-name">Nombre</label>
-                    <input pInputText id="update-user-name" formControlName="name" [style]="{'width': '100%'}" />
-                    <div class="form-error">
-                        {{ updateErrors['name'] }}
-                    </div>
-                </div>
-    <div class="create-user__progress-container">
-        <p-progressSpinner class="create-user__progress" ariaLabel="loading"
-            [style]="{'width': '40px', 'height': '40px'}" />
-    </div>
-
-    <div class="dropdown-load-error">
-        <div>Error de carga</div>
-        <p-button (click)="onRetryLoadStates()" [outlined]="true" icon="pi pi-refresh"
-            severity="secondary" />
-    </div>
-                    <th>Nombre</th>
-                <td>{{ user.name }}</td>
-
-
--->
 <p-confirmDialog id="message-dialog" />
 <p-dialog class="save-item-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideItemForm()"
     header="{{ formTitle }}" [modal]="true" [(visible)]="createItemVisible" [style]="{'padding-bottom': '0'}">
     <form id="create-item-form" class="create-item-form" [formGroup]="itemCreationForm"
         (ngSubmit)="onCreateItemSubmit()">
         <fieldset class="create-item-fields">
+            <ng-container
+                *ngTemplateOutlet="createItemFieldsTemplate;  context: { creationErrors: creationErrors(), formGroup: itemCreationForm }">
+            </ng-container>
         </fieldset>
         <div class="item-form__actions">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelItemForm()" />
@@ -40,7 +17,8 @@
 <p-dialog class="save-item-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideItemForm()"
     header="{{ formTitle }}" [modal]="true" [(visible)]="updateItemVisible" [style]="{'padding-bottom': '0'}">
     <form id="update-item-form" class="create-item-form" [formGroup]="updateItemForm" (ngSubmit)="onUpdateItemSubmit()">
-        <fieldset class="create-item-fields"></fieldset>
+        <fieldset class="create-item-fields">
+        </fieldset>
         <div class="item-form__actions">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelUpdateItemForm()" />
             <p-button label="Guardar" type="submit" [loading]="updatingItem" />

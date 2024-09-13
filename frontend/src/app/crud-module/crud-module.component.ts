@@ -1,8 +1,8 @@
 import { Component, Input, TemplateRef } from '@angular/core';
-import { PaginatedResponse } from '../../common/paginated-response';
+import { PaginatedResponse } from '../common/paginated-response';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { PaginatedRequest } from '../../common/paginated-request';
+import { PaginatedRequest } from '../common/paginated-request';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -23,7 +23,7 @@ export type CrudItem = {
   id: string
 }
 
-type DisplayableError = {
+export type DisplayableError = {
   header: string,
   message: string,
 }
@@ -57,7 +57,7 @@ type LoadItemsError = {
   _type: 'load-items-error'
 }
 
-type ItemsStatus<T> = LoadingFirstTime | LoadingSubsequentTime | BaseStatus | LoadItemsError;
+type ItemsStatus = LoadingFirstTime | LoadingSubsequentTime | BaseStatus | LoadItemsError;
 
 type ItemCreationBase = {
   _type: 'item-creation-base'
@@ -89,10 +89,6 @@ type UpdateItemStatus = ItemUpdateBase | UpdatingItem
 
 type DeleteItemStatus = DeleteItemBase | DeletingItem
 
-type ItemUpdateResponse = {
-  item: CrudItem
-}
-
 @Component({
   selector: 'app-crud-module',
   standalone: true,
@@ -115,8 +111,15 @@ type ItemUpdateResponse = {
   templateUrl: './crud-module.component.html',
   styleUrl: './crud-module.component.css'
 })
-export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
+export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateResponse> {
 
+  // Data
+  @Input() sortOptions: Array<SortOption>;
+  @Input() title: string;
+  @Input() formTitle: string;
+  @Input() tableHeaders: Array<string>
+
+  // Functions
   @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup
   @Input() createItemUpdateForm: (formBuilder: FormBuilder) => FormGroup
   @Input() mapSaveItemError: (error: Error) => DisplayableError
@@ -130,13 +133,13 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
   @Input() mapFormToCreationDto: (form: FormGroup) => CreationItemDto
   @Input() mapFormToUpdateDto: (form: FormGroup) => UpdateItemDto
   @Input() handleUpdateResponse: (response: ItemUpdateResponse) => void;
-  @Input() sortOptions: Array<SortOption>;
-  @Input() title: string;
-  @Input() formTitle: string;
-  @Input() tableHeaders: Array<string>
+  @Input() onCreateNewClick: () => void;
+
+  // Templates
+  @Input() createItemFieldsTemplate: TemplateRef<any>;
   @Input() rowTemplate: TemplateRef<any>;
 
-  status: ItemsStatus<CrudItem>;
+  status: ItemsStatus;
   searchControl: FormControl;
   selectedSort: SortOption | undefined
   selectedPageNumber: number;
@@ -214,7 +217,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
     return RECORDS_PER_PAGE;
   }
 
-  get creationErrors(): { [key: string]: string } {
+  creationErrors(): { [key: string]: string } {
     return this.getCreationErrors(this.itemCreationForm);
   }
 
@@ -279,25 +282,11 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
     this.updateItem(localStorage.getItem('auth-token')!, this.itemToUpdateId, this.mapFormToUpdateDto(this.updateItemForm)).subscribe({
       next: (response: ItemUpdateResponse) => {
         this.handleUpdateResponse(response);
-        this.updateItemRow(response.item);
         this.updateItemVisible = false;
         this.updateItemStatus = { _type: 'item-update-base' }
         this.itemSavedDialogVisible = true;
       },
       error: (error) => this.handlItemUpdateError(error),
-    })
-  }
-
-  private updateItemRow(item: CrudItem): void {
-    if (this.status._type !== 'base') {
-      return;
-    }
-
-    this.status.response.items = this.status.response.items.map(x => {
-      if (x.id == item.id) {
-        return item;
-      }
-      return x;
     })
   }
 
@@ -342,6 +331,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
 
   onCreateClick(): void {
     this.createItemVisible = true;
+    this.onCreateNewClick();
   }
 
   onCancelItemForm(): void {
@@ -353,7 +343,9 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
   }
 
   onHideItemForm(): void {
+    console.log('calling on hide, values ' + JSON.stringify(this.itemCreationForm.value))
     this.itemCreationForm.reset();
+    console.log('after on hide, values ' + JSON.stringify(this.itemCreationForm.value))
   }
 
   onCloseSavedItemDialog(): void {

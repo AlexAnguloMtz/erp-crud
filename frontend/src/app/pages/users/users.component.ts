@@ -262,7 +262,6 @@ export class UsersComponent {
     return this.passwordFieldProps.icon
   }
 
-
   get totalRecords(): number {
     return this.lastSeenTotalItems;
   }
@@ -728,25 +727,16 @@ export class UsersComponent {
           localStorage.setItem('auth-token', response.jwt);
         }
 
-        this.updateUserRow(response.user);
+        this.searchUsers({
+          ...this.defaultPaginatedRequest(),
+          search: this.searchControl.value,
+          sort: this.selectedSort?.key,
+        }, { _type: 'loading-subsequent-time' });
         this.updateItemVisible = false;
         this.updateUserStatus = { _type: 'user-update-base' }
         this.userSavedDialogVisible = true;
       },
       error: (error) => this.handleUserUpdateError(error),
-    })
-  }
-
-  private updateUserRow(user: UserDetails): void {
-    if (this.status._type !== 'base') {
-      return;
-    }
-
-    this.status.response.items = this.status.response.items.map(x => {
-      if (x.id == user.id) {
-        return user;
-      }
-      return x;
     })
   }
 

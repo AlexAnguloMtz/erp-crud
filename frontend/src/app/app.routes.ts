@@ -4,7 +4,7 @@ import { MainTemplateComponent } from './pages/main-template/main-template.compo
 import { HomeComponent } from './pages/home/home.component';
 import { UsersComponent } from './pages/users/users.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
-import { Users2Component } from './pages/users2/users2.component';
+import { Users2Component } from './users2/users2.component';
 
 export const routes: Routes = [
     {
