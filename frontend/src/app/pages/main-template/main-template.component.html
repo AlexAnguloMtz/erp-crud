@@ -7,7 +7,7 @@
             icon="pi pi-microsoft" [rounded]="true" [text]="true" (click)="onOpenSidebarClick()" />
         <div class="nav-spacer"></div>
         <p-menu #menu [model]="items" [popup]="true" />
-        <p-button outlined="true" rounded="true" (onClick)="menu.toggle($event)" icon="pi pi-user" id="user-options"
+        <p-button text="true" rounded="true" (onClick)="menu.toggle($event)" icon="pi pi-user" id="user-options"
             [style]="{'color': 'white'}" />
     </nav>
     <div class="sidebar-and-content-container">
