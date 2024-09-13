@@ -1,3 +1,10 @@
+.search-controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
 .top-row {
     display: flex;
     justify-content: space-between;
@@ -138,6 +145,15 @@
     font-size: 14px;
 }
 
+::ng-deep .p-element .p-dropdown-label.p-inputtext.ng-star-inserted {
+    padding: 4px 4px;
+    font-size: 12px;
+}
+
+::ng-deep .row-actions .p-button-icon.ng-star-inserted {
+    font-size: 12px;
+}
+
 .user-saved-dialog-actions {
     margin-top: 30px;
     display: flex;
@@ -190,6 +206,7 @@
 @media screen and (min-width: 500px) {
     .search-controls-container {
         display: flex;
+        flex-direction: row;
         gap: 10px;
     }
 }
