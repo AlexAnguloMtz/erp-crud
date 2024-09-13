@@ -283,6 +283,11 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     this.updateItem(localStorage.getItem('auth-token')!, this.itemToUpdateId, this.mapFormToUpdateDto(this.updateItemForm)).subscribe({
       next: (response: ItemUpdateResponse) => {
         this.handleUpdateResponse(response);
+        this.searchItems({
+          ...this.defaultPaginatedRequest(),
+          search: this.searchControl.value,
+          sort: this.selectedSort?.key,
+        }, { _type: 'loading-subsequent-time' });
         this.updateItemVisible = false;
         this.updateItemStatus = { _type: 'item-update-base' }
         this.itemSavedDialogVisible = true;
