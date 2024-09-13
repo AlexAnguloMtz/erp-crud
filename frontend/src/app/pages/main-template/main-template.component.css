@@ -41,6 +41,7 @@
 .sidebar__close-button-container {
     display: flex;
     justify-content: flex-end;
+    padding: 0 4px 0 0;
 }
 
 .sidebar__profile {

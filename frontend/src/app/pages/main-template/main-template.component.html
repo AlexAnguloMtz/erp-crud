@@ -3,7 +3,7 @@
         <div class="nav__logo">
             <img class="nav__logo-img" src="images/abarrey_logo.png" alt="logo">
         </div>
-        <p-button class="nav__sidebar-button" [style]="{'marginLeft': '10px'}" severity="secondary"
+        <p-button class="nav__sidebar-button" [style]="{'marginLeft': '10px', 'color': 'white'}" severity="secondary"
             icon="pi pi-microsoft" [rounded]="true" [text]="true" (click)="onOpenSidebarClick()" />
         <div class="nav-spacer"></div>
         <p-menu #menu [model]="items" [popup]="true" />
@@ -26,11 +26,10 @@
                     <h4 class="load-error-text">No se pudo cargar</h4>
                     <p-button label="Reintentar" icon="pi pi-refresh" (click)="onRetryGetMe()"></p-button>
                 </div>
-
                 } @else {
                 <div class="sidebar__close-button-container">
                     <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary"
-                        (click)="onCloseSidebarClick()" />
+                        (click)="onCloseSidebarClick()" [style]="{'marginLeft': '10px', 'color': 'white'}" />
                 </div>
                 <div class="sidebar__profile">
                     <h3 class="sidebar__user">
