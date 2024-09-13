@@ -53,7 +53,7 @@
 .sidebar__links {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 4px;
     margin: 0;
     padding: 10px 12px;
 }
@@ -66,6 +66,10 @@
     transition: 200ms ease all;
     border: 2px solid transparent;
     font-size: 12px;
+}
+
+.sidebar__user {
+    font-size: 16px;
 }
 
 .sidebar__link:hover {

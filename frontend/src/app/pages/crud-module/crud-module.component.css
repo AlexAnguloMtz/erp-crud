@@ -1,0 +1,228 @@
+.search-controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.content__progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
+.items__progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+}
+
+.items {
+    margin-top: 8px;
+}
+
+.title {
+    color: rgb(25, 53, 74);
+    font-size: 16px;
+}
+
+.paginator-container {
+    margin-top: 10px;
+}
+
+.total-items {
+    color: rgb(80, 98, 104);
+    font-size: 10px;
+    margin-top: 20px;
+}
+
+.item-form__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    padding: 20px 22px;
+    border-top: 1px solid rgb(210, 211, 212);
+}
+
+.create-user-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    padding: 30px 22px 30px 22px;
+}
+
+.create-user-input {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.create-user-input label {
+    color: rgb(50, 76, 95);
+    font-weight: 500;
+}
+
+.create-user__progress-container {
+    display: flex;
+    justify-content: center;
+}
+
+.form-error {
+    margin-top: 4px;
+    color: rgb(235, 61, 61);
+    font-size: 14px;
+}
+
+.double-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.password-field {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.password-field .create-user-input {
+    float: 1;
+    width: 100%;
+}
+
+.transparent {
+    color: transparent;
+}
+
+.dropdown-load-error {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.load-items-error {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.load-items-error-img {
+    width: 100%;
+}
+
+.load-items-error-text {
+    text-align: center;
+    color: rgb(70, 72, 72);
+    margin-bottom: 20px;
+}
+
+::ng-deep .save-user-dialog .p-dialog .p-dialog-header {
+    border-bottom: 1px solid rgb(210, 211, 212);
+}
+
+::ng-deep .save-user-dialog .p-dialog .p-dialog-content {
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+::ng-deep .dropdown-load-error .p-button {
+    font-size: 14px;
+}
+
+::ng-deep .search-controls-container .p-element .p-dropdown-label.p-inputtext.ng-star-inserted {
+    padding: 4px 4px;
+    font-size: 12px;
+}
+
+::ng-deep .row-actions .p-button-icon.ng-star-inserted {
+    font-size: 12px;
+}
+
+::ng-deep .p-paginator-element {
+    padding: 0;
+    min-width: 0;
+    height: 22px;
+    width: 22px;
+    max-width: 22px;
+    font-size: 12px;
+}
+
+::ng-deep .p-paginator {
+    justify-content: flex-end;
+}
+
+.user-saved-dialog-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.zero-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.zero-items-text {
+    color: rgb(101, 105, 109);
+}
+
+.zero-items-img-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.zero-items-img {
+    width: 100%;
+}
+
+.row-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.table-headers {
+    font-size: 12px;
+}
+
+.table-headers th {
+    background-color: rgb(70, 94, 112);
+    color: white;
+}
+
+.row {
+    font-size: 12px;
+}
+
+@media screen and (min-width: 570px) {
+    .double-input-container {
+        flex-direction: row;
+        gap: 12px;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    .search-controls-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        margin-top: 0;
+    }
+}
