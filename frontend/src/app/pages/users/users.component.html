@@ -312,7 +312,8 @@
 } @else {
 <div class="top-row">
     <h1 class="title">Usuarios</h1>
-    <p-button label="Nuevo" id="create-new" icon="pi pi-plus" (onClick)="onCreateClick()" />
+    <p-button label="Nuevo" id="create-new" icon="pi pi-plus" (onClick)="onCreateClick()"
+        [style]="{'fontSize': '12px', 'padding': '10px 10px'}" />
 </div>
 <div class="search-controls-container">
     <div class="search__bar-container">
@@ -320,7 +321,8 @@
             <p-inputGroupAddon>
                 <i class="pi pi-search"></i>
             </p-inputGroupAddon>
-            <input pInputText placeholder="Nombre o apellido" [formControl]="searchControl" />
+            <input pInputText placeholder="Nombre o apellido" [formControl]="searchControl"
+                [style]="{'fontSize':'12px', 'height': '12px'}" />
         </p-inputGroup>
     </div>
     <div class="sort-dropdown-container">
@@ -330,7 +332,7 @@
 </div>
 <div class="paginator-container">
     <p-paginator (onPageChange)="onPageChange($event)" [showFirstLastIcon]="false" [pageLinkSize]="4" [first]="first"
-        [rows]="rows" [totalRecords]="totalRecords" />
+        [rows]="rows" [totalRecords]="totalRecords" class="custom-paginator" />
 </div>
 <div class="total-items-container">
     <p class="total-items">{{lastSeenTotalItems}} resultados</p>
@@ -354,9 +356,9 @@
         <h3 class="zero-items-text">Sin resultados</h3>
     </div>
     } @else {
-    <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="users" [styleClass]="'p-datatable-sm'">
         <ng-template pTemplate="header">
-            <tr>
+            <tr class="table-headers">
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Rol</th>
@@ -375,8 +377,10 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
                 <td class="row-actions">
-                    <p-button icon="pi pi-pencil" severity="success" (click)="onEditClick(user)" />
-                    <p-button icon="pi pi-trash" severity="danger" (click)="onDeleteUser(user.id)" />
+                    <p-button icon="pi pi-pencil" severity="success" (click)="onEditClick(user)"
+                        [style]="{'width': '30px', 'height': '30px'}" />
+                    <p-button icon="pi pi-trash" severity="danger" (click)="onDeleteUser(user.id)"
+                        [style]="{'width': '30px', 'height': '30px'}" />
                 </td>
             </tr>
         </ng-template>
