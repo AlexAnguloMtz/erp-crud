@@ -6,10 +6,10 @@ import com.aram.erpcrud.auth.domain.AuthUser;
 import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import com.aram.erpcrud.auth.payload.AccountCreationResponse;
 import com.aram.erpcrud.auth.payload.CreateAccountCommand;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;

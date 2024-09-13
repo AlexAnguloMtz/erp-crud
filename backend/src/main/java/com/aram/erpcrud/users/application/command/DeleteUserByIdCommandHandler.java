@@ -1,17 +1,17 @@
-package com.aram.erpcrud.users.application.query;
+package com.aram.erpcrud.users.application.command;
 
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class DeleteUserByIdQueryHandler {
+public class DeleteUserByIdCommandHandler {
 
     private final AuthService authService;
     private final PersonalDetailsRepository personalDetailsRepository;
 
-    public DeleteUserByIdQueryHandler(
+    public DeleteUserByIdCommandHandler(
             AuthService authService,
             PersonalDetailsRepository personalDetailsRepository
     ) {

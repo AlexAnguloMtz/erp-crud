@@ -3,7 +3,7 @@ package com.aram.erpcrud.users.application;
 import com.aram.erpcrud.common.PageResponse;
 import com.aram.erpcrud.users.application.command.CreateUserCommandHandler;
 import com.aram.erpcrud.users.application.command.UpdateUserCommandHandler;
-import com.aram.erpcrud.users.application.query.DeleteUserByIdQueryHandler;
+import com.aram.erpcrud.users.application.command.DeleteUserByIdCommandHandler;
 import com.aram.erpcrud.users.application.query.GetMeQueryHandler;
 import com.aram.erpcrud.users.application.query.GetUsersQueryHandler;
 import com.aram.erpcrud.users.payload.*;
@@ -16,14 +16,14 @@ public class UserFacade {
     private final GetUsersQueryHandler getUsersQueryHandler;
     private final GetMeQueryHandler getMeQueryHandler;
     private final UpdateUserCommandHandler updateUserCommandHandler;
-    private final DeleteUserByIdQueryHandler deleteUserByIdHandler;
+    private final DeleteUserByIdCommandHandler deleteUserByIdHandler;
 
     public UserFacade(
             CreateUserCommandHandler createUserCommandHandler,
             GetUsersQueryHandler getUsersQueryHandler,
             GetMeQueryHandler getMeQueryHandler,
             UpdateUserCommandHandler updateUserCommandHandler,
-            DeleteUserByIdQueryHandler deleteUserByIdHandler
+            DeleteUserByIdCommandHandler deleteUserByIdHandler
     ) {
         this.createUserCommandHandler = createUserCommandHandler;
         this.getUsersQueryHandler = getUsersQueryHandler;

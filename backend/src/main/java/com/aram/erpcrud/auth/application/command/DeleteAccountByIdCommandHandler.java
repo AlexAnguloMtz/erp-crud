@@ -2,6 +2,7 @@ package com.aram.erpcrud.auth.application.command;
 
 import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class DeleteAccountByIdCommandHandler {
@@ -12,6 +13,7 @@ public class DeleteAccountByIdCommandHandler {
         this.authUserRepository = authUserRepository;
     }
 
+    @Transactional
     public void handle(String id) {
         this.authUserRepository.deleteById(id);
     }

@@ -13,9 +13,9 @@ import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import com.aram.erpcrud.users.payload.FullUserDetails;
 import com.aram.erpcrud.users.payload.UpdateUserCommand;
 import com.aram.erpcrud.users.payload.UpdateUserResponse;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;

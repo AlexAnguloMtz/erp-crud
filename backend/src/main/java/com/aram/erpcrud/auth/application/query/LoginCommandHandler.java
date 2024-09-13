@@ -1,11 +1,10 @@
-package com.aram.erpcrud.auth.application.command;
+package com.aram.erpcrud.auth.application.query;
 
 import com.aram.erpcrud.auth.config.JwtHandler;
 import com.aram.erpcrud.auth.domain.AuthUser;
 import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import com.aram.erpcrud.auth.payload.LoginCommand;
 import com.aram.erpcrud.auth.payload.LoginResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-@Slf4j
 public class LoginCommandHandler {
 
     private final PasswordEncoder passwordEncoder;

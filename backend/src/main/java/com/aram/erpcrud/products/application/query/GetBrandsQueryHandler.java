@@ -18,7 +18,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GetBrands {
+public class GetBrandsQueryHandler {
 
     enum BrandSort {
         NameAsc("name", Sort.Direction.ASC),
@@ -36,7 +36,7 @@ public class GetBrands {
     private final BrandRepository brandRepository;
     private final SafePagination safePagination;
 
-    public GetBrands(BrandRepository brandRepository, SafePagination safePagination) {
+    public GetBrandsQueryHandler(BrandRepository brandRepository, SafePagination safePagination) {
         this.brandRepository = brandRepository;
         this.safePagination = safePagination;
     }
@@ -72,9 +72,8 @@ public class GetBrands {
                 return criteriaBuilder.conjunction();
             }
             String searchPattern = "%" + search.toLowerCase() + "%";
-            Predicate firstNamePredicate = criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), searchPattern);
-            Predicate lastNamePredicate = criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")), searchPattern);
-            return criteriaBuilder.or(firstNamePredicate, lastNamePredicate);
+            Predicate namePredicate = criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), searchPattern);
+            return criteriaBuilder.or(namePredicate);
         };
     }
 

@@ -8,8 +8,8 @@ import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import com.aram.erpcrud.users.payload.CreateUserCommand;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
