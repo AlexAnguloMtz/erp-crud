@@ -5,7 +5,7 @@
         (ngSubmit)="onCreateItemSubmit()">
         <fieldset class="create-item-fields">
             <ng-container
-                *ngTemplateOutlet="createItemFieldsTemplate;  context: { creationErrors: creationErrors(), formGroup: itemCreationForm }">
+                *ngTemplateOutlet="createItemFieldsTemplate;  context: { errors: creationErrors(), formGroup: itemCreationForm }">
             </ng-container>
         </fieldset>
         <div class="item-form__actions">

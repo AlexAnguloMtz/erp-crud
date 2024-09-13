@@ -343,9 +343,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   }
 
   onHideItemForm(): void {
-    console.log('calling on hide, values ' + JSON.stringify(this.itemCreationForm.value))
     this.itemCreationForm.reset();
-    console.log('after on hide, values ' + JSON.stringify(this.itemCreationForm.value))
   }
 
   onCloseSavedItemDialog(): void {
