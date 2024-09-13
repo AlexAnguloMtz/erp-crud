@@ -4,14 +4,14 @@
     <form id="create-user-form" class="create-user-form" [formGroup]="userForm" (ngSubmit)="onCreateUserSubmit()">
         <fieldset class="create-user-fields">
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-name-field">Nombre</label>
                     <input pInputText id="create-user-name-field" formControlName="name" [style]="{'width': '100%'}" />
                     <div class="form-error name">
                         {{ creationErrors['name'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-last-name">Apellido</label>
                     <input pInputText id="create-user-last-name" formControlName="lastName"
                         [style]="{'width': '100%'}" />
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-state">Estado</label>
                     @if (loadingStatesOptions) {
                     <div class="create-user__progress-container">
@@ -42,7 +42,7 @@
                         {{ creationErrors['state'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-city">Ciudad</label>
                     <input pInputText id="create-user-city" formControlName="city" [style]="{'width': '100%'}" />
                     <div class="form-error city">
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-district">Colonia</label>
                     <input pInputText id="create-user-district" formControlName="district"
                         [style]="{'width': '100%'}" />
@@ -59,7 +59,7 @@
                         {{ creationErrors['district'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-street">Calle</label>
                     <input pInputText id="create-user-street" formControlName="street" [style]="{'width': '100%'}" />
                     <div class="form-error street">
@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-street-number">Número de vivienda</label>
                     <input pInputText id="create-user-street-number" formControlName="streetNumber"
                         [style]="{'width': '100%'}" />
@@ -76,7 +76,7 @@
                         {{ creationErrors['streetNumber'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-zip-code">Código postal</label>
                     <input pInputText id="create-user-zip-code" formControlName="zipCode" [style]="{'width': '100%'}" />
                     <div class="form-error zip-code">
@@ -85,14 +85,14 @@
                 </div>
             </div>
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-email">Correo</label>
                     <input pInputText id="create-user-email" formControlName="email" [style]="{'width': '100%'}" />
                     <div class="form-error email">
                         {{ creationErrors['email'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-phone">Teléfono</label>
                     <input pInputText id="create-user-phone" formControlName="phone" [style]="{'width': '100%'}" />
                     <div class="form-error phone">
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </div>
-            <div class="create-user-input">
+            <div class="user-form-input">
                 <label for="create-user-role">Rol</label>
                 @if (loadingUserFormOptions) {
                 <div class="create-user__progress-container">
@@ -122,7 +122,7 @@
                 </div>
             </div>
             <div class="password-field">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-password">Contraseña</label>
                     <input pInputText id="create-user-password" type="{{ passwordInputType }}"
                         formControlName="password" [style]="{'flex': '1'}" />
@@ -139,7 +139,7 @@
                 </button>
             </div>
             <div class="password-field">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-confirmed-password">Confirmar contraseña</label>
                     <input pInputText id="create-user-confirmed-password" type="{{ passwordInputType }}"
                         formControlName="confirmedPassword" [style]="{'flex': '1'}" />
@@ -167,14 +167,14 @@
     <form id="update-user-form" class="create-user-form" [formGroup]="updateUserForm" (ngSubmit)="onUpdateUserSubmit()">
         <fieldset class="create-user-fields">
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="update-user-name">Nombre</label>
                     <input pInputText id="update-user-name" formControlName="name" [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['name'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="">
                     <label for="update-user-last-name">Apellido</label>
                     <input pInputText id="update-user-last-name" formControlName="lastName"
                         [style]="{'width': '100%'}" />
@@ -184,7 +184,7 @@
                 </div>
             </div>
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="create-user-state">Estado</label>
                     @if (loadingStatesOptions) {
                     <div class="create-user__progress-container">
@@ -205,7 +205,7 @@
                         {{ updateErrors['state'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="update-user-city">Ciudad</label>
                     <input pInputText id="update-user-city" formControlName="city" [style]="{'width': '100%'}" />
                     <div class="form-error">
@@ -214,7 +214,7 @@
                 </div>
             </div>
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="update-user-district">Colonia</label>
                     <input pInputText id="update-user-district" formControlName="district"
                         [style]="{'width': '100%'}" />
@@ -222,7 +222,7 @@
                         {{ updateErrors['district'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="update-user-street">Calle</label>
                     <input pInputText id="update-user-street" formControlName="street" [style]="{'width': '100%'}" />
                     <div class="form-error">
@@ -231,7 +231,7 @@
                 </div>
             </div>
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="update-user-street-number">Número de vivienda</label>
                     <input pInputText id="update-user-street-number" formControlName="streetNumber"
                         [style]="{'width': '100%'}" />
@@ -239,7 +239,7 @@
                         {{ updateErrors['streetNumber'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="update-user-zip-code">Código postal</label>
                     <input pInputText id="update-user-zip-code" formControlName="zipCode" [style]="{'width': '100%'}" />
                     <div class="form-error">
@@ -248,14 +248,14 @@
                 </div>
             </div>
             <div class="double-input-container">
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="update-user-email">Correo</label>
                     <input pInputText id="update-user-email" formControlName="email" [style]="{'width': '100%'}" />
                     <div class="form-error">
                         {{ updateErrors['email'] }}
                     </div>
                 </div>
-                <div class="create-user-input">
+                <div class="user-form-input">
                     <label for="update-user-phone">Teléfono</label>
                     <input pInputText id="update-user-phone" formControlName="phone" [style]="{'width': '100%'}" />
                     <div class="form-error">
@@ -263,7 +263,7 @@
                     </div>
                 </div>
             </div>
-            <div class="create-user-input">
+            <div class="user-form-input">
                 <label for="create-user-role">Rol</label>
                 @if (loadingUserFormOptions) {
                 <div class="create-user__progress-container">
