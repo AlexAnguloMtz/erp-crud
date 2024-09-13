@@ -54,7 +54,7 @@ const links: Array<SidebarLink> = [
     id: 'module-inventory',
     href: '/home/inventory',
     text: 'Inventario',
-    icon: 'user',
+    icon: 'warehouse',
   },
 ];
 
