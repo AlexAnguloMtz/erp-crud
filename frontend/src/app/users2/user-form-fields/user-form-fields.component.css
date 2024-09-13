@@ -38,6 +38,10 @@
     justify-content: space-between;
 }
 
+.bottom-spacer {
+    height: 60px;
+}
+
 @media screen and (min-width: 570px) {
     .double-input-container {
         flex-direction: row;

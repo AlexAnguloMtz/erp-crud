@@ -312,6 +312,14 @@ export class Users2Component {
   }
 
   userCreationFormControls(formGroup: FormGroup): { [key: string]: FormControl } {
+    return this.getControlsAsFormControls(formGroup);
+  }
+
+  userUpdateFormControls(formGroup: FormGroup): { [key: string]: FormControl } {
+    return this.getControlsAsFormControls(formGroup);
+  }
+
+  private getControlsAsFormControls(formGroup: FormGroup): { [key: string]: FormControl } {
     const controls: { [key: string]: FormControl } = {};
     Object.entries(formGroup.controls).forEach(entry => {
       controls[entry[0]] = entry[1] as FormControl;

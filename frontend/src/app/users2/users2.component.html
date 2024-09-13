@@ -47,12 +47,19 @@
     </div>
 </ng-template>
 
+<ng-template #updateItemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
+    <app-user-form-fields [errors]="errors" [controls]="userUpdateFormControls(formGroup)"
+        [statesOptionsStatus]="statesOptionsStatus" [rolesOptionsStatus]="rolesOptionsStatus"
+        [onRetryLoadStates]="onRetryLoadStates()" [onRetryLoadRoles]="onRetryLoadRoles()">
+    </app-user-form-fields>
+</ng-template>
+
 <app-crud-module [title]="'Usuarios'" [formTitle]="'Usuario'" [createItemCreationForm]="createCreationForm()"
     [createItemUpdateForm]="createUpdateForm()" [getItems]="getItems()" [sortOptions]="sortOptions"
     [tableHeaders]="tableHeaders" [rowTemplate]="rowTemplate" [createItemFieldsTemplate]="createItemFieldsTemplate"
-    [getCreationErrors]="getCreationErrors()" [getUpdateErrors]="getUpdateErrors()"
-    [loadOptionsOnRowClick]="loadOptionsOnRowClick()" [onCreateNewClick]="onCreateNewClick()"
-    [mapSaveItemError]="mapSaveItemError()" [createItem]="createItem()" [updateItem]="updateItem()"
-    [mapFormToCreationDto]="mapFormToCreationDto()" [mapFormToUpdateDto]="mapFormToUpdateDto()"
-    [deleteItemById]="deleteItemById()">
+    [updateItemFieldsTemplate]="updateItemFieldsTemplate" [getCreationErrors]="getCreationErrors()"
+    [getUpdateErrors]="getUpdateErrors()" [loadOptionsOnRowClick]="loadOptionsOnRowClick()"
+    [onCreateNewClick]="onCreateNewClick()" [mapSaveItemError]="mapSaveItemError()" [createItem]="createItem()"
+    [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToCreationDto()"
+    [mapFormToUpdateDto]="mapFormToUpdateDto()" [deleteItemById]="deleteItemById()">
 </app-crud-module>

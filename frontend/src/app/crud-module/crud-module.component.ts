@@ -137,6 +137,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   // Templates
   @Input() createItemFieldsTemplate: TemplateRef<any>;
+  @Input() updateItemFieldsTemplate: TemplateRef<any>;
   @Input() rowTemplate: TemplateRef<any>;
 
   status: ItemsStatus;
@@ -221,7 +222,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     return this.getCreationErrors(this.itemCreationForm);
   }
 
-  get updateErrors(): { [key: string]: string } {
+  updateErrors(): { [key: string]: string } {
     return this.getUpdateErrors(this.updateItemForm);
   }
 

@@ -18,6 +18,9 @@
     header="{{ formTitle }}" [modal]="true" [(visible)]="updateItemVisible" [style]="{'padding-bottom': '0'}">
     <form id="update-item-form" class="create-item-form" [formGroup]="updateItemForm" (ngSubmit)="onUpdateItemSubmit()">
         <fieldset class="create-item-fields">
+            <ng-container
+                *ngTemplateOutlet="updateItemFieldsTemplate;  context: { errors: updateErrors(), formGroup: updateItemForm }">
+            </ng-container>
         </fieldset>
         <div class="item-form__actions">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelUpdateItemForm()" />
