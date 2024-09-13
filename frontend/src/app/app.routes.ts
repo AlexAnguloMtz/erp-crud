@@ -4,6 +4,7 @@ import { MainTemplateComponent } from './pages/main-template/main-template.compo
 import { HomeComponent } from './pages/home/home.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { Users2Component } from './pages/users2/users2.component';
+import { BrandsComponent } from './pages/brands/brands.component';
 
 export const routes: Routes = [
     {
@@ -29,7 +30,11 @@ export const routes: Routes = [
             },
             {
                 path: 'inventory',
-                component: InventoryComponent
+                component: InventoryComponent,
+            },
+            {
+                path: 'brands',
+                component: BrandsComponent,
             }
         ]
     }

@@ -1,14 +1,14 @@
-package com.aram.erpcrud.auth.application;
+package com.aram.erpcrud.auth.application.command;
 
 import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DeleteAccountByIdHandler {
+public class DeleteAccountByIdCommandHandler {
 
     private final AuthUserRepository authUserRepository;
 
-    public DeleteAccountByIdHandler(AuthUserRepository authUserRepository) {
+    public DeleteAccountByIdCommandHandler(AuthUserRepository authUserRepository) {
         this.authUserRepository = authUserRepository;
     }
 

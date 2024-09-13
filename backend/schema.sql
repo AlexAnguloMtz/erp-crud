@@ -44,11 +44,18 @@ CREATE TABLE product_categories(
     name VARCHAR(60) NOT NULL
 );
 
+CREATE TABLE brands(
+    brand_id UUID PRIMARY KEY,
+    name VARCHAR(60) NOT NULL
+);
+
 CREATE TABLE products(
     product_id UUID PRIMARY KEY,
     product_category_id UUID NOT NULL,
+    brand_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
-    FOREIGN KEY (product_category_id) REFERENCES product_categories(product_category_id)
+    FOREIGN KEY (product_category_id) REFERENCES product_categories(product_category_id),
+    FOREIGN KEY (brand_id) REFERENCES brands(brand_id)
 );
 
 CREATE TABLE stock(
@@ -58,7 +65,7 @@ CREATE TABLE stock(
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
-CREATE TABLE stock_movement_type(
+CREATE TABLE stock_movement_types(
     stock_movement_type_id UUID PRIMARY KEY,
     description VARCHAR(60) NOT NULL
 );
@@ -69,7 +76,7 @@ CREATE TABLE stock_movements(
     stock_movement_type_id UUID NOT NULL,
     timestamp TIMESTAMPTZ NOT NULL,
     FOREIGN KEY (responsible_id) REFERENCES users(user_id),
-    FOREIGN KEY (stock_movement_type_id) REFERENCES stock_movement_type(stock_movement_type_id)
+    FOREIGN KEY (stock_movement_type_id) REFERENCES stock_movement_types(stock_movement_type_id)
 );
 
 CREATE TABLE stock_movement_product_details(
@@ -84,4 +91,5 @@ CREATE TABLE stock_movement_product_details(
 CREATE UNIQUE INDEX idx_users_email ON users (email);
 CREATE UNIQUE INDEX idx_states_name ON states (name);
 CREATE UNIQUE INDEX idx_product_categories_name ON product_categories(name);
-CREATE UNIQUE INDEX idx_stock_movement_type_description ON stock_movement_type(description);
+CREATE UNIQUE INDEX idx_stock_movement_type_description ON stock_movement_types(description);
+CREATE UNIQUE INDEX idx_brand_name ON brands(name);

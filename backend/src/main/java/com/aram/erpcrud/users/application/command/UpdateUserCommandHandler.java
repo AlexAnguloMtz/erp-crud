@@ -1,4 +1,4 @@
-package com.aram.erpcrud.users.application;
+package com.aram.erpcrud.users.application.command;
 
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.auth.config.JwtHandler;

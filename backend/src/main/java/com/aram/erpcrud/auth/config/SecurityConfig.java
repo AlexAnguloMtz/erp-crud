@@ -29,6 +29,9 @@ public class SecurityConfig {
             @Value("${config.cors.allowed-origins}") List<String> allowedOrigins,
             JwtFilter jwtFilter
     ) {
+        for (String each : allowedOrigins) {
+            log.error("received origin: " + each);
+        }
         this.allowedOrigins = allowedOrigins;
         this.jwtFilter = jwtFilter;
     }

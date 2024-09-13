@@ -1,6 +1,11 @@
 package com.aram.erpcrud.users.application;
 
 import com.aram.erpcrud.common.PageResponse;
+import com.aram.erpcrud.users.application.command.CreateUserCommandHandler;
+import com.aram.erpcrud.users.application.command.UpdateUserCommandHandler;
+import com.aram.erpcrud.users.application.query.DeleteUserByIdQueryHandler;
+import com.aram.erpcrud.users.application.query.GetMeQueryHandler;
+import com.aram.erpcrud.users.application.query.GetUsersQueryHandler;
 import com.aram.erpcrud.users.payload.*;
 import org.springframework.stereotype.Component;
 
@@ -11,14 +16,14 @@ public class UserFacade {
     private final GetUsersQueryHandler getUsersQueryHandler;
     private final GetMeQueryHandler getMeQueryHandler;
     private final UpdateUserCommandHandler updateUserCommandHandler;
-    private final DeleteUserByIdHandler deleteUserByIdHandler;
+    private final DeleteUserByIdQueryHandler deleteUserByIdHandler;
 
     public UserFacade(
             CreateUserCommandHandler createUserCommandHandler,
             GetUsersQueryHandler getUsersQueryHandler,
             GetMeQueryHandler getMeQueryHandler,
             UpdateUserCommandHandler updateUserCommandHandler,
-            DeleteUserByIdHandler deleteUserByIdHandler
+            DeleteUserByIdQueryHandler deleteUserByIdHandler
     ) {
         this.createUserCommandHandler = createUserCommandHandler;
         this.getUsersQueryHandler = getUsersQueryHandler;

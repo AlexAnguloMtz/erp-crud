@@ -56,6 +56,12 @@ const links: Array<SidebarLink> = [
     text: 'Inventario',
     icon: 'warehouse',
   },
+  {
+    id: 'module-brands',
+    href: '/home/brands',
+    text: 'Marcas',
+    icon: 'shop',
+  }
 ];
 
 @Component({

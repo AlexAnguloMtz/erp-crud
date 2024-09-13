@@ -1,4 +1,4 @@
-package com.aram.erpcrud.auth.application;
+package com.aram.erpcrud.auth.application.command;
 
 import com.aram.erpcrud.auth.domain.AuthRole;
 import com.aram.erpcrud.auth.domain.AuthRoleRepository;

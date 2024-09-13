@@ -1,6 +1,6 @@
 package com.aram.erpcrud.auth.rest;
 
-import com.aram.erpcrud.auth.application.LoginCommandHandler;
+import com.aram.erpcrud.auth.application.command.LoginCommandHandler;
 import com.aram.erpcrud.auth.domain.AuthRole;
 import com.aram.erpcrud.auth.domain.AuthRoleRepository;
 import com.aram.erpcrud.auth.payload.LoginCommand;

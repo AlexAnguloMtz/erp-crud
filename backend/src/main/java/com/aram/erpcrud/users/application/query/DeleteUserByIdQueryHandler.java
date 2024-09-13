@@ -1,4 +1,4 @@
-package com.aram.erpcrud.users.application;
+package com.aram.erpcrud.users.application.query;
 
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
@@ -6,12 +6,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DeleteUserByIdHandler {
+public class DeleteUserByIdQueryHandler {
 
     private final AuthService authService;
     private final PersonalDetailsRepository personalDetailsRepository;
 
-    public DeleteUserByIdHandler(
+    public DeleteUserByIdQueryHandler(
             AuthService authService,
             PersonalDetailsRepository personalDetailsRepository
     ) {

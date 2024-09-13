@@ -1,4 +1,4 @@
-package com.aram.erpcrud.users.application;
+package com.aram.erpcrud.users.application.query;
 
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.auth.payload.AccountPublicDetails;
