@@ -16,7 +16,7 @@
 }
 
 .sidebar__overlay .sidebar {
-    background-color: white;
+    background-color: rgb(38, 51, 60);
     height: 100%;
     width: 80%;
     transform: translateX(-100%);
@@ -46,7 +46,7 @@
 .sidebar__profile {
     padding: 24px;
     text-align: center;
-    color: rgb(25, 53, 74);
+    color: white;
 }
 
 .sidebar__links {
@@ -59,7 +59,7 @@
 
 .sidebar__link {
     text-decoration: none;
-    color: rgb(78, 88, 93);
+    color: white;
     padding: 10px 16px;
     border-radius: 10px;
     transition: 200ms ease all;
@@ -84,8 +84,16 @@
     margin-left: 20px;
 }
 
+.sidebar .divider {
+    width: 90%;
+    height: 1px;
+    margin: 0 auto;
+    background-color: rgb(144, 144, 144);
+}
+
 .nav {
-    padding: 10px;
+    height: 70px;
+    padding: 0 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     display: flex;
     align-items: center;
@@ -149,7 +157,6 @@
 
     .sidebar-and-content-container {
         display: flex;
-        margin-top: 3px;
     }
 
     .content {
@@ -161,6 +168,7 @@
         transform: translateX(0);
         width: 200px;
         box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+        height: calc(100vh - 70px);
     }
 
     .sidebar__close-button-container {

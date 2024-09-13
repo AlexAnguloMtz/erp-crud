@@ -36,7 +36,7 @@
                         {{ userPersonalName }}
                     </h3>
                 </div>
-                <p-divider />
+                <div class="divider"></div>
                 <ul class="sidebar__links">
                     @for (link of links; track link.href) {
                     <a id="{{ link.id }}" (click)="onSidebarLinkClick()" routerLink="{{ link.href }}"
