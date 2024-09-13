@@ -11,15 +11,14 @@
     <div class="double-input-container">
         <div class="user-form-input">
             <label>Nombre</label>
-            <input pInputText id="create-user-name-field" [formControl]="formGroup.get('name')"
-                [style]="{'width': '100%'}" />
+            <input pInputText name="user-name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
             <div class="form-error name">
                 {{ errors['name'] }}
             </div>
         </div>
         <div class="user-form-input">
             <label>Apellido</label>
-            <input pInputText id="create-user-last-name" [formControl]="formGroup.get('lastName')"
+            <input pInputText name="user-last-name" [formControl]="formGroup.get('lastName')"
                 [style]="{'width': '100%'}" />
             <div class="form-error last-name">
                 {{ errors['lastName'] }}
@@ -40,7 +39,7 @@
                 <p-button (click)="onRetryLoadStates()" [outlined]="true" icon="pi pi-refresh" severity="secondary" />
             </div>
             } @else {
-            <p-dropdown id="create-user-state" [formControl]="formGroup.get('state')" [options]="stateOptions"
+            <p-dropdown name="user-state" [formControl]="formGroup.get('state')" [options]="stateOptions"
                 optionLabel="name" optionValue="id" placeholder="Estado" [style]="{'width': '100%'}" />
             }
             <div class="form-error state">
@@ -49,7 +48,7 @@
         </div>
         <div class="user-form-input">
             <label>Ciudad</label>
-            <input pInputText id="create-user-city" [formControl]="formGroup.get('city')" [style]="{'width': '100%'}" />
+            <input pInputText name="user-city" [formControl]="formGroup.get('city')" [style]="{'width': '100%'}" />
             <div class="form-error city">
                 {{ errors['city'] }}
             </div>
@@ -58,7 +57,7 @@
     <div class="double-input-container">
         <div class="user-form-input">
             <label>Colonia</label>
-            <input pInputText id="create-user-district" [formControl]="formGroup.get('district')"
+            <input pInputText name="user-district" [formControl]="formGroup.get('district')"
                 [style]="{'width': '100%'}" />
             <div class="form-error district">
                 {{ errors['district'] }}
@@ -66,8 +65,7 @@
         </div>
         <div class="user-form-input">
             <label>Calle</label>
-            <input pInputText id="create-user-street" [formControl]="formGroup.get('street')"
-                [style]="{'width': '100%'}" />
+            <input pInputText name="user-street" [formControl]="formGroup.get('street')" [style]="{'width': '100%'}" />
             <div class="form-error street">
                 {{ errors['street'] }}
             </div>
@@ -76,7 +74,7 @@
     <div class="double-input-container">
         <div class="user-form-input">
             <label>Número de vivienda</label>
-            <input pInputText id="create-user-street-number" [formControl]="formGroup.get('streetNumber')"
+            <input pInputText name="user-street-number" [formControl]="formGroup.get('streetNumber')"
                 [style]="{'width': '100%'}" />
             <div class="form-error street-number">
                 {{ errors['streetNumber'] }}
@@ -84,7 +82,7 @@
         </div>
         <div class="user-form-input">
             <label>Código postal</label>
-            <input pInputText id="create-user-zip-code" [formControl]="formGroup.get('zipCode')"
+            <input pInputText name="user-zip-code" [formControl]="formGroup.get('zipCode')"
                 [style]="{'width': '100%'}" />
             <div class="form-error zip-code">
                 {{ errors['zipCode'] }}
@@ -94,16 +92,14 @@
     <div class="double-input-container">
         <div class="user-form-input">
             <label>Correo</label>
-            <input pInputText id="create-user-email" [formControl]="formGroup.get('email')"
-                [style]="{'width': '100%'}" />
+            <input pInputText name="user-email" [formControl]="formGroup.get('email')" [style]="{'width': '100%'}" />
             <div class="form-error email">
                 {{ errors['email'] }}
             </div>
         </div>
         <div class="user-form-input">
             <label>Teléfono</label>
-            <input pInputText id="create-user-phone" [formControl]="formGroup.get('phone')"
-                [style]="{'width': '100%'}" />
+            <input pInputText name="user-phone" [formControl]="formGroup.get('phone')" [style]="{'width': '100%'}" />
             <div class="form-error phone">
                 {{ errors['phone'] }}
             </div>
@@ -122,8 +118,8 @@
             <p-button (click)="onRetryLoadRoles()" [outlined]="true" icon="pi pi-refresh" severity="secondary" />
         </div>
         } @else {
-        <p-dropdown id="create-user-role" [formControl]="formGroup.get('role')" [options]="roleOptions"
-            optionLabel="name" optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
+        <p-dropdown name="user-role" [formControl]="formGroup.get('role')" [options]="roleOptions" optionLabel="name"
+            optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
         }
         <div class="form-error role">
             {{ errors['role'] }}
@@ -132,7 +128,7 @@
     <div class="password-field">
         <div class="user-form-input">
             <label>Contraseña</label>
-            <input pInputText id="create-user-password" type="{{ passwordInputType }}"
+            <input pInputText name="user-password" type="{{ passwordInputType }}"
                 [formControl]="formGroup.get('password')" [style]="{'flex': '1'}" />
             @if (errors['password']) {
             <div class="form-error password">
@@ -149,7 +145,7 @@
     <div class="password-field">
         <div class="user-form-input">
             <label>Confirmar contraseña</label>
-            <input pInputText id="create-user-confirmed-password" type="{{ passwordInputType }}"
+            <input pInputText name="user-confirmed-password" type="{{ passwordInputType }}"
                 [formControl]="formGroup.get('confirmedPassword')" [style]="{'flex': '1'}" />
             @if (errors['confirmedPassword']) {
             <div class="form-error confirmed-password">
