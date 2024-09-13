@@ -28,21 +28,6 @@ type DisplayableError = {
   message: string,
 }
 
-const passwordVisibleProps: PasswordFieldProps = {
-  type: 'text',
-  icon: 'eye-slash',
-}
-
-const passwordNotVisibleProps: PasswordFieldProps = {
-  type: 'password',
-  icon: 'eye',
-}
-
-type PasswordFieldProps = {
-  type: 'text' | 'password'
-  icon: 'eye' | 'eye-slash'
-}
-
 type PageEvent = {
   first?: number;
   rows?: number;
@@ -169,8 +154,6 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
 
   itemSavedDialogVisible: boolean;
 
-  passwordFieldProps: PasswordFieldProps;
-
   itemToUpdateId: string;
 
   itemDeletedDialogVisible: boolean;
@@ -195,7 +178,6 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
     this.createItemVisible = false;
     this.itemSavedDialogVisible = false;
     this.itemDeletedDialogVisible = false;
-    this.passwordFieldProps = passwordNotVisibleProps;
     this.createItemStatus = { _type: 'item-creation-base' }
     this.updateItemStatus = { _type: 'item-update-base' }
     this.deleteItemStatus = { _type: 'delete-item-base' }
@@ -219,15 +201,6 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
     }
     return this.status.response.items;
   }
-
-  get passwordInputType(): string {
-    return this.passwordFieldProps.type;
-  }
-
-  get passwordVisibilityIcon(): string {
-    return this.passwordFieldProps.icon;
-  }
-
 
   get totalRecords(): number {
     return this.lastSeenTotalItems;
@@ -260,14 +233,6 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
 
   get updatingItem(): boolean {
     return this.updateItemStatus._type === 'updating-item';
-  }
-
-  onPasswordVisibilityClick() {
-    if (this.passwordFieldProps === passwordVisibleProps) {
-      this.passwordFieldProps = passwordNotVisibleProps;
-    } else {
-      this.passwordFieldProps = passwordVisibleProps
-    }
   }
 
   onEditClick(item: CrudItem): void {
