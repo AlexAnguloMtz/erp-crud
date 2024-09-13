@@ -26,7 +26,7 @@
 }
 
 .users {
-    margin-top: 20px;
+    margin-top: 8px;
 }
 
 .title {
@@ -41,7 +41,7 @@
 .total-items {
     color: rgb(80, 98, 104);
     font-size: 10px;
-    margin-top: 14px;
+    margin-top: 20px;
 }
 
 .item-form__actions {
