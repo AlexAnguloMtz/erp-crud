@@ -79,7 +79,7 @@ public class GetBrands {
     }
 
     private BrandSort toBrandSort(String sort) {
-        if (sort == null || "name-desc".equals(sort)) {
+        if ("name-desc".equals(sort)) {
             return BrandSort.NameDesc;
         }
 

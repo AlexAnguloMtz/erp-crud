@@ -244,7 +244,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     this.itemToUpdateId = item.id;
     this.updateItemForm.patchValue(item);
     this.updateItemVisible = true;
-    this.loadOptionsOnRowClick(item, this.updateItemForm);
+    this.loadOptionsOnRowClick?.(item, this.updateItemForm);
   }
 
   onCreateItemSubmit(): void {
@@ -283,7 +283,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     this.updateItemStatus = { _type: 'updating-item' }
     this.updateItem(localStorage.getItem('auth-token')!, this.itemToUpdateId, this.mapFormToUpdateDto(this.updateItemForm)).subscribe({
       next: (response: ItemUpdateResponse) => {
-        this.handleUpdateResponse(response);
+        this.handleUpdateResponse?.(response);
         this.searchItems({
           ...this.defaultPaginatedRequest(),
           search: this.searchControl.value,
@@ -338,7 +338,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   onCreateClick(): void {
     this.createItemVisible = true;
-    this.onCreateNewClick();
+    this.onCreateNewClick?.();
   }
 
   onCancelItemForm(): void {
