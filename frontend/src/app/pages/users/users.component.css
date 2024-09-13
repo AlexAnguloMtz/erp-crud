@@ -38,13 +38,9 @@
     margin-top: 10px;
 }
 
-.total-items-container {
-    margin-top: 10px;
-}
-
 .total-items {
     color: rgb(80, 98, 104);
-    font-size: 14px;
+    font-size: 10px;
 }
 
 .item-form__actions {
@@ -151,6 +147,15 @@
 }
 
 ::ng-deep .row-actions .p-button-icon.ng-star-inserted {
+    font-size: 12px;
+}
+
+::ng-deep .p-paginator-element {
+    padding: 0;
+    min-width: 0;
+    height: 22px;
+    width: 22px;
+    max-width: 22px;
     font-size: 12px;
 }
 
