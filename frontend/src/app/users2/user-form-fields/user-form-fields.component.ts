@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { OptionsStatus } from '../../common/options-status';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { loadingError, loadingOptions, options, OptionsStatus } from '../../common/options-status';
 import { State } from '../../services/users-service';
 import { Role } from '../../services/auth-service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -32,33 +32,27 @@ export class UserFormFieldsComponent {
   @Input() onRetryLoadRoles: () => void
 
   get loadingStatesOptions(): boolean {
-    return this.statesOptionsStatus._type === 'loading-options';
+    return loadingOptions(this.statesOptionsStatus);
   }
 
   get loadingRolesOptions(): boolean {
-    return this.rolesOptionsStatus._type === 'loading-options';
+    return loadingOptions(this.rolesOptionsStatus);
   }
 
   get loadingRolesError(): boolean {
-    return this.rolesOptionsStatus._type === 'error';
+    return loadingError(this.statesOptionsStatus);
   }
 
   get loadingStatesError(): boolean {
-    return this.statesOptionsStatus._type === 'error';
+    return loadingError(this.rolesOptionsStatus);
   }
 
   get statesOptions(): Array<State> {
-    if (this.statesOptionsStatus._type !== 'options-ready') {
-      return [];
-    }
-    return this.statesOptionsStatus.items;
+    return options(this.statesOptionsStatus);
   }
 
   get rolesOptions(): Array<Role> {
-    if (this.rolesOptionsStatus._type !== 'options-ready') {
-      return [];
-    }
-    return this.rolesOptionsStatus.items;
+    return options(this.rolesOptionsStatus);
   }
 
 }
