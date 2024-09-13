@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginatedRequest } from '../../common/paginated-request';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DropdownModule } from 'primeng/dropdown';
@@ -15,10 +15,11 @@ import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 const RECORDS_PER_PAGE: number = 10;
 
-type CrudItem = {
+export type CrudItem = {
   id: string
 }
 
@@ -123,6 +124,7 @@ type ItemUpdateResponse = {
     ButtonModule,
     DialogModule,
     ConfirmDialogModule,
+    CommonModule
   ],
   providers: [ConfirmationService],
   templateUrl: './crud-module.component.html',
@@ -130,8 +132,8 @@ type ItemUpdateResponse = {
 })
 export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
 
-  @Input() createItemCreationForm: () => FormGroup
-  @Input() createItemUpdateForm: () => FormGroup
+  @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup
+  @Input() createItemUpdateForm: (formBuilder: FormBuilder) => FormGroup
   @Input() mapSaveItemError: (error: Error) => DisplayableError
   @Input() getItems: (token: string, request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>>
   @Input() createItem: (token: string, formValues: CreationItemDto) => Observable<void>
@@ -144,6 +146,10 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
   @Input() mapFormToUpdateDto: (form: FormGroup) => UpdateItemDto
   @Input() handleUpdateResponse: (response: ItemUpdateResponse) => void;
   @Input() sortOptions: Array<SortOption>;
+  @Input() title: string;
+  @Input() formTitle: string;
+  @Input() tableHeaders: Array<string>
+  @Input() rowTemplate: TemplateRef<any>;
 
   status: ItemsStatus<CrudItem>;
   searchControl: FormControl;
@@ -171,6 +177,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
 
   constructor(
     private router: Router,
+    private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService,
   ) { }
 
@@ -192,8 +199,8 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
     this.createItemStatus = { _type: 'item-creation-base' }
     this.updateItemStatus = { _type: 'item-update-base' }
     this.deleteItemStatus = { _type: 'delete-item-base' }
-    this.itemCreationForm = this.createItemCreationForm();
-    this.updateItemForm = this.createItemUpdateForm();
+    this.itemCreationForm = this.createItemCreationForm(this.formBuilder);
+    this.updateItemForm = this.createItemUpdateForm(this.formBuilder);
     this.searchItems(this.defaultPaginatedRequest(), { _type: 'loading-first-time' });
     this.searchControl.valueChanges.subscribe(search => this.debounceSearch(search))
   }
@@ -415,6 +422,10 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto> {
 
   get deletingItem(): boolean {
     return this.deleteItemStatus._type === 'deleting-item';
+  }
+
+  get assembleTableHeaders(): Array<string> {
+    return [...this.tableHeaders, 'Acciones'];
   }
 
   private debounceSearch(search: string): void {

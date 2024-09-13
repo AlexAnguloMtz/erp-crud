@@ -27,7 +27,8 @@
 <p-confirmDialog id="message-dialog" />
 <p-dialog class="save-item-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideItemForm()"
     header="{{ formTitle }}" [modal]="true" [(visible)]="createItemVisible" [style]="{'padding-bottom': '0'}">
-    <form id="create-item-form" class="create-item-form" [formGroup]="itemForm" (ngSubmit)="onCreateItemSubmit()">
+    <form id="create-item-form" class="create-item-form" [formGroup]="itemCreationForm"
+        (ngSubmit)="onCreateItemSubmit()">
         <fieldset class="create-item-fields">
         </fieldset>
         <div class="item-form__actions">
@@ -111,10 +112,14 @@
     <p-table [value]="items" [styleClass]="'p-datatable-sm'">
         <ng-template pTemplate="header">
             <tr class="table-headers">
+                @for(tableHeader of assembleTableHeaders; track tableHeader) {
+                <th>{{ tableHeader }}</th>
+                }
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
             <tr class="row">
+                <ng-container *ngTemplateOutlet="rowTemplate; context: { $implicit: item }"></ng-container>
                 <td class="row-actions">
                     <p-button icon="pi pi-pencil" severity="success" (click)="onEditClick(item)"
                         [style]="{'width': '28px', 'height': '28px'}" />

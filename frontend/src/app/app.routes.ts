@@ -4,6 +4,7 @@ import { MainTemplateComponent } from './pages/main-template/main-template.compo
 import { HomeComponent } from './pages/home/home.component';
 import { UsersComponent } from './pages/users/users.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
+import { Users2Component } from './pages/users2/users2.component';
 
 export const routes: Routes = [
     {
@@ -26,6 +27,10 @@ export const routes: Routes = [
             {
                 path: 'users',
                 component: UsersComponent,
+            },
+            {
+                path: 'users-2',
+                component: Users2Component,
             },
             {
                 path: 'inventory',

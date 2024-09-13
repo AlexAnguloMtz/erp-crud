@@ -47,7 +47,7 @@ type PageEvent = {
   pageCount?: number;
 }
 
-type SortOption = {
+export type SortOption = {
   name: string,
   key: string,
 }

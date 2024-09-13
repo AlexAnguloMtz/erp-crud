@@ -66,7 +66,6 @@ export class HomeComponent {
     this.getMe(localStorage.getItem('auth-token')!);
   }
 
-
   get loadError(): boolean {
     return this.status._type === 'load-error';
   }
