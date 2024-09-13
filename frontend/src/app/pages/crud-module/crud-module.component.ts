@@ -1,8 +1,8 @@
 import { Component, Input, TemplateRef } from '@angular/core';
-import { PaginatedResponse } from '../common/paginated-response';
+import { PaginatedResponse } from '../../common/paginated-response';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { PaginatedRequest } from '../common/paginated-request';
+import { PaginatedRequest } from '../../common/paginated-request';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';

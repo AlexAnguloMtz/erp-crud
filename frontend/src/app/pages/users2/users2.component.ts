@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { CrudItem, CrudModuleComponent, DisplayableError } from '../crud-module/crud-module.component';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PaginatedResponse } from '../common/paginated-response';
-import { CreateUserCommand, State, UpdateUserCommand, UpdateUserResponse, UserDetails, UsersService } from '../services/users-service';
-import { PaginatedRequest } from '../common/paginated-request';
+import { PaginatedResponse } from '../../common/paginated-response';
+import { CreateUserCommand, State, UpdateUserCommand, UpdateUserResponse, UserDetails, UsersService } from '../../services/users-service';
+import { PaginatedRequest } from '../../common/paginated-request';
 import { Observable } from 'rxjs';
-import { SortOption } from '../pages/users/users.component';
+import { SortOption } from '../users/users.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
-import { LocationsService } from '../services/locations-service';
+import { LocationsService } from '../../services/locations-service';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { AuthService, Role } from '../services/auth-service';
+import { AuthService, Role } from '../../services/auth-service';
 import { UserFormFieldsComponent } from './user-form-fields/user-form-fields.component';
-import { OptionsStatus } from '../common/options-status';
+import { OptionsStatus } from '../../common/options-status';
 
 const passwordVisibleProps: PasswordFieldProps = {
   type: 'text',

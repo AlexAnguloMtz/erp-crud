@@ -51,12 +51,6 @@ const links: Array<SidebarLink> = [
     icon: 'user',
   },
   {
-    id: 'module-users-2',
-    href: '/home/users-2',
-    text: 'Usuarios-2',
-    icon: 'user',
-  },
-  {
     id: 'module-inventory',
     href: '/home/inventory',
     text: 'Inventario',

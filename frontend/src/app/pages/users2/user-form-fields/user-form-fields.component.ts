@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { loadingError, loadingOptions, options, OptionsStatus } from '../../common/options-status';
-import { State } from '../../services/users-service';
-import { Role } from '../../services/auth-service';
+import { loadingError, loadingOptions, options, OptionsStatus } from '../../../common/options-status';
+import { State } from '../../../services/users-service';
+import { Role } from '../../../services/auth-service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
