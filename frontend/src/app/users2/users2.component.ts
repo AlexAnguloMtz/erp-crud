@@ -12,6 +12,8 @@ import { LocationsService } from '../services/locations-service';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthService, Role } from '../services/auth-service';
+import { UserFormFieldsComponent } from './user-form-fields/user-form-fields.component';
+import { OptionsStatus } from '../common/options-status';
 
 const passwordVisibleProps: PasswordFieldProps = {
   type: 'text',
@@ -28,25 +30,6 @@ type PasswordFieldProps = {
   icon: 'eye' | 'eye-slash'
 }
 
-type OptionsBase = {
-  _type: 'base',
-}
-
-type LoadingOptions = {
-  _type: 'loading-options'
-}
-
-type OptionsReady<T> = {
-  _type: 'options-ready',
-  items: Array<T>
-}
-
-type LoadOptionsError = {
-  _type: 'error'
-}
-
-type OptionsStatus<T> = OptionsBase | LoadingOptions | OptionsReady<T> | LoadOptionsError
-
 @Component({
   selector: 'app-users2',
   standalone: true,
@@ -58,6 +41,7 @@ type OptionsStatus<T> = OptionsBase | LoadingOptions | OptionsReady<T> | LoadOpt
     InputTextModule,
     FormsModule,
     ReactiveFormsModule,
+    UserFormFieldsComponent,
   ],
   templateUrl: './users2.component.html',
   styleUrl: './users2.component.css'
@@ -78,36 +62,6 @@ export class Users2Component {
     this.statesOptionsStatus = { _type: 'base' };
     this.rolesOptionsStatus = { _type: 'base' };
     this.passwordFieldProps = passwordNotVisibleProps;
-  }
-
-  get loadingStatesOptions(): boolean {
-    return this.statesOptionsStatus._type === 'loading-options';
-  }
-
-  get loadingRolesOptions(): boolean {
-    return this.rolesOptionsStatus._type === 'loading-options';
-  }
-
-  get loadingStatesError(): boolean {
-    return this.statesOptionsStatus._type === 'error';
-  }
-
-  get loadingRolesError(): boolean {
-    return this.rolesOptionsStatus._type === 'error';
-  }
-
-  get stateOptions(): Array<State> {
-    if (this.statesOptionsStatus._type !== 'options-ready') {
-      return [];
-    }
-    return this.statesOptionsStatus.items;
-  }
-
-  get roleOptions(): Array<Role> {
-    if (this.rolesOptionsStatus._type !== 'options-ready') {
-      return [];
-    }
-    return this.rolesOptionsStatus.items;
   }
 
   get sortOptions(): Array<SortOption> {
@@ -154,20 +108,24 @@ export class Users2Component {
     }
   }
 
-  onRetryLoadStates(): void {
-    this.statesOptionsStatus = { _type: 'loading-options' }
-    this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
-      next: (states: Array<State>) => this.statesOptionsStatus = { _type: 'options-ready', items: states },
-      error: (_) => this.statesOptionsStatus = { _type: 'error' },
-    })
+  onRetryLoadStates(): () => void {
+    return () => {
+      this.statesOptionsStatus = { _type: 'loading-options' }
+      this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
+        next: (states: Array<State>) => this.statesOptionsStatus = { _type: 'options-ready', items: states },
+        error: (_) => this.statesOptionsStatus = { _type: 'error' },
+      })
+    }
   }
 
-  onRetryLoadRoles(): void {
-    this.rolesOptionsStatus = { _type: 'loading-options' }
-    this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
-      next: (roles: Array<Role>) => this.rolesOptionsStatus = { _type: 'options-ready', items: roles, },
-      error: (_) => this.rolesOptionsStatus = { _type: 'error' },
-    });
+  onRetryLoadRoles(): () => void {
+    return () => {
+      this.rolesOptionsStatus = { _type: 'loading-options' }
+      this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
+        next: (roles: Array<Role>) => this.rolesOptionsStatus = { _type: 'options-ready', items: roles, },
+        error: (_) => this.rolesOptionsStatus = { _type: 'error' },
+      });
+    }
   }
 
   getItems(): (token: string, request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
@@ -351,6 +309,14 @@ export class Users2Component {
         localStorage.setItem('auth-token', response.jwt);
       }
     }
+  }
+
+  userCreationFormControls(formGroup: FormGroup): { [key: string]: FormControl } {
+    const controls: { [key: string]: FormControl } = {};
+    Object.entries(formGroup.controls).forEach(entry => {
+      controls[entry[0]] = entry[1] as FormControl;
+    })
+    return controls;
   }
 
   private loadRolesOnRowClick(roleId: string, form: FormGroup) {

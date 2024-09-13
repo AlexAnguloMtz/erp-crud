@@ -1,0 +1,46 @@
+.double-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.user-form-input label {
+    color: rgb(50, 76, 95);
+    font-weight: 500;
+}
+
+.user-form__progress-container {
+    display: flex;
+    justify-content: center;
+}
+
+.user-form-input {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.form-error {
+    margin-top: 4px;
+    color: rgb(235, 61, 61);
+    font-size: 14px;
+}
+
+::ng-deep .dropdown-load-error .p-button {
+    font-size: 14px;
+}
+
+.dropdown-load-error {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media screen and (min-width: 570px) {
+    .double-input-container {
+        flex-direction: row;
+        gap: 12px;
+        padding-bottom: 20px;
+    }
+}

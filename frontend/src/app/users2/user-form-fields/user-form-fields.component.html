@@ -1,0 +1,114 @@
+<div class="double-input-container">
+    <div class="user-form-input">
+        <label>Nombre</label>
+        <input pInputText name="user-name" [formControl]="controls['name']" [style]="{'width': '100%'}" />
+        <div class="form-error name">
+            {{ errors['name'] }}
+        </div>
+    </div>
+    <div class="user-form-input">
+        <label>Apellido</label>
+        <input pInputText name="user-last-name" [formControl]="controls['lastName']" [style]="{'width': '100%'}" />
+        <div class="form-error last-name">
+            {{ errors['lastName'] }}
+        </div>
+    </div>
+</div>
+<div class="double-input-container">
+    <div class="user-form-input">
+        <label>Estado</label>
+        @if (loadingStatesOptions) {
+        <div class="user-form__progress-container">
+            <p-progressSpinner class="user-form__progress" ariaLabel="loading"
+                [style]="{'width': '40px', 'height': '40px'}" />
+        </div>
+        } @else if (loadingStatesError) {
+        <div class="dropdown-load-error">
+            <div>Error de carga</div>
+            <p-button (click)="onRetryLoadStates()" [outlined]="true" icon="pi pi-refresh" severity="secondary" />
+        </div>
+        } @else {
+        <p-dropdown name="user-state" [formControl]="controls['state']" [options]="statesOptions" optionLabel="name"
+            optionValue="id" placeholder="Estado" [style]="{'width': '100%'}" />
+        }
+        <div class="form-error state">
+            {{ errors['state'] }}
+        </div>
+    </div>
+    <div class="user-form-input">
+        <label>Ciudad</label>
+        <input pInputText name="user-city" [formControl]="controls['city']" [style]="{'width': '100%'}" />
+        <div class="form-error city">
+            {{ errors['city'] }}
+        </div>
+    </div>
+</div>
+<div class="double-input-container">
+    <div class="user-form-input">
+        <label>Colonia</label>
+        <input pInputText name="user-district" [formControl]="controls['district']" [style]="{'width': '100%'}" />
+        <div class="form-error district">
+            {{ errors['district'] }}
+        </div>
+    </div>
+    <div class="user-form-input">
+        <label>Calle</label>
+        <input pInputText name="user-street" [formControl]="controls['street']" [style]="{'width': '100%'}" />
+        <div class="form-error street">
+            {{ errors['street'] }}
+        </div>
+    </div>
+</div>
+<div class="double-input-container">
+    <div class="user-form-input">
+        <label>Número de vivienda</label>
+        <input pInputText name="user-street-number" [formControl]="controls['streetNumber']"
+            [style]="{'width': '100%'}" />
+        <div class="form-error street-number">
+            {{ errors['streetNumber'] }}
+        </div>
+    </div>
+    <div class="user-form-input">
+        <label>Código postal</label>
+        <input pInputText name="user-zip-code" [formControl]="controls['zipCode']" [style]="{'width': '100%'}" />
+        <div class="form-error zip-code">
+            {{ errors['zipCode'] }}
+        </div>
+    </div>
+</div>
+<div class="double-input-container">
+    <div class="user-form-input">
+        <label>Correo</label>
+        <input pInputText name="user-email" [formControl]="controls['email']" [style]="{'width': '100%'}" />
+        <div class="form-error email">
+            {{ errors['email'] }}
+        </div>
+    </div>
+    <div class="user-form-input">
+        <label>Teléfono</label>
+        <input pInputText name="user-phone" [formControl]="controls['phone']" [style]="{'width': '100%'}" />
+        <div class="form-error phone">
+            {{ errors['phone'] }}
+        </div>
+    </div>
+</div>
+<div class="user-form-input">
+    <label>Rol</label>
+    @if (loadingRolesOptions) {
+    <div class="user-form__progress-container">
+        <p-progressSpinner class="user-form__progress" ariaLabel="loading"
+            [style]="{'width': '40px', 'height': '40px'}" />
+    </div>
+    } @else if (loadingRolesError) {
+    <div class="dropdown-load-error">
+        <div>Error de carga</div>
+        <p-button (click)="onRetryLoadRoles()" [outlined]="true" icon="pi pi-refresh" severity="secondary" />
+    </div>
+    } @else {
+    <p-dropdown name="user-role" [formControl]="controls['role']" [options]="rolesOptions" optionLabel="name"
+        optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
+    }
+    <div class="form-error role">
+        {{ errors['role'] }}
+    </div>
+</div>

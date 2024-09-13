@@ -8,123 +8,9 @@
 </ng-template>
 
 <ng-template #createItemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
-    <div class="double-input-container">
-        <div class="user-form-input">
-            <label>Nombre</label>
-            <input pInputText name="user-name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
-            <div class="form-error name">
-                {{ errors['name'] }}
-            </div>
-        </div>
-        <div class="user-form-input">
-            <label>Apellido</label>
-            <input pInputText name="user-last-name" [formControl]="formGroup.get('lastName')"
-                [style]="{'width': '100%'}" />
-            <div class="form-error last-name">
-                {{ errors['lastName'] }}
-            </div>
-        </div>
-    </div>
-    <div class="double-input-container">
-        <div class="user-form-input">
-            <label>Estado</label>
-            @if (loadingStatesOptions) {
-            <div class="user-form__progress-container">
-                <p-progressSpinner class="user-form__progress" ariaLabel="loading"
-                    [style]="{'width': '40px', 'height': '40px'}" />
-            </div>
-            } @else if (loadingStatesError) {
-            <div class="dropdown-load-error">
-                <div>Error de carga</div>
-                <p-button (click)="onRetryLoadStates()" [outlined]="true" icon="pi pi-refresh" severity="secondary" />
-            </div>
-            } @else {
-            <p-dropdown name="user-state" [formControl]="formGroup.get('state')" [options]="stateOptions"
-                optionLabel="name" optionValue="id" placeholder="Estado" [style]="{'width': '100%'}" />
-            }
-            <div class="form-error state">
-                {{ errors['state'] }}
-            </div>
-        </div>
-        <div class="user-form-input">
-            <label>Ciudad</label>
-            <input pInputText name="user-city" [formControl]="formGroup.get('city')" [style]="{'width': '100%'}" />
-            <div class="form-error city">
-                {{ errors['city'] }}
-            </div>
-        </div>
-    </div>
-    <div class="double-input-container">
-        <div class="user-form-input">
-            <label>Colonia</label>
-            <input pInputText name="user-district" [formControl]="formGroup.get('district')"
-                [style]="{'width': '100%'}" />
-            <div class="form-error district">
-                {{ errors['district'] }}
-            </div>
-        </div>
-        <div class="user-form-input">
-            <label>Calle</label>
-            <input pInputText name="user-street" [formControl]="formGroup.get('street')" [style]="{'width': '100%'}" />
-            <div class="form-error street">
-                {{ errors['street'] }}
-            </div>
-        </div>
-    </div>
-    <div class="double-input-container">
-        <div class="user-form-input">
-            <label>Número de vivienda</label>
-            <input pInputText name="user-street-number" [formControl]="formGroup.get('streetNumber')"
-                [style]="{'width': '100%'}" />
-            <div class="form-error street-number">
-                {{ errors['streetNumber'] }}
-            </div>
-        </div>
-        <div class="user-form-input">
-            <label>Código postal</label>
-            <input pInputText name="user-zip-code" [formControl]="formGroup.get('zipCode')"
-                [style]="{'width': '100%'}" />
-            <div class="form-error zip-code">
-                {{ errors['zipCode'] }}
-            </div>
-        </div>
-    </div>
-    <div class="double-input-container">
-        <div class="user-form-input">
-            <label>Correo</label>
-            <input pInputText name="user-email" [formControl]="formGroup.get('email')" [style]="{'width': '100%'}" />
-            <div class="form-error email">
-                {{ errors['email'] }}
-            </div>
-        </div>
-        <div class="user-form-input">
-            <label>Teléfono</label>
-            <input pInputText name="user-phone" [formControl]="formGroup.get('phone')" [style]="{'width': '100%'}" />
-            <div class="form-error phone">
-                {{ errors['phone'] }}
-            </div>
-        </div>
-    </div>
-    <div class="user-form-input">
-        <label>Rol</label>
-        @if (loadingRolesOptions) {
-        <div class="user-form__progress-container">
-            <p-progressSpinner class="user-form__progress" ariaLabel="loading"
-                [style]="{'width': '40px', 'height': '40px'}" />
-        </div>
-        } @else if (loadingRolesError) {
-        <div class="dropdown-load-error">
-            <div>Error de carga</div>
-            <p-button (click)="onRetryLoadRoles()" [outlined]="true" icon="pi pi-refresh" severity="secondary" />
-        </div>
-        } @else {
-        <p-dropdown name="user-role" [formControl]="formGroup.get('role')" [options]="roleOptions" optionLabel="name"
-            optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
-        }
-        <div class="form-error role">
-            {{ errors['role'] }}
-        </div>
-    </div>
+    <app-user-form-fields [errors]="errors" [controls]="userCreationFormControls(formGroup)"
+        [statesOptionsStatus]="statesOptionsStatus" [rolesOptionsStatus]="rolesOptionsStatus"
+        [onRetryLoadStates]="onRetryLoadStates()" [onRetryLoadRoles]="onRetryLoadRoles()"></app-user-form-fields>
     <div class="password-field">
         <div class="user-form-input">
             <label>Contraseña</label>
@@ -160,7 +46,6 @@
         </button>
     </div>
 </ng-template>
-
 
 <app-crud-module [title]="'Usuarios'" [formTitle]="'Usuario'" [createItemCreationForm]="createCreationForm()"
     [createItemUpdateForm]="createUpdateForm()" [getItems]="getItems()" [sortOptions]="sortOptions"
