@@ -3,7 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { MainTemplateComponent } from './pages/main-template/main-template.component';
 import { HomeComponent } from './pages/home/home.component';
 import { UsersComponent } from './pages/users/users.component';
-import { ProductsComponent } from './pages/products/products.component';
+import { InventoryComponent } from './pages/inventory/inventory.component';
 
 export const routes: Routes = [
     {
@@ -28,8 +28,8 @@ export const routes: Routes = [
                 component: UsersComponent,
             },
             {
-                path: 'products',
-                component: ProductsComponent
+                path: 'inventory',
+                component: InventoryComponent
             }
         ]
     }
