@@ -29,8 +29,8 @@
         <div class="user-form-input">
             <label>Estado</label>
             @if (loadingStatesOptions) {
-            <div class="create-user__progress-container">
-                <p-progressSpinner class="create-user__progress" ariaLabel="loading"
+            <div class="user-form__progress-container">
+                <p-progressSpinner class="user-form__progress" ariaLabel="loading"
                     [style]="{'width': '40px', 'height': '40px'}" />
             </div>
             } @else if (loadingStatesError) {
@@ -108,8 +108,8 @@
     <div class="user-form-input">
         <label>Rol</label>
         @if (loadingRolesOptions) {
-        <div class="create-user__progress-container">
-            <p-progressSpinner class="create-user__progress" ariaLabel="loading"
+        <div class="user-form__progress-container">
+            <p-progressSpinner class="user-form__progress" ariaLabel="loading"
                 [style]="{'width': '40px', 'height': '40px'}" />
         </div>
         } @else if (loadingRolesError) {

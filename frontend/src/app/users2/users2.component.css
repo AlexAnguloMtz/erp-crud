@@ -3,7 +3,7 @@
     font-weight: 500;
 }
 
-.create-user__progress-container {
+.user-form__progress-container {
     display: flex;
     justify-content: center;
 }

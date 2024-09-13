@@ -256,18 +256,18 @@ const validUser = () => {
 }
 
 function fillCreateUserForm({ values, selectState, selectRole }) {
-    cy.get('#create-user-form').within(() => {
-        type('#create-user-name-field', values.name);
-        type('#create-user-last-name', values.lastName);
-        type('#create-user-city', values.city);
-        type('#create-user-district', values.district);
-        type('#create-user-street', values.street);
-        type('#create-user-street-number', values.streetNumber);
-        type('#create-user-zip-code', values.zipCode);
-        type('#create-user-email', values.email);
-        type('#create-user-phone', values.phone);
-        type('#create-user-password', values.password);
-        type('#create-user-confirmed-password', values.confirmedPassword);
+    cy.get('#create-item-form').within(() => {
+        type('input[name="user-name"]', values.name);
+        type('input[name="user-last-name"]', values.lastName);
+        type('input[name="user-city"]', values.city);
+        type('input[name="user-district"]', values.district);
+        type('input[name="user-street"]', values.street);
+        type('input[name="user-street-number"]', values.streetNumber);
+        type('input[name="user-zip-code"]', values.zipCode);
+        type('input[name="user-email"]', values.email);
+        type('input[name="user-phone"]', values.phone);
+        type('input[name="user-password"]', values.password);
+        type('input[name="user-confirmed-password"]', values.confirmedPassword);
 
         if (selectState) {
             clickRandomDropdownValue('#create-user-state');
