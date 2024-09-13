@@ -9,7 +9,7 @@
 
 <ng-template #createItemFieldsTemplate let-creationErrors="creationErrors" let-formGroup="formGroup">
     <div class="double-input-container">
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-name-field">Nombre</label>
             <input pInputText id="create-user-name-field" [formControl]="formGroup.get('name')"
                 [style]="{'width': '100%'}" />
@@ -17,7 +17,7 @@
                 {{ creationErrors['name'] }}
             </div>
         </div>
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-last-name">Apellido</label>
             <input pInputText id="create-user-last-name" [formControl]="formGroup.get('lastName')"
                 [style]="{'width': '100%'}" />
@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="double-input-container">
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-state">Estado</label>
             @if (loadingStatesOptions) {
             <div class="create-user__progress-container">
@@ -47,7 +47,7 @@
                 {{ creationErrors['state'] }}
             </div>
         </div>
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-city">Ciudad</label>
             <input pInputText id="create-user-city" [formControl]="formGroup.get('city')" [style]="{'width': '100%'}" />
             <div class="form-error city">
@@ -56,7 +56,7 @@
         </div>
     </div>
     <div class="double-input-container">
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-district">Colonia</label>
             <input pInputText id="create-user-district" [formControl]="formGroup.get('district')"
                 [style]="{'width': '100%'}" />
@@ -64,7 +64,7 @@
                 {{ creationErrors['district'] }}
             </div>
         </div>
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-street">Calle</label>
             <input pInputText id="create-user-street" [formControl]="formGroup.get('street')"
                 [style]="{'width': '100%'}" />
@@ -74,7 +74,7 @@
         </div>
     </div>
     <div class="double-input-container">
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-street-number">Número de vivienda</label>
             <input pInputText id="create-user-street-number" [formControl]="formGroup.get('streetNumber')"
                 [style]="{'width': '100%'}" />
@@ -82,7 +82,7 @@
                 {{ creationErrors['streetNumber'] }}
             </div>
         </div>
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-zip-code">Código postal</label>
             <input pInputText id="create-user-zip-code" [formControl]="formGroup.get('zipCode')"
                 [style]="{'width': '100%'}" />
@@ -92,7 +92,7 @@
         </div>
     </div>
     <div class="double-input-container">
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-email">Correo</label>
             <input pInputText id="create-user-email" [formControl]="formGroup.get('email')"
                 [style]="{'width': '100%'}" />
@@ -100,7 +100,7 @@
                 {{ creationErrors['email'] }}
             </div>
         </div>
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-phone">Teléfono</label>
             <input pInputText id="create-user-phone" [formControl]="formGroup.get('phone')"
                 [style]="{'width': '100%'}" />
@@ -109,7 +109,7 @@
             </div>
         </div>
     </div>
-    <div class="create-user-input">
+    <div class="user-form-input">
         <label for="create-user-role">Rol</label>
         @if (loadingRolesOptions) {
         <div class="create-user__progress-container">
@@ -130,7 +130,7 @@
         </div>
     </div>
     <div class="password-field">
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-password">Contraseña</label>
             <input pInputText id="create-user-password" type="{{ passwordInputType }}"
                 [formControl]="formGroup.get('password')" [style]="{'flex': '1'}" />
@@ -147,7 +147,7 @@
         </button>
     </div>
     <div class="password-field">
-        <div class="create-user-input">
+        <div class="user-form-input">
             <label for="create-user-confirmed-password">Confirmar contraseña</label>
             <input pInputText id="create-user-confirmed-password" type="{{ passwordInputType }}"
                 [formControl]="formGroup.get('confirmedPassword')" [style]="{'flex': '1'}" />
