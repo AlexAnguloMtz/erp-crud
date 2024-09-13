@@ -62,14 +62,14 @@
     padding: 30px 22px 30px 22px;
 }
 
-.user-form-input {
+.create-user-input {
     display: flex;
     flex-direction: column;
     gap: 4px;
     width: 100%;
 }
 
-.user-form-input label {
+.create-user-input label {
     color: rgb(50, 76, 95);
     font-weight: 500;
 }
@@ -97,7 +97,7 @@
     align-items: center;
 }
 
-.password-field .user-form-input {
+.password-field .create-user-input {
     float: 1;
     width: 100%;
 }
