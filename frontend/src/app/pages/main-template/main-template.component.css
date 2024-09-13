@@ -175,6 +175,7 @@
     .content {
         flex: 1;
         height: calc(100v - 70px);
+        padding: 16px 12px 8px 12px;
     }
 
     .sidebar__overlay .sidebar {
