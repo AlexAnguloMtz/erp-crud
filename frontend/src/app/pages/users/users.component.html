@@ -286,9 +286,6 @@
             </div>
         </fieldset>
         <div class="item-form__actions">
-            <p-button label="Eliminar" severity="danger" outlined="true" (click)="onDeleteUser()"
-                [loading]="deletingUser" />
-            <div class="item-form__spacer"></div>
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelUpdateUserForm()" />
             <p-button label="Guardar" type="submit" [loading]="updatingUser" />
         </div>
@@ -366,16 +363,21 @@
                 <th>Ubicación</th>
                 <th>Correo</th>
                 <th>Teléfono</th>
+                <th>Acciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user>
-            <tr class="row" (click)="onRowClick(user)">
+            <tr class="row">
                 <td>{{ user.name }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.role.name }}</td>
                 <td>{{ formatUserLocation(user) }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
+                <td class="row-actions">
+                    <p-button icon="pi pi-pencil" severity="success" (click)="onEditClick(user)" />
+                    <p-button icon="pi pi-trash" severity="danger" (click)="onDeleteUser(user.id)" />
+                </td>
             </tr>
         </ng-template>
     </p-table>

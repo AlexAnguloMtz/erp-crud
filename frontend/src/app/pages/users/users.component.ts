@@ -644,7 +644,7 @@ export class UsersComponent {
     }
   }
 
-  onRowClick(user: UserDetails): void {
+  onEditClick(user: UserDetails): void {
     this.userToUpdateId = user.id;
     this.updateUserForm.patchValue(user);
     this.updateItemVisible = true;
@@ -845,31 +845,25 @@ export class UsersComponent {
     this.userDeletedDialogVisible = false;
   }
 
-  onDeleteUser(): void {
+  onDeleteUser(id: string): void {
     this.deleteUserStatus = { _type: 'deleting-user' }
-    if (this.userToUpdateId) {
-      this.usersService.deleteUserById(localStorage.getItem('auth-token')!, this.userToUpdateId!).subscribe({
-        next: () => {
-          this.deleteUserStatus = { _type: 'delete-user-base' }
-          this.updateItemVisible = false;
-          this.removeDeletedRow();
-          this.userDeletedDialogVisible = true;
-        },
-        error: (error) => this.handleUserDeleteError(error),
-      });
-    }
+    this.usersService.deleteUserById(localStorage.getItem('auth-token')!, id).subscribe({
+      next: () => {
+        this.deleteUserStatus = { _type: 'delete-user-base' }
+        this.updateItemVisible = false;
+        this.removeDeletedRow(id);
+        this.userDeletedDialogVisible = true;
+      },
+      error: (error) => this.handleUserDeleteError(error),
+    });
   }
 
-  private removeDeletedRow(): void {
+  private removeDeletedRow(id: string): void {
     if (this.status._type !== 'base') {
       return;
     }
 
-    if (!this.userToUpdateId) {
-      return;
-    }
-
-    this.status.response.items = this.status.response.items.filter(x => x.id !== this.userToUpdateId);
+    this.status.response.items = this.status.response.items.filter(x => x.id !== id);
   }
 
   get deletingUser(): boolean {

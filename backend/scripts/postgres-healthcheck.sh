@@ -1,7 +1,5 @@
 #!/bin/sh
 
-
-
 # Get the environment variables
 DB_USER="${POSTGRES_USER:-postgres}"
 DB_NAME="${POSTGRES_DB:-postgres}"

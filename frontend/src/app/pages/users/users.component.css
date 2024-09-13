@@ -131,10 +131,6 @@
     margin-bottom: 20px;
 }
 
-.item-form__spacer {
-    flex: 1;
-}
-
 ::ng-deep .save-user-dialog .p-dialog .p-dialog-header {
     border-bottom: 1px solid rgb(210, 211, 212);
 }
@@ -153,14 +149,6 @@
     margin-top: 30px;
     display: flex;
     justify-content: flex-end;
-}
-
-.row {
-    cursor: pointer;
-}
-
-.row:hover {
-    background-color: #e0ecfc;
 }
 
 .zero-items {
@@ -183,6 +171,12 @@
 
 .zero-items-img {
     width: 100%;
+}
+
+.row-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 6px;
 }
 
 @media screen and (min-width: 570px) {
