@@ -91,7 +91,7 @@
     </div>
     } @else {
     <div class="table-container">
-        <p-table [value]="items" [styleClass]="'p-datatable-sm'">
+        <p-table class="items-table" [value]="items" [styleClass]="'p-datatable-sm'" [scrollable]="true">
             <ng-template pTemplate="header">
                 <tr class="table-headers">
                     @for(tableHeader of tableHeaders; track tableHeader) {

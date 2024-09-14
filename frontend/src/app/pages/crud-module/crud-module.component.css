@@ -159,6 +159,10 @@
     width: 110px;
 }
 
+.items-table {
+    position: relative;
+}
+
 .table-headers {
     font-size: 12px;
 }
