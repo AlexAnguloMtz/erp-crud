@@ -119,6 +119,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() formTitle: string;
   @Input() tableHeaders: Array<string>
   @Input() updateItemFieldsStyle: { [key: string]: string } = {};
+  @Input() searchPlaceholder: string;
 
   // Functions
   @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup

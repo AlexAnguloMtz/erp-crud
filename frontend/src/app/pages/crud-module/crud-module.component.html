@@ -58,7 +58,7 @@
             <p-inputGroupAddon [style]="{'height': '0px', 'padding': '0'}">
                 <i class="pi pi-search" [style]="{'fontSize': '12px', 'position': 'relative', 'bottom': '9px'}"></i>
             </p-inputGroupAddon>
-            <input pInputText placeholder="Nombre o apellido" [formControl]="searchControl"
+            <input pInputText placeholder="{{ searchPlaceholder }}" [formControl]="searchControl"
                 [style]="{'fontSize':'12px', 'height': '12px', 'color': 'black'}" />
         </p-inputGroup>
     </div>
