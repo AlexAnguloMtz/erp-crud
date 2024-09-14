@@ -12,16 +12,19 @@ import com.aram.erpcrud.movements.domain.ProductQuantity;
 import com.aram.erpcrud.movements.payload.*;
 import com.aram.erpcrud.products.payload.ProductDTO;
 import com.aram.erpcrud.users.payload.PersonalNameDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
+@Slf4j
 @Component
 public class GetMovementsQueryHandler {
 
@@ -57,6 +60,7 @@ public class GetMovementsQueryHandler {
     }
 
     public PageResponse<MovementDTO> handle(GetMovementsQuery query) {
+        log.error("handling query {}", query.toString());
         PageRequest pageRequest = getMovementPageRequest(query);
         Specification<Movement> movementSpecification = getMovementSpecification(query);
         Page<Movement> page = movementRepository.findAll(movementSpecification, pageRequest);
@@ -113,7 +117,7 @@ public class GetMovementsQueryHandler {
     }
 
     private List<String> getProductsIds(List<ProductQuantity> productQuantities) {
-        return productQuantities.stream().map(ProductQuantity::getId).toList();
+        return productQuantities.stream().map(ProductQuantity::getProductId).toList();
     }
 
     private List<ProductQuantityDTO> assembleProductQuantities(
@@ -129,7 +133,7 @@ public class GetMovementsQueryHandler {
         ProductDTO product = products.stream()
                 .filter(aProduct -> aProduct.id().equals(productQuantity.getProductId()))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+                .orElseThrow(() -> new ResponseStatusException(INTERNAL_SERVER_ERROR));
 
         return new ProductQuantityDTO(product, productQuantity.getQuantity());
     }

@@ -64,7 +64,7 @@ export class MovementService {
         const queryString = paginatedRequestToQueryString(request);
 
         return this.http.get<PaginatedResponse<Movement>>(this.movementsUrl + queryString, { headers }).pipe(
-            retry(5),
+            // retry(5),
         );
     }
 }

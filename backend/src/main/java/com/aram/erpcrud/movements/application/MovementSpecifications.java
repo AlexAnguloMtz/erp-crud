@@ -51,6 +51,4 @@ public interface MovementSpecifications {
             return criteriaBuilder.isMember(productId, root.get("productQuantities").get("productId"));
         });
     }
-
-
 }

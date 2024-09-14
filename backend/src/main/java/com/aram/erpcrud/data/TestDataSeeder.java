@@ -135,7 +135,13 @@ class TestDataSeeder {
                 new Brand("27", "Goya"),
                 new Brand("28", "El Costeño"),
                 new Brand("29", "Minsa"),
-                new Brand("30", "Lomito")
+                new Brand("30", "Lomito"),
+                new Brand("32", "Kirkland"),
+                new Brand("33", "Clorox"),
+                new Brand("34", "Salvo"),
+                new Brand("35", "Lysol"),
+                new Brand("36", "Huggies"),
+                new Brand("37", "Pampers")
         );
     }
 
@@ -215,9 +221,9 @@ class TestDataSeeder {
                 new Product("40", "Tostitos", brandMap.get("4"), categoryMap.get("8")),
 
                 // Limpieza
-                new Product("41", "Ariel 1L", brandMap.get("30"), categoryMap.get("9")),
+                new Product("41", "Jabón 1L", brandMap.get("30"), categoryMap.get("9")),
                 new Product("42", "Mr. Músculo 1L", brandMap.get("30"), categoryMap.get("9")),
-                new Product("43", "Suavizante Downy 1L", brandMap.get("33"), categoryMap.get("9")),
+                new Product("43", "Suavizante 1L", brandMap.get("33"), categoryMap.get("9")),
                 new Product("44", "Cloro 1L", brandMap.get("35"), categoryMap.get("9")),
                 new Product("45", "Jabón Trastes", brandMap.get("34"), categoryMap.get("9")),
 
@@ -230,7 +236,7 @@ class TestDataSeeder {
                 // Para bebés
                 new Product("50", "Pañales Talla M", brandMap.get("36"), categoryMap.get("11")),
                 new Product("51", "Leche en Polvo", brandMap.get("37"), categoryMap.get("11")),
-                new Product("52", "Toallitas Húmedas", brandMap.get("38"), categoryMap.get("11")),
+                new Product("52", "Toallitas Húmedas", brandMap.get("37"), categoryMap.get("11")),
                 new Product("53", "Crema para Bebé", brandMap.get("36"), categoryMap.get("11")),
 
                 // Especias y condimentos
@@ -259,11 +265,11 @@ class TestDataSeeder {
                 new Product("70", "Tacos de Pescado", brandMap.get("27"), categoryMap.get("3")),
 
                 // Frutas y verduras (more)
-                new Product("71", "Uvas", brandMap.get("30"), categoryMap.get("4")),
+                new Product("71", "Uva Roja", brandMap.get("30"), categoryMap.get("4")),
                 new Product("72", "Peras", brandMap.get("30"), categoryMap.get("4")),
-                new Product("73", "Pepinos", brandMap.get("30"), categoryMap.get("4")),
-                new Product("74", "Cebollas", brandMap.get("30"), categoryMap.get("4")),
-                new Product("75", "Pimientos", brandMap.get("30"), categoryMap.get("4")),
+                new Product("73", "Pepino", brandMap.get("30"), categoryMap.get("4")),
+                new Product("74", "Cebolla", brandMap.get("30"), categoryMap.get("4")),
+                new Product("75", "Pimiento Morrón", brandMap.get("30"), categoryMap.get("4")),
 
                 // Abarrotes secos (more)
                 new Product("76", "Galletas de Animalitos", brandMap.get("17"), categoryMap.get("5")),
