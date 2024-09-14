@@ -94,19 +94,24 @@
         <p-table [value]="items" [styleClass]="'p-datatable-sm'">
             <ng-template pTemplate="header">
                 <tr class="table-headers">
-                    @for(tableHeader of assembleTableHeaders; track tableHeader) {
+                    @for(tableHeader of tableHeaders; track tableHeader) {
                     <th>{{ tableHeader }}</th>
                     }
+                    <th class="row-actions-column">
+                        <span class="row-actions-column-text">Acciones</span>
+                    </th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr class="row">
                     <ng-container *ngTemplateOutlet="rowTemplate; context: { $implicit: item }"></ng-container>
                     <td class="row-actions">
-                        <p-button icon="pi pi-pencil" severity="success" (click)="onEditClick(item)"
-                            [style]="{'width': '28px', 'height': '28px'}" />
-                        <p-button icon="pi pi-trash" severity="danger" (click)="onDeleteItem(item.id)"
-                            [style]="{'width': '28px', 'height': '28px'}" />
+                        <div class="row-actions-buttons">
+                            <p-button icon="pi pi-pencil" severity="success" (click)="onEditClick(item)"
+                                [style]="{'width': '28px', 'height': '28px'}" />
+                            <p-button icon="pi pi-trash" severity="danger" (click)="onDeleteItem(item.id)"
+                                [style]="{'width': '28px', 'height': '28px'}" />
+                        </div>
                     </td>
                 </tr>
             </ng-template>

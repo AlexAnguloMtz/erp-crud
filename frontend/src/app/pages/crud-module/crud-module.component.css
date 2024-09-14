@@ -140,8 +140,23 @@
 
 .row-actions {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
+}
+
+.row-actions-buttons {
+    display: flex;
     gap: 12px;
+    width: 110px;
+}
+
+.row-actions-column {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.row-actions-column-text {
+    display: block;
+    width: 110px;
 }
 
 .table-headers {

@@ -388,10 +388,6 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     return this.deleteItemStatus._type === 'deleting-item';
   }
 
-  get assembleTableHeaders(): Array<string> {
-    return [...this.tableHeaders, 'Acciones'];
-  }
-
   private debounceSearch(search: string): void {
     // Clear any existing timeout
     if (this.debounceTimeout) {
