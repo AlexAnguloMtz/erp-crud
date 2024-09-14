@@ -15,7 +15,7 @@ export class MovementsComponent {
   ) { }
 
   ngOnInit(): void {
-    this.movementsService.getMovements(localStorage.getItem('auth-token')!, {}).subscribe({
+    this.movementsService.getMovements(localStorage.getItem('auth-token')!, {}, {}).subscribe({
       next: (it) => console.log(JSON.stringify(it)),
       error: (error) => console.log(error.message),
     })

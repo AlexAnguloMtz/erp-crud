@@ -47,6 +47,13 @@ export type Movement = {
     timestamp: Date;
 }
 
+export type GetMovementsParams = {
+    responsibleId?: string;
+    start?: Date;
+    end?: Date;
+    productId?: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -56,27 +63,29 @@ export class MovementService {
 
     constructor(private http: HttpClient) { }
 
-    getMovements(token: string, request: PaginatedRequest): Observable<PaginatedResponse<Movement>> {
+    getMovements(token: string, pagination: PaginatedRequest, params: GetMovementsParams): Observable<PaginatedResponse<Movement>> {
         const headers = {
             'Authorization': `Bearer ${token}`
         }
 
-        const queryString = paginatedRequestToQueryString(request);
-
-        return this.http.get<PaginatedResponse<Movement>>(this.movementsUrl + queryString, { headers }).pipe(
-            // retry(5),
+        return this.http.get<PaginatedResponse<Movement>>(this.movementsUrl + '?' + toQueryString(pagination, params), { headers }).pipe(
+            retry(5),
         );
     }
 }
 
-function paginatedRequestToQueryString(params: PaginatedRequest): string {
-    const searchParams = new URLSearchParams();
+function toQueryString(pagination: PaginatedRequest, params: GetMovementsParams): string {
+    const urlParams = new URLSearchParams();
 
-    for (const [key, value] of Object.entries(params)) {
-        if (value != null && value != '') {
-            searchParams.append(key, value.toString());
-        }
-    }
+    if (pagination.search) urlParams.append('search', pagination.search);
+    if (pagination.pageNumber !== undefined) urlParams.append('pageNumber', pagination.pageNumber.toString());
+    if (pagination.pageSize !== undefined) urlParams.append('pageSize', pagination.pageSize.toString());
+    if (pagination.sort) urlParams.append('sort', pagination.sort);
 
-    return searchParams.toString() ? `?${searchParams.toString()}` : '';
+    if (params.responsibleId) urlParams.append('responsibleId', params.responsibleId);
+    if (params.start) urlParams.append('start', params.start.toISOString())
+    if (params.end) urlParams.append('end', params.end.toISOString())
+    if (params.productId) urlParams.append('productId', params.productId)
+
+    return urlParams.toString();
 }
