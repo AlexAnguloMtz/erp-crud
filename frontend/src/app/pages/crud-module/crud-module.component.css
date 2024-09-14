@@ -165,6 +165,7 @@
 
 .table-headers {
     font-size: 12px;
+    z-index: 0;
 }
 
 .table-headers th {
