@@ -66,6 +66,8 @@
     transition: 200ms ease all;
     border: 2px solid transparent;
     font-size: 12px;
+    display: flex;
+    align-items: center;
 }
 
 .sidebar__user {
