@@ -5,7 +5,7 @@ import com.aram.erpcrud.auth.application.command.DeleteAccountByIdCommandHandler
 import com.aram.erpcrud.auth.application.command.UpdateAccountCommandHandler;
 import com.aram.erpcrud.auth.application.query.GetAccountByEmailQueryHandler;
 import com.aram.erpcrud.auth.application.query.GetAccountByIdQueryHandler;
-import com.aram.erpcrud.auth.application.query.GetAccountsQueryHandler;
+import com.aram.erpcrud.auth.application.query.GetAccountsByIdsQueryHandler;
 import com.aram.erpcrud.auth.payload.*;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class SimpleAuthService implements AuthService {
 
     private final CreateAccountCommandHandler createAccountCommandHandler;
-    private final GetAccountsQueryHandler getAccountsQueryHandler;
+    private final GetAccountsByIdsQueryHandler getAccountsQueryHandler;
     private final GetAccountByEmailQueryHandler getAccountByEmailQueryHandler;
     private final GetAccountByIdQueryHandler getAccountByIdQueryHandler;
     private final UpdateAccountCommandHandler updateAccountCommandHandler;
@@ -24,7 +24,7 @@ public class SimpleAuthService implements AuthService {
 
     public SimpleAuthService(
             CreateAccountCommandHandler createAccountCommandHandler,
-            GetAccountsQueryHandler getAccountsQueryHandler,
+            GetAccountsByIdsQueryHandler getAccountsQueryHandler,
             GetAccountByEmailQueryHandler getAccountByEmailQueryHandler,
             GetAccountByIdQueryHandler getAccountByIdQueryHandler,
             UpdateAccountCommandHandler updateAccountCommandHandler,

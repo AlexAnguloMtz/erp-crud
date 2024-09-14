@@ -2,6 +2,9 @@ spring:
   application:
     name: aram-erp-crud
 
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
+
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}

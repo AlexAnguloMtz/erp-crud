@@ -1,4 +1,4 @@
-package com.aram.erpcrud.auth.data;
+package com.aram.erpcrud.data;
 
 import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.domain.StateRepository;

@@ -1,10 +1,9 @@
-package com.aram.erpcrud.auth.data;
+package com.aram.erpcrud.data;
 
 import com.aram.erpcrud.auth.domain.AuthRole;
 import com.aram.erpcrud.auth.domain.AuthRoleRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 

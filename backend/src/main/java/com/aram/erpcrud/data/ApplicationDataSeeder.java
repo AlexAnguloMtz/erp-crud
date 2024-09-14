@@ -1,27 +1,28 @@
-package com.aram.erpcrud.auth.data;
+package com.aram.erpcrud.data;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthCommandLineRunner implements CommandLineRunner {
+class ApplicationDataSeeder {
 
     private final StatesSeeder stateSeeder;
     private final RolesSeeder rolesSeeder;
     private final RootUserSeeder rootUserSeeder;
+    private final MovementTypeSeeder movementTypeSeeder;
 
-    public AuthCommandLineRunner(
+    ApplicationDataSeeder(
             StatesSeeder stateSeeder,
             RolesSeeder rolesSeeder,
-            RootUserSeeder rootUserSeeder
+            RootUserSeeder rootUserSeeder,
+            MovementTypeSeeder movementTypeSeeder
     ) {
         this.stateSeeder = stateSeeder;
         this.rolesSeeder = rolesSeeder;
         this.rootUserSeeder = rootUserSeeder;
+        this.movementTypeSeeder = movementTypeSeeder;
     }
 
-    @Override
-    public void run(String... args) throws Exception {
+    public void seed() throws Exception {
         try {
             doRun();
         } catch (Exception exception) {
@@ -33,5 +34,6 @@ public class AuthCommandLineRunner implements CommandLineRunner {
         stateSeeder.seed();
         rolesSeeder.seed();
         rootUserSeeder.seed();
+        movementTypeSeeder.seed();
     }
 }

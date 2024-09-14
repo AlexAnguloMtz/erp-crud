@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class GetAccountsQueryHandler {
+public class GetAccountsByIdsQueryHandler {
 
     private final AuthUserRepository authUserRepository;
 
-    public GetAccountsQueryHandler(AuthUserRepository authUserRepository) {
+    public GetAccountsByIdsQueryHandler(AuthUserRepository authUserRepository) {
         this.authUserRepository = authUserRepository;
     }
 

@@ -81,7 +81,6 @@ public class GetBrandsQueryHandler {
         if ("name-desc".equals(sort)) {
             return BrandSort.NameDesc;
         }
-
         return BrandSort.NameAsc;
     }
 

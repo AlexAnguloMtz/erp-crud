@@ -57,11 +57,17 @@ const links: Array<SidebarLink> = [
     icon: 'warehouse',
   },
   {
+    id: 'module-movements',
+    href: '/home/movements',
+    text: 'Movimientos',
+    icon: 'truck',
+  },
+  {
     id: 'module-brands',
     href: '/home/brands',
     text: 'Marcas',
-    icon: 'shop',
-  }
+    icon: 'bookmark',
+  },
 ];
 
 @Component({
