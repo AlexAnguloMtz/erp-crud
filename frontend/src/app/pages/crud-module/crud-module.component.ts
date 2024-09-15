@@ -121,6 +121,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() updateItemFieldsStyle: { [key: string]: string } = {};
   @Input() searchPlaceholder: string;
   @Input() hasSearchBar: boolean = true;
+  @Input() hasFilters: boolean = true;
 
   // Functions
   @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup
