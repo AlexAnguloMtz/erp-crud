@@ -1,3 +1,7 @@
+<p-dialog [visible]="true" modal="modal" styleClass="responsive-size-dialog" [header]="'header'" [closable]="true"
+    [resizable]="false" [draggable]="false">
+    <p>Content goes here...</p>
+</p-dialog>
 <p-confirmDialog id="message-dialog" />
 @if (hasFilters) {
 <p-dialog class="form-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideFiltersForm()"
