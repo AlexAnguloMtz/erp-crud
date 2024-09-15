@@ -78,11 +78,11 @@
     margin-bottom: 20px;
 }
 
-::ng-deep .save-item-dialog .p-dialog .p-dialog-header {
+::ng-deep .form-dialog .p-dialog .p-dialog-header {
     border-bottom: 1px solid rgb(210, 211, 212);
 }
 
-::ng-deep .save-item-dialog .p-dialog .p-dialog-content {
+::ng-deep .form-dialog .p-dialog .p-dialog-content {
     padding-bottom: 0;
     padding-left: 0;
     padding-right: 0;

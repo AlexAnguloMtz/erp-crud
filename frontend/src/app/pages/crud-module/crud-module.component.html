@@ -1,6 +1,6 @@
 <p-confirmDialog id="message-dialog" />
 @if (hasFilters) {
-<p-dialog class="filter-items-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideFiltersForm()"
+<p-dialog class="form-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideFiltersForm()"
     header="Filtrar {{ pluralNoun }}" [modal]="true" [(visible)]="filtersVisible" [style]="{'padding-bottom': '0'}">
     <form id="filters-form" class="filters-form" (ngSubmit)="onFiltersSubmit()">
         <fieldset class="filter-fields">
@@ -14,7 +14,7 @@
     </form>
 </p-dialog>
 }
-<p-dialog class="save-item-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideItemForm()"
+<p-dialog class="form-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideItemForm()"
     header="{{ formTitle }}" [modal]="true" [(visible)]="createItemVisible" [style]="{'padding-bottom': '0'}">
     <form id="create-item-form" class="create-item-form" [formGroup]="itemCreationForm"
         (ngSubmit)="onCreateItemSubmit()">
@@ -29,7 +29,7 @@
         </div>
     </form>
 </p-dialog>
-<p-dialog class="save-item-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideItemForm()"
+<p-dialog class="form-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideItemForm()"
     header="{{ formTitle }}" [modal]="true" [(visible)]="updateItemVisible" [style]="{'padding-bottom': '0'}">
     <form id="update-item-form" class="create-item-form" [formGroup]="updateItemForm" (ngSubmit)="onUpdateItemSubmit()">
         <fieldset class="create-item-fields" [ngStyle]="updateItemFieldsStyle">
