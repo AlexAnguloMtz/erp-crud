@@ -108,24 +108,12 @@ export class Users2Component {
     }
   }
 
-  onRetryLoadStates(): () => void {
-    return () => {
-      this.statesOptionsStatus = { _type: 'loading-options' }
-      this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
-        next: (states: Array<State>) => this.statesOptionsStatus = { _type: 'options-ready', items: states },
-        error: (_) => this.statesOptionsStatus = { _type: 'error' },
-      })
-    }
+  onRetryLoadRoles(): () => void {
+    return () => this.loadRoles();
   }
 
-  onRetryLoadRoles(): () => void {
-    return () => {
-      this.rolesOptionsStatus = { _type: 'loading-options' }
-      this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
-        next: (roles: Array<Role>) => this.rolesOptionsStatus = { _type: 'options-ready', items: roles, },
-        error: (_) => this.rolesOptionsStatus = { _type: 'error' },
-      });
-    }
+  onRetryLoadStates(): () => void {
+    return () => this.loadStates();
   }
 
   getItems(): (token: string, request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
@@ -258,21 +246,11 @@ export class Users2Component {
   onCreateNewClick(): () => void {
     return () => {
       if (this.rolesOptionsStatus._type === 'base') {
-        this.rolesOptionsStatus = { _type: 'loading-options' };
-        this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
-          next: (roles: Array<Role>) => {
-            this.rolesOptionsStatus = { _type: 'options-ready', items: roles }
-          },
-          error: (_) => this.rolesOptionsStatus = { _type: 'error' },
-        })
+        this.loadRoles();
       }
 
       if (this.statesOptionsStatus._type === 'base') {
-        this.statesOptionsStatus = { _type: 'loading-options' };
-        this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
-          next: (states: Array<State>) => this.statesOptionsStatus = { _type: 'options-ready', items: states },
-          error: (_) => this.statesOptionsStatus = { _type: 'error' },
-        })
+        this.loadStates();
       }
     }
   }
@@ -319,6 +297,25 @@ export class Users2Component {
     return this.getControlsAsFormControls(formGroup);
   }
 
+  private loadRoles(): void {
+    this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
+      next: (roles: Array<Role>) => this.rolesOptionsStatus = {
+        _type: 'options-ready', items: roles,
+      },
+      error: (_) => this.rolesOptionsStatus = { _type: 'error' },
+    });
+  }
+
+  private loadStates(): void {
+    this.statesOptionsStatus = { _type: 'loading-options' };
+    this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
+      next: (states: Array<State>) => {
+        this.statesOptionsStatus = { _type: 'options-ready', items: states };
+      },
+      error: (_) => this.statesOptionsStatus = { _type: 'error' },
+    })
+  }
+
   private getControlsAsFormControls(formGroup: FormGroup): { [key: string]: FormControl } {
     const controls: { [key: string]: FormControl } = {};
     Object.entries(formGroup.controls).forEach(entry => {
@@ -329,29 +326,15 @@ export class Users2Component {
 
   private loadRolesOnRowClick(roleId: string, form: FormGroup) {
     if (this.rolesOptionsStatus._type === 'base') {
-      this.rolesOptionsStatus = { _type: 'loading-options' };
-      this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
-        next: (roles: Array<Role>) => {
-          this.rolesOptionsStatus = { _type: 'options-ready', items: roles };
-        },
-        error: (_) => this.rolesOptionsStatus = { _type: 'error' },
-      })
+      this.loadRoles();
     }
-
     form.get('role')?.setValue(roleId);
   }
 
   private loadStatesOnRowClick(stateId: string, form: FormGroup) {
     if (this.statesOptionsStatus._type === 'base') {
-      this.statesOptionsStatus = { _type: 'loading-options' };
-      this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
-        next: (states: Array<State>) => {
-          this.statesOptionsStatus = { _type: 'options-ready', items: states };
-        },
-        error: (_) => this.statesOptionsStatus = { _type: 'error' },
-      })
+      this.loadStates();
     }
-
     form.get('state')?.setValue(stateId);
   }
 
