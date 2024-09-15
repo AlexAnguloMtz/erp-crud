@@ -27,7 +27,7 @@ export class ApiClient {
     ) { }
 
     get<T>(url: string, options?: ApiClientOptions): Observable<T> {
-        return this.http.get<T>(this.prepareUrl(url), { headers: this.makeHeaders(options), params: options?.params });
+        return this.http.get<T>(this.prepareUrl(url), { headers: this.makeHeaders(options) });
     }
 
     post<T>(url: string, body: any | null, options?: ApiClientOptions): Observable<T> {
@@ -42,12 +42,10 @@ export class ApiClient {
         return this.http.delete<T>(this.prepareUrl(url), { headers: this.makeHeaders(options), params: options?.params });
     }
 
-    private makeHeaders(someOptions?: ApiClientOptions): { [key: string]: string } {
-        const options: ApiClientOptions = someOptions || this.defaultApiClientOptions();
-
+    private makeHeaders(options?: ApiClientOptions): { [key: string]: string } {
         const headers: { [key: string]: string } = {}
 
-        if (options.authentication === true) {
+        if (this.needsAuthentication(options)) {
             headers['Authorization'] = `Bearer ${this.getAccessToken()}`;
         }
 
@@ -70,10 +68,20 @@ export class ApiClient {
         return environment.apiUrl + url;
     }
 
-    private defaultApiClientOptions(): ApiClientOptions {
-        return {
-            authentication: true,
-        };
+    private needsAuthentication(options?: ApiClientOptions) {
+        if (!options) {
+            return true;
+        }
+
+        if (options.authentication === undefined) {
+            return true;
+        }
+
+        if (options.authentication === null) {
+            return true;
+        }
+
+        return options.authentication;
     }
 
 }

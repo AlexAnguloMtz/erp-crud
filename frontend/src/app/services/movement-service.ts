@@ -64,8 +64,7 @@ export class MovementService {
     constructor(private apiClient: ApiClient) { }
 
     getMovements(pagination: PaginatedRequest, params: GetMovementsParams): Observable<PaginatedResponse<Movement>> {
-        const urlParamsString = this.movementsEndpoint + '?' + toQueryString(pagination, params);
-        return this.apiClient.get<PaginatedResponse<Movement>>(urlParamsString)
+        return this.apiClient.get<PaginatedResponse<Movement>>(this.movementsEndpoint, { params: pagination })
             .pipe(
                 retry(5),
                 map(response => this.mapPaginatedResponse(response))
@@ -85,20 +84,4 @@ export class MovementService {
             timestamp: new Date(json.timestamp),
         };
     }
-}
-
-function toQueryString(pagination: PaginatedRequest, params: GetMovementsParams): string {
-    const urlParams = new URLSearchParams();
-
-    if (pagination.search) urlParams.append('search', pagination.search);
-    if (pagination.pageNumber !== undefined) urlParams.append('pageNumber', pagination.pageNumber.toString());
-    if (pagination.pageSize !== undefined) urlParams.append('pageSize', pagination.pageSize.toString());
-    if (pagination.sort) urlParams.append('sort', pagination.sort);
-
-    if (params.responsibleId) urlParams.append('responsibleId', params.responsibleId);
-    if (params.start) urlParams.append('start', params.start.toISOString())
-    if (params.end) urlParams.append('end', params.end.toISOString())
-    if (params.productId) urlParams.append('productId', params.productId)
-
-    return urlParams.toString();
 }
