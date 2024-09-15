@@ -94,7 +94,7 @@ export class UsersService {
         return this.apiClient.get<User>(this.meEndpoint).pipe(
             retry(5),
             catchError(error => {
-                if (error instanceof HttpErrorResponse && error.status === 403) {
+                if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Forbidden) {
                     return throwError(() => new ForbiddenError('ForbiddenError'));
                 }
                 return throwError(() => new Error('An unexpected error occurred.'));
@@ -102,10 +102,8 @@ export class UsersService {
         );
     }
 
-    getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
-        const queryString = paginatedRequestToQueryString(request);
-
-        return this.apiClient.get<PaginatedResponse<UserDetails>>(this.usersEndpoint + queryString).pipe(
+    getUsers(pagination: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
+        return this.apiClient.get<PaginatedResponse<UserDetails>>(this.usersEndpoint, { params: pagination }).pipe(
             retry(5),
         );
     }
@@ -113,7 +111,7 @@ export class UsersService {
     createUser(command: CreateUserCommand): Observable<void> {
         return this.apiClient.post<void>(this.usersEndpoint, command).pipe(
             catchError(error => {
-                if (error instanceof HttpErrorResponse && error.status === 409) {
+                if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Conflict) {
                     return throwError(() => new UserExistsError('User already exists.'));
                 }
                 return throwError(() => new Error('An unexpected error occurred.'));
@@ -138,16 +136,4 @@ export class UsersService {
         const url = `${this.usersEndpoint}/${id}`;
         return this.apiClient.delete<void>(url);
     }
-}
-
-function paginatedRequestToQueryString(params: PaginatedRequest): string {
-    const searchParams = new URLSearchParams();
-
-    for (const [key, value] of Object.entries(params)) {
-        if (value != null && value != '') {
-            searchParams.append(key, value.toString());
-        }
-    }
-
-    return searchParams.toString() ? `?${searchParams.toString()}` : '';
 }

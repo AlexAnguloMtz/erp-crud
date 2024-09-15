@@ -30,10 +30,8 @@ export class ProductsService {
 
     constructor(private apiClient: ApiClient) { }
 
-    getBrands(request: PaginatedRequest): Observable<PaginatedResponse<Brand>> {
-        const queryString = paginatedRequestToQueryString(request);
-
-        return this.apiClient.get<PaginatedResponse<Brand>>(this.brandsEndpoint + queryString).pipe(
+    getBrands(pagination: PaginatedRequest): Observable<PaginatedResponse<Brand>> {
+        return this.apiClient.get<PaginatedResponse<Brand>>(this.brandsEndpoint, { params: pagination }).pipe(
             retry(5),
         );
     }
@@ -66,16 +64,5 @@ export class ProductsService {
         const url = `${this.brandsEndpoint}/${id}`;
         return this.apiClient.delete<void>(url);
     }
-}
 
-function paginatedRequestToQueryString(params: PaginatedRequest): string {
-    const searchParams = new URLSearchParams();
-
-    for (const [key, value] of Object.entries(params)) {
-        if (value != null && value != '') {
-            searchParams.append(key, value.toString());
-        }
-    }
-
-    return searchParams.toString() ? `?${searchParams.toString()}` : '';
 }

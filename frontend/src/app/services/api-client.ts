@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { AuthenticationProof, AuthenticationProofVault } from "./authentication-proof-vault";
 import { Observable } from "rxjs";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 
 export type ApiClientOptions = {
+    params?: HttpParams | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean> }
     authentication?: boolean
 }
 
@@ -26,19 +27,19 @@ export class ApiClient {
     ) { }
 
     get<T>(url: string, options?: ApiClientOptions): Observable<T> {
-        return this.http.get<T>(this.prepareUrl(url), { headers: this.makeHeaders(options) });
+        return this.http.get<T>(this.prepareUrl(url), { headers: this.makeHeaders(options), params: options?.params });
     }
 
     post<T>(url: string, body: any | null, options?: ApiClientOptions): Observable<T> {
-        return this.http.post<T>(this.prepareUrl(url), body, { headers: this.makeHeaders(options) });
+        return this.http.post<T>(this.prepareUrl(url), body, { headers: this.makeHeaders(options), params: options?.params });
     }
 
     put<T>(url: string, body: any | null, options?: ApiClientOptions): Observable<T> {
-        return this.http.put<T>(this.prepareUrl(url), body, { headers: this.makeHeaders(options) });
+        return this.http.put<T>(this.prepareUrl(url), body, { headers: this.makeHeaders(options), params: options?.params });
     }
 
     delete<T>(url: string, options?: ApiClientOptions): Observable<T> {
-        return this.http.delete<T>(this.prepareUrl(url), { headers: this.makeHeaders(options) });
+        return this.http.delete<T>(this.prepareUrl(url), { headers: this.makeHeaders(options), params: options?.params });
     }
 
     private makeHeaders(someOptions?: ApiClientOptions): { [key: string]: string } {
