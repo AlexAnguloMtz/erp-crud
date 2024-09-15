@@ -120,6 +120,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() tableHeaders: Array<string>
   @Input() updateItemFieldsStyle: { [key: string]: string } = {};
   @Input() searchPlaceholder: string;
+  @Input() hasSearchBar: boolean = true;
 
   // Functions
   @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup
@@ -408,7 +409,6 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   }
 
   private handleItems(response: PaginatedResponse<CrudItem>): void {
-    console.log(JSON.stringify(response.items))
     this.status = { _type: 'base', response }
     this.lastSeenTotalItems = response.totalItems
   }
