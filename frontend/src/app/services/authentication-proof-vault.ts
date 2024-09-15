@@ -44,6 +44,10 @@ export class AuthenticationProofVault {
             return false;
         }
 
+        if (authenticationProof.token === undefined) {
+            return false;
+        }
+
         if (authenticationProof.token === '') {
             return false;
         }

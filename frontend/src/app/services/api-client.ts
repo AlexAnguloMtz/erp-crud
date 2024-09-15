@@ -27,7 +27,7 @@ export class ApiClient {
     ) { }
 
     get<T>(url: string, options?: ApiClientOptions): Observable<T> {
-        return this.http.get<T>(this.prepareUrl(url), { headers: this.makeHeaders(options) });
+        return this.http.get<T>(this.prepareUrl(url), { headers: this.makeHeaders(options), params: options?.params });
     }
 
     post<T>(url: string, body: any | null, options?: ApiClientOptions): Observable<T> {
