@@ -1,0 +1,38 @@
+.filters-form-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 200ms ease;
+    cursor: pointer;
+    padding: 12px;
+}
+
+.filters-form-field:hover {
+    background-color: rgb(223, 226, 227);
+}
+
+.filters-form-field:active {
+    background-color: rgb(193, 195, 196);
+}
+
+.filters-form-field-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.filters-form-field-label {
+    color: rgb(50, 76, 95);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.filters-form-field-value {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.filters-form-field-icon {
+    color: rgb(50, 76, 95);
+}

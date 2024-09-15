@@ -15,6 +15,7 @@ import { AuthService, Role } from '../../services/auth-service';
 import { UserFormFieldsComponent } from './user-form-fields/user-form-fields.component';
 import { OptionsStatus } from '../../common/options-status';
 import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
+import { FiltersFormFieldComponent } from '../../components/filters-form-field/filters-form-field.component';
 
 const passwordVisibleProps: PasswordFieldProps = {
   type: 'text',
@@ -43,6 +44,7 @@ type PasswordFieldProps = {
     FormsModule,
     ReactiveFormsModule,
     UserFormFieldsComponent,
+    FiltersFormFieldComponent,
   ],
   providers: [AuthenticationProofVault],
   templateUrl: './users2.component.html',

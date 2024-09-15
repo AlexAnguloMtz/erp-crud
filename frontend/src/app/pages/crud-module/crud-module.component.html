@@ -3,12 +3,13 @@
 <p-dialog [(visible)]="filtersVisible" modal="true" styleClass="responsive-size-dialog"
     header="Filtrar {{ pluralNoun }}" (onHide)="onHideFiltersForm()" [closable]="true" [resizable]="false"
     [draggable]="false" [dismissableMask]="false">
-    <form id="filters-form" class="filters-form" (ngSubmit)="onFiltersSubmit()">
-        <fieldset class="filter-fields">
+    <form id="filters-form" class="filters-form" (ngSubmit)="onFiltersSubmit()"
+        [style]="{'height': '100%', 'display': 'flex', 'flexDirection': 'column'}">
+        <fieldset class="filter-fields" [style]="{'flex': '1'}">
             <ng-container *ngTemplateOutlet="filterFieldsTemplate;  context: { }">
             </ng-container>
         </fieldset>
-        <div class="form-dialog__actions">
+        <div [style]="{'display': 'flex', 'justifyContent': 'flex-end', 'gap': '8px'}">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelFiltersForm()" />
             <p-button id="filters-submit" label="Aplicar" type="submit" />
         </div>
