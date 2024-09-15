@@ -1,8 +1,22 @@
 <p-confirmDialog id="message-dialog" />
 @if (hasFilters) {
-<p-dialog [(visible)]="filtersVisible" modal="true" styleClass="responsive-size-dialog"
-    header="Filtrar {{ pluralNoun }}" (onHide)="onHideFiltersForm()" [closable]="true" [resizable]="false"
-    [draggable]="false" [dismissableMask]="false">
+<p-dialog [(visible)]="filtersVisible" modal="true" styleClass="responsive-size-dialog" (onHide)="onHideFiltersForm()"
+    [closable]="true" [resizable]="false" [draggable]="false" [dismissableMask]="false">
+    <ng-template pTemplate="header">
+        @if (choosingFilterValue) {
+        <div class="filters-form-go-back-container">
+            <p-button [style]="{'padding': '0', 'width': '30px', 'height': '30px'}" (click)="onGoBackToChoosingFilter()"
+                [rounded]="true" icon="pi pi-arrow-left" [text]="true" severity="secondary" />
+            cierra esta madre we xd
+        </div>
+        } @else {
+        <div class="filters-form-header-container">
+            <h3 class="filters-form-header">
+                Filtrar {{ pluralNoun }}
+            </h3>
+        </div>
+        }
+    </ng-template>
     <form id="filters-form" class="filters-form" (ngSubmit)="onFiltersSubmit()"
         [style]="{'position': 'relative', 'height': '100%', 'display': 'flex', 'flexDirection': 'column'}">
         <div class="filter-fields" [style]="{'flex': '1'}">

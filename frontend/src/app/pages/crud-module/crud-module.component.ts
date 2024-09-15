@@ -124,6 +124,8 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() hasSearchBar: boolean = true;
   @Input() hasFilters: boolean = true;
   @Input() pluralNoun: string = '';
+  @Input() choosingFilterValue: boolean = false;
+  @Input() onGoBackToChoosingFilter: () => void;
 
   // Functions
   @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup

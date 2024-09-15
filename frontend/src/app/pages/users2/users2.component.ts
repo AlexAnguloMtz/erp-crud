@@ -176,6 +176,12 @@ export class Users2Component {
     return (id: string) => this.userService.deleteUserById(id);
   }
 
+  onGoBackToChoosingFilter(): () => void {
+    return () => {
+      this.filtersFormState = { type: 'first-surface' }
+    }
+  }
+
   createCreationForm(): (formBuilder: FormBuilder) => FormGroup {
     return function (formBuilder: FormBuilder) {
       return formBuilder.group({

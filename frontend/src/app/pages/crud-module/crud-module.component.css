@@ -78,6 +78,14 @@
     margin-bottom: 20px;
 }
 
+.filters-form-go-back-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgb(50, 76, 95);
+    font-weight: 600;
+}
+
 ::ng-deep .form-dialog .p-dialog .p-dialog-header {
     border-bottom: 1px solid rgb(210, 211, 212);
 }
