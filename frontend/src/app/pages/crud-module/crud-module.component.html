@@ -7,7 +7,7 @@
             <ng-container *ngTemplateOutlet="filterFieldsTemplate;  context: { }">
             </ng-container>
         </fieldset>
-        <div class="filters-form__actions">
+        <div class="form-dialog__actions">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelFiltersForm()" />
             <p-button id="filters-submit" label="Aplicar" type="submit" />
         </div>
@@ -23,7 +23,7 @@
                 *ngTemplateOutlet="createItemFieldsTemplate;  context: { errors: creationErrors(), formGroup: itemCreationForm }">
             </ng-container>
         </fieldset>
-        <div class="item-form__actions">
+        <div class="form-dialog__actions">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelItemForm()" />
             <p-button id="create-item-submit" label="Guardar" type="submit" [loading]="savingItem" />
         </div>
@@ -37,7 +37,7 @@
                 *ngTemplateOutlet="updateItemFieldsTemplate;  context: { errors: updateErrors(), formGroup: updateItemForm }">
             </ng-container>
         </fieldset>
-        <div class="item-form__actions">
+        <div class="form-dialog__actions">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelUpdateItemForm()" />
             <p-button label="Guardar" type="submit" [loading]="updatingItem" />
         </div>
