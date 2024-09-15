@@ -1,28 +1,20 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, Observable, retry, throwError } from "rxjs";
+import { Observable, retry } from "rxjs";
 import { State } from "./users-service";
-import { environment } from "../../environments/environment";
+import { ApiClient } from "./api-client";
 
 @Injectable({
     providedIn: 'root'
 })
 export class LocationsService {
 
-    private statesUrl = environment.apiUrl + '/api/v1/locations/states';
+    private statesEndpoint = '/api/v1/locations/states';
 
-    constructor(private http: HttpClient) { }
+    constructor(private apiClient: ApiClient) { }
 
-    getStates(token: string): Observable<Array<State>> {
-        const headers = {
-            'Authorization': `Bearer ${token}`
-        }
-
-        return this.http.get<Array<State>>(this.statesUrl, { headers }).pipe(
+    getStates(): Observable<Array<State>> {
+        return this.apiClient.get<Array<State>>(this.statesEndpoint).pipe(
             retry(5),
-            catchError((error) => {
-                return throwError(() => new Error());
-            })
         );
     }
 }

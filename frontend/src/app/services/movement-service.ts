@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { catchError, map, Observable, retry, throwError } from "rxjs";
+import { map, Observable, retry } from "rxjs";
 import { PaginatedRequest } from "../common/paginated-request";
 import { PaginatedResponse } from "../common/paginated-response";
+import { ApiClient } from "./api-client";
 
 export type BrandDTO = {
     id: string;
@@ -60,17 +59,13 @@ export type GetMovementsParams = {
 })
 export class MovementService {
 
-    private movementsUrl = environment.apiUrl + '/api/v1/movements';
+    private movementsEndpoint = '/api/v1/movements';
 
-    constructor(private http: HttpClient) { }
+    constructor(private apiClient: ApiClient) { }
 
-    getMovements(token: string, pagination: PaginatedRequest, params: GetMovementsParams): Observable<PaginatedResponse<Movement>> {
-        const headers = {
-            'Authorization': `Bearer ${token}`
-        }
-
-        return this.http.get<PaginatedResponse<Movement>>(
-            this.movementsUrl + '?' + toQueryString(pagination, params), { headers }
+    getMovements(pagination: PaginatedRequest, params: GetMovementsParams): Observable<PaginatedResponse<Movement>> {
+        return this.apiClient.get<PaginatedResponse<Movement>>(
+            this.movementsEndpoint + '?' + toQueryString(pagination, params),
         ).pipe(
             retry(5),
             map(response => {

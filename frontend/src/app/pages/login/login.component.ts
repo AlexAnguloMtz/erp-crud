@@ -9,6 +9,7 @@ import { AuthenticationResponse, AuthService } from '../../services/auth-service
 import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
 
 const emailMaxLength: number = 60;
 
@@ -62,7 +63,11 @@ type LoginFormStatus = BaseStatus | LoggingUser | LoginSuccess
     InputGroupAddonModule,
     ConfirmDialogModule,
   ],
-  providers: [AuthService, ConfirmationService],
+  providers: [
+    AuthenticationProofVault,
+    AuthService,
+    ConfirmationService,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -77,11 +82,11 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService,
     private loginService: AuthService,
+    private authenticationProofVault: AuthenticationProofVault
   ) { }
 
   ngOnInit(): void {
-    const token = localStorage.getItem('auth-token');
-    if (token) {
+    if (this.authenticationProofVault.hasValidAuthenticationProof()) {
       this.router.navigate(['/home']);
     }
 
@@ -127,7 +132,7 @@ export class LoginComponent {
   }
 
   private handleAuthenticationResponse(response: AuthenticationResponse): void {
-    localStorage.setItem('auth-token', response.accessToken);
+    this.authenticationProofVault.setAuthenticationProof({ token: response.accessToken });
     this.router.navigate(['/home']);
   }
 

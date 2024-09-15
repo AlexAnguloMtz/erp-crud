@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { LocationsService } from '../../services/locations-service';
+import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
 
 const RECORDS_PER_PAGE: number = 10;
 
@@ -196,7 +197,7 @@ export class UsersComponent {
   userDeletedDialogVisible: boolean;
 
   constructor(
-    private router: Router,
+    private authenticationProofVault: AuthenticationProofVault,
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService,
     private usersService: UsersService,
@@ -205,12 +206,6 @@ export class UsersComponent {
   ) { }
 
   ngOnInit(): void {
-    const token: string | null = window.localStorage.getItem('auth-token');
-
-    if (!token) {
-      this.router.navigate(['/login']);
-    }
-
     this.userToUpdateId = '';
     this.searchControl = new FormControl('');
     this.selectedPageNumber = 0;
@@ -659,7 +654,7 @@ export class UsersComponent {
   private loadRolesOnRowClick(roleId: string, form: FormGroup) {
     if (this.roleOptionsStatus._type === 'base') {
       this.roleOptionsStatus = { _type: 'loading-user-form-options' };
-      this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
+      this.authService.getRoles().subscribe({
         next: (roles: Array<Role>) => {
           this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } };
         },
@@ -673,7 +668,7 @@ export class UsersComponent {
   private loadStatesOnRowClick(stateId: string, form: FormGroup) {
     if (this.stateOptionsStatus._type === 'base') {
       this.stateOptionsStatus = { _type: 'loading-states-options' };
-      this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
+      this.locationsService.getStates().subscribe({
         next: (states: Array<State>) => {
           this.stateOptionsStatus = { _type: 'states-options-ready', states };
         },
@@ -696,7 +691,7 @@ export class UsersComponent {
     }
 
     this.createUserStatus = { _type: 'creating-user' }
-    this.usersService.createUser(localStorage.getItem('auth-token')!, this.userCreationCommand()).subscribe({
+    this.usersService.createUser(this.userCreationCommand()).subscribe({
       next: () => {
         this.searchUsers({
           ...this.defaultPaginatedRequest(),
@@ -718,13 +713,13 @@ export class UsersComponent {
     }
 
     this.updateUserStatus = { _type: 'updating-user' }
-    this.usersService.updateUser(localStorage.getItem('auth-token')!, this.userToUpdateId, this.userUpdateCommand()).subscribe({
+    this.usersService.updateUser(this.userToUpdateId, this.userUpdateCommand()).subscribe({
       next: (response: UpdateUserResponse) => {
 
         // Set new jwt if user changed their own email, 
         // so they can keep working without interruption 
         if (response.jwt) {
-          localStorage.setItem('auth-token', response.jwt);
+          this.authenticationProofVault.setAuthenticationProof({ token: response.jwt });
         }
 
         this.searchUsers({
@@ -746,7 +741,7 @@ export class UsersComponent {
 
   searchUsers(request: PaginatedRequest, loadingStatus: LoadingFirstTime | LoadingSubsequentTime): void {
     this.status = loadingStatus;
-    this.usersService.getUsers(localStorage.getItem('auth-token')!, request).subscribe({
+    this.usersService.getUsers(request).subscribe({
       next: (users: PaginatedResponse<UserDetails>) => this.handleUsers(users),
       error: (error) => this.handleGetUsersError(error),
     })
@@ -787,7 +782,7 @@ export class UsersComponent {
     this.createItemVisible = true;
     if (this.roleOptionsStatus._type === 'base') {
       this.roleOptionsStatus = { _type: 'loading-user-form-options' };
-      this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
+      this.authService.getRoles().subscribe({
         next: (roles: Array<Role>) => {
           this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } }
         },
@@ -797,7 +792,7 @@ export class UsersComponent {
 
     if (this.stateOptionsStatus._type === 'base') {
       this.stateOptionsStatus = { _type: 'loading-states-options' };
-      this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
+      this.locationsService.getStates().subscribe({
         next: (states: Array<State>) => this.stateOptionsStatus = { _type: 'states-options-ready', states },
         error: (_) => this.stateOptionsStatus = { _type: 'error' },
       })
@@ -806,7 +801,7 @@ export class UsersComponent {
 
   onRetryLoadRoles(): void {
     this.roleOptionsStatus = { _type: 'loading-user-form-options' }
-    this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
+    this.authService.getRoles().subscribe({
       next: (roles: Array<Role>) => this.roleOptionsStatus = { _type: 'user-form-options-ready', userFormOptions: { roles } },
       error: (_) => this.roleOptionsStatus = { _type: 'error' },
     });
@@ -814,7 +809,7 @@ export class UsersComponent {
 
   onRetryLoadStates(): void {
     this.stateOptionsStatus = { _type: 'loading-states-options' }
-    this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
+    this.locationsService.getStates().subscribe({
       next: (states: Array<State>) => this.stateOptionsStatus = { _type: 'states-options-ready', states },
       error: (_) => this.stateOptionsStatus = { _type: 'error' },
     })
@@ -842,7 +837,7 @@ export class UsersComponent {
 
   onDeleteUser(id: string): void {
     this.deleteUserStatus = { _type: 'deleting-user' }
-    this.usersService.deleteUserById(localStorage.getItem('auth-token')!, id).subscribe({
+    this.usersService.deleteUserById(id).subscribe({
       next: () => {
         this.deleteUserStatus = { _type: 'delete-user-base' }
         this.updateItemVisible = false;

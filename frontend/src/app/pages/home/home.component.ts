@@ -44,26 +44,19 @@ export class HomeComponent {
   ) { }
 
   ngOnInit() {
-    const token: string | null = localStorage.getItem('auth-token');
-
-    if (!token) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.getMe(token);
+    this.getMe();
   }
 
-  getMe(token: string): void {
+  getMe(): void {
     this.status = { _type: 'loading' };
-    this.usersService.getMe(token).subscribe({
+    this.usersService.getMe().subscribe({
       next: (user: User) => this.status = { _type: 'base', user },
       error: (_) => this.status = { _type: 'load-error' },
     })
   }
 
   onRetryGetMe(): void {
-    this.getMe(localStorage.getItem('auth-token')!);
+    this.getMe();
   }
 
   get loadError(): boolean {

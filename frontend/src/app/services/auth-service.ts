@@ -1,7 +1,7 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { catchError, Observable, retry, throwError } from "rxjs";
-import { environment } from "../../environments/environment";
+import { ApiClient } from "./api-client";
 
 type LoginCredentials = {
     email: string,
@@ -29,14 +29,14 @@ class BadCredentialsError extends Error {
 })
 export class AuthService {
 
-    private loginUrl = environment.apiUrl + '/api/v1/auth/login';
+    private loginEndpoint = '/api/v1/auth/login';
 
-    private rolesUrl = environment.apiUrl + '/api/v1/auth/roles';
+    private rolesEndpoint = '/api/v1/auth/roles';
 
-    constructor(private http: HttpClient) { }
+    constructor(private apiClient: ApiClient) { }
 
     logIn(credentials: LoginCredentials): Observable<AuthenticationResponse> {
-        return this.http.post<AuthenticationResponse>(this.loginUrl, credentials).pipe(
+        return this.apiClient.post<AuthenticationResponse>(this.loginEndpoint, credentials, { authentication: false }).pipe(
             catchError((error) => {
                 if (error instanceof HttpErrorResponse && error.status === 403) {
                     return throwError(() => new BadCredentialsError('BadCredentials'));
@@ -46,9 +46,8 @@ export class AuthService {
         );
     }
 
-    getRoles(token: string): Observable<Array<Role>> {
-        const headers = { 'Authorization': `Bearer ${token}` }
-        return this.http.get<Array<Role>>(this.rolesUrl, { headers }).pipe(
+    getRoles(): Observable<Array<Role>> {
+        return this.apiClient.get<Array<Role>>(this.rolesEndpoint).pipe(
             retry(5)
         );
     }

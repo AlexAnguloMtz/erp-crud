@@ -39,8 +39,8 @@ export class MovementsComponent {
     }
   }
 
-  getItems(): (token: string, request: PaginatedRequest) => Observable<PaginatedResponse<Movement>> {
-    return (token: string, request: PaginatedRequest) => this.movementsService.getMovements(localStorage.getItem('auth-token')!, request, {});
+  getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<Movement>> {
+    return (request: PaginatedRequest) => this.movementsService.getMovements(request, {});
   }
 
   getCreationErrors(): (formGroup: FormGroup) => { [key: string]: string } {

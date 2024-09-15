@@ -9,6 +9,7 @@ import { UsersService } from '../../services/users-service';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
+import { AuthenticationProof, AuthenticationProofVault } from '../../services/authentication-proof-vault';
 
 type SidebarLink = {
   id: string
@@ -92,35 +93,22 @@ export class MainTemplateComponent {
   status: MainTemplateStatus;
 
   constructor(
+    private authenticationProofVault: AuthenticationProofVault,
     private usersService: UsersService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
-    this.items = [
-      {
-        label: 'Opciones',
-        items: [
-          {
-            id: 'logout',
-            label: 'Cerrar sesión',
-            icon: 'pi pi-sign-out',
-            command: () => this.onLogoutClick(),
-          }
-        ]
-      }
-    ];
+    this.items = this.createNavMenuItems();
 
     this.sidebarOpen = false;
 
-    const token: string | null = window.localStorage.getItem('auth-token');
-
-    if (!token) {
+    if (!this.authenticationProofVault.hasValidAuthenticationProof()) {
       this.router.navigate(['/login']);
       return;
     }
 
-    this.getMe(token);
+    this.getMe();
   }
 
   get loading(): boolean {
@@ -167,26 +155,42 @@ export class MainTemplateComponent {
   }
 
   onRetryGetMe(): void {
-    this.getMe(localStorage.getItem('auth-token')!);
+    this.getMe();
   }
 
   onLogoutClick(): void {
-    localStorage.removeItem('auth-token');
+    this.authenticationProofVault.removeAuthenticationProof();
     this.router.navigate(['/login']);
+  }
+
+  private createNavMenuItems(): Array<MenuItem> {
+    return [
+      {
+        label: 'Opciones',
+        items: [
+          {
+            id: 'logout',
+            label: 'Cerrar sesión',
+            icon: 'pi pi-sign-out',
+            command: () => this.onLogoutClick(),
+          }
+        ]
+      }
+    ];
   }
 
   private handleGetMeError(error: any): void {
     if (error.name === 'ForbiddenError') {
-      localStorage.removeItem('auth-token');
+      this.authenticationProofVault.removeAuthenticationProof();
       this.router.navigate(['/login']);
       return;
     }
     this.status = { _type: 'error' }
   }
 
-  private getMe(token: string): void {
+  private getMe(): void {
     this.status = { _type: 'loading' }
-    this.usersService.getMe(token).subscribe({
+    this.usersService.getMe().subscribe({
       next: (user: User) => this.status = { _type: 'base', user },
       error: (error) => this.handleGetMeError(error),
     })

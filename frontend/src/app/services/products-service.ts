@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
 import { catchError, Observable, retry, throwError } from "rxjs";
 import { PaginatedRequest } from "../common/paginated-request";
 import { PaginatedResponse } from "../common/paginated-response";
+import { ApiClient } from "./api-client";
 
 class BrandExistsError extends Error {
     constructor(message: string) {
@@ -26,28 +26,20 @@ export type BrandCommand = {
 })
 export class ProductsService {
 
-    private brandsUrl = environment.apiUrl + '/api/v1/brands';
+    private brandsEndpoint = '/api/v1/brands';
 
-    constructor(private http: HttpClient) { }
+    constructor(private apiClient: ApiClient) { }
 
-    getBrands(token: string, request: PaginatedRequest): Observable<PaginatedResponse<Brand>> {
-        const headers = {
-            'Authorization': `Bearer ${token}`
-        }
-
+    getBrands(request: PaginatedRequest): Observable<PaginatedResponse<Brand>> {
         const queryString = paginatedRequestToQueryString(request);
 
-        return this.http.get<PaginatedResponse<Brand>>(this.brandsUrl + queryString, { headers }).pipe(
+        return this.apiClient.get<PaginatedResponse<Brand>>(this.brandsEndpoint + queryString).pipe(
             retry(5),
         );
     }
 
-    createBrand(token: string, dto: BrandCommand): Observable<void> {
-        const headers = {
-            'Authorization': `Bearer ${token}`
-        }
-
-        return this.http.post<void>(this.brandsUrl, dto, { headers }).pipe(
+    createBrand(dto: BrandCommand): Observable<void> {
+        return this.apiClient.post<void>(this.brandsEndpoint, dto).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 409) {
                     return throwError(() => new BrandExistsError('Brand already exists.'));
@@ -57,15 +49,10 @@ export class ProductsService {
         );
     }
 
-    updateBrand(token: string, id: string, command: BrandCommand): Observable<void> {
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        };
+    updateBrand(id: string, command: BrandCommand): Observable<void> {
+        const url = `${this.brandsEndpoint}/${id}`;
 
-        const url = `${this.brandsUrl}/${id}`;
-
-        return this.http.put<void>(url, command, { headers }).pipe(
+        return this.apiClient.put<void>(url, command).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 409) {
                     return throwError(() => new BrandExistsError('Brand already exists.'));
@@ -75,14 +62,9 @@ export class ProductsService {
         );
     }
 
-    deleteBrandById(token: string, id: string): Observable<void> {
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-        };
-
-        const url = `${this.brandsUrl}/${id}`;
-
-        return this.http.delete<void>(url, { headers });
+    deleteBrandById(id: string): Observable<void> {
+        const url = `${this.brandsEndpoint}/${id}`;
+        return this.apiClient.delete<void>(url);
     }
 }
 

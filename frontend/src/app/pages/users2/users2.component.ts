@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AuthService, Role } from '../../services/auth-service';
 import { UserFormFieldsComponent } from './user-form-fields/user-form-fields.component';
 import { OptionsStatus } from '../../common/options-status';
+import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
 
 const passwordVisibleProps: PasswordFieldProps = {
   type: 'text',
@@ -43,6 +44,7 @@ type PasswordFieldProps = {
     ReactiveFormsModule,
     UserFormFieldsComponent,
   ],
+  providers: [AuthenticationProofVault],
   templateUrl: './users2.component.html',
   styleUrl: './users2.component.css'
 })
@@ -55,6 +57,7 @@ export class Users2Component {
   constructor(
     private userService: UsersService,
     private locationsService: LocationsService,
+    private authenticationProofVault: AuthenticationProofVault,
     private authService: AuthService,
   ) { }
 
@@ -116,8 +119,8 @@ export class Users2Component {
     return () => this.loadStates();
   }
 
-  getItems(): (token: string, request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
-    return (token: string, request: PaginatedRequest) => this.userService.getUsers(token, request);
+  getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
+    return (request: PaginatedRequest) => this.userService.getUsers(request);
   }
 
   formatUserLocation(user: UserDetails): string {
@@ -151,8 +154,8 @@ export class Users2Component {
     });
   }
 
-  deleteItemById(): (token: string, id: string) => Observable<void> {
-    return (token: string, id: string) => this.userService.deleteUserById(token, id);
+  deleteItemById(): (id: string) => Observable<void> {
+    return (id: string) => this.userService.deleteUserById(id);
   }
 
   createCreationForm(): (formBuilder: FormBuilder) => FormGroup {
@@ -271,12 +274,12 @@ export class Users2Component {
     }
   }
 
-  createItem(): (token: string, dto: CreateUserCommand) => Observable<void> {
-    return (token: string, dto: CreateUserCommand) => this.userService.createUser(token, dto);
+  createItem(): (dto: CreateUserCommand) => Observable<void> {
+    return (dto: CreateUserCommand) => this.userService.createUser(dto);
   }
 
-  updateItem(): (token: string, id: string, dto: UpdateUserCommand) => Observable<UpdateUserResponse> {
-    return (token: string, id: string, dto: UpdateUserCommand) => this.userService.updateUser(token, id, dto);
+  updateItem(): (id: string, dto: UpdateUserCommand) => Observable<UpdateUserResponse> {
+    return (id: string, dto: UpdateUserCommand) => this.userService.updateUser(id, dto);
   }
 
   handleUpdateResponse(): (response: UpdateUserResponse) => void {
@@ -284,7 +287,7 @@ export class Users2Component {
       // Set new jwt if user changed their own email, 
       // so they can keep working without interruption 
       if (response.jwt) {
-        localStorage.setItem('auth-token', response.jwt);
+        this.authenticationProofVault.setAuthenticationProof({ token: response.jwt });
       }
     }
   }
@@ -299,7 +302,7 @@ export class Users2Component {
 
   private loadRoles(): void {
     this.rolesOptionsStatus = { _type: 'loading-options' };
-    this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
+    this.authService.getRoles().subscribe({
       next: (roles: Array<Role>) => this.rolesOptionsStatus = {
         _type: 'options-ready', items: roles,
       },
@@ -309,7 +312,7 @@ export class Users2Component {
 
   private loadStates(): void {
     this.statesOptionsStatus = { _type: 'loading-options' };
-    this.locationsService.getStates(window.localStorage.getItem('auth-token')!).subscribe({
+    this.locationsService.getStates().subscribe({
       next: (states: Array<State>) => {
         this.statesOptionsStatus = { _type: 'options-ready', items: states };
       },

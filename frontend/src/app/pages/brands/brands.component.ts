@@ -26,8 +26,8 @@ export class BrandsComponent {
     private productsService: ProductsService,
   ) { }
 
-  getItems(): (token: string, request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
-    return (token: string, request: PaginatedRequest) => this.productsService.getBrands(token, request);
+  getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
+    return (request: PaginatedRequest) => this.productsService.getBrands(request);
   }
 
   createForm(): (formBuilder: FormBuilder) => FormGroup {
@@ -65,16 +65,16 @@ export class BrandsComponent {
     }
   }
 
-  createItem(): (token: string, dto: BrandCommand) => Observable<void> {
-    return (token: string, dto: BrandCommand) => this.productsService.createBrand(token, dto);
+  createItem(): (dto: BrandCommand) => Observable<void> {
+    return (dto: BrandCommand) => this.productsService.createBrand(dto);
   }
 
-  updateItem(): (token: string, id: string, dto: BrandCommand) => Observable<void> {
-    return (token: string, id: string, dto: BrandCommand) => this.productsService.updateBrand(token, id, dto);
+  updateItem(): (id: string, dto: BrandCommand) => Observable<void> {
+    return (id: string, dto: BrandCommand) => this.productsService.updateBrand(id, dto);
   }
 
-  deleteItemById(): (token: string, id: string) => Observable<void> {
-    return (token: string, id: string) => this.productsService.deleteBrandById(token, id);
+  deleteItemById(): (id: string) => Observable<void> {
+    return (id: string) => this.productsService.deleteBrandById(id);
   }
 
   mapFormToDto(): (formGroup: FormGroup) => BrandCommand {

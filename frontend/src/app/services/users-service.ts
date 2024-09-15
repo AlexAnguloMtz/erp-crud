@@ -3,8 +3,8 @@ import { catchError, Observable, retry, throwError } from "rxjs";
 import { PaginatedResponse } from "../common/paginated-response";
 import { PaginatedRequest } from "../common/paginated-request";
 import { Role } from "./auth-service";
-import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
-import { environment } from "../../environments/environment";
+import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
+import { ApiClient } from "./api-client";
 
 type User = {
     name: string
@@ -84,18 +84,14 @@ export class ForbiddenError extends Error {
 })
 export class UsersService {
 
-    private usersUrl = environment.apiUrl + '/api/v1/users';
+    private usersEndpoint = '/api/v1/users';
 
-    private meUrl = environment.apiUrl + '/api/v1/users/me';
+    private meEndpoint = '/api/v1/users/me';
 
-    constructor(private http: HttpClient) { }
+    constructor(private apiClient: ApiClient) { }
 
-    getMe(token: string): Observable<User> {
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-        };
-
-        return this.http.get<User>(this.meUrl, { headers }).pipe(
+    getMe(): Observable<User> {
+        return this.apiClient.get<User>(this.meEndpoint).pipe(
             retry(5),
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 403) {
@@ -106,25 +102,16 @@ export class UsersService {
         );
     }
 
-    getUsers(token: string, request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-        };
-
+    getUsers(request: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
         const queryString = paginatedRequestToQueryString(request);
 
-        return this.http.get<PaginatedResponse<UserDetails>>(this.usersUrl + queryString, { headers }).pipe(
+        return this.apiClient.get<PaginatedResponse<UserDetails>>(this.usersEndpoint + queryString).pipe(
             retry(5),
         );
     }
 
-    createUser(token: string, command: CreateUserCommand): Observable<void> {
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        };
-
-        return this.http.post<void>(this.usersUrl, command, { headers }).pipe(
+    createUser(command: CreateUserCommand): Observable<void> {
+        return this.apiClient.post<void>(this.usersEndpoint, command).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === 409) {
                     return throwError(() => new UserExistsError('User already exists.'));
@@ -134,17 +121,12 @@ export class UsersService {
         );
     }
 
-    updateUser(token: string, id: string, command: UpdateUserCommand): Observable<UpdateUserResponse> {
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        };
+    updateUser(id: string, command: UpdateUserCommand): Observable<UpdateUserResponse> {
+        const url = `${this.usersEndpoint}/${id}`;
 
-        const url = `${this.usersUrl}/${id}`;
-
-        return this.http.put<UpdateUserResponse>(url, command, { headers }).pipe(
+        return this.apiClient.put<UpdateUserResponse>(url, command).pipe(
             catchError(error => {
-                if (error instanceof HttpErrorResponse && error.status === 409) {
+                if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Conflict) {
                     return throwError(() => new UserExistsError('User already exists.'));
                 }
                 return throwError(() => new Error('An unexpected error occurred.'));
@@ -152,14 +134,9 @@ export class UsersService {
         );
     }
 
-    deleteUserById(token: string, id: string): Observable<void> {
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-        };
-
-        const url = `${this.usersUrl}/${id}`;
-
-        return this.http.delete<void>(url, { headers });
+    deleteUserById(id: string): Observable<void> {
+        const url = `${this.usersEndpoint}/${id}`;
+        return this.apiClient.delete<void>(url);
     }
 }
 

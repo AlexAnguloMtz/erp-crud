@@ -16,6 +16,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { AuthenticationProof, AuthenticationProofVault } from '../../services/authentication-proof-vault';
 
 const RECORDS_PER_PAGE: number = 15;
 
@@ -107,7 +108,7 @@ type DeleteItemStatus = DeleteItemBase | DeletingItem
     ConfirmDialogModule,
     CommonModule
   ],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, AuthenticationProofVault],
   templateUrl: './crud-module.component.html',
   styleUrl: './crud-module.component.css'
 })
@@ -128,10 +129,10 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup
   @Input() createItemUpdateForm: (formBuilder: FormBuilder) => FormGroup
   @Input() mapSaveItemError: (error: Error) => DisplayableError
-  @Input() getItems: (token: string, request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>>
-  @Input() createItem: (token: string, formValues: CreationItemDto) => Observable<void>
-  @Input() updateItem: (token: string, id: string, formValues: UpdateItemDto) => Observable<ItemUpdateResponse>
-  @Input() deleteItemById: (token: string, id: string) => Observable<void>
+  @Input() getItems: (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>>
+  @Input() createItem: (formValues: CreationItemDto) => Observable<void>
+  @Input() updateItem: (id: string, formValues: UpdateItemDto) => Observable<ItemUpdateResponse>
+  @Input() deleteItemById: (id: string) => Observable<void>
   @Input() loadOptionsOnRowClick: (item: CrudItem, form: FormGroup) => void;
   @Input() getCreationErrors: (form: FormGroup) => { [key: string]: string };
   @Input() getUpdateErrors: (form: FormGroup) => { [key: string]: string };
@@ -172,13 +173,12 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
+    private authenticationProofVault: AuthenticationProofVault,
     private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
-    const token: string | null = window.localStorage.getItem('auth-token');
-
-    if (!token) {
+    if (!this.authenticationProofVault.hasValidAuthenticationProof()) {
       this.router.navigate(['/login']);
     }
 
@@ -274,7 +274,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     }
 
     this.createItemStatus = { _type: 'creating-item' }
-    this.createItem(localStorage.getItem('auth-token')!, this.mapFormToCreationDto(this.itemCreationForm)).subscribe({
+    this.createItem(this.mapFormToCreationDto(this.itemCreationForm)).subscribe({
       next: () => {
         this.searchItems({
           ...this.defaultPaginatedRequest(),
@@ -296,7 +296,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     }
 
     this.updateItemStatus = { _type: 'updating-item' }
-    this.updateItem(localStorage.getItem('auth-token')!, this.itemToUpdateId, this.mapFormToUpdateDto(this.updateItemForm)).subscribe({
+    this.updateItem(this.itemToUpdateId, this.mapFormToUpdateDto(this.updateItemForm)).subscribe({
       next: (response: ItemUpdateResponse) => {
         this.handleUpdateResponse?.(response);
         this.searchItems({
@@ -314,7 +314,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   searchItems(request: PaginatedRequest, loadingStatus: LoadingFirstTime | LoadingSubsequentTime): void {
     this.status = loadingStatus;
-    this.getItems(localStorage.getItem('auth-token')!, request).subscribe({
+    this.getItems(request).subscribe({
       next: (response: PaginatedResponse<CrudItem>) => this.handleItems(response),
       error: (error) => this.handleGetItemsError(error),
     })
@@ -386,7 +386,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   onDeleteItem(id: string): void {
     this.deleteItemStatus = { _type: 'deleting-item' }
-    this.deleteItemById(localStorage.getItem('auth-token')!, id).subscribe({
+    this.deleteItemById(id).subscribe({
       next: () => {
         this.deleteItemStatus = { _type: 'delete-item-base' }
         this.updateItemVisible = false;
