@@ -298,6 +298,7 @@ export class Users2Component {
   }
 
   private loadRoles(): void {
+    this.rolesOptionsStatus = { _type: 'loading-options' };
     this.authService.getRoles(window.localStorage.getItem('auth-token')!).subscribe({
       next: (roles: Array<Role>) => this.rolesOptionsStatus = {
         _type: 'options-ready', items: roles,
