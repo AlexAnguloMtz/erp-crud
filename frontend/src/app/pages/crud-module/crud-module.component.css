@@ -149,14 +149,10 @@
     width: 110px;
 }
 
-.row-actions-column {
-    display: flex;
-    justify-content: flex-end;
-}
-
 .row-actions-column-text {
     display: block;
     width: 110px;
+    margin: 0 0 0 auto;
 }
 
 .items-table {
