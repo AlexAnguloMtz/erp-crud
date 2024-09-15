@@ -140,6 +140,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() mapFormToUpdateDto: (form: FormGroup) => UpdateItemDto
   @Input() handleUpdateResponse: (response: ItemUpdateResponse) => void;
   @Input() onCreateNewClick: () => void;
+  @Input() onHideFiltersFormClick: () => void;
 
   // Templates
   @Input() filterFieldsTemplate: TemplateRef<any>;
@@ -374,6 +375,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   onHideFiltersForm(): void {
     this.filtersVisible = false;
+    this.onHideFiltersFormClick?.();
   }
 
   onCloseSavedItemDialog(): void {

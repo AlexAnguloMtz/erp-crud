@@ -4,11 +4,11 @@
     header="Filtrar {{ pluralNoun }}" (onHide)="onHideFiltersForm()" [closable]="true" [resizable]="false"
     [draggable]="false" [dismissableMask]="false">
     <form id="filters-form" class="filters-form" (ngSubmit)="onFiltersSubmit()"
-        [style]="{'height': '100%', 'display': 'flex', 'flexDirection': 'column'}">
-        <fieldset class="filter-fields" [style]="{'flex': '1'}">
+        [style]="{'position': 'relative', 'height': '100%', 'display': 'flex', 'flexDirection': 'column'}">
+        <div class="filter-fields" [style]="{'flex': '1'}">
             <ng-container *ngTemplateOutlet="filterFieldsTemplate;  context: { }">
             </ng-container>
-        </fieldset>
+        </div>
         <div [style]="{'display': 'flex', 'justifyContent': 'flex-end', 'gap': '8px'}">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelFiltersForm()" />
             <p-button id="filters-submit" label="Aplicar" type="submit" />

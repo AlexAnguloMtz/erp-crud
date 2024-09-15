@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-filters-form-field',
@@ -11,5 +11,10 @@ export class FiltersFormFieldComponent {
 
   @Input() labelText: string;
   @Input() valueText: string;
+  @Output() onClick: EventEmitter<void> = new EventEmitter();
+
+  onClicked(): void {
+    this.onClick?.emit();
+  }
 
 }

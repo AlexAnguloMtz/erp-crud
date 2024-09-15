@@ -31,3 +31,36 @@
     color: rgb(235, 61, 61);
     font-size: 14px;
 }
+
+.filters-form-surfaces-container {
+    height: 100%;
+    position: relative;
+}
+
+.filters-first-surface {
+    transition: all 130ms ease;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.filters-second-surface {
+    transition: all 130ms ease;
+    transform: translateX(110%);
+    position: absolute;
+    background: green;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.choosing-filter-value .filters-first-surface {
+    transform: translateX(-110%);
+}
+
+.choosing-filter-value .filters-second-surface {
+    transform: translateX(0);
+}

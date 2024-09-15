@@ -17,6 +17,16 @@ import { OptionsStatus } from '../../common/options-status';
 import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
 import { FiltersFormFieldComponent } from '../../components/filters-form-field/filters-form-field.component';
 
+type FirstSurfaceState = {
+  type: 'first-surface'
+}
+
+type SecondSurfaceState = {
+  type: 'second-surface'
+}
+
+type FiltersFormState = FirstSurfaceState | SecondSurfaceState
+
 const passwordVisibleProps: PasswordFieldProps = {
   type: 'text',
   icon: 'eye-slash',
@@ -55,6 +65,7 @@ export class Users2Component {
   statesOptionsStatus: OptionsStatus<State>;
   rolesOptionsStatus: OptionsStatus<Role>;
   passwordFieldProps: PasswordFieldProps;
+  filtersFormState: FiltersFormState;
 
   constructor(
     private userService: UsersService,
@@ -66,6 +77,7 @@ export class Users2Component {
   ngOnInit(): void {
     this.statesOptionsStatus = { _type: 'base' };
     this.rolesOptionsStatus = { _type: 'base' };
+    this.filtersFormState = { type: 'first-surface' }
     this.passwordFieldProps = passwordNotVisibleProps;
   }
 
@@ -95,6 +107,10 @@ export class Users2Component {
 
   get passwordVisibilityIcon(): string {
     return this.passwordFieldProps.icon
+  }
+
+  get choosingFilterValue(): boolean {
+    return this.filtersFormState.type === 'second-surface';
   }
 
   loadOptionsOnRowClick(): (item: CrudItem, formGroup: FormGroup) => void {
@@ -300,6 +316,20 @@ export class Users2Component {
 
   userUpdateFormControls(formGroup: FormGroup): { [key: string]: FormControl } {
     return this.getControlsAsFormControls(formGroup);
+  }
+
+  onStateFilterClick(): void {
+    this.filtersFormState = { type: 'second-surface' }
+  }
+
+  onRoleFilterClick(): void {
+    this.filtersFormState = { type: 'second-surface' }
+  }
+
+  onHideFiltersFormClick(): () => void {
+    return () => {
+      this.filtersFormState = { type: 'first-surface' }
+    }
   }
 
   private loadRoles(): void {

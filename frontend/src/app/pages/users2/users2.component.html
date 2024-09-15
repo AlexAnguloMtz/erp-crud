@@ -1,8 +1,16 @@
 <ng-template #filterFieldsTemplate>
-    <app-filters-form-field [labelText]="'Estado de la República'" [valueText]="'Cualquiera'">
-    </app-filters-form-field>
-    <app-filters-form-field [labelText]="'Rol'" [valueText]="'Cualquiera'">
-    </app-filters-form-field>
+    <div class="filters-form-surfaces-container" [class.choosing-filter-value]="choosingFilterValue">
+        <div class="filters-first-surface">
+            <app-filters-form-field (onClick)="onStateFilterClick()" [labelText]="'Estado de la República'"
+                [valueText]="'Cualquiera'">
+            </app-filters-form-field>
+            <app-filters-form-field (onClick)="onRoleFilterClick()" [labelText]="'Rol'" [valueText]="'Cualquiera'">
+            </app-filters-form-field>
+        </div>
+        <div class="filters-second-surface">
+            other
+        </div>
+    </div>
 </ng-template>
 
 <ng-template #rowTemplate let-item>
@@ -70,5 +78,6 @@
     [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToCreationDto()"
     [mapFormToUpdateDto]="mapFormToUpdateDto()" [deleteItemById]="deleteItemById()"
     [handleUpdateResponse]="handleUpdateResponse()" [updateItemFieldsStyle]="{'padding-bottom': '100px'}"
-    [searchPlaceholder]="'Nombre o apellido'" [pluralNoun]="'Usuarios'" [filterFieldsTemplate]="filterFieldsTemplate">
+    [searchPlaceholder]="'Nombre o apellido'" [pluralNoun]="'Usuarios'" [filterFieldsTemplate]="filterFieldsTemplate"
+    [onHideFiltersFormClick]="onHideFiltersFormClick()">
 </app-crud-module>
