@@ -1,3 +1,7 @@
+<ng-template #filterFieldsTemplate>
+    nice
+</ng-template>
+
 <ng-template #rowTemplate let-item>
     <td>{{ item.name }}</td>
     <td>{{ item.lastName }}</td>
@@ -63,5 +67,5 @@
     [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToCreationDto()"
     [mapFormToUpdateDto]="mapFormToUpdateDto()" [deleteItemById]="deleteItemById()"
     [handleUpdateResponse]="handleUpdateResponse()" [updateItemFieldsStyle]="{'padding-bottom': '100px'}"
-    [searchPlaceholder]="'Nombre o apellido'" [pluralNoun]="'Usuarios'">
+    [searchPlaceholder]="'Nombre o apellido'" [pluralNoun]="'Usuarios'" [filterFieldsTemplate]="filterFieldsTemplate">
 </app-crud-module>

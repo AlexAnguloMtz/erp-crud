@@ -1,11 +1,8 @@
-<p-dialog [visible]="true" modal="modal" styleClass="responsive-size-dialog" [header]="'header'" [closable]="true"
-    [resizable]="false" [draggable]="false">
-    <p>Content goes here...</p>
-</p-dialog>
 <p-confirmDialog id="message-dialog" />
 @if (hasFilters) {
-<p-dialog class="form-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideFiltersForm()"
-    header="Filtrar {{ pluralNoun }}" [modal]="true" [(visible)]="filtersVisible" [style]="{'padding-bottom': '0'}">
+<p-dialog [(visible)]="filtersVisible" modal="true" styleClass="responsive-size-dialog"
+    header="Filtrar {{ pluralNoun }}" (onHide)="onHideFiltersForm()" [closable]="true" [resizable]="false"
+    [draggable]="false" [dismissableMask]="false">
     <form id="filters-form" class="filters-form" (ngSubmit)="onFiltersSubmit()">
         <fieldset class="filter-fields">
             <ng-container *ngTemplateOutlet="filterFieldsTemplate;  context: { }">
