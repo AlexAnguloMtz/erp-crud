@@ -22,7 +22,8 @@ type FirstSurfaceState = {
 }
 
 type SecondSurfaceState = {
-  type: 'second-surface'
+  type: 'second-surface',
+  surface: 'state' | 'role'
 }
 
 type FiltersFormState = FirstSurfaceState | SecondSurfaceState
@@ -111,6 +112,18 @@ export class Users2Component {
 
   get choosingFilterValue(): boolean {
     return this.filtersFormState.type === 'second-surface';
+  }
+
+  get filtersSecondSurfaceTitle(): string {
+    if (this.filtersFormState.type === 'second-surface' && this.filtersFormState.surface === 'role') {
+      return 'Rol';
+    }
+
+    if (this.filtersFormState.type === 'second-surface' && this.filtersFormState.surface === 'state') {
+      return 'Estado de la República';
+    }
+
+    return '';
   }
 
   loadOptionsOnRowClick(): (item: CrudItem, formGroup: FormGroup) => void {
@@ -325,11 +338,11 @@ export class Users2Component {
   }
 
   onStateFilterClick(): void {
-    this.filtersFormState = { type: 'second-surface' }
+    this.filtersFormState = { type: 'second-surface', surface: 'state' }
   }
 
   onRoleFilterClick(): void {
-    this.filtersFormState = { type: 'second-surface' }
+    this.filtersFormState = { type: 'second-surface', surface: 'role' }
   }
 
   onHideFiltersFormClick(): () => void {

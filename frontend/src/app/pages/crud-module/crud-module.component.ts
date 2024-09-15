@@ -126,6 +126,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() pluralNoun: string = '';
   @Input() choosingFilterValue: boolean = false;
   @Input() onGoBackToChoosingFilter: () => void;
+  @Input() filtersSecondSurfaceTitle: string;
 
   // Functions
   @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup
