@@ -64,14 +64,14 @@ export class MovementService {
     constructor(private apiClient: ApiClient) { }
 
     getMovements(pagination: PaginatedRequest, params: GetMovementsParams): Observable<PaginatedResponse<Movement>> {
-        return this.apiClient.get<PaginatedResponse<Movement>>(this.movementsEndpoint, { params: pagination })
+        return this.apiClient.get<PaginatedResponse<Movement>>(this.movementsEndpoint, { params: { ...pagination, ...params } })
             .pipe(
                 retry(5),
-                map(response => this.mapPaginatedResponse(response))
+                map(response => this.parsePaginatedResponse(response))
             );
     }
 
-    private mapPaginatedResponse(response: PaginatedResponse<any>): PaginatedResponse<Movement> {
+    private parsePaginatedResponse(response: PaginatedResponse<any>): PaginatedResponse<Movement> {
         return {
             ...response,
             items: response.items.map((x) => this.parseMovementJson(x))
