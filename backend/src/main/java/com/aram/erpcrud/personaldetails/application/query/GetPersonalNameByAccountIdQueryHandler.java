@@ -1,8 +1,8 @@
-package com.aram.erpcrud.users.application.query;
+package com.aram.erpcrud.personaldetails.application.query;
 
-import com.aram.erpcrud.users.domain.PersonalDetails;
-import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
-import com.aram.erpcrud.users.payload.PersonalNameDTO;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetails;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.personaldetails.payload.PersonalNameDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;

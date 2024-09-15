@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { catchError, Observable, retry, throwError } from "rxjs";
+import { catchError, map, Observable, retry, throwError } from "rxjs";
 import { PaginatedRequest } from "../common/paginated-request";
 import { PaginatedResponse } from "../common/paginated-response";
 
@@ -36,7 +36,7 @@ export type PersonalNameDTO = {
 
 export type MovementTypeDTO = {
     id: string;
-    name: string;
+    description: string;
 }
 
 export type Movement = {
@@ -44,6 +44,7 @@ export type Movement = {
     responsible: PersonalNameDTO;
     movementType: MovementTypeDTO;
     productQuantities: Array<ProductQuantityDTO>;
+    observations: string;
     timestamp: Date;
 }
 
@@ -68,8 +69,16 @@ export class MovementService {
             'Authorization': `Bearer ${token}`
         }
 
-        return this.http.get<PaginatedResponse<Movement>>(this.movementsUrl + '?' + toQueryString(pagination, params), { headers }).pipe(
+        return this.http.get<PaginatedResponse<Movement>>(
+            this.movementsUrl + '?' + toQueryString(pagination, params), { headers }
+        ).pipe(
             retry(5),
+            map(response => {
+                return {
+                    ...response,
+                    items: response.items.map((x) => ({ ...x, timestamp: new Date(x.timestamp) }))
+                };
+            })
         );
     }
 }

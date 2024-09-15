@@ -1,6 +1,6 @@
 package com.aram.erpcrud.movements.payload;
 
-import com.aram.erpcrud.users.payload.PersonalNameDTO;
+import com.aram.erpcrud.personaldetails.payload.PersonalNameDTO;
 
 import java.time.Instant;
 import java.util.List;
@@ -8,8 +8,9 @@ import java.util.List;
 public record MovementDTO(
         String id,
         PersonalNameDTO responsible,
-        MovementTypeDTO movementTypeDTO,
+        MovementTypeDTO movementType,
         List<ProductQuantityDTO> productQuantities,
+        String observations,
         Instant timestamp
 ) {
 }

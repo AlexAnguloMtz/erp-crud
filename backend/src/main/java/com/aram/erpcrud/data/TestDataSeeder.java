@@ -8,8 +8,8 @@ import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.domain.StateRepository;
 import com.aram.erpcrud.movements.domain.*;
 import com.aram.erpcrud.products.domain.*;
-import com.aram.erpcrud.users.domain.PersonalDetails;
-import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetails;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetailsRepository;
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.RandomService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -321,6 +321,7 @@ class TestDataSeeder {
                         String.valueOf(new Random().nextInt(1, 99)),
                         productQuantities,
                         pickRandom(movementTypes),
+                        pickRandom(movementObservations()),
                         randomInstantBetween(
                             Instant.parse("2024-03-10T00:00:00Z"),
                             Instant.parse("2024-09-01T00:00:00Z")
@@ -332,6 +333,34 @@ class TestDataSeeder {
                     return movement;
                 })
                 .toList();
+    }
+
+    private List<String> movementObservations() {
+        return List.of(
+                "Sin observaciones",
+                "Producto abierto",
+                "Producto caducado",
+                "Envases rotos",
+                "Producto incompleto",
+                "Etiqueta faltante",
+                "Stock desactualizado",
+                "Producto dañado durante el transporte",
+                "Error en la cantidad",
+                "Producto incorrecto en el pedido",
+                "Falta de documentación",
+                "Diferencia en el peso",
+                "Producto mal almacenado",
+                "Revisión necesaria",
+                "Productos mezclados con otros lotes",
+                "Observaciones del proveedor",
+                "Retraso en la entrega",
+                "Problemas con el embalaje",
+                "Verificar fecha de expiración",
+                "Producto mal etiquetado",
+                "Faltante en la entrega",
+                "Artículo con defectos visibles",
+                "Precauciones adicionales necesarias"
+        );
     }
 
     private List<ProductQuantity> randomProductQuantities(List<Product> products) {

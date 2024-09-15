@@ -1,13 +1,13 @@
-package com.aram.erpcrud.users.application.command;
+package com.aram.erpcrud.personaldetails.application.command;
 
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.auth.payload.AccountCreationResponse;
 import com.aram.erpcrud.auth.payload.CreateAccountCommand;
 import com.aram.erpcrud.locations.LocationsService;
 import com.aram.erpcrud.locations.domain.State;
-import com.aram.erpcrud.users.domain.PersonalDetails;
-import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
-import com.aram.erpcrud.users.payload.CreateUserCommand;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetails;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.personaldetails.payload.CreateUserCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

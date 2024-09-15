@@ -1,11 +1,11 @@
-package com.aram.erpcrud.users.payload;
+package com.aram.erpcrud.personaldetails.payload;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record UpdateUserCommand(
+public record CreateUserCommand(
         @NotBlank(message = "Name is required")
         @Size(max = 60, message = "Name cannot exceed 60 characters")
         String name,
@@ -49,6 +49,9 @@ public record UpdateUserCommand(
 
         @NotBlank(message = "Role ID is required")
         @Size(max = 60, message = "Role ID cannot exceed 60 characters")
-        String roleId
-) {
-}
+        String roleId,
+
+        @NotBlank(message = "Password is required")
+        @Size(min = 8, max = 60, message = "Password must be between 8 and 60 characters")
+        String password
+) {}

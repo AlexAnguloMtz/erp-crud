@@ -11,7 +11,7 @@ import com.aram.erpcrud.movements.domain.MovementType;
 import com.aram.erpcrud.movements.domain.ProductQuantity;
 import com.aram.erpcrud.movements.payload.*;
 import com.aram.erpcrud.products.payload.ProductDTO;
-import com.aram.erpcrud.users.payload.PersonalNameDTO;
+import com.aram.erpcrud.personaldetails.payload.PersonalNameDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -87,6 +87,7 @@ public class GetMovementsQueryHandler {
                 responsibleName,
                 toMovementTypeDto(movement.getMovementType()),
                 productQuantities,
+                movement.getObservations(),
                 movement.getTimestamp()
         );
     }

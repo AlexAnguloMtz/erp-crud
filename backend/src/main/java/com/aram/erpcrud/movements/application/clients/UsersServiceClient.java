@@ -1,6 +1,6 @@
 package com.aram.erpcrud.movements.application.clients;
 
-import com.aram.erpcrud.users.payload.PersonalNameDTO;
+import com.aram.erpcrud.personaldetails.payload.PersonalNameDTO;
 
 public interface UsersServiceClient {
 

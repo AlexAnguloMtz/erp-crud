@@ -1,4 +1,4 @@
-package com.aram.erpcrud.users.application.query;
+package com.aram.erpcrud.personaldetails.application.query;
 
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.auth.payload.AccountPublicDetails;
@@ -7,10 +7,10 @@ import com.aram.erpcrud.common.PageResponse;
 import com.aram.erpcrud.common.SafePagination;
 import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.payload.StateDTO;
-import com.aram.erpcrud.users.domain.PersonalDetails;
-import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
-import com.aram.erpcrud.users.payload.FullUserDetails;
-import com.aram.erpcrud.users.payload.GetUsersQuery;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetails;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.personaldetails.payload.FullUserDetails;
+import com.aram.erpcrud.personaldetails.payload.GetUsersQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;

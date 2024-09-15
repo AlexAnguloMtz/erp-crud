@@ -1,8 +1,8 @@
-package com.aram.erpcrud.users.rest;
+package com.aram.erpcrud.personaldetails.rest;
 
 import com.aram.erpcrud.common.PageResponse;
-import com.aram.erpcrud.users.payload.*;
-import com.aram.erpcrud.users.application.UserFacade;
+import com.aram.erpcrud.personaldetails.payload.*;
+import com.aram.erpcrud.personaldetails.application.UserFacade;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

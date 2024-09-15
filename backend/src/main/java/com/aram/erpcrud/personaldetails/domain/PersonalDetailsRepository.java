@@ -1,4 +1,4 @@
-package com.aram.erpcrud.users.domain;
+package com.aram.erpcrud.personaldetails.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

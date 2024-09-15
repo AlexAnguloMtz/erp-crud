@@ -27,5 +27,8 @@ public class Movement {
     private MovementType movementType;
 
     @Column
+    private String observations;
+
+    @Column
     private Instant timestamp;
 }

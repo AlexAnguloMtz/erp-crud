@@ -1,1 +1,12 @@
-<p>movements works!</p>
+<ng-template #rowTemplate let-item>
+    <td>{{ formatTime(item.timestamp) }}</td>
+    <td>{{ formatResponsibleName(item) }}</td>
+    <td>{{ item.movementType.description }}</td>
+    <td>{{ item.observations }}</td>
+</ng-template>
+
+<app-crud-module [title]="'Movimientos'" [formTitle]="'Movimiento'" [searchPlaceholder]="'XXXXXXXXXX'"
+    [createItemCreationForm]="createItemCreationForm()" [createItemCreationForm]="createItemCreationForm()"
+    [createItemUpdateForm]="createItemUpdateForm()" [getItems]="getItems()" [getCreationErrors]="getCreationErrors()"
+    [getUpdateErrors]="getUpdateErrors()" [tableHeaders]="tableHeaders" [rowTemplate]="rowTemplate">
+</app-crud-module>

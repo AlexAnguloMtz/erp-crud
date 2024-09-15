@@ -1,13 +1,13 @@
-package com.aram.erpcrud.users.application;
+package com.aram.erpcrud.personaldetails.application;
 
 import com.aram.erpcrud.common.PageResponse;
-import com.aram.erpcrud.users.application.command.CreateUserCommandHandler;
-import com.aram.erpcrud.users.application.command.UpdateUserCommandHandler;
-import com.aram.erpcrud.users.application.command.DeleteUserByIdCommandHandler;
-import com.aram.erpcrud.users.application.query.GetMeQueryHandler;
-import com.aram.erpcrud.users.application.query.GetPersonalNameByAccountIdQueryHandler;
-import com.aram.erpcrud.users.application.query.GetUsersQueryHandler;
-import com.aram.erpcrud.users.payload.*;
+import com.aram.erpcrud.personaldetails.application.command.CreateUserCommandHandler;
+import com.aram.erpcrud.personaldetails.application.command.UpdateUserCommandHandler;
+import com.aram.erpcrud.personaldetails.application.command.DeleteUserByIdCommandHandler;
+import com.aram.erpcrud.personaldetails.application.query.GetMeQueryHandler;
+import com.aram.erpcrud.personaldetails.application.query.GetPersonalNameByAccountIdQueryHandler;
+import com.aram.erpcrud.personaldetails.application.query.GetUsersQueryHandler;
+import com.aram.erpcrud.personaldetails.payload.*;
 import org.springframework.stereotype.Component;
 
 @Component

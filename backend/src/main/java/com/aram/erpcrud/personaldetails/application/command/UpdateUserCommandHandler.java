@@ -1,4 +1,4 @@
-package com.aram.erpcrud.users.application.command;
+package com.aram.erpcrud.personaldetails.application.command;
 
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.auth.config.JwtHandler;
@@ -8,11 +8,11 @@ import com.aram.erpcrud.auth.payload.UpdateAccountResponse;
 import com.aram.erpcrud.locations.LocationsService;
 import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.payload.StateDTO;
-import com.aram.erpcrud.users.domain.PersonalDetails;
-import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
-import com.aram.erpcrud.users.payload.FullUserDetails;
-import com.aram.erpcrud.users.payload.UpdateUserCommand;
-import com.aram.erpcrud.users.payload.UpdateUserResponse;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetails;
+import com.aram.erpcrud.personaldetails.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.personaldetails.payload.FullUserDetails;
+import com.aram.erpcrud.personaldetails.payload.UpdateUserCommand;
+import com.aram.erpcrud.personaldetails.payload.UpdateUserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

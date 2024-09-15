@@ -1,7 +1,7 @@
 package com.aram.erpcrud.movements.application.clients;
 
-import com.aram.erpcrud.users.UsersService;
-import com.aram.erpcrud.users.payload.PersonalNameDTO;
+import com.aram.erpcrud.personaldetails.UsersService;
+import com.aram.erpcrud.personaldetails.payload.PersonalNameDTO;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -408,6 +408,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   }
 
   private handleItems(response: PaginatedResponse<CrudItem>): void {
+    console.log(JSON.stringify(response.items))
     this.status = { _type: 'base', response }
     this.lastSeenTotalItems = response.totalItems
   }

@@ -1,4 +1,4 @@
-package com.aram.erpcrud.users.domain;
+package com.aram.erpcrud.personaldetails.domain;
 
 import com.aram.erpcrud.locations.domain.State;
 import jakarta.persistence.*;
