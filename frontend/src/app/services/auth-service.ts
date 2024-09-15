@@ -36,7 +36,7 @@ export class AuthService {
     constructor(private apiClient: ApiClient) { }
 
     logIn(credentials: LoginCredentials): Observable<AuthenticationResponse> {
-        return this.apiClient.post<AuthenticationResponse>(this.loginEndpoint, credentials, { authentication: false }).pipe(
+        return this.apiClient.post<AuthenticationResponse>(this.loginEndpoint, credentials).pipe(
             catchError((error) => this.handleLogInError(error))
         );
     }

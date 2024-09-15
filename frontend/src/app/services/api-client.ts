@@ -1,8 +1,12 @@
 import { Injectable } from "@angular/core";
 import { AuthenticationProof, AuthenticationProofVault } from "./authentication-proof-vault";
 import { Observable } from "rxjs";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
+
+const PUBLIC_PATHS: Array<string> = [
+    '/api/v1/auth/login'
+];
 
 // Accepts Date objects
 type RawParams = { [param: string]: string | number | boolean | Date | ReadonlyArray<string | number | boolean | Date> }
@@ -12,7 +16,6 @@ type ParsedParams = { [param: string]: string | number | boolean | ReadonlyArray
 
 export type ApiClientOptions = {
     params?: RawParams
-    authentication?: boolean
 }
 
 export class InvalidAuthenticationError extends Error {
@@ -32,26 +35,30 @@ export class ApiClient {
         private authenticationProofVault: AuthenticationProofVault,
     ) { }
 
-    get<T>(url: string, options?: ApiClientOptions): Observable<T> {
-        return this.http.get<T>(this.prepareUrl(url), { headers: this.makeHeaders(options), params: this.parseParams(options?.params) });
+    get<T>(path: string, options?: ApiClientOptions): Observable<T> {
+        return this.http.get<T>(this.prepareUrl(path), { headers: this.makeHeaders(path), params: this.parseParams(options?.params) });
     }
 
-    post<T>(url: string, body: any | null, options?: ApiClientOptions): Observable<T> {
-        return this.http.post<T>(this.prepareUrl(url), body, { headers: this.makeHeaders(options), params: this.parseParams(options?.params) });
+    post<T>(path: string, body: any | null, options?: ApiClientOptions): Observable<T> {
+        return this.http.post<T>(this.prepareUrl(path), body, { headers: this.makeHeaders(path), params: this.parseParams(options?.params) });
     }
 
-    put<T>(url: string, body: any | null, options?: ApiClientOptions): Observable<T> {
-        return this.http.put<T>(this.prepareUrl(url), body, { headers: this.makeHeaders(options), params: this.parseParams(options?.params) });
+    put<T>(path: string, body: any | null, options?: ApiClientOptions): Observable<T> {
+        return this.http.put<T>(this.prepareUrl(path), body, { headers: this.makeHeaders(path), params: this.parseParams(options?.params) });
     }
 
-    delete<T>(url: string, options?: ApiClientOptions): Observable<T> {
-        return this.http.delete<T>(this.prepareUrl(url), { headers: this.makeHeaders(options), params: this.parseParams(options?.params) });
+    delete<T>(path: string, options?: ApiClientOptions): Observable<T> {
+        return this.http.delete<T>(this.prepareUrl(path), { headers: this.makeHeaders(path), params: this.parseParams(options?.params) });
     }
 
-    private makeHeaders(options?: ApiClientOptions): { [key: string]: string } {
-        const headers: { [key: string]: string } = {}
+    private prepareUrl(path: string): string {
+        return environment.apiUrl + path;
+    }
 
-        if (this.needsAuthentication(options)) {
+    private makeHeaders(path: string): { [key: string]: string } {
+        const headers: { [key: string]: string } = {};
+
+        if (!this.isPublicPath(path)) {
             headers['Authorization'] = `Bearer ${this.getAccessToken()}`;
         }
 
@@ -78,24 +85,8 @@ export class ApiClient {
         return authenticationProof.token;
     }
 
-    private prepareUrl(url: string): string {
-        return environment.apiUrl + url;
-    }
-
-    private needsAuthentication(options?: ApiClientOptions) {
-        if (!options) {
-            return true;
-        }
-
-        if (options.authentication === undefined) {
-            return true;
-        }
-
-        if (options.authentication === null) {
-            return true;
-        }
-
-        return options.authentication;
+    private isPublicPath(path: string) {
+        return PUBLIC_PATHS.includes(path);
     }
 
 }
