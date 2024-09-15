@@ -88,19 +88,21 @@ class TestDataSeeder {
     private Iterable<PersonalDetails> personalDetails(List<String> accountIds) {
         List<State> states = stateRepository.findAll();
         return accountIds.stream()
-                .map(accountId -> new PersonalDetails(
+                .map(accountId -> {
+                    State state = pickRandom(states);
+                    return new PersonalDetails(
                         UUID.randomUUID().toString(),
                         accountId,
                         faker.name().firstName(),
                         faker.name().lastName(),
-                        pickRandom(states),
-                        faker.address().city(),
+                        state,
+                        pickRandom(stateCitiesMap().get(state.getId())),
                         faker.address().secondaryAddress(),
                         faker.address().streetName(),
                         faker.address().streetAddressNumber(),
                         digitsOnly(faker.phoneNumber().phoneNumber()),
                         faker.address().zipCode()
-                ))
+                    );})
                 .toList();
     }
 
@@ -361,6 +363,45 @@ class TestDataSeeder {
                 "Artículo con defectos visibles",
                 "Precauciones adicionales necesarias"
         );
+    }
+
+    private Map<String, List<String>> stateCitiesMap() {
+        Map<String, List<String>> stateCities = new HashMap<>();
+
+        stateCities.put("AGU", Arrays.asList("Aguascalientes", "San Francisco de los Romo", "Jesús María"));
+        stateCities.put("BCN", Arrays.asList("Tijuana", "Mexicali", "Ensenada"));
+        stateCities.put("BCS", Arrays.asList("La Paz", "Cabo San Lucas", "San José del Cabo"));
+        stateCities.put("CAM", Arrays.asList("San Francisco de Campeche", "Ciudad del Carmen", "Champotón"));
+        stateCities.put("COA", Arrays.asList("Saltillo", "Torreón", "Monclova"));
+        stateCities.put("COL", Arrays.asList("Colima", "Manzanillo", "Tecomán"));
+        stateCities.put("CHI", Arrays.asList("Tuxtla Gutiérrez", "San Cristóbal de las Casas", "Tapachula"));
+        stateCities.put("CHH", Arrays.asList("Chihuahua", "Ciudad Juárez", "Delicias"));
+        stateCities.put("CDMX", Arrays.asList("Ciudad de México", "Coyoacán", "Gustavo A. Madero"));
+        stateCities.put("DUR", Arrays.asList("Durango", "Gómez Palacio", "Lerdo"));
+        stateCities.put("GUA", Arrays.asList("León", "Guanajuato", "Irapuato"));
+        stateCities.put("GUE", Arrays.asList("Acapulco", "Chilpancingo", "Iguala"));
+        stateCities.put("HID", Arrays.asList("Pachuca", "Tulancingo", "Tizayuca"));
+        stateCities.put("JAL", Arrays.asList("Guadalajara", "Puerto Vallarta", "Tlaquepaque"));
+        stateCities.put("MEX", Arrays.asList("Toluca", "Naucalpan", "Ecatepec"));
+        stateCities.put("MIC", Arrays.asList("Morelia", "Uruapan", "Zamora"));
+        stateCities.put("MOR", Arrays.asList("Cuernavaca", "Jiutepec", "Temixco"));
+        stateCities.put("NAY", Arrays.asList("Tepic", "Bahía de Banderas", "Xalisco"));
+        stateCities.put("NLE", Arrays.asList("Monterrey", "San Pedro Garza García", "Santa Catarina"));
+        stateCities.put("OAX", Arrays.asList("Oaxaca de Juárez", "Santa Cruz Xoxocotlán", "San Bartolo Coyotepec"));
+        stateCities.put("PUE", Arrays.asList("Puebla", "Atlixco", "San Andrés Cholula"));
+        stateCities.put("QUE", Arrays.asList("Querétaro", "El Marqués", "San Juan del Río"));
+        stateCities.put("ROO", Arrays.asList("Cancún", "Playa del Carmen", "Chetumal"));
+        stateCities.put("SLP", Arrays.asList("San Luis Potosí", "Soledad de Graciano Sánchez", "Matehuala"));
+        stateCities.put("SIN", Arrays.asList("Culiacán", "Mazatlán", "Los Mochis"));
+        stateCities.put("SON", Arrays.asList("Hermosillo", "Ciudad Obregón", "Nogales"));
+        stateCities.put("TAB", Arrays.asList("Villahermosa", "Comalcalco", "Cárdenas"));
+        stateCities.put("TAM", Arrays.asList("Reynosa", "Matamoros", "Tampico"));
+        stateCities.put("TLA", Arrays.asList("Tlaxcala", "Apizaco", "San Pablo del Monte"));
+        stateCities.put("VER", Arrays.asList("Xalapa", "Veracruz", "Coatzacoalcos"));
+        stateCities.put("YUC", Arrays.asList("Mérida", "Progreso", "Valladolid"));
+        stateCities.put("ZAC", Arrays.asList("Zacatecas", "Guadalupe", "Jerez"));
+
+        return stateCities;
     }
 
     private List<ProductQuantity> randomProductQuantities(List<Product> products) {
