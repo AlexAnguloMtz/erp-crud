@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from "@angular/common/http";
+import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { catchError, Observable, retry, throwError } from "rxjs";
 import { ApiClient } from "./api-client";
@@ -48,7 +48,7 @@ export class AuthService {
     }
 
     private handleLogInError(error: any): Observable<never> {
-        if (error instanceof HttpErrorResponse && error.status === 403) {
+        if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Forbidden) {
             return throwError(() => new BadCredentialsError('BadCredentials'));
         }
         return throwError(() => new Error());

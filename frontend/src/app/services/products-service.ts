@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpErrorResponse } from "@angular/common/http";
+import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
 import { catchError, Observable, retry, throwError } from "rxjs";
 import { PaginatedRequest } from "../common/paginated-request";
 import { PaginatedResponse } from "../common/paginated-response";
@@ -39,7 +39,7 @@ export class ProductsService {
     createBrand(dto: BrandCommand): Observable<void> {
         return this.apiClient.post<void>(this.brandsEndpoint, dto).pipe(
             catchError(error => {
-                if (error instanceof HttpErrorResponse && error.status === 409) {
+                if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Conflict) {
                     return throwError(() => new BrandExistsError('Brand already exists.'));
                 }
                 return throwError(() => new Error('An unexpected error occurred.'));
@@ -52,7 +52,7 @@ export class ProductsService {
 
         return this.apiClient.put<void>(url, command).pipe(
             catchError(error => {
-                if (error instanceof HttpErrorResponse && error.status === 409) {
+                if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Conflict) {
                     return throwError(() => new BrandExistsError('Brand already exists.'));
                 }
                 return throwError(() => new Error('An unexpected error occurred.'));
