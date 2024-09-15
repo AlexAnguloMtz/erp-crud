@@ -122,6 +122,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() searchPlaceholder: string;
   @Input() hasSearchBar: boolean = true;
   @Input() hasFilters: boolean = true;
+  @Input() pluralNoun: string = '';
 
   // Functions
   @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup
@@ -140,6 +141,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() onCreateNewClick: () => void;
 
   // Templates
+  @Input() filterFieldsTemplate: TemplateRef<any>;
   @Input() createItemFieldsTemplate: TemplateRef<any>;
   @Input() updateItemFieldsTemplate: TemplateRef<any>;
   @Input() rowTemplate: TemplateRef<any>;
@@ -150,6 +152,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   selectedPageNumber: number;
   lastSeenTotalItems: number;
   debounceTimeout: any;
+  filtersVisible: boolean;
   createItemVisible: boolean;
   updateItemVisible: boolean;
   createItemStatus: CreateItemStatus;
@@ -186,6 +189,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     this.createItemVisible = false;
     this.itemSavedDialogVisible = false;
     this.itemDeletedDialogVisible = false;
+    this.filtersVisible = false;
     this.createItemStatus = { _type: 'item-creation-base' }
     this.updateItemStatus = { _type: 'item-update-base' }
     this.deleteItemStatus = { _type: 'delete-item-base' }
@@ -248,6 +252,14 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     this.updateItemForm.patchValue(item);
     this.updateItemVisible = true;
     this.loadOptionsOnRowClick?.(item, this.updateItemForm);
+  }
+
+  onShowFilters(): void {
+    this.filtersVisible = true;
+  }
+
+  onFiltersSubmit(): void {
+
   }
 
   onCreateItemSubmit(): void {
@@ -344,6 +356,10 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     this.onCreateNewClick?.();
   }
 
+  onCancelFiltersForm(): void {
+    this.filtersVisible = false;
+  }
+
   onCancelItemForm(): void {
     this.createItemVisible = false;
   }
@@ -354,6 +370,10 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   onHideItemForm(): void {
     this.itemCreationForm.reset();
+  }
+
+  onHideFiltersForm(): void {
+    this.filtersVisible = false;
   }
 
   onCloseSavedItemDialog(): void {
