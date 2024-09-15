@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { PaginatedRequest } from '../../common/paginated-request';
 import { capitalize } from '../../common/strings';
+import { SortOption } from '../users/users.component';
 
 @Component({
   selector: 'app-movements',
@@ -89,6 +90,13 @@ export class MovementsComponent {
       'Responsable',
       'Tipo movimiento',
       'Observaciones',
+    ];
+  }
+
+  get sortOptions(): Array<SortOption> {
+    return [
+      { name: 'Más recientes primero', key: 'timestamp-desc' },
+      { name: 'Más antiguos primero', key: 'timestamp-asc' },
     ];
   }
 }
