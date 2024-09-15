@@ -64,17 +64,26 @@ export class MovementService {
     constructor(private apiClient: ApiClient) { }
 
     getMovements(pagination: PaginatedRequest, params: GetMovementsParams): Observable<PaginatedResponse<Movement>> {
-        return this.apiClient.get<PaginatedResponse<Movement>>(
-            this.movementsEndpoint + '?' + toQueryString(pagination, params),
-        ).pipe(
-            retry(5),
-            map(response => {
-                return {
-                    ...response,
-                    items: response.items.map((x) => ({ ...x, timestamp: new Date(x.timestamp) }))
-                };
-            })
-        );
+        const urlParamsString = this.movementsEndpoint + '?' + toQueryString(pagination, params);
+        return this.apiClient.get<PaginatedResponse<Movement>>(urlParamsString)
+            .pipe(
+                retry(5),
+                map(response => this.mapPaginatedResponse(response))
+            );
+    }
+
+    private mapPaginatedResponse(response: PaginatedResponse<any>): PaginatedResponse<Movement> {
+        return {
+            ...response,
+            items: response.items.map((x) => this.parseMovementJson(x))
+        };
+    }
+
+    private parseMovementJson(json: any): Movement {
+        return {
+            ...json,
+            timestamp: new Date(json.timestamp),
+        };
     }
 }
 

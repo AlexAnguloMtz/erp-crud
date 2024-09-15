@@ -179,6 +179,14 @@ export class MainTemplateComponent {
     ];
   }
 
+  private getMe(): void {
+    this.status = { _type: 'loading' }
+    this.usersService.getMe().subscribe({
+      next: (user: User) => this.status = { _type: 'base', user },
+      error: (error) => this.handleGetMeError(error),
+    })
+  }
+
   private handleGetMeError(error: any): void {
     if (error.name === 'ForbiddenError') {
       this.authenticationProofVault.removeAuthenticationProof();
@@ -188,11 +196,4 @@ export class MainTemplateComponent {
     this.status = { _type: 'error' }
   }
 
-  private getMe(): void {
-    this.status = { _type: 'loading' }
-    this.usersService.getMe().subscribe({
-      next: (user: User) => this.status = { _type: 'base', user },
-      error: (error) => this.handleGetMeError(error),
-    })
-  }
 }

@@ -37,12 +37,7 @@ export class AuthService {
 
     logIn(credentials: LoginCredentials): Observable<AuthenticationResponse> {
         return this.apiClient.post<AuthenticationResponse>(this.loginEndpoint, credentials, { authentication: false }).pipe(
-            catchError((error) => {
-                if (error instanceof HttpErrorResponse && error.status === 403) {
-                    return throwError(() => new BadCredentialsError('BadCredentials'));
-                }
-                return throwError(() => new Error());
-            })
+            catchError((error) => this.handleLogInError(error))
         );
     }
 
@@ -50,5 +45,12 @@ export class AuthService {
         return this.apiClient.get<Array<Role>>(this.rolesEndpoint).pipe(
             retry(5)
         );
+    }
+
+    private handleLogInError(error: any): Observable<never> {
+        if (error instanceof HttpErrorResponse && error.status === 403) {
+            return throwError(() => new BadCredentialsError('BadCredentials'));
+        }
+        return throwError(() => new Error());
     }
 }
