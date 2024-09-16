@@ -8,6 +8,7 @@ import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.domain.StateRepository;
 import com.aram.erpcrud.movements.domain.*;
 import com.aram.erpcrud.products.domain.*;
+import com.aram.erpcrud.users.domain.Address;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import com.github.javafaker.Faker;
@@ -90,19 +91,26 @@ class TestDataSeeder {
         return accountIds.stream()
                 .map(accountId -> {
                     State state = pickRandom(states);
-                    return new PersonalDetails(
-                        UUID.randomUUID().toString(),
-                        accountId,
-                        faker.name().firstName(),
-                        faker.name().lastName(),
-                        state,
-                        pickRandom(stateCitiesMap().get(state.getId())),
-                        faker.address().secondaryAddress(),
-                        faker.address().streetName(),
-                        faker.address().streetAddressNumber(),
-                        digitsOnly(faker.phoneNumber().phoneNumber()),
-                        faker.address().zipCode()
-                    );})
+
+                    Address address = Address.builder()
+                            .id(UUID.randomUUID().toString())
+                            .state(state)
+                            .city(pickRandom(stateCitiesMap().get(state.getId())))
+                            .district(faker.address().secondaryAddress())
+                            .street(faker.address().streetName())
+                            .streetNumber(faker.address().streetAddressNumber())
+                            .zipCode(faker.address().zipCode())
+                            .build();
+
+                    return PersonalDetails.builder()
+                            .id(UUID.randomUUID().toString())
+                            .accountId(accountId)
+                            .name(faker.name().firstName())
+                            .lastName(faker.name().lastName())
+                            .phone(digitsOnly(faker.phoneNumber().phoneNumber()))
+                            .address(address)
+                            .build();
+                    })
                 .toList();
     }
 

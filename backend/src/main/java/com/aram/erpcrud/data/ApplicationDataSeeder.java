@@ -26,7 +26,7 @@ class ApplicationDataSeeder {
         try {
             doRun();
         } catch (Exception exception) {
-            throw new RuntimeException("could not seed roles and root user", exception);
+            throw new RuntimeException("could not seed application data", exception);
         }
     }
 

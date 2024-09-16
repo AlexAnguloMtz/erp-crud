@@ -6,6 +6,7 @@ import com.aram.erpcrud.auth.domain.AuthUser;
 import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.domain.StateRepository;
+import com.aram.erpcrud.users.domain.Address;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,18 +78,23 @@ public class RootUserSeeder {
             throw new RuntimeException("Could not find root user state");
         }
 
-        return PersonalDetails.builder()
-                .id(id)
-                .accountId(accountId)
-                .name("Usuario Raiz")
-                .lastName("Apellido")
+        Address address = Address.builder()
+                .id(UUID.randomUUID().toString())
                 .state(stateOptional.get())
                 .city("Hermosillo")
                 .district("Colonia")
                 .street("Calle")
                 .streetNumber("Num Calle")
-                .phone("0000000000")
                 .zipCode("00000")
+                .build();
+
+        return PersonalDetails.builder()
+                .id(id)
+                .accountId(accountId)
+                .name("Usuario Raiz")
+                .lastName("Apellido")
+                .address(address)
+                .phone("0000000000")
                 .build();
     }
 }

@@ -16,7 +16,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { AuthenticationProof, AuthenticationProofVault } from '../../services/authentication-proof-vault';
+import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
 
 const RECORDS_PER_PAGE: number = 15;
 
@@ -144,6 +144,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() onCreateNewClick: () => void;
   @Input() onHideFiltersFormClick: () => void;
   @Input() onGoBackToChoosingFilter: () => void;
+  @Input() onPatchUpdateForm: (formGroup: FormGroup, item: CrudItem) => void;
 
   // Templates
   @Input() filterFieldsTemplate: TemplateRef<any>;
@@ -253,9 +254,17 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   onEditClick(item: CrudItem): void {
     this.itemToUpdateId = item.id;
-    this.updateItemForm.patchValue(item);
+    this.patchUpdateForm(item);
     this.updateItemVisible = true;
     this.loadOptionsOnRowClick?.(item, this.updateItemForm);
+  }
+
+  patchUpdateForm(item: CrudItem): void {
+    if (this.onPatchUpdateForm) {
+      this.onPatchUpdateForm(this.updateItemForm, item);
+    } else {
+      this.updateItemForm.patchValue(item);
+    }
   }
 
   onShowFilters(): void {
@@ -324,7 +333,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   searchItems(request: PaginatedRequest, loadingStatus: LoadingFirstTime | LoadingSubsequentTime): void {
     this.status = loadingStatus;
     this.getItems(request).subscribe({
-      next: (response: PaginatedResponse<CrudItem>) => this.handleItems(response),
+      next: (response: PaginatedResponse<CrudItem>) => this.handlePageResponse(response),
       error: (error) => this.handleGetItemsError(error),
     })
   }
@@ -439,7 +448,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     }, 500); // Debounce delay
   }
 
-  private handleItems(response: PaginatedResponse<CrudItem>): void {
+  private handlePageResponse(response: PaginatedResponse<CrudItem>): void {
     this.status = { _type: 'base', response }
     this.lastSeenTotalItems = response.totalItems
   }

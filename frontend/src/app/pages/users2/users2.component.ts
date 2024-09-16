@@ -208,7 +208,7 @@ export class Users2Component {
     return (item: CrudItem, updateItemForm: FormGroup) => {
       const user: UserDetails = (item as UserDetails);
       this.loadRolesOnRowClick(user.role.id, updateItemForm);
-      this.loadStatesOnRowClick(user.state.id, updateItemForm);
+      this.loadStatesOnRowClick(user.address.state.id, updateItemForm);
     }
   }
 
@@ -237,7 +237,7 @@ export class Users2Component {
   }
 
   formatUserLocation(user: UserDetails): string {
-    return `${user.city}, ${user.state.id}`
+    return `${user.address.city}, ${user.address.state.id}`
   }
 
   getCreationErrors(): (formGroup: FormGroup) => { [key: string]: string } {
@@ -448,6 +448,16 @@ export class Users2Component {
   onHideFiltersFormClick(): () => void {
     return () => {
       this.filtersFormState = { type: 'first-surface' }
+    }
+  }
+
+  onPatchUpdateForm(): (formGroup: FormGroup, item: CrudItem) => void {
+    return (formGroup, item) => {
+      const user: UserDetails = (item as UserDetails);
+      formGroup.patchValue({
+        ...user,
+        ...user.address,
+      });
     }
   }
 

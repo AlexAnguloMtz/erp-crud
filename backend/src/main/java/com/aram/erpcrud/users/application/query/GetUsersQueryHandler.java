@@ -7,8 +7,10 @@ import com.aram.erpcrud.common.PageResponse;
 import com.aram.erpcrud.common.SafePagination;
 import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.payload.StateDTO;
+import com.aram.erpcrud.users.domain.Address;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.users.payload.AddressDTO;
 import com.aram.erpcrud.users.payload.FullUserDetails;
 import com.aram.erpcrud.users.payload.GetUsersQuery;
 import org.springframework.data.domain.Page;
@@ -96,7 +98,7 @@ public class GetUsersQueryHandler {
         for (PersonalDetails somePersonalDetails : personalDetails) {
             Optional<AccountPublicDetails> accountOptional = findAccountForPersonalDetails(accounts, somePersonalDetails);
             AccountPublicDetails accountPublicDetails = accountOptional.orElse(emptyAccountDetails());
-            userPreviews.add(toUserPreview(accountPublicDetails, somePersonalDetails));
+            userPreviews.add(toFullUserDetails(accountPublicDetails, somePersonalDetails));
         }
         return userPreviews;
     }
@@ -120,21 +122,32 @@ public class GetUsersQueryHandler {
             .findFirst();
     }
 
-    private FullUserDetails toUserPreview(AccountPublicDetails accountPublicDetails, PersonalDetails personalDetails) {
+    private FullUserDetails toFullUserDetails(AccountPublicDetails accountPublicDetails, PersonalDetails personalDetails) {
         return new FullUserDetails(
                 accountPublicDetails.id(),
                 personalDetails.getName(),
                 personalDetails.getLastName(),
-                toDto(personalDetails.getState()),
-                personalDetails.getCity(),
-                personalDetails.getDistrict(),
-                personalDetails.getStreet(),
-                personalDetails.getStreetNumber(),
-                personalDetails.getZipCode(),
+                toAddressDto(personalDetails.getAddress()),
                 personalDetails.getPhone(),
                 accountPublicDetails.email(),
                 accountPublicDetails.rolePublicDetails()
         );
+    }
+
+    private AddressDTO toAddressDto(Address address) {
+        return new AddressDTO(
+                address.getId(),
+                toStateDto(address.getState()),
+                address.getCity(),
+                address.getDistrict(),
+                address.getStreet(),
+                address.getStreetNumber(),
+                address.getZipCode()
+        );
+    }
+
+    private StateDTO toStateDto(State state) {
+        return new StateDTO(state.getId(), state.getName());
     }
 
     private AccountPublicDetails emptyAccountDetails() {

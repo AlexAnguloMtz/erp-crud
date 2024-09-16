@@ -5,6 +5,7 @@ import com.aram.erpcrud.auth.payload.AccountCreationResponse;
 import com.aram.erpcrud.auth.payload.CreateAccountCommand;
 import com.aram.erpcrud.locations.LocationsService;
 import com.aram.erpcrud.locations.domain.State;
+import com.aram.erpcrud.users.domain.Address;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import com.aram.erpcrud.users.payload.CreateUserCommand;
@@ -41,12 +42,19 @@ public class CreateUserCommandHandler {
                 .accountId(accountId)
                 .name(command.name())
                 .lastName(command.lastName())
+                .address(makeAddress(command, state))
+                .phone(command.phone())
+                .build();
+    }
+
+    private Address makeAddress(CreateUserCommand command, State state) {
+        return Address.builder()
+                .id(UUID.randomUUID().toString())
                 .state(state)
                 .city(command.city())
                 .district(command.district())
                 .street(command.street())
                 .streetNumber(command.streetNumber())
-                .phone(command.phone())
                 .zipCode(command.zipCode())
                 .build();
     }

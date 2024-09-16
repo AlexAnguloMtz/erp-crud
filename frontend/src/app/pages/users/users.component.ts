@@ -648,7 +648,7 @@ export class UsersComponent {
     this.updateUserForm.patchValue(user);
     this.updateItemVisible = true;
     this.loadRolesOnRowClick(user.role.id, this.updateUserForm);
-    this.loadStatesOnRowClick(user.state.id, this.updateUserForm);
+    this.loadStatesOnRowClick(user.address.state.id, this.updateUserForm);
   }
 
   private loadRolesOnRowClick(roleId: string, form: FormGroup) {
@@ -736,7 +736,7 @@ export class UsersComponent {
   }
 
   formatUserLocation(user: UserDetails): string {
-    return `${user.city}, ${user.state.id}`
+    return `${user.address.city}, ${user.address.state.id}`
   }
 
   searchUsers(request: PaginatedRequest, loadingStatus: LoadingFirstTime | LoadingSubsequentTime): void {

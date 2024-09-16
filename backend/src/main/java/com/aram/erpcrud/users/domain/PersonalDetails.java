@@ -1,6 +1,5 @@
 package com.aram.erpcrud.users.domain;
 
-import com.aram.erpcrud.locations.domain.State;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,26 +23,10 @@ public class PersonalDetails {
     @Column
     private String lastName;
 
-    @ManyToOne
-    @JoinColumn(name = "state_id", nullable = false)
-    private State state;
-
-    @Column
-    private String city;
-
-    @Column
-    private String district;
-
-    @Column
-    private String street;
-
-    @Column
-    private String streetNumber;
-
     @Column
     private String phone;
 
-    @Column
-    private String zipCode;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
 
 }

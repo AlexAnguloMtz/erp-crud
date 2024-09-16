@@ -8,8 +8,10 @@ import com.aram.erpcrud.auth.payload.UpdateAccountResponse;
 import com.aram.erpcrud.locations.LocationsService;
 import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.payload.StateDTO;
+import com.aram.erpcrud.users.domain.Address;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.users.payload.AddressDTO;
 import com.aram.erpcrud.users.payload.FullUserDetails;
 import com.aram.erpcrud.users.payload.UpdateUserCommand;
 import com.aram.erpcrud.users.payload.UpdateUserResponse;
@@ -57,32 +59,45 @@ public class UpdateUserCommandHandler {
 
         personalDetails.setName(command.name());
         personalDetails.setLastName(command.lastName());
-        personalDetails.setState(state);
-        personalDetails.setCity(command.city());
-        personalDetails.setDistrict(command.district());
-        personalDetails.setStreet(command.street());
-        personalDetails.setStreetNumber(command.streetNumber());
-        personalDetails.setZipCode(command.zipCode());
         personalDetails.setPhone(command.phone());
 
-        personalDetailsRepository.save(personalDetails);
+        Address updatedAddress = Address.builder()
+                .id(personalDetails.getAddress().getId())
+                .state(state)
+                .city(command.city())
+                .district(command.district())
+                .street(command.street())
+                .streetNumber(command.streetNumber())
+                .zipCode(command.zipCode())
+                .build();
+
+        personalDetails.setAddress(updatedAddress);
+
+        PersonalDetails savedPersonalDetails = personalDetailsRepository.save(personalDetails);
 
         FullUserDetails fullUserDetails = new FullUserDetails(
                 id,
-                personalDetails.getName(),
-                personalDetails.getLastName(),
-                toStateDto(personalDetails.getState()),
-                personalDetails.getCity(),
-                personalDetails.getDistrict(),
-                personalDetails.getStreet(),
-                personalDetails.getStreetNumber(),
-                personalDetails.getZipCode(),
-                personalDetails.getPhone(),
+                savedPersonalDetails.getName(),
+                savedPersonalDetails.getLastName(),
+                toAddressDto(savedPersonalDetails.getAddress()),
+                savedPersonalDetails.getPhone(),
                 updateAccountResponse.email(),
                 updateAccountResponse.rolePublicDetails()
         );
 
         return new UpdateUserResponse(fullUserDetails, updateAccountResponse.jwt());
+    }
+
+    private AddressDTO toAddressDto(Address address) {
+        return new AddressDTO(
+                address.getId(),
+                toStateDto(address.getState()),
+                address.getCity(),
+                address.getDistrict(),
+                address.getStreet(),
+                address.getStreetNumber(),
+                address.getZipCode()
+        );
     }
 
     private UpdateAccountCommand toAccountPublicDetails(String id, String requestingUserEmail, UpdateUserCommand command) {

@@ -22,6 +22,16 @@ export type State = {
     name: string,
 }
 
+export type Address = {
+    id: string,
+    state: State,
+    city: string,
+    district: string,
+    street: string,
+    streetNumber: string,
+    zipCode: string,
+}
+
 export type CreateUserCommand = {
     name: string,
     lastName: string,
@@ -56,15 +66,10 @@ export type UserDetails = {
     id: string,
     name: string,
     lastName: string,
-    state: State,
-    city: string,
-    district: string,
-    street: string,
-    streetNumber: string,
-    zipCode: string,
     email: string,
     phone: string,
     role: Role,
+    address: Address,
 }
 
 export type UpdateUserResponse = {
