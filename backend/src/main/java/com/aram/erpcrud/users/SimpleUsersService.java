@@ -1,7 +1,7 @@
-package com.aram.erpcrud.personaldetails;
+package com.aram.erpcrud.users;
 
-import com.aram.erpcrud.personaldetails.application.UserFacade;
-import com.aram.erpcrud.personaldetails.payload.PersonalNameDTO;
+import com.aram.erpcrud.users.application.UserFacade;
+import com.aram.erpcrud.users.payload.PersonalNameDTO;
 import org.springframework.stereotype.Component;
 
 @Component

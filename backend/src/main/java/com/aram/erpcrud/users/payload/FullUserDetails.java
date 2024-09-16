@@ -1,4 +1,4 @@
-package com.aram.erpcrud.personaldetails.payload;
+package com.aram.erpcrud.users.payload;
 
 import com.aram.erpcrud.auth.payload.RolePublicDetails;
 import com.aram.erpcrud.locations.payload.StateDTO;

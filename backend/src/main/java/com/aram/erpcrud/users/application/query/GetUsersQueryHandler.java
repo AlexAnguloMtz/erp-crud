@@ -1,4 +1,4 @@
-package com.aram.erpcrud.personaldetails.application.query;
+package com.aram.erpcrud.users.application.query;
 
 import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.auth.payload.AccountPublicDetails;
@@ -7,14 +7,10 @@ import com.aram.erpcrud.common.PageResponse;
 import com.aram.erpcrud.common.SafePagination;
 import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.payload.StateDTO;
-import com.aram.erpcrud.personaldetails.domain.PersonalDetails;
-import com.aram.erpcrud.personaldetails.domain.PersonalDetailsRepository;
-import com.aram.erpcrud.personaldetails.payload.FullUserDetails;
-import com.aram.erpcrud.personaldetails.payload.GetUsersQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import com.aram.erpcrud.users.domain.PersonalDetails;
+import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.users.payload.FullUserDetails;
+import com.aram.erpcrud.users.payload.GetUsersQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -85,7 +81,8 @@ public class GetUsersQueryHandler {
             sort
         );
 
-        Specification<PersonalDetails> specification = withSearchCriteria(query.search());
+        Specification<PersonalDetails> specification = PersonalDetailsSpecifications.withSearch(query.search())
+                .and(PersonalDetailsSpecifications.livesInAnyState(query.states()));
 
         return personalDetailsRepository.findAll(specification, pageable);
     }
@@ -102,18 +99,6 @@ public class GetUsersQueryHandler {
             userPreviews.add(toUserPreview(accountPublicDetails, somePersonalDetails));
         }
         return userPreviews;
-    }
-
-    private Specification<PersonalDetails> withSearchCriteria(String search) {
-        return (Root<PersonalDetails> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            if (search == null || search.isEmpty()) {
-                return criteriaBuilder.conjunction();
-            }
-            String searchPattern = "%" + search.toLowerCase() + "%";
-            Predicate firstNamePredicate = criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), searchPattern);
-            Predicate lastNamePredicate = criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")), searchPattern);
-            return criteriaBuilder.or(firstNamePredicate, lastNamePredicate);
-        };
     }
 
     private UserSort toUserSort(String sort) {

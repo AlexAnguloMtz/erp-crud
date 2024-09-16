@@ -1,4 +1,4 @@
-package com.aram.erpcrud.personaldetails.payload;
+package com.aram.erpcrud.users.payload;
 
 public record PersonalNameDTO(
         String id,

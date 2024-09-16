@@ -1,7 +1,7 @@
-package com.aram.erpcrud.personaldetails.application.command;
+package com.aram.erpcrud.users.application.command;
 
 import com.aram.erpcrud.auth.AuthService;
-import com.aram.erpcrud.personaldetails.domain.PersonalDetailsRepository;
+import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
