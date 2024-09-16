@@ -113,7 +113,6 @@ export class UsersService {
     }
 
     getUsers(pagination: PaginatedRequest, params?: GetUsersParams): Observable<PaginatedResponse<UserDetails>> {
-        console.log('will send params ' + JSON.stringify({ ...pagination, ...params }))
         return this.apiClient.get<PaginatedResponse<UserDetails>>(this.usersEndpoint, { params: { ...pagination, ...params } }).pipe(
             retry(5),
         );
