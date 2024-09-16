@@ -125,7 +125,6 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() hasFilters: boolean = true;
   @Input() pluralNoun: string = '';
   @Input() choosingFilterValue: boolean = false;
-  @Input() onGoBackToChoosingFilter: () => void;
   @Input() filtersSecondSurfaceTitle: string;
 
   // Functions
@@ -144,6 +143,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() handleUpdateResponse: (response: ItemUpdateResponse) => void;
   @Input() onCreateNewClick: () => void;
   @Input() onHideFiltersFormClick: () => void;
+  @Input() onGoBackToChoosingFilter: () => void;
 
   // Templates
   @Input() filterFieldsTemplate: TemplateRef<any>;
@@ -263,7 +263,12 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   }
 
   onFiltersSubmit(): void {
-
+    this.filtersVisible = false;
+    this.searchItems({
+      ...this.defaultPaginatedRequest(),
+      search: this.searchControl.value,
+      sort: this.selectedSort?.key,
+    }, { _type: 'loading-subsequent-time' });
   }
 
   onCreateItemSubmit(): void {

@@ -229,7 +229,11 @@ export class Users2Component {
   }
 
   getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
-    return (request: PaginatedRequest) => this.userService.getUsers(request);
+    return (request: PaginatedRequest) => this.userService.getUsers(
+      request, {
+      roles: this.selectedRoles,
+      states: this.selectedStates,
+    });
   }
 
   formatUserLocation(user: UserDetails): string {

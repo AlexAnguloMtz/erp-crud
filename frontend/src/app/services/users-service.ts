@@ -72,6 +72,11 @@ export type UpdateUserResponse = {
     jwt: string | undefined
 }
 
+export type GetUsersParams = {
+    states?: Array<string>,
+    roles?: Array<string>,
+}
+
 export class ForbiddenError extends Error {
     constructor(message: string) {
         super(message);
@@ -102,8 +107,9 @@ export class UsersService {
         );
     }
 
-    getUsers(pagination: PaginatedRequest): Observable<PaginatedResponse<UserDetails>> {
-        return this.apiClient.get<PaginatedResponse<UserDetails>>(this.usersEndpoint, { params: pagination }).pipe(
+    getUsers(pagination: PaginatedRequest, params?: GetUsersParams): Observable<PaginatedResponse<UserDetails>> {
+        console.log('will send params ' + JSON.stringify({ ...pagination, ...params }))
+        return this.apiClient.get<PaginatedResponse<UserDetails>>(this.usersEndpoint, { params: { ...pagination, ...params } }).pipe(
             retry(5),
         );
     }
