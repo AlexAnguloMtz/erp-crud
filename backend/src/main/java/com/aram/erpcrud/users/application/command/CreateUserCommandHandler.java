@@ -4,8 +4,8 @@ import com.aram.erpcrud.auth.AuthService;
 import com.aram.erpcrud.auth.payload.AccountCreationResponse;
 import com.aram.erpcrud.auth.payload.CreateAccountCommand;
 import com.aram.erpcrud.locations.LocationsService;
-import com.aram.erpcrud.locations.domain.State;
-import com.aram.erpcrud.users.domain.Address;
+import com.aram.erpcrud.locations.payload.StateDTO;
+import com.aram.erpcrud.users.domain.UserAddress;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import com.aram.erpcrud.users.payload.CreateUserCommand;
@@ -31,26 +31,26 @@ public class CreateUserCommandHandler {
     public void handle(CreateUserCommand command) {
         CreateAccountCommand createAccountCommand = new CreateAccountCommand(command.roleId(), command.email(), command.password());
         AccountCreationResponse accountCreationResponse = authService.createAccount(createAccountCommand);
-        State state = locationsService.findStateById(command.state());
-        PersonalDetails personalDetails = toPersonalDetails(accountCreationResponse.accountId(), command, state);
+        StateDTO stateDto = locationsService.findStateById(command.state());
+        PersonalDetails personalDetails = toPersonalDetails(accountCreationResponse.accountId(), command, stateDto.id());
         personalDetailsRepository.save(personalDetails);
     }
 
-    private PersonalDetails toPersonalDetails(String accountId, CreateUserCommand command, State state) {
+    private PersonalDetails toPersonalDetails(String accountId, CreateUserCommand command, String stateId) {
         return PersonalDetails.builder()
                 .id(UUID.randomUUID().toString())
                 .accountId(accountId)
                 .name(command.name())
                 .lastName(command.lastName())
-                .address(makeAddress(command, state))
+                .address(makeAddress(command, stateId))
                 .phone(command.phone())
                 .build();
     }
 
-    private Address makeAddress(CreateUserCommand command, State state) {
-        return Address.builder()
+    private UserAddress makeAddress(CreateUserCommand command, String stateId) {
+        return UserAddress.builder()
                 .id(UUID.randomUUID().toString())
-                .state(state)
+                .stateId(stateId)
                 .city(command.city())
                 .district(command.district())
                 .street(command.street())

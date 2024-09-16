@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "personal_details")
 @Getter
 @Setter
 @Builder
@@ -27,6 +28,6 @@ public class PersonalDetails {
     private String phone;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Address address;
+    private UserAddress address;
 
 }

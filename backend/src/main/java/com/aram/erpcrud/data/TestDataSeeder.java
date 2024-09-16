@@ -8,7 +8,7 @@ import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.domain.StateRepository;
 import com.aram.erpcrud.movements.domain.*;
 import com.aram.erpcrud.products.domain.*;
-import com.aram.erpcrud.users.domain.Address;
+import com.aram.erpcrud.users.domain.UserAddress;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import com.github.javafaker.Faker;
@@ -92,9 +92,9 @@ class TestDataSeeder {
                 .map(accountId -> {
                     State state = pickRandom(states);
 
-                    Address address = Address.builder()
+                    UserAddress address = UserAddress.builder()
                             .id(UUID.randomUUID().toString())
-                            .state(state)
+                            .stateId(state.getId())
                             .city(pickRandom(stateCitiesMap().get(state.getId())))
                             .district(faker.address().secondaryAddress())
                             .street(faker.address().streetName())

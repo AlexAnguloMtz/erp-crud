@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode
 @ToString
-@Table(name = "roles")
+@Table(name = "auth_role")
 public class AuthRole {
 
     @Id
@@ -21,4 +21,5 @@ public class AuthRole {
 
     @Column(nullable = false, unique = true)
     private String name;
+
 }

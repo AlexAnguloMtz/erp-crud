@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name = "movements")
+@Table(name = "movement")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)

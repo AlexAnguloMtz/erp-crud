@@ -6,9 +6,8 @@ import com.aram.erpcrud.auth.payload.AccountPublicDetails;
 import com.aram.erpcrud.auth.payload.UpdateAccountCommand;
 import com.aram.erpcrud.auth.payload.UpdateAccountResponse;
 import com.aram.erpcrud.locations.LocationsService;
-import com.aram.erpcrud.locations.domain.State;
 import com.aram.erpcrud.locations.payload.StateDTO;
-import com.aram.erpcrud.users.domain.Address;
+import com.aram.erpcrud.users.domain.UserAddress;
 import com.aram.erpcrud.users.domain.PersonalDetails;
 import com.aram.erpcrud.users.domain.PersonalDetailsRepository;
 import com.aram.erpcrud.users.payload.AddressDTO;
@@ -50,7 +49,7 @@ public class UpdateUserCommandHandler {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        State state = locationsService.findStateById(command.state());
+        StateDTO stateDto = locationsService.findStateById(command.state());
 
         UpdateAccountCommand updateAccountCommand = toAccountPublicDetails(id, requestingUserEmail, command);
         UpdateAccountResponse updateAccountResponse = authService.updateAccount(updateAccountCommand);
@@ -61,9 +60,9 @@ public class UpdateUserCommandHandler {
         personalDetails.setLastName(command.lastName());
         personalDetails.setPhone(command.phone());
 
-        Address updatedAddress = Address.builder()
+        UserAddress updatedAddress = UserAddress.builder()
                 .id(personalDetails.getAddress().getId())
-                .state(state)
+                .stateId(stateDto.id())
                 .city(command.city())
                 .district(command.district())
                 .street(command.street())
@@ -79,7 +78,7 @@ public class UpdateUserCommandHandler {
                 id,
                 savedPersonalDetails.getName(),
                 savedPersonalDetails.getLastName(),
-                toAddressDto(savedPersonalDetails.getAddress()),
+                toAddressDto(savedPersonalDetails.getAddress(), stateDto),
                 savedPersonalDetails.getPhone(),
                 updateAccountResponse.email(),
                 updateAccountResponse.rolePublicDetails()
@@ -88,10 +87,10 @@ public class UpdateUserCommandHandler {
         return new UpdateUserResponse(fullUserDetails, updateAccountResponse.jwt());
     }
 
-    private AddressDTO toAddressDto(Address address) {
+    private AddressDTO toAddressDto(UserAddress address, StateDTO stateDto) {
         return new AddressDTO(
                 address.getId(),
-                toStateDto(address.getState()),
+                stateDto,
                 address.getCity(),
                 address.getDistrict(),
                 address.getStreet(),
@@ -109,7 +108,4 @@ public class UpdateUserCommandHandler {
         );
     }
 
-    private StateDTO toStateDto(State state) {
-        return new StateDTO(state.getId(), state.getName());
-    }
 }

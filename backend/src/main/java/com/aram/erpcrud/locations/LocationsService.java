@@ -1,7 +1,14 @@
 package com.aram.erpcrud.locations;
 
-import com.aram.erpcrud.locations.domain.State;
+import com.aram.erpcrud.locations.payload.StateDTO;
+
+import java.util.List;
+import java.util.Set;
 
 public interface LocationsService {
-    State findStateById(String id);
+
+    StateDTO findStateById(String id);
+
+    List<StateDTO> findStates(Set<String> stateIds);
+
 }

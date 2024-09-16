@@ -1,24 +1,22 @@
 package com.aram.erpcrud.users.domain;
 
-import com.aram.erpcrud.locations.domain.State;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "user_address")
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
-public class Address {
+public class UserAddress {
 
     @Id
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "state_id", nullable = false)
-    private State state;
+    @Column
+    private String stateId;
 
     @Column
     private String city;

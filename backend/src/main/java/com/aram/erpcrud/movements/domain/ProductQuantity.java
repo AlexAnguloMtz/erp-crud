@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "product_quantities")
+@Table(name = "product_quantity")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)

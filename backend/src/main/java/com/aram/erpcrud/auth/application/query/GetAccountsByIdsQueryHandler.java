@@ -8,6 +8,7 @@ import com.aram.erpcrud.auth.payload.RolePublicDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class GetAccountsByIdsQueryHandler {
@@ -18,7 +19,7 @@ public class GetAccountsByIdsQueryHandler {
         this.authUserRepository = authUserRepository;
     }
 
-    public List<AccountPublicDetails> handle(List<String> ids) {
+    public List<AccountPublicDetails> handle(Set<String> ids) {
         return authUserRepository.findAllById(ids).stream()
             .map(this::toAccountPublicDetails)
             .toList();
