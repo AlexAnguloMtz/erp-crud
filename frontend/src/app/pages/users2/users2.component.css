@@ -55,3 +55,27 @@
     flex-direction: column;
     gap: 12px;
 }
+
+.filters-second-surface .loading {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filters-second-surface .loading,
+.filters-second-surface .role,
+.filters-second-surface .state {
+    display: none;
+}
+
+.filters-second-surface.loading .loading {
+    display: block;
+}
+
+.filters-second-surface.role .role {
+    display: block;
+}
+
+.filters-second-surface.state .state {
+    display: block;
+}
