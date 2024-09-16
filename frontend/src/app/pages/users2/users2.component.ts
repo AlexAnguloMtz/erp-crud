@@ -161,6 +161,27 @@ export class Users2Component {
     return '';
   }
 
+  get selectedStatesSummary(): string {
+    const defaultText: string = 'Cualquiera';
+
+    if (this.selectedStates.length === 0) {
+      return defaultText;
+    }
+
+    if (this.statesOptionsStatus._type !== 'options-ready') {
+      return defaultText;
+    }
+
+    const statesNames: Array<string> = [];
+    for (const id of this.selectedStates) {
+      const state: State | undefined = this.statesOptionsStatus.items.find(x => x.id == id);
+      if (state) {
+        statesNames.push(state.name);
+      }
+    }
+    return statesNames.sort((x, y) => x.localeCompare(y)).join(', ');
+  }
+
   get selectedRolesSummary(): string {
     const defaultText: string = 'Cualquiera';
 

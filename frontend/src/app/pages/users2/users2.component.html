@@ -2,7 +2,7 @@
     <div class="filters-form-surfaces-container" [class.choosing-filter-value]="choosingFilterValue">
         <div class="filters-first-surface">
             <app-filters-form-field (onClick)="onStateFilterClick()" [labelText]="'Estado de la República'"
-                [valueText]="'Cualquiera'">
+                [valueText]="selectedStatesSummary">
             </app-filters-form-field>
             <app-filters-form-field (onClick)="onRoleFilterClick()" [labelText]="'Rol'"
                 [valueText]="selectedRolesSummary">
