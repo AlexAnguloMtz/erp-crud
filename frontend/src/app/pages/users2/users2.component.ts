@@ -150,11 +150,15 @@ export class Users2Component {
   }
 
   get filtersSecondSurfaceTitle(): string {
-    if (this.filtersFormState.type === 'second-surface' && this.filtersFormState.surface === 'role') {
+    if (this.filtersFormState.type !== 'second-surface') {
+      return '';
+    }
+
+    if (this.filtersFormState.surface === 'role') {
       return 'Rol';
     }
 
-    if (this.filtersFormState.type === 'second-surface' && this.filtersFormState.surface === 'state') {
+    if (this.filtersFormState.surface === 'state') {
       return 'Estado de la República';
     }
 
