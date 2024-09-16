@@ -161,6 +161,27 @@ export class Users2Component {
     return '';
   }
 
+  get selectedRolesSummary(): string {
+    const defaultText: string = 'Cualquiera';
+
+    if (this.selectedRoles.length === 0) {
+      return defaultText;
+    }
+
+    if (this.rolesOptionsStatus._type !== 'options-ready') {
+      return defaultText;
+    }
+
+    const rolesNames: Array<string> = [];
+    for (const id of this.selectedRoles) {
+      const role: Role | undefined = this.rolesOptionsStatus.items.find(x => x.id == id);
+      if (role) {
+        rolesNames.push(role.name);
+      }
+    }
+    return rolesNames.sort((x, y) => x.localeCompare(y)).join(', ');
+  }
+
   loadOptionsOnRowClick(): (item: CrudItem, formGroup: FormGroup) => void {
     return (item: CrudItem, updateItemForm: FormGroup) => {
       const user: UserDetails = (item as UserDetails);

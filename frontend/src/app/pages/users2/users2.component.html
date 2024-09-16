@@ -4,7 +4,8 @@
             <app-filters-form-field (onClick)="onStateFilterClick()" [labelText]="'Estado de la República'"
                 [valueText]="'Cualquiera'">
             </app-filters-form-field>
-            <app-filters-form-field (onClick)="onRoleFilterClick()" [labelText]="'Rol'" [valueText]="'Cualquiera'">
+            <app-filters-form-field (onClick)="onRoleFilterClick()" [labelText]="'Rol'"
+                [valueText]="selectedRolesSummary">
             </app-filters-form-field>
         </div>
         <div class="filters-second-surface {{filtersSecondSurfaceClass}}">
