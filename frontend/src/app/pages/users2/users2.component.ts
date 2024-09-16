@@ -154,15 +154,12 @@ export class Users2Component {
       return '';
     }
 
-    if (this.filtersFormState.surface === 'role') {
-      return 'Rol';
+    const surfaceNameMap = {
+      'role': 'Rol',
+      'state': 'Estado de la República',
     }
 
-    if (this.filtersFormState.surface === 'state') {
-      return 'Estado de la República';
-    }
-
-    return '';
+    return surfaceNameMap[this.filtersFormState.surface];
   }
 
   get selectedStatesSummary(): string {
