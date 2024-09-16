@@ -25,7 +25,7 @@ public interface PersonalDetailsSpecifications {
             if (stateIds == null || stateIds.isEmpty()) {
                 return criteriaBuilder.conjunction();
             }
-            return root.get("state").get("id").in(stateIds);
+            return root.get("address").get("stateId").in(stateIds);
         };
     }
 }
