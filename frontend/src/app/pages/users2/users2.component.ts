@@ -155,8 +155,8 @@ export class Users2Component {
     }
 
     const surfaceNameMap = {
-      'role': 'Rol',
       'state': 'Estado de la República',
+      'role': 'Rol',
     }
 
     return surfaceNameMap[this.filtersFormState.surface];
