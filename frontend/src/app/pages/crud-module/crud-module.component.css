@@ -199,6 +199,10 @@
     left: 0;
 }
 
+::ng-deep .responsive-size-dialog .p-dialog-content {
+    padding-bottom: 0;
+}
+
 @media screen and (min-width: 500px) {
     .search-controls-container {
         display: flex;

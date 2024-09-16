@@ -23,7 +23,8 @@
             <ng-container *ngTemplateOutlet="filterFieldsTemplate;  context: { }">
             </ng-container>
         </div>
-        <div [style]="{'display': 'flex', 'justifyContent': 'flex-end', 'gap': '8px'}">
+        <div
+            [style]="{'zIndex': '1', 'padding': '20px 0', 'position': 'sticky', 'bottom':'0', 'background':'white', 'display': 'flex', 'justifyContent': 'flex-end', 'gap': '8px'}">
             <p-button label="Cerrar" severity="secondary" outlined="true" (click)="onCancelFiltersForm()" />
             <p-button id="filters-submit" label="Aplicar" type="submit" />
         </div>

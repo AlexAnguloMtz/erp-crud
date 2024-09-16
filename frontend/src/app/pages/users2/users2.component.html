@@ -7,8 +7,24 @@
             <app-filters-form-field (onClick)="onRoleFilterClick()" [labelText]="'Rol'" [valueText]="'Cualquiera'">
             </app-filters-form-field>
         </div>
-        <div class="filters-second-surface">
-            other
+        <div class="filters-second-surface {{filtersSecondSurfaceClass}}">
+            <div class="state">
+                @for (state of states; track state.id) {
+                <app-filters-form-checkbox [value]="state.id" [text]="state.name" [model]="selectedStates"
+                    (onClick)="onStateCheckboxClick(state.id)"></app-filters-form-checkbox>
+                }
+            </div>
+            <div class="role">
+                @for (role of roles; track role.id) {
+                <app-filters-form-checkbox [value]="role.id" [text]="role.name" [model]="selectedRoles"
+                    (onClick)="onRoleCheckboxClick(role.id)"></app-filters-form-checkbox>
+                }
+            </div>
+            <div class="loading">
+                @for (i of loadingSkeletonIndexRange(); track i) {
+                <p-skeleton [style]="{'height': '30px'}" />
+                }
+            </div>
         </div>
     </div>
 </ng-template>

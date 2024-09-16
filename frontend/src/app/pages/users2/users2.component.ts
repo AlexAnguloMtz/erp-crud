@@ -13,9 +13,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthService, Role } from '../../services/auth-service';
 import { UserFormFieldsComponent } from './user-form-fields/user-form-fields.component';
-import { OptionsStatus } from '../../common/options-status';
+import { options, OptionsStatus } from '../../common/options-status';
 import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
 import { FiltersFormFieldComponent } from '../../components/filters-form-field/filters-form-field.component';
+import { SkeletonModule } from 'primeng/skeleton';
+import { range, toggle } from '../../common/arrays';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FiltersFormCheckboxComponent } from '../../components/filters-form-checkbox/filters-form-checkbox.component';
 
 type FirstSurfaceState = {
   type: 'first-surface'
@@ -56,6 +60,9 @@ type PasswordFieldProps = {
     ReactiveFormsModule,
     UserFormFieldsComponent,
     FiltersFormFieldComponent,
+    SkeletonModule,
+    CheckboxModule,
+    FiltersFormCheckboxComponent,
   ],
   providers: [AuthenticationProofVault],
   templateUrl: './users2.component.html',
@@ -66,6 +73,8 @@ export class Users2Component {
   statesOptionsStatus: OptionsStatus<State>;
   rolesOptionsStatus: OptionsStatus<Role>;
   passwordFieldProps: PasswordFieldProps;
+  selectedRoles: Array<string>;
+  selectedStates: Array<string>;
   filtersFormState: FiltersFormState;
 
   constructor(
@@ -79,7 +88,33 @@ export class Users2Component {
     this.statesOptionsStatus = { _type: 'base' };
     this.rolesOptionsStatus = { _type: 'base' };
     this.filtersFormState = { type: 'first-surface' }
+    this.selectedRoles = [];
+    this.selectedStates = [];
     this.passwordFieldProps = passwordNotVisibleProps;
+  }
+
+  get filtersSecondSurfaceClass(): string {
+    if (this.filtersFormState.type === 'first-surface') {
+      return '';
+    }
+
+    if (this.loadingFilters) {
+      return 'loading';
+    }
+
+    return this.filtersFormState.surface;
+  }
+
+  get loadingFilters(): boolean {
+    return this.statesOptionsStatus._type === 'loading-options' || this.rolesOptionsStatus._type === 'loading-options';
+  }
+
+  get states(): Array<State> {
+    return options(this.statesOptionsStatus);
+  }
+
+  get roles(): Array<Role> {
+    return options(this.rolesOptionsStatus);
   }
 
   get sortOptions(): Array<SortOption> {
@@ -195,6 +230,14 @@ export class Users2Component {
     }
   }
 
+  onRoleCheckboxClick(id: string): void {
+    this.selectedRoles = toggle(id, this.selectedRoles);
+  }
+
+  onStateCheckboxClick(id: string): void {
+    this.selectedStates = toggle(id, this.selectedStates);
+  }
+
   createCreationForm(): (formBuilder: FormBuilder) => FormGroup {
     return function (formBuilder: FormBuilder) {
       return formBuilder.group({
@@ -283,6 +326,10 @@ export class Users2Component {
     }
   }
 
+  loadingSkeletonIndexRange(): Array<number> {
+    return range(0, 20);
+  }
+
   onCreateNewClick(): () => void {
     return () => {
       if (this.rolesOptionsStatus._type === 'base') {
@@ -339,10 +386,16 @@ export class Users2Component {
 
   onStateFilterClick(): void {
     this.filtersFormState = { type: 'second-surface', surface: 'state' }
+    if (this.statesOptionsStatus._type === 'base') {
+      this.loadStates();
+    }
   }
 
   onRoleFilterClick(): void {
     this.filtersFormState = { type: 'second-surface', surface: 'role' }
+    if (this.rolesOptionsStatus._type === 'base') {
+      this.loadRoles();
+    }
   }
 
   onHideFiltersFormClick(): () => void {

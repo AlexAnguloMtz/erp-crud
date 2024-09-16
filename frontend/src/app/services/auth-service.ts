@@ -14,7 +14,8 @@ export type AuthenticationResponse = {
 
 export type Role = {
     id: string
-    description: string,
+    name: string,
+    canonicalName: string,
 }
 
 class BadCredentialsError extends Error {

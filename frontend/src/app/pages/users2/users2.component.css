@@ -34,32 +34,24 @@
 
 .filters-form-surfaces-container {
     height: 100%;
-    position: relative;
 }
 
-.filters-first-surface {
-    transition: all 100ms ease;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-}
+.filters-first-surface {}
 
 .filters-second-surface {
-    transition: all 100ms ease;
-    transform: translateX(110%);
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
+    display: none;
 }
 
 .choosing-filter-value .filters-first-surface {
-    transform: translateX(-110%);
+    display: none;
 }
 
 .choosing-filter-value .filters-second-surface {
-    transform: translateX(0);
+    display: block;
+}
+
+.filters-second-surface .loading-surface {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
