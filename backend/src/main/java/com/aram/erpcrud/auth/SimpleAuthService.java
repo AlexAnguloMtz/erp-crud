@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 public class SimpleAuthService implements AuthService {
@@ -45,7 +46,7 @@ public class SimpleAuthService implements AuthService {
     }
 
     @Override
-    public List<AccountPublicDetails> findAccounts(Set<String> accountIds) {
+    public List<AccountPublicDetails> findAccounts(Set<UUID> accountIds) {
         return getAccountsQueryHandler.handle(accountIds);
     }
 

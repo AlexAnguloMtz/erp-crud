@@ -4,6 +4,7 @@ import { catchError, Observable, retry, throwError } from "rxjs";
 import { PaginatedRequest } from "../common/paginated-request";
 import { PaginatedResponse } from "../common/paginated-response";
 import { ApiClient } from "./api-client";
+import { DataIntegrityError } from "../common/data-integrity-error";
 
 class BrandExistsError extends Error {
     constructor(message: string) {
@@ -62,7 +63,14 @@ export class ProductsService {
 
     deleteBrandById(id: string): Observable<void> {
         const url = `${this.brandsEndpoint}/${id}`;
-        return this.apiClient.delete<void>(url);
+        return this.apiClient.delete<void>(url).pipe(
+            catchError(error => {
+                if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.BadRequest) {
+                    return throwError(() => new DataIntegrityError('Data integrity error'));
+                }
+                return throwError(() => new Error('An unexpected error occurred.'));
+            })
+        );
     }
 
 }

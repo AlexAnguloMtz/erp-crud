@@ -8,7 +8,7 @@ services:
     volumes:
       - erp_data:/var/lib/postgresql/data
     env_file:
-      - ./backend/.env
+      - ./backend/db.env
     healthcheck:
       test: [ "CMD-SHELL", "/usr/local/bin/postgres-healthcheck.sh" ]
       interval: 5s
@@ -24,9 +24,17 @@ services:
       erp_database:
         condition: service_healthy
     env_file:
-      - ./backend/.env
+      - ./backend/backend.env
     ports:
       - "8080:8080"
+
+  flyway:
+    image: flyway/flyway:10-alpine
+    volumes:
+      - .:/flyway/sql
+    depends_on:
+      - erp_database
+    command: -url=jdbc:postgresql://erp_database:5432/${FLYWAY_DATABASE} -schemas=public -user=${FLYWAY_USER} -password=${FLYWAY_PASSWORD} -connectRetries=10 migrate
 
 volumes:
   erp_data:

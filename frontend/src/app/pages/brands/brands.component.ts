@@ -49,7 +49,7 @@ export class BrandsComponent {
     }
   }
 
-  mapSaveItemError(): (error: Error) => DisplayableError {
+  mapItemOperationError(): (error: Error) => DisplayableError {
     return (error: Error): DisplayableError => {
       if (error.name === 'BrandExistsError') {
         return {

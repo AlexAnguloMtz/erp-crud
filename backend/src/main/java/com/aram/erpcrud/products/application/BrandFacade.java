@@ -36,13 +36,13 @@ public class BrandFacade {
         if (brandOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
-        Brand brand = new Brand(UUID.randomUUID().toString(), command.name());
+        Brand brand = new Brand(UUID.randomUUID(), command.name());
         brandRepository.save(brand);
     }
 
     @Transactional
     public void updateBrand(String id, BrandCommand command) {
-        Optional<Brand> brandByIdOptional = brandRepository.findById(id);
+        Optional<Brand> brandByIdOptional = brandRepository.findById(UUID.fromString(id));
         if (brandByIdOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -64,6 +64,6 @@ public class BrandFacade {
 
     @Transactional
     public void deleteBrandById(String id) {
-        brandRepository.deleteById(id);
+        brandRepository.deleteById(UUID.fromString(id));
     }
 }

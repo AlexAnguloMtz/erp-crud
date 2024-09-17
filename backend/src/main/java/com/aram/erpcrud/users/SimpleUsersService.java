@@ -4,6 +4,8 @@ import com.aram.erpcrud.users.application.UserFacade;
 import com.aram.erpcrud.users.payload.PersonalNameDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 class SimpleUsersService implements UsersService {
 
@@ -14,7 +16,7 @@ class SimpleUsersService implements UsersService {
     }
 
     @Override
-    public PersonalNameDTO getPersonalNameByAccountId(String accountId) {
+    public PersonalNameDTO getPersonalNameByAccountId(UUID accountId) {
         return userFacade.getPersonalNameByAccountId(accountId);
     }
 }

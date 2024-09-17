@@ -1,0 +1,6 @@
+CREATE TABLE state(
+    id VARCHAR(4) PRIMARY KEY,
+    name VARCHAR(60) NOT NULL
+);
+
+ALTER TABLE state ADD CONSTRAINT uk_state_name UNIQUE (name);

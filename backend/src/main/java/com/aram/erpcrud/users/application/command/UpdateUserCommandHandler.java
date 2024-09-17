@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class UpdateUserCommandHandler {
@@ -44,7 +45,7 @@ public class UpdateUserCommandHandler {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        Optional<PersonalDetails> personalDetailsOptional = personalDetailsRepository.findByAccountId(id);
+        Optional<PersonalDetails> personalDetailsOptional = personalDetailsRepository.findByAccountId(UUID.fromString(id));
         if (personalDetailsOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -89,7 +90,7 @@ public class UpdateUserCommandHandler {
 
     private AddressDTO toAddressDto(UserAddress address, StateDTO stateDto) {
         return new AddressDTO(
-                address.getId(),
+                address.getId().toString(),
                 stateDto,
                 address.getCity(),
                 address.getDistrict(),

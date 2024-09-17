@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 public class GetAccountsByIdsQueryHandler {
@@ -19,7 +20,7 @@ public class GetAccountsByIdsQueryHandler {
         this.authUserRepository = authUserRepository;
     }
 
-    public List<AccountPublicDetails> handle(Set<String> ids) {
+    public List<AccountPublicDetails> handle(Set<UUID> ids) {
         return authUserRepository.findAllById(ids).stream()
             .map(this::toAccountPublicDetails)
             .toList();
@@ -27,7 +28,7 @@ public class GetAccountsByIdsQueryHandler {
 
     private AccountPublicDetails toAccountPublicDetails(AuthUser authUser) {
         return new AccountPublicDetails(
-            authUser.getId(),
+            authUser.getId().toString(),
             authUser.getEmail(),
             toRolePublicDetails(authUser.getRole())
         );
@@ -35,7 +36,7 @@ public class GetAccountsByIdsQueryHandler {
 
     private RolePublicDetails toRolePublicDetails(AuthRole role) {
         return new RolePublicDetails(
-                role.getId(),
+                role.getId().toString(),
                 role.getName()
         );
     }

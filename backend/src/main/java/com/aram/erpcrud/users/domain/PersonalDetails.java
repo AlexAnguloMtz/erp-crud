@@ -3,8 +3,10 @@ package com.aram.erpcrud.users.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
-@Table(name = "personal_details")
+@Table(name = "user_personal_details")
 @Getter
 @Setter
 @Builder
@@ -13,10 +15,10 @@ import lombok.*;
 public class PersonalDetails {
 
     @Id
-    private String id;
+    private UUID id;
 
     @Column
-    private String accountId;
+    private UUID accountId;
 
     @Column
     private String name;

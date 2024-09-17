@@ -24,9 +24,9 @@ public class RolesSeeder {
 
     private Iterable<AuthRole> allRoles() {
         return Set.of(
-            new AuthRole(UUID.randomUUID().toString(), "ROLE_SUPER_USER", "Super Usuario"),
-            new AuthRole(UUID.randomUUID().toString(), "ROLE_ADMIN", "Administrador"),
-            new AuthRole(UUID.randomUUID().toString(), "ROLE_USER", "Usuario")
+            new AuthRole(UUID.randomUUID(), "ROLE_SUPER_USER", "Super Usuario"),
+            new AuthRole(UUID.randomUUID(), "ROLE_ADMIN", "Administrador"),
+            new AuthRole(UUID.randomUUID(), "ROLE_USER", "Usuario")
         );
     }
 }

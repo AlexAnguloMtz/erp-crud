@@ -18,6 +18,6 @@ public class State {
     @Id
     private String id;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String name;
 }

@@ -5,6 +5,7 @@ import com.aram.erpcrud.products.payload.ProductDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class SimpleProductService implements ProductService {
@@ -16,7 +17,7 @@ public class SimpleProductService implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> getProductsByIds(List<String> ids) {
+    public List<ProductDTO> getProductsByIds(List<UUID> ids) {
         return productsFacade.getProductsByIds(ids);
     }
 }

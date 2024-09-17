@@ -1,9 +1,8 @@
 package com.aram.erpcrud.movements.application;
 
 import com.aram.erpcrud.movements.domain.Movement;
-import com.aram.erpcrud.movements.domain.ProductQuantity;
+import com.aram.erpcrud.movements.domain.StockMovementProduct;
 import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.Instant;
@@ -51,7 +50,7 @@ public interface MovementSpecifications {
             if (productId == null) {
                 return criteriaBuilder.conjunction();
             }
-            Join<Movement, ProductQuantity> productQuantitiesJoin = root.join("productQuantities");
+            Join<Movement, StockMovementProduct> productQuantitiesJoin = root.join("productQuantities");
             return criteriaBuilder.equal(productQuantitiesJoin.get("productId"), productId);
         });
     }

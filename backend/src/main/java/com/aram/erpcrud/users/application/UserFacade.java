@@ -10,6 +10,8 @@ import com.aram.erpcrud.users.application.query.GetUsersQueryHandler;
 import com.aram.erpcrud.users.payload.*;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class UserFacade {
 
@@ -56,7 +58,7 @@ public class UserFacade {
         deleteUserByIdHandler.handle(id);
     }
 
-    public PersonalNameDTO getPersonalNameByAccountId(String accountId) {
+    public PersonalNameDTO getPersonalNameByAccountId(UUID accountId) {
         return getPersonalNameByAccountIdQueryHandler.handle(accountId);
     }
 }

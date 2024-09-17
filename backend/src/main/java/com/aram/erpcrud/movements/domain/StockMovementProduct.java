@@ -3,25 +3,27 @@ package com.aram.erpcrud.movements.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
-@Table(name = "product_quantity")
+@Table(name = "stock_movement_product")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
-public class ProductQuantity {
+public class StockMovementProduct {
 
     @Id
-    private String id;
+    private UUID id;
 
     @Column
-    private String productId;
+    private UUID productId;
 
     @Column
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "movement_id")
+    @JoinColumn(name = "stock_movement_id")
     private Movement movement;
 
 }

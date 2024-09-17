@@ -2,5 +2,5 @@ package com.aram.erpcrud.movements.payload;
 
 import com.aram.erpcrud.products.payload.ProductDTO;
 
-public record ProductQuantityDTO(ProductDTO product, Integer quantity) {
+public record StockMovementProductDTO(ProductDTO product, Integer quantity) {
 }

@@ -1,5 +1,6 @@
 package com.aram.erpcrud.data;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.core.env.Environment;

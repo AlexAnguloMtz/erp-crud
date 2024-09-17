@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class GetPersonalNameByAccountIdQueryHandler {
@@ -18,7 +19,7 @@ public class GetPersonalNameByAccountIdQueryHandler {
         this.personalDetailsRepository = personalDetailsRepository;
     }
 
-    public PersonalNameDTO handle(String accountId) {
+    public PersonalNameDTO handle(UUID accountId) {
         Optional<PersonalDetails> personalDetailsOptional = personalDetailsRepository.findByAccountId(accountId);
         if (personalDetailsOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -28,7 +29,7 @@ public class GetPersonalNameByAccountIdQueryHandler {
 
     public PersonalNameDTO toPersonalNameDTO(PersonalDetails personalDetails) {
         return new PersonalNameDTO(
-                personalDetails.getAccountId(),
+                personalDetails.getAccountId().toString(),
                 personalDetails.getName(),
                 personalDetails.getLastName()
         );

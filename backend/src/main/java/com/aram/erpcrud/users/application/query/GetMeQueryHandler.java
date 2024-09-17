@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class GetMeQueryHandler {
@@ -27,7 +28,7 @@ public class GetMeQueryHandler {
 
     public GetMeResponse handle(String email) {
         AccountPublicDetails account = authService.findAccountByEmail(email);
-        Optional<PersonalDetails> personalDetailsOptional = personalDetailsRepository.findByAccountId(account.id());
+        Optional<PersonalDetails> personalDetailsOptional = personalDetailsRepository.findByAccountId(UUID.fromString(account.id()));
         if (personalDetailsOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "could not find personal details for this account");
         }

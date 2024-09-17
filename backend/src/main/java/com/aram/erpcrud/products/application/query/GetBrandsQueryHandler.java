@@ -85,6 +85,6 @@ public class GetBrandsQueryHandler {
     }
 
     private BrandDTO toBrandDto(Brand brand) {
-        return new BrandDTO(brand.getId(), brand.getName());
+        return new BrandDTO(brand.getId().toString(), brand.getName());
     }
 }

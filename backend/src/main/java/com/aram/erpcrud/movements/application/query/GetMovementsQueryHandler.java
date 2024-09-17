@@ -4,15 +4,14 @@ import com.aram.erpcrud.common.PageResponse;
 import com.aram.erpcrud.common.SafePagination;
 import com.aram.erpcrud.movements.application.MovementSpecifications;
 import com.aram.erpcrud.movements.application.clients.ProductServiceClient;
-import com.aram.erpcrud.movements.application.clients.UsersServiceClient;
+import com.aram.erpcrud.movements.application.clients.PersonalDetailsServiceClient;
 import com.aram.erpcrud.movements.domain.Movement;
 import com.aram.erpcrud.movements.domain.MovementRepository;
 import com.aram.erpcrud.movements.domain.MovementType;
-import com.aram.erpcrud.movements.domain.ProductQuantity;
+import com.aram.erpcrud.movements.domain.StockMovementProduct;
 import com.aram.erpcrud.movements.payload.*;
 import com.aram.erpcrud.products.payload.ProductDTO;
 import com.aram.erpcrud.users.payload.PersonalNameDTO;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,10 +20,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
-@Slf4j
 @Component
 public class GetMovementsQueryHandler {
 
@@ -44,13 +43,13 @@ public class GetMovementsQueryHandler {
     }
 
     private final MovementRepository movementRepository;
-    private final UsersServiceClient usersServiceClient;
+    private final PersonalDetailsServiceClient usersServiceClient;
     private final ProductServiceClient productServiceClient;
 
     public GetMovementsQueryHandler(
             SafePagination safePagination,
             MovementRepository movementRepository,
-            UsersServiceClient usersServiceClient,
+            PersonalDetailsServiceClient usersServiceClient,
             ProductServiceClient productServiceClient
     ) {
         this.safePagination = safePagination;
@@ -60,7 +59,6 @@ public class GetMovementsQueryHandler {
     }
 
     public PageResponse<MovementDTO> handle(GetMovementsQuery query) {
-        log.error("handling query {}", query.toString());
         PageRequest pageRequest = getMovementPageRequest(query);
         Specification<Movement> movementSpecification = getMovementSpecification(query);
         Page<Movement> page = movementRepository.findAll(movementSpecification, pageRequest);
@@ -78,12 +76,12 @@ public class GetMovementsQueryHandler {
 
     private MovementDTO toMovementDto(Movement movement) {
         PersonalNameDTO responsibleName = usersServiceClient.getResponsible(movement.getResponsibleId());
-        List<String> productIds = getProductsIds(movement.getProductQuantities());
+        List<UUID> productIds = getProductsIds(movement.getStockMovementProducts());
         List<ProductDTO> products = productServiceClient.getProducts(productIds);
-        List<ProductQuantityDTO> productQuantities = assembleProductQuantities(products, movement.getProductQuantities());
+        List<StockMovementProductDTO> productQuantities = assembleStockMovementProductDtos(products, movement.getStockMovementProducts());
 
         return new MovementDTO(
-                movement.getId(),
+                movement.getId().toString(),
                 responsibleName,
                 toMovementTypeDto(movement.getMovementType()),
                 productQuantities,
@@ -117,30 +115,30 @@ public class GetMovementsQueryHandler {
         return MovementSort.TIMESTAMP_DESC;
     }
 
-    private List<String> getProductsIds(List<ProductQuantity> productQuantities) {
-        return productQuantities.stream().map(ProductQuantity::getProductId).toList();
+    private List<UUID> getProductsIds(List<StockMovementProduct> productQuantities) {
+        return productQuantities.stream().map(StockMovementProduct::getProductId).toList();
     }
 
-    private List<ProductQuantityDTO> assembleProductQuantities(
+    private List<StockMovementProductDTO> assembleStockMovementProductDtos(
             List<ProductDTO> products,
-            List<ProductQuantity> productQuantities
+            List<StockMovementProduct> stockMovementProducts
     ) {
-        return productQuantities.stream()
-                .map(productQuantity -> toProductQuantityDto(productQuantity, products))
+        return stockMovementProducts.stream()
+                .map(productQuantity -> toStockMovementProductDto(productQuantity, products))
                 .toList();
     }
 
-    private ProductQuantityDTO toProductQuantityDto(ProductQuantity productQuantity, List<ProductDTO> products) {
+    private StockMovementProductDTO toStockMovementProductDto(StockMovementProduct stockMovementProduct, List<ProductDTO> products) {
         ProductDTO product = products.stream()
-                .filter(aProduct -> aProduct.id().equals(productQuantity.getProductId()))
+                .filter(aProduct -> aProduct.id().equals(stockMovementProduct.getProductId().toString()))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(INTERNAL_SERVER_ERROR));
 
-        return new ProductQuantityDTO(product, productQuantity.getQuantity());
+        return new StockMovementProductDTO(product, stockMovementProduct.getQuantity());
     }
 
     private MovementTypeDTO toMovementTypeDto(MovementType movementType) {
-        return new MovementTypeDTO(movementType.getId(), movementType.getDescription());
+        return new MovementTypeDTO(movementType.getId().toString(), movementType.getDescription());
     }
 
 }

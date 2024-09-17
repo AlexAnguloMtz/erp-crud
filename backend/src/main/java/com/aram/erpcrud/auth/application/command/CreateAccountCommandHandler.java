@@ -39,7 +39,7 @@ public class CreateAccountCommandHandler {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
 
-        Optional<AuthRole> roleOptional =  authRoleRepository.findById(command.roleId());
+        Optional<AuthRole> roleOptional =  authRoleRepository.findById(UUID.fromString(command.roleId()));
         if (roleOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -47,7 +47,7 @@ public class CreateAccountCommandHandler {
         String encodedPassword = passwordEncoder.encode(command.password());
 
         AuthUser user = new AuthUser(
-            UUID.randomUUID().toString(),
+            UUID.randomUUID(),
             roleOptional.get(),
             command.email(),
             encodedPassword
@@ -55,6 +55,6 @@ public class CreateAccountCommandHandler {
 
         AuthUser authUser = authUserRepository.save(user);
 
-        return new AccountCreationResponse(authUser.getId());
+        return new AccountCreationResponse(authUser.getId().toString());
     }
 }

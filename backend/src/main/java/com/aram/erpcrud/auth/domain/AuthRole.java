@@ -3,6 +3,8 @@ package com.aram.erpcrud.auth.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
@@ -14,12 +16,12 @@ import lombok.*;
 public class AuthRole {
 
     @Id
-    private String id;
+    private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String canonicalName;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String name;
 
 }

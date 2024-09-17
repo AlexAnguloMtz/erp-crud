@@ -389,7 +389,7 @@ export class Users2Component {
     }
   }
 
-  mapSaveItemError(): (error: Error) => DisplayableError {
+  mapItemOperationError(): (error: Error) => DisplayableError {
     return (error: Error): DisplayableError => {
       if (error.name === 'UserExistsError') {
         return {

@@ -9,15 +9,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
-@Table(name = "movement_type")
+@Table(name = "stock_movement_type")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class MovementType {
 
     @Id
-    private String id;
+    private UUID id;
 
     @Column
     private String description;

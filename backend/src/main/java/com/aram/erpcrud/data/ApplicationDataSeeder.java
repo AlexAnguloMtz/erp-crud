@@ -1,7 +1,9 @@
 package com.aram.erpcrud.data;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 class ApplicationDataSeeder {
 
@@ -31,9 +33,20 @@ class ApplicationDataSeeder {
     }
 
     private void doRun() {
+        log.error("seeding states...");
         stateSeeder.seed();
+        log.error("states ready");
+
+        log.error("seeding roles...");
         rolesSeeder.seed();
+        log.error("roles ready");
+
+        log.error("seeding root user...");
         rootUserSeeder.seed();
+        log.error("root user ready");
+
+        log.error("seeding stock movement types...");
         movementTypeSeeder.seed();
+        log.error("stock movement types ready");
     }
 }

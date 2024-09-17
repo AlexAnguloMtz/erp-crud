@@ -5,9 +5,10 @@ import lombok.*;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Table(name = "movement")
+@Table(name = "stock_movement")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
@@ -15,15 +16,16 @@ import java.util.List;
 public class Movement {
 
     @Id
-    private String id;
+    private UUID id;
 
     @Column
-    private String responsibleId;
+    private UUID responsibleId;
 
     @OneToMany(mappedBy = "movement", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductQuantity> productQuantities;
+    private List<StockMovementProduct> stockMovementProducts;
 
     @ManyToOne
+    @JoinColumn(name = "stock_movement_type_id")
     private MovementType movementType;
 
     @Column

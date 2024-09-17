@@ -5,6 +5,7 @@ import com.aram.erpcrud.products.payload.ProductDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class ProductsFacade {
@@ -15,7 +16,7 @@ public class ProductsFacade {
         this.getProductsByIdsQueryHandler = getProductsByIdsQueryHandler;
     }
 
-    public List<ProductDTO> getProductsByIds(List<String> ids) {
+    public List<ProductDTO> getProductsByIds(List<UUID> ids) {
         return getProductsByIdsQueryHandler.handle(ids);
     }
 

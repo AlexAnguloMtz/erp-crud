@@ -49,10 +49,7 @@ public class RootUserSeeder {
         if (authUserRepository.count() == 0) {
             AuthUser rootUserAccount = authUserRepository.save(rootUserAccount());
 
-            PersonalDetails rootUserPersonalDetails = createRootUserPersonalDetails(
-                UUID.randomUUID().toString(),
-                rootUserAccount.getId()
-            );
+            PersonalDetails rootUserPersonalDetails = createRootUserPersonalDetails(rootUserAccount.getId());
 
             personalDetailsRepository.save(rootUserPersonalDetails);
         }
@@ -65,21 +62,21 @@ public class RootUserSeeder {
         }
 
         return new AuthUser(
-            UUID.randomUUID().toString(),
+            UUID.randomUUID(),
             superUserRoleOptional.get(),
             rootUserEmail,
             passwordEncoder.encode(rootUserPassword)
         );
     }
 
-    private PersonalDetails createRootUserPersonalDetails(String id, String accountId) {
+    private PersonalDetails createRootUserPersonalDetails(UUID accountId) {
         Optional<State> stateOptional = stateRepository.findById("SON");
         if (stateOptional.isEmpty()) {
             throw new RuntimeException("Could not find root user state");
         }
 
         UserAddress address = UserAddress.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UUID.randomUUID())
                 .stateId(stateOptional.get().getId())
                 .city("Hermosillo")
                 .district("Colonia")
@@ -89,7 +86,7 @@ public class RootUserSeeder {
                 .build();
 
         return PersonalDetails.builder()
-                .id(id)
+                .id(UUID.randomUUID())
                 .accountId(accountId)
                 .name("Usuario Raiz")
                 .lastName("Apellido")

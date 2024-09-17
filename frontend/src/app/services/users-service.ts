@@ -5,6 +5,7 @@ import { PaginatedRequest } from "../common/paginated-request";
 import { Role } from "./auth-service";
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
 import { ApiClient } from "./api-client";
+import { DataIntegrityError } from "../common/data-integrity-error";
 
 type User = {
     name: string
@@ -144,6 +145,13 @@ export class UsersService {
 
     deleteUserById(id: string): Observable<void> {
         const url = `${this.usersEndpoint}/${id}`;
-        return this.apiClient.delete<void>(url);
+        return this.apiClient.delete<void>(url).pipe(
+            catchError(error => {
+                if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.BadRequest) {
+                    return throwError(() => new DataIntegrityError('Data integrity error'));
+                }
+                return throwError(() => new Error('An unexpected error occurred.'));
+            })
+        );
     }
 }

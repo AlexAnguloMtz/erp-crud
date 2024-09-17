@@ -130,7 +130,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   // Functions
   @Input() createItemCreationForm: (formBuilder: FormBuilder) => FormGroup
   @Input() createItemUpdateForm: (formBuilder: FormBuilder) => FormGroup
-  @Input() mapSaveItemError: (error: Error) => DisplayableError
+  @Input() mapItemOperationError: (error: Error) => DisplayableError
   @Input() getItems: (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>>
   @Input() createItem: (formValues: CreationItemDto) => Observable<void>
   @Input() updateItem: (id: string, formValues: UpdateItemDto) => Observable<ItemUpdateResponse>
@@ -477,7 +477,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   }
 
   private handleItemOperationError(error: Error): void {
-    const err = this.mapSaveItemError(error);
+    const err: DisplayableError = this.mapItemOperationErrorOrDelegate(error);
     this.confirmationService.confirm({
       header: err.header,
       message: err.message,
@@ -486,6 +486,16 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
       acceptLabel: 'Cerrar',
       dismissableMask: true,
     });
+  }
+
+  private mapItemOperationErrorOrDelegate(error: Error): DisplayableError {
+    if (error.name === 'DataIntegrityError') {
+      return {
+        header: 'Integridad de datos',
+        message: 'Otros registros dependen de este, por lo cual no se puede eliminar.',
+      }
+    }
+    return this.mapItemOperationError(error);
   }
 
   private defaultPaginatedRequest(): PaginatedRequest {

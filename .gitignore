@@ -1,1 +1,2 @@
-.env
+*.env
+clean-docker-compose.sh

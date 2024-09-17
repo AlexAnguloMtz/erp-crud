@@ -4,6 +4,8 @@ import com.aram.erpcrud.auth.domain.AuthUserRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Component
 public class DeleteAccountByIdCommandHandler {
 
@@ -15,6 +17,6 @@ public class DeleteAccountByIdCommandHandler {
 
     @Transactional
     public void handle(String id) {
-        this.authUserRepository.deleteById(id);
+        this.authUserRepository.deleteById(UUID.fromString(id));
     }
 }

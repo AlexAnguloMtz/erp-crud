@@ -26,7 +26,7 @@ public class GetAccountByEmailQueryHandler {
 
     private AccountPublicDetails toAccountPublicDetails(AuthUser authUser) {
         return new AccountPublicDetails(
-            authUser.getId(),
+            authUser.getId().toString(),
             authUser.getEmail(),
             toRolePublicDetails(authUser.getRole())
         );
@@ -34,7 +34,7 @@ public class GetAccountByEmailQueryHandler {
 
     private RolePublicDetails toRolePublicDetails(AuthRole role) {
         return new RolePublicDetails(
-            role.getId(),
+            role.getId().toString(),
             role.getName()
         );
     }

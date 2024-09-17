@@ -9,7 +9,7 @@ public record MovementDTO(
         String id,
         PersonalNameDTO responsible,
         MovementTypeDTO movementType,
-        List<ProductQuantityDTO> productQuantities,
+        List<StockMovementProductDTO> productQuantities,
         String observations,
         Instant timestamp
 ) {

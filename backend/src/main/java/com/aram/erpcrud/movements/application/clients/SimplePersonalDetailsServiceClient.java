@@ -4,8 +4,10 @@ import com.aram.erpcrud.users.UsersService;
 import com.aram.erpcrud.users.payload.PersonalNameDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
-class SimplePersonalDetailsServiceClient implements UsersServiceClient {
+class SimplePersonalDetailsServiceClient implements PersonalDetailsServiceClient {
 
     private final UsersService usersService;
 
@@ -14,7 +16,7 @@ class SimplePersonalDetailsServiceClient implements UsersServiceClient {
     }
 
     @Override
-    public PersonalNameDTO getResponsible(String responsibleId) {
+    public PersonalNameDTO getResponsible(UUID responsibleId) {
         return usersService.getPersonalNameByAccountId(responsibleId);
     }
 }

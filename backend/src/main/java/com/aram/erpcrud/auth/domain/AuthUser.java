@@ -3,6 +3,8 @@ package com.aram.erpcrud.auth.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
@@ -14,16 +16,16 @@ import lombok.*;
 public class AuthUser {
 
     @Id
-    private String id;
+    private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "auth_role_id")
     private AuthRole role;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
 }

@@ -8,6 +8,7 @@ import com.aram.erpcrud.auth.payload.RolePublicDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class GetAccountByIdQueryHandler {
@@ -19,20 +20,20 @@ public class GetAccountByIdQueryHandler {
     }
 
     public Optional<AccountPublicDetails> handle(String id) {
-        Optional<AuthUser> authUserOptional = authUserRepository.findById(id);
+        Optional<AuthUser> authUserOptional = authUserRepository.findById(UUID.fromString(id));
         return authUserOptional.map(this::toAccountPublicDetails);
     }
 
     private AccountPublicDetails toAccountPublicDetails(AuthUser authUser) {
         return new AccountPublicDetails(
-            authUser.getId(),
+            authUser.getId().toString(),
             authUser.getEmail(),
             toRolePublicDetails(authUser.getRole())
         );
     }
 
     private RolePublicDetails toRolePublicDetails(AuthRole authRole) {
-        return new RolePublicDetails(authRole.getId(), authRole.getName());
+        return new RolePublicDetails(authRole.getId().toString(), authRole.getName());
     }
 
 }

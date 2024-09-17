@@ -3,6 +3,8 @@ package com.aram.erpcrud.users.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "user_address")
 @Builder
@@ -13,7 +15,7 @@ import lombok.*;
 public class UserAddress {
 
     @Id
-    private String id;
+    private UUID id;
 
     @Column
     private String stateId;

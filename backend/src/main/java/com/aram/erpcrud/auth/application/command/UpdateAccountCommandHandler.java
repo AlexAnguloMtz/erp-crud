@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class UpdateAccountCommandHandler {
@@ -33,7 +34,7 @@ public class UpdateAccountCommandHandler {
 
     @Transactional
     public UpdateAccountResponse handle(UpdateAccountCommand command) {
-        Optional<AuthUser> authUserOptional = authUserRepository.findById(command.id());
+        Optional<AuthUser> authUserOptional = authUserRepository.findById(UUID.fromString(command.id()));
         if (authUserOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -47,7 +48,7 @@ public class UpdateAccountCommandHandler {
 
         boolean changedSelf = command.requestingUserEmail().equals(authUserOptional.get().getEmail());
 
-        Optional<AuthRole> authRoleOptional = authRoleRepository.findById(command.roleId());
+        Optional<AuthRole> authRoleOptional = authRoleRepository.findById(UUID.fromString(command.roleId()));
         if (authRoleOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -63,7 +64,7 @@ public class UpdateAccountCommandHandler {
         }
 
         return new UpdateAccountResponse(
-                savedAuthUser.getId(),
+                savedAuthUser.getId().toString(),
                 savedAuthUser.getEmail(),
                 toRolePublicDetails(savedAuthUser.getRole()),
                 token
@@ -72,7 +73,7 @@ public class UpdateAccountCommandHandler {
 
     private RolePublicDetails toRolePublicDetails(AuthRole authRole) {
         return new RolePublicDetails(
-                authRole.getId(),
+                authRole.getId().toString(),
                 authRole.getName()
         );
     }

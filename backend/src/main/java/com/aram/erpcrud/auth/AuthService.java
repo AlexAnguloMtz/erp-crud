@@ -5,12 +5,13 @@ import com.aram.erpcrud.auth.payload.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 public interface AuthService {
 
     AccountCreationResponse createAccount(CreateAccountCommand command);
 
-    List<AccountPublicDetails> findAccounts(Set<String> ids);
+    List<AccountPublicDetails> findAccounts(Set<UUID> ids);
 
     AccountPublicDetails findAccountByEmail(String email);
 

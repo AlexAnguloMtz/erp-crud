@@ -63,7 +63,7 @@ public class GetUsersQueryHandler {
         Page<PersonalDetails> personalDetailsPage = findPage(query);
 
         // Find accounts
-        Set<String> accountIds = getAccountIds(personalDetailsPage.getContent());
+        Set<UUID> accountIds = getAccountIds(personalDetailsPage.getContent());
         List<AccountPublicDetails> accounts = authService.findAccounts(accountIds);
 
         // Find states
@@ -114,7 +114,7 @@ public class GetUsersQueryHandler {
         return personalDetailsRepository.findAll(specification, pageable);
     }
 
-    private Set<String> getAccountIds(List<PersonalDetails> personalDetails) {
+    private Set<UUID> getAccountIds(List<PersonalDetails> personalDetails) {
         return personalDetails.stream()
                 .map(PersonalDetails::getAccountId)
                 .collect(Collectors.toSet());
@@ -154,7 +154,7 @@ public class GetUsersQueryHandler {
             PersonalDetails personalDetails
     ) {
         return accounts.stream()
-            .filter(x -> x.id().equals(personalDetails.getAccountId()))
+            .filter(x -> x.id().equals(personalDetails.getAccountId().toString()))
             .findFirst();
     }
 
@@ -176,7 +176,7 @@ public class GetUsersQueryHandler {
 
     private AddressDTO toAddressDto(UserAddress address, StateDTO stateDto) {
         return new AddressDTO(
-                address.getId(),
+                address.getId().toString(),
                 stateDto,
                 address.getCity(),
                 address.getDistrict(),

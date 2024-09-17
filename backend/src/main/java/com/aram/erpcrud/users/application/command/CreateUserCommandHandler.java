@@ -32,13 +32,13 @@ public class CreateUserCommandHandler {
         CreateAccountCommand createAccountCommand = new CreateAccountCommand(command.roleId(), command.email(), command.password());
         AccountCreationResponse accountCreationResponse = authService.createAccount(createAccountCommand);
         StateDTO stateDto = locationsService.findStateById(command.state());
-        PersonalDetails personalDetails = toPersonalDetails(accountCreationResponse.accountId(), command, stateDto.id());
+        PersonalDetails personalDetails = toPersonalDetails(UUID.fromString(accountCreationResponse.accountId()), command, stateDto.id());
         personalDetailsRepository.save(personalDetails);
     }
 
-    private PersonalDetails toPersonalDetails(String accountId, CreateUserCommand command, String stateId) {
+    private PersonalDetails toPersonalDetails(UUID accountId, CreateUserCommand command, String stateId) {
         return PersonalDetails.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UUID.randomUUID())
                 .accountId(accountId)
                 .name(command.name())
                 .lastName(command.lastName())
@@ -49,7 +49,7 @@ public class CreateUserCommandHandler {
 
     private UserAddress makeAddress(CreateUserCommand command, String stateId) {
         return UserAddress.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UUID.randomUUID())
                 .stateId(stateId)
                 .city(command.city())
                 .district(command.district())

@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "brand")
 @Getter
@@ -15,7 +17,7 @@ import lombok.*;
 public class Brand {
 
     @Id
-    private String id;
+    private UUID id;
 
     @Column
     private String name;

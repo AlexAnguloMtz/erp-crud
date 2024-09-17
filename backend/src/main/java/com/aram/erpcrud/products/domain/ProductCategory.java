@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "product_category")
 @Getter
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class ProductCategory {
 
     @Id
-    private String id;
+    private UUID id;
 
     @Column
     private String name;

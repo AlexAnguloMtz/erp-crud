@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -63,37 +64,51 @@ class TestDataSeeder {
 
     public void seed() throws Exception {
         List<AuthUser> authUsers = authUserRepository.saveAll(authUsers());
-        List<String> accountIds = authUsers.stream().map(AuthUser::getId).toList();
+        List<UUID> accountIds = authUsers.stream().map(AuthUser::getId).toList();
         personalDetailsRepository.saveAll(personalDetails(accountIds));
 
         List<Brand> brands = brandRepository.saveAll(brands());
         List<ProductCategory> categories = productCategoryRepository.saveAll(productCategories());
 
-        Map<String, Brand> brandMap = brands.stream().collect(Collectors.toMap(Brand::getId, Function.identity()));
-        Map<String, ProductCategory> categoryMap = categories.stream().collect(Collectors.toMap(ProductCategory::getId, Function.identity()));
+        Map<String, Brand> brandMap = brands.stream().collect(Collectors.toMap(Brand::getName, Function.identity()));
+        Map<String, ProductCategory> categoryMap = categories.stream().collect(Collectors.toMap(ProductCategory::getName, Function.identity()));
 
         List<Product> products = products(brandMap, categoryMap);
         productRepository.saveAll(products);
 
-        movementRepository.saveAll(movements());
+        movementRepository.saveAll(movements(accountIds));
     }
 
     private List<AuthUser> authUsers() {
         List<AuthRole> roles = authRoleRepository.findAll();
-
-        return IntStream.range(0, 100)
-                .mapToObj(i -> new AuthUser(String.valueOf(i), pickRandom(roles), faker.internet().emailAddress(), passwordEncoder.encode(faker.internet().password())))
+        Set<String> emails = uniqueElements(100, () -> faker.internet().emailAddress());
+        return emails.stream()
+                .map(email -> new AuthUser(
+                        UUID.randomUUID(),
+                        pickRandom(roles),
+                        email,
+                        passwordEncoder.encode(faker.internet().password())))
                 .toList();
     }
 
-    private Iterable<PersonalDetails> personalDetails(List<String> accountIds) {
+    private <T> Set<T> uniqueElements(int amount, Supplier<T> supplier) {
+        Set<T> elements = new HashSet<>();
+        while (elements.size() < amount) {
+            T nextElement = supplier.get();
+            elements.add(nextElement);
+        }
+        return elements;
+    }
+
+    private Iterable<PersonalDetails> personalDetails(List<UUID> accountIds) {
         List<State> states = stateRepository.findAll();
+
         return accountIds.stream()
                 .map(accountId -> {
                     State state = pickRandom(states);
 
                     UserAddress address = UserAddress.builder()
-                            .id(UUID.randomUUID().toString())
+                            .id(UUID.randomUUID())
                             .stateId(state.getId())
                             .city(pickRandom(stateCitiesMap().get(state.getId())))
                             .district(faker.address().secondaryAddress())
@@ -103,11 +118,11 @@ class TestDataSeeder {
                             .build();
 
                     return PersonalDetails.builder()
-                            .id(UUID.randomUUID().toString())
+                            .id(UUID.randomUUID())
                             .accountId(accountId)
                             .name(faker.name().firstName())
                             .lastName(faker.name().lastName())
-                            .phone(digitsOnly(faker.phoneNumber().phoneNumber()))
+                            .phone(randomDigitsString(10))
                             .address(address)
                             .build();
                     })
@@ -116,219 +131,214 @@ class TestDataSeeder {
 
     private Iterable<Brand> brands() {
         return List.of(
-                new Brand("1", "Bimbo"),
-                new Brand("2", "Lala"),
-                new Brand("3", "Maruchan"),
-                new Brand("4", "Sabritas"),
-                new Brand("5", "Herdez"),
-                new Brand("6", "Ricolino"),
-                new Brand("7", "La Costeña"),
-                new Brand("8", "Del Fuerte"),
-                new Brand("9", "Maseca"),
-                new Brand("10", "Tortillas La Comadre"),
-                new Brand("11", "Bonafont"),
-                new Brand("12", "Jumex"),
-                new Brand("13", "Frescolita"),
-                new Brand("14", "Gansito"),
-                new Brand("15", "Nabisco"),
-                new Brand("16", "Peñafiel"),
-                new Brand("17", "Zucaritas"),
-                new Brand("18", "Kellogg's"),
-                new Brand("19", "San Luis"),
-                new Brand("20", "Alpura"),
-                new Brand("21", "Diconsa"),
-                new Brand("22", "Productos Rivas"),
-                new Brand("23", "La Moderna"),
-                new Brand("24", "El Yucateco"),
-                new Brand("25", "Goya"),
-                new Brand("26", "Bachoco"),
-                new Brand("27", "Goya"),
-                new Brand("28", "El Costeño"),
-                new Brand("29", "Minsa"),
-                new Brand("30", "Lomito"),
-                new Brand("32", "Kirkland"),
-                new Brand("33", "Clorox"),
-                new Brand("34", "Salvo"),
-                new Brand("35", "Lysol"),
-                new Brand("36", "Huggies"),
-                new Brand("37", "Pampers")
+                new Brand(UUID.randomUUID(), "Bimbo"),
+                new Brand(UUID.randomUUID(), "Lala"),
+                new Brand(UUID.randomUUID(), "Maruchan"),
+                new Brand(UUID.randomUUID(), "Sabritas"),
+                new Brand(UUID.randomUUID(), "Herdez"),
+                new Brand(UUID.randomUUID(), "Ricolino"),
+                new Brand(UUID.randomUUID(), "La Costeña"),
+                new Brand(UUID.randomUUID(), "Del Fuerte"),
+                new Brand(UUID.randomUUID(), "Maseca"),
+                new Brand(UUID.randomUUID(), "Tortillas La Comadre"),
+                new Brand(UUID.randomUUID(), "Bonafont"),
+                new Brand(UUID.randomUUID(), "Jumex"),
+                new Brand(UUID.randomUUID(), "Frescolita"),
+                new Brand(UUID.randomUUID(), "Peñafiel"),
+                new Brand(UUID.randomUUID(), "Zucaritas"),
+                new Brand(UUID.randomUUID(), "Kellogg's"),
+                new Brand(UUID.randomUUID(), "San Luis"),
+                new Brand(UUID.randomUUID(), "Alpura"),
+                new Brand(UUID.randomUUID(), "Diconsa"),
+                new Brand(UUID.randomUUID(), "La Moderna"),
+                new Brand(UUID.randomUUID(), "El Yucateco"),
+                new Brand(UUID.randomUUID(), "Bachoco"),
+                new Brand(UUID.randomUUID(), "Goya"),
+                new Brand(UUID.randomUUID(), "El Costeño"),
+                new Brand(UUID.randomUUID(), "Lomito"),
+                new Brand(UUID.randomUUID(), "Kirkland"),
+                new Brand(UUID.randomUUID(), "Clorox"),
+                new Brand(UUID.randomUUID(), "Salvo"),
+                new Brand(UUID.randomUUID(), "Lysol"),
+                new Brand(UUID.randomUUID(), "Huggies"),
+                new Brand(UUID.randomUUID(), "Pampers")
         );
     }
 
     private List<ProductCategory> productCategories() {
         return List.of(
-                new ProductCategory("1", "Panadería"),
-                new ProductCategory("2", "Lácteos"),
-                new ProductCategory("3", "Carnes y pescado"),
-                new ProductCategory("4", "Frutas y verduras"),
-                new ProductCategory("5", "Abarrotes secos"),
-                new ProductCategory("6", "Conservas y salsas"),
-                new ProductCategory("7", "Bebidas"),
-                new ProductCategory("8", "Snacks y golosinas"),
-                new ProductCategory("9", "Limpieza"),
-                new ProductCategory("10", "Cuidado personal"),
-                new ProductCategory("11", "Para bebés"),
-                new ProductCategory("12", "Especias y condimentos")
+                new ProductCategory(UUID.randomUUID(), "Panadería"),
+                new ProductCategory(UUID.randomUUID(), "Lácteos"),
+                new ProductCategory(UUID.randomUUID(), "Carnes y pescado"),
+                new ProductCategory(UUID.randomUUID(), "Frutas y verduras"),
+                new ProductCategory(UUID.randomUUID(), "Abarrotes secos"),
+                new ProductCategory(UUID.randomUUID(), "Conservas y salsas"),
+                new ProductCategory(UUID.randomUUID(), "Bebidas"),
+                new ProductCategory(UUID.randomUUID(), "Snacks y golosinas"),
+                new ProductCategory(UUID.randomUUID(), "Limpieza"),
+                new ProductCategory(UUID.randomUUID(), "Cuidado personal"),
+                new ProductCategory(UUID.randomUUID(), "Para bebés"),
+                new ProductCategory(UUID.randomUUID(), "Especias y condimentos")
         );
     }
 
     private List<Product> products(Map<String, Brand> brandMap, Map<String, ProductCategory> categoryMap) {
         return List.of(
                 // Panadería
-                new Product("1", "Pan de Caja", brandMap.get("1"), categoryMap.get("1")),
-                new Product("2", "Tortillas", brandMap.get("10"), categoryMap.get("1")),
-                new Product("3", "Pan Integral", brandMap.get("1"), categoryMap.get("1")),
-                new Product("4", "Pan de Hot Dog", brandMap.get("1"), categoryMap.get("1")),
-                new Product("5", "Baguette", brandMap.get("1"), categoryMap.get("1")),
+                new Product(UUID.randomUUID(), "Pan de Caja", brandMap.get("Bimbo"), categoryMap.get("Panadería")),
+                new Product(UUID.randomUUID(), "Tortillas", brandMap.get("Tortillas La Comadre"), categoryMap.get("Panadería")),
+                new Product(UUID.randomUUID(), "Pan Integral", brandMap.get("Bimbo"), categoryMap.get("Panadería")),
+                new Product(UUID.randomUUID(), "Pan de Hot Dog", brandMap.get("Bimbo"), categoryMap.get("Panadería")),
+                new Product(UUID.randomUUID(), "Baguette", brandMap.get("Bimbo"), categoryMap.get("Panadería")),
 
                 // Lácteos
-                new Product("6", "Leche 1L", brandMap.get("2"), categoryMap.get("2")),
-                new Product("7", "Yogurt Natural 1L", brandMap.get("20"), categoryMap.get("2")),
-                new Product("8", "Crema 500 ml", brandMap.get("2"), categoryMap.get("2")),
-                new Product("9", "Queso Oaxaca 345 grs", brandMap.get("20"), categoryMap.get("2")),
-                new Product("10", "Leche Condensada 250 ml", brandMap.get("21"), categoryMap.get("2")),
+                new Product(UUID.randomUUID(), "Leche 1L", brandMap.get("Lala"), categoryMap.get("Lácteos")),
+                new Product(UUID.randomUUID(), "Yogurt Natural 1L", brandMap.get("Alpura"), categoryMap.get("Lácteos")),
+                new Product(UUID.randomUUID(), "Crema 500 ml", brandMap.get("Lala"), categoryMap.get("Lácteos")),
+                new Product(UUID.randomUUID(), "Queso Oaxaca 345 grs", brandMap.get("Alpura"), categoryMap.get("Lácteos")),
+                new Product(UUID.randomUUID(), "Leche Condensada 250 ml", brandMap.get("Diconsa"), categoryMap.get("Lácteos")),
 
                 // Carnes y pescado
-                new Product("11", "Pechuga de Pollo", brandMap.get("26"), categoryMap.get("3")),
-                new Product("12", "Filete de Tilapia", brandMap.get("19"), categoryMap.get("3")),
-                new Product("13", "Costillas de Cerdo", brandMap.get("26"), categoryMap.get("3")),
-                new Product("14", "Carne Molida", brandMap.get("19"), categoryMap.get("3")),
-                new Product("15", "Salmón Fresco", brandMap.get("27"), categoryMap.get("3")),
+                new Product(UUID.randomUUID(), "Pechuga de Pollo", brandMap.get("Bachoco"), categoryMap.get("Carnes y pescado")),
+                new Product(UUID.randomUUID(), "Filete de Tilapia", brandMap.get("San Luis"), categoryMap.get("Carnes y pescado")),
+                new Product(UUID.randomUUID(), "Costillas de Cerdo", brandMap.get("Bachoco"), categoryMap.get("Carnes y pescado")),
+                new Product(UUID.randomUUID(), "Carne Molida", brandMap.get("San Luis"), categoryMap.get("Carnes y pescado")),
+                new Product(UUID.randomUUID(), "Salmón Fresco", brandMap.get("Goya"), categoryMap.get("Carnes y pescado")),
 
                 // Frutas y verduras
-                new Product("16", "Manzanas Nacionales", brandMap.get("30"), categoryMap.get("4")),
-                new Product("17", "Zanahorias Nacionales", brandMap.get("30"), categoryMap.get("4")),
-                new Product("18", "Plátanos", brandMap.get("30"), categoryMap.get("4")),
-                new Product("19", "Tomates Nacionales", brandMap.get("30"), categoryMap.get("4")),
-                new Product("20", "Papas", brandMap.get("30"), categoryMap.get("4")),
+                new Product(UUID.randomUUID(), "Manzanas Nacionales", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
+                new Product(UUID.randomUUID(), "Zanahorias Nacionales", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
+                new Product(UUID.randomUUID(), "Plátanos", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
+                new Product(UUID.randomUUID(), "Tomates Nacionales", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
+                new Product(UUID.randomUUID(), "Papas", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
 
                 // Abarrotes secos
-                new Product("21", "Arroz 1 KG", brandMap.get("28"), categoryMap.get("5")),
-                new Product("22", "Harina de Maíz 1KG", brandMap.get("9"), categoryMap.get("5")),
-                new Product("23", "Cereal 850 gr", brandMap.get("17"), categoryMap.get("5")),
-                new Product("24", "Pasta 150 gr", brandMap.get("23"), categoryMap.get("5")),
-                new Product("25", "Sal de Mesa 200 gr", brandMap.get("7"), categoryMap.get("5")),
+                new Product(UUID.randomUUID(), "Arroz 1 KG", brandMap.get("El Costeño"), categoryMap.get("Abarrotes secos")),
+                new Product(UUID.randomUUID(), "Harina de Maíz 1KG", brandMap.get("Maseca"), categoryMap.get("Abarrotes secos")),
+                new Product(UUID.randomUUID(), "Cereal 850 gr", brandMap.get("Zucaritas"), categoryMap.get("Abarrotes secos")),
+                new Product(UUID.randomUUID(), "Pasta 150 gr", brandMap.get("La Moderna"), categoryMap.get("Abarrotes secos")),
+                new Product(UUID.randomUUID(), "Sal de Mesa 200 gr", brandMap.get("La Costeña"), categoryMap.get("Abarrotes secos")),
 
                 // Conservas y salsas
-                new Product("26", "Salsa Verde", brandMap.get("5"), categoryMap.get("6")),
-                new Product("27", "Jugo de Tomate 175 GR", brandMap.get("8"), categoryMap.get("6")),
-                new Product("28", "Chiles en Vinagre", brandMap.get("7"), categoryMap.get("6")),
-                new Product("29", "Frijoles 1 KG", brandMap.get("7"), categoryMap.get("6")),
-                new Product("30", "Salsa Taquera", brandMap.get("24"), categoryMap.get("6")),
+                new Product(UUID.randomUUID(), "Salsa Verde", brandMap.get("Herdez"), categoryMap.get("Conservas y salsas")),
+                new Product(UUID.randomUUID(), "Jugo de Tomate 175 GR", brandMap.get("Del Fuerte"), categoryMap.get("Conservas y salsas")),
+                new Product(UUID.randomUUID(), "Chiles en Vinagre", brandMap.get("La Costeña"), categoryMap.get("Conservas y salsas")),
+                new Product(UUID.randomUUID(), "Frijoles 1 KG", brandMap.get("La Costeña"), categoryMap.get("Conservas y salsas")),
+                new Product(UUID.randomUUID(), "Salsa Taquera", brandMap.get("El Yucateco"), categoryMap.get("Conservas y salsas")),
 
                 // Bebidas
-                new Product("31", "Agua 1L", brandMap.get("11"), categoryMap.get("7")),
-                new Product("32", "Jugo de Mango", brandMap.get("12"), categoryMap.get("7")),
-                new Product("33", "Refresco", brandMap.get("13"), categoryMap.get("7")),
-                new Product("34", "Cerveza 355 ml", brandMap.get("27"), categoryMap.get("7")),
-                new Product("35", "Té", brandMap.get("16"), categoryMap.get("7")),
+                new Product(UUID.randomUUID(), "Agua 1L", brandMap.get("Bonafont"), categoryMap.get("Bebidas")),
+                new Product(UUID.randomUUID(), "Jugo de Mango", brandMap.get("Jumex"), categoryMap.get("Bebidas")),
+                new Product(UUID.randomUUID(), "Refresco", brandMap.get("Frescolita"), categoryMap.get("Bebidas")),
+                new Product(UUID.randomUUID(), "Cerveza 355 ml", brandMap.get("Goya"), categoryMap.get("Bebidas")),
+                new Product(UUID.randomUUID(), "Té", brandMap.get("Peñafiel"), categoryMap.get("Bebidas")),
 
                 // Snacks y golosinas
-                new Product("36", "Sabritas", brandMap.get("4"), categoryMap.get("8")),
-                new Product("37", "Gansito", brandMap.get("6"), categoryMap.get("8")),
-                new Product("38", "Chocorroles", brandMap.get("6"), categoryMap.get("8")),
-                new Product("39", "Palomitas de Maíz", brandMap.get("4"), categoryMap.get("8")),
-                new Product("40", "Tostitos", brandMap.get("4"), categoryMap.get("8")),
+                new Product(UUID.randomUUID(), "Sabritas", brandMap.get("Sabritas"), categoryMap.get("Snacks y golosinas")),
+                new Product(UUID.randomUUID(), "Gansito", brandMap.get("Ricolino"), categoryMap.get("Snacks y golosinas")),
+                new Product(UUID.randomUUID(), "Chocorroles", brandMap.get("Ricolino"), categoryMap.get("Snacks y golosinas")),
+                new Product(UUID.randomUUID(), "Palomitas de Maíz", brandMap.get("Sabritas"), categoryMap.get("Snacks y golosinas")),
+                new Product(UUID.randomUUID(), "Tostitos", brandMap.get("Sabritas"), categoryMap.get("Snacks y golosinas")),
 
                 // Limpieza
-                new Product("41", "Jabón 1L", brandMap.get("30"), categoryMap.get("9")),
-                new Product("42", "Mr. Músculo 1L", brandMap.get("30"), categoryMap.get("9")),
-                new Product("43", "Suavizante 1L", brandMap.get("33"), categoryMap.get("9")),
-                new Product("44", "Cloro 1L", brandMap.get("35"), categoryMap.get("9")),
-                new Product("45", "Jabón Trastes", brandMap.get("34"), categoryMap.get("9")),
+                new Product(UUID.randomUUID(), "Jabón 1L", brandMap.get("Lomito"), categoryMap.get("Limpieza")),
+                new Product(UUID.randomUUID(), "Mr. Músculo 1L", brandMap.get("Lomito"), categoryMap.get("Limpieza")),
+                new Product(UUID.randomUUID(), "Suavizante 1L", brandMap.get("Clorox"), categoryMap.get("Limpieza")),
+                new Product(UUID.randomUUID(), "Cloro 1L", brandMap.get("Lysol"), categoryMap.get("Limpieza")),
+                new Product(UUID.randomUUID(), "Jabón Trastes", brandMap.get("Clorox"), categoryMap.get("Limpieza")),
 
                 // Cuidado personal
-                new Product("46", "Shampoo", brandMap.get("32"), categoryMap.get("10")),
-                new Product("47", "Acondicionador", brandMap.get("32"), categoryMap.get("10")),
-                new Product("48", "Jabón de Baño", brandMap.get("32"), categoryMap.get("10")),
-                new Product("49", "Pasta Dental", brandMap.get("32"), categoryMap.get("10")),
+                new Product(UUID.randomUUID(), "Shampoo", brandMap.get("Kirkland"), categoryMap.get("Cuidado personal")),
+                new Product(UUID.randomUUID(), "Acondicionador", brandMap.get("Kirkland"), categoryMap.get("Cuidado personal")),
+                new Product(UUID.randomUUID(), "Jabón de Baño", brandMap.get("Kirkland"), categoryMap.get("Cuidado personal")),
+                new Product(UUID.randomUUID(), "Pasta Dental", brandMap.get("Kirkland"), categoryMap.get("Cuidado personal")),
 
                 // Para bebés
-                new Product("50", "Pañales Talla M", brandMap.get("36"), categoryMap.get("11")),
-                new Product("51", "Leche en Polvo", brandMap.get("37"), categoryMap.get("11")),
-                new Product("52", "Toallitas Húmedas", brandMap.get("37"), categoryMap.get("11")),
-                new Product("53", "Crema para Bebé", brandMap.get("36"), categoryMap.get("11")),
+                new Product(UUID.randomUUID(), "Pañales Talla M", brandMap.get("Huggies"), categoryMap.get("Para bebés")),
+                new Product(UUID.randomUUID(), "Leche en Polvo", brandMap.get("Pampers"), categoryMap.get("Para bebés")),
+                new Product(UUID.randomUUID(), "Toallitas Húmedas", brandMap.get("Pampers"), categoryMap.get("Para bebés")),
+                new Product(UUID.randomUUID(), "Crema para Bebé", brandMap.get("Huggies"), categoryMap.get("Para bebés")),
 
                 // Especias y condimentos
-                new Product("54", "Sal de Ajo", brandMap.get("7"), categoryMap.get("12")),
-                new Product("55", "Pimienta Negra", brandMap.get("7"), categoryMap.get("12")),
-                new Product("56", "Comino", brandMap.get("7"), categoryMap.get("12")),
-                new Product("57", "Pimentón", brandMap.get("7"), categoryMap.get("12")),
-                new Product("58", "Orégano", brandMap.get("7"), categoryMap.get("12")),
+                new Product(UUID.randomUUID(), "Sal de Ajo", brandMap.get("La Costeña"), categoryMap.get("Especias y condimentos")),
+                new Product(UUID.randomUUID(), "Pimienta Negra", brandMap.get("La Costeña"), categoryMap.get("Especias y condimentos")),
+                new Product(UUID.randomUUID(), "Comino", brandMap.get("La Costeña"), categoryMap.get("Especias y condimentos")),
+                new Product(UUID.randomUUID(), "Pimentón", brandMap.get("La Costeña"), categoryMap.get("Especias y condimentos")),
+                new Product(UUID.randomUUID(), "Orégano", brandMap.get("La Costeña"), categoryMap.get("Especias y condimentos")),
 
                 // Panadería (more)
-                new Product("59", "Pan de Molde", brandMap.get("1"), categoryMap.get("1")),
-                new Product("60", "Panecillos", brandMap.get("1"), categoryMap.get("1")),
-                new Product("61", "Pan de Hot Dog Integral", brandMap.get("1"), categoryMap.get("1")),
+                new Product(UUID.randomUUID(), "Pan de Molde", brandMap.get("Bimbo"), categoryMap.get("Panadería")),
+                new Product(UUID.randomUUID(), "Panecillos", brandMap.get("Bimbo"), categoryMap.get("Panadería")),
+                new Product(UUID.randomUUID(), "Pan de Hot Dog Integral", brandMap.get("Bimbo"), categoryMap.get("Panadería")),
 
                 // Lácteos (more)
-                new Product("62", "Leche 500 ml", brandMap.get("2"), categoryMap.get("2")),
-                new Product("63", "Yogurt de Frutas 1L", brandMap.get("20"), categoryMap.get("2")),
-                new Product("64", "Mantequilla 200 grs", brandMap.get("21"), categoryMap.get("2")),
-                new Product("65", "Queso Fresco 250 grs", brandMap.get("21"), categoryMap.get("2")),
+                new Product(UUID.randomUUID(), "Leche 500 ml", brandMap.get("Lala"), categoryMap.get("Lácteos")),
+                new Product(UUID.randomUUID(), "Yogurt de Frutas 1L", brandMap.get("Alpura"), categoryMap.get("Lácteos")),
+                new Product(UUID.randomUUID(), "Mantequilla 200 grs", brandMap.get("Diconsa"), categoryMap.get("Lácteos")),
+                new Product(UUID.randomUUID(), "Queso Fresco 250 grs", brandMap.get("Diconsa"), categoryMap.get("Lácteos")),
 
                 // Carnes y pescado (more)
-                new Product("66", "Pechuga de Pavo", brandMap.get("26"), categoryMap.get("3")),
-                new Product("67", "Filete de Merluza", brandMap.get("19"), categoryMap.get("3")),
-                new Product("68", "Chuletas de Cerdo", brandMap.get("26"), categoryMap.get("3")),
-                new Product("69", "Carne de Res para Asar", brandMap.get("19"), categoryMap.get("3")),
-                new Product("70", "Tacos de Pescado", brandMap.get("27"), categoryMap.get("3")),
+                new Product(UUID.randomUUID(), "Pechuga de Pavo", brandMap.get("Bachoco"), categoryMap.get("Carnes y pescado")),
+                new Product(UUID.randomUUID(), "Filete de Merluza", brandMap.get("San Luis"), categoryMap.get("Carnes y pescado")),
+                new Product(UUID.randomUUID(), "Chuletas de Cerdo", brandMap.get("Bachoco"), categoryMap.get("Carnes y pescado")),
+                new Product(UUID.randomUUID(), "Carne de Res para Asar", brandMap.get("San Luis"), categoryMap.get("Carnes y pescado")),
+                new Product(UUID.randomUUID(), "Tacos de Pescado", brandMap.get("Goya"), categoryMap.get("Carnes y pescado")),
 
                 // Frutas y verduras (more)
-                new Product("71", "Uva Roja", brandMap.get("30"), categoryMap.get("4")),
-                new Product("72", "Peras", brandMap.get("30"), categoryMap.get("4")),
-                new Product("73", "Pepino", brandMap.get("30"), categoryMap.get("4")),
-                new Product("74", "Cebolla", brandMap.get("30"), categoryMap.get("4")),
-                new Product("75", "Pimiento Morrón", brandMap.get("30"), categoryMap.get("4")),
+                new Product(UUID.randomUUID(), "Uva Roja", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
+                new Product(UUID.randomUUID(), "Peras", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
+                new Product(UUID.randomUUID(), "Pepino", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
+                new Product(UUID.randomUUID(), "Cebolla", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
+                new Product(UUID.randomUUID(), "Pimiento Morrón", brandMap.get("Lomito"), categoryMap.get("Frutas y verduras")),
 
                 // Abarrotes secos (more)
-                new Product("76", "Galletas de Animalitos", brandMap.get("17"), categoryMap.get("5")),
-                new Product("77", "Azúcar 1 KG", brandMap.get("28"), categoryMap.get("5")),
-                new Product("78", "Lentejas 500 gr", brandMap.get("28"), categoryMap.get("5")),
-                new Product("79", "Harina de Trigo 1 KG", brandMap.get("9"), categoryMap.get("5")),
-                new Product("80", "Sopa Instantánea", brandMap.get("28"), categoryMap.get("5")),
+                new Product(UUID.randomUUID(), "Galletas de Animalitos", brandMap.get("Zucaritas"), categoryMap.get("Abarrotes secos")),
+                new Product(UUID.randomUUID(), "Azúcar 1 KG", brandMap.get("El Costeño"), categoryMap.get("Abarrotes secos")),
+                new Product(UUID.randomUUID(), "Lentejas 500 gr", brandMap.get("El Costeño"), categoryMap.get("Abarrotes secos")),
+                new Product(UUID.randomUUID(), "Harina de Trigo 1 KG", brandMap.get("Maseca"), categoryMap.get("Abarrotes secos")),
+                new Product(UUID.randomUUID(), "Sopa Instantánea", brandMap.get("El Costeño"), categoryMap.get("Abarrotes secos")),
 
                 // Conservas y salsas (more)
-                new Product("81", "Salsa Roja", brandMap.get("5"), categoryMap.get("6")),
-                new Product("82", "Atún en Lata", brandMap.get("8"), categoryMap.get("6")),
-                new Product("83", "Aceitunas", brandMap.get("7"), categoryMap.get("6")),
-                new Product("84", "Salsa Barbacoa", brandMap.get("24"), categoryMap.get("6")),
-                new Product("85", "Chiles Secos", brandMap.get("5"), categoryMap.get("6")),
+                new Product(UUID.randomUUID(), "Salsa Roja", brandMap.get("Herdez"), categoryMap.get("Conservas y salsas")),
+                new Product(UUID.randomUUID(), "Atún en Lata", brandMap.get("Del Fuerte"), categoryMap.get("Conservas y salsas")),
+                new Product(UUID.randomUUID(), "Aceitunas", brandMap.get("La Costeña"), categoryMap.get("Conservas y salsas")),
+                new Product(UUID.randomUUID(), "Salsa Barbacoa", brandMap.get("El Yucateco"), categoryMap.get("Conservas y salsas")),
+                new Product(UUID.randomUUID(), "Chiles Secos", brandMap.get("Herdez"), categoryMap.get("Conservas y salsas")),
 
                 // Bebidas (more)
-                new Product("86", "Agua Mineral", brandMap.get("11"), categoryMap.get("7")),
-                new Product("87", "Jugo de Naranja", brandMap.get("12"), categoryMap.get("7")),
-                new Product("88", "Refresco de Cola", brandMap.get("13"), categoryMap.get("7")),
-                new Product("89", "Cerveza Light", brandMap.get("27"), categoryMap.get("7")),
-                new Product("90", "Té Helado", brandMap.get("16"), categoryMap.get("7")),
+                new Product(UUID.randomUUID(), "Agua Mineral", brandMap.get("Bonafont"), categoryMap.get("Bebidas")),
+                new Product(UUID.randomUUID(), "Jugo de Naranja", brandMap.get("Jumex"), categoryMap.get("Bebidas")),
+                new Product(UUID.randomUUID(), "Refresco de Cola", brandMap.get("Frescolita"), categoryMap.get("Bebidas")),
+                new Product(UUID.randomUUID(), "Cerveza Light", brandMap.get("Goya"), categoryMap.get("Bebidas")),
+                new Product(UUID.randomUUID(), "Té Helado", brandMap.get("Peñafiel"), categoryMap.get("Bebidas")),
 
                 // Snacks y golosinas (more)
-                new Product("91", "Nachos", brandMap.get("4"), categoryMap.get("8")),
-                new Product("92", "Dulces de Leche", brandMap.get("6"), categoryMap.get("8")),
-                new Product("93", "Chicles", brandMap.get("6"), categoryMap.get("8")),
-                new Product("94", "Galletas Saladas", brandMap.get("4"), categoryMap.get("8")),
-                new Product("95", "Barritas de Chocolate", brandMap.get("6"), categoryMap.get("8")),
+                new Product(UUID.randomUUID(), "Nachos", brandMap.get("Sabritas"), categoryMap.get("Snacks y golosinas")),
+                new Product(UUID.randomUUID(), "Dulces de Leche", brandMap.get("Ricolino"), categoryMap.get("Snacks y golosinas")),
+                new Product(UUID.randomUUID(), "Chicles", brandMap.get("Ricolino"), categoryMap.get("Snacks y golosinas")),
+                new Product(UUID.randomUUID(), "Galletas Saladas", brandMap.get("Sabritas"), categoryMap.get("Snacks y golosinas")),
+                new Product(UUID.randomUUID(), "Barritas de Chocolate", brandMap.get("Ricolino"), categoryMap.get("Snacks y golosinas")),
 
                 // Limpieza (more)
-                new Product("96", "Detergente Líquido", brandMap.get("30"), categoryMap.get("9")),
-                new Product("97", "Esponjas de Cocina", brandMap.get("30"), categoryMap.get("9")),
-                new Product("98", "Limpiador Multiusos", brandMap.get("33"), categoryMap.get("9")),
-                new Product("99", "Jabón Líquido", brandMap.get("34"), categoryMap.get("9")),
-                new Product("100", "Desinfectante", brandMap.get("35"), categoryMap.get("9"))
+                new Product(UUID.randomUUID(), "Detergente Líquido", brandMap.get("Lomito"), categoryMap.get("Limpieza")),
+                new Product(UUID.randomUUID(), "Esponjas de Cocina", brandMap.get("Lomito"), categoryMap.get("Limpieza")),
+                new Product(UUID.randomUUID(), "Limpiador Multiusos", brandMap.get("Clorox"), categoryMap.get("Limpieza")),
+                new Product(UUID.randomUUID(), "Jabón Líquido", brandMap.get("Clorox"), categoryMap.get("Limpieza")),
+                new Product(UUID.randomUUID(), "Desinfectante", brandMap.get("Lysol"), categoryMap.get("Limpieza"))
         );
     }
 
-    private Iterable<Movement> movements() {
+    private Iterable<Movement> movements(List<UUID> accountIds) {
         List<MovementType> movementTypes = movementTypeRepository.findAll();
         List<Product> products = productRepository.findAll();
         return IntStream.range(0, 100)
                 .mapToObj(i -> {
 
-                    List<ProductQuantity> productQuantities = randomProductQuantities(products);
+                    List<StockMovementProduct> productQuantities = randomProductQuantities(products);
 
                     Movement movement = new Movement(
-                        String.valueOf(i),
-                        String.valueOf(new Random().nextInt(1, 99)),
+                        UUID.randomUUID(),
+                        pickRandom(accountIds),
                         productQuantities,
                         pickRandom(movementTypes),
                         pickRandom(movementObservations()),
@@ -412,20 +422,20 @@ class TestDataSeeder {
         return stateCities;
     }
 
-    private List<ProductQuantity> randomProductQuantities(List<Product> products) {
-        List<String> seenProductIds = new ArrayList<>();
+    private List<StockMovementProduct> randomProductQuantities(List<Product> products) {
+        List<UUID> seenProductIds = new ArrayList<>();
         return IntStream.range(1, new Random().nextInt(5, 10))
                 .mapToObj(_ -> randomProductQuantity(products, seenProductIds))
                 .toList();
     }
 
-    private ProductQuantity randomProductQuantity(List<Product> products, List<String> seenProductIds) {
+    private StockMovementProduct randomProductQuantity(List<Product> products, List<UUID> seenProductIds) {
         while (true) {
             Product product = pickRandom(products);
             if (!seenProductIds.contains(product.getId())) {
                 seenProductIds.add(product.getId());
-                return new ProductQuantity(
-                    UUID.randomUUID().toString(),
+                return new StockMovementProduct(
+                    UUID.randomUUID(),
                     product.getId(),
                     new Random().nextInt(1, 30),
                     null
@@ -459,5 +469,21 @@ class TestDataSeeder {
                 .filter(Character::isDigit)
                 .mapToObj(Character::toString)
                 .collect(Collectors.joining());
+    }
+
+    private String randomDigitsString(int length) {
+        String DIGITS = "123456789";
+
+        if (length <= 0) {
+            throw new IllegalArgumentException("Length must be greater than 0");
+        }
+
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int index = new Random().nextInt(DIGITS.length());
+            sb.append(DIGITS.charAt(index));
+        }
+
+        return sb.toString();
     }
 }
