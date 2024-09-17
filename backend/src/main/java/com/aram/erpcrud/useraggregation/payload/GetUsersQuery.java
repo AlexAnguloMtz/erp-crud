@@ -1,4 +1,4 @@
-package com.aram.erpcrud.users.payload;
+package com.aram.erpcrud.useraggregation.payload;
 
 import java.util.List;
 
