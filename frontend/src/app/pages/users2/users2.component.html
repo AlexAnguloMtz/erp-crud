@@ -1,23 +1,14 @@
 <ng-template #filterFieldsTemplate>
     <div class="filters-form-surfaces-container" [class.choosing-filter-value]="choosingFilterValue">
         <div class="filters-first-surface">
-            <app-filters-form-field (onClick)="onStateFilterClick()" [labelText]="'Estado de la República'"
-                [valueText]="selectedStatesSummary">
-            </app-filters-form-field>
             <app-filters-form-field (onClick)="onRoleFilterClick()" [labelText]="'Rol'"
                 [valueText]="selectedRolesSummary">
             </app-filters-form-field>
         </div>
         <div class="filters-second-surface {{filtersSecondSurfaceClass}}">
-            <div class="state">
-                @for (state of states; track state.id) {
-                <app-filters-form-checkbox [value]="state.id" [text]="state.name" [model]="selectedStates"
-                    (onClick)="onStateCheckboxClick(state.id)"></app-filters-form-checkbox>
-                }
-            </div>
             <div class="role">
                 @for (role of roles; track role.id) {
-                <app-filters-form-checkbox [value]="role.id" [text]="role.name" [model]="selectedRoles"
+                <app-filters-form-checkbox [text]="role.name" [checked]="selectedRoles.includes(role.id)"
                     (onClick)="onRoleCheckboxClick(role.id)"></app-filters-form-checkbox>
                 }
             </div>
@@ -34,15 +25,13 @@
     <td>{{ item.name }}</td>
     <td>{{ item.lastName }}</td>
     <td>{{ item.role.name }}</td>
-    <td>{{ formatUserLocation(item) }}</td>
     <td>{{ item.email }}</td>
     <td>{{ item.phone }}</td>
 </ng-template>
 
 <ng-template #createItemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
     <app-user-form-fields [errors]="errors" [controls]="userCreationFormControls(formGroup)"
-        [statesOptionsStatus]="statesOptionsStatus" [rolesOptionsStatus]="rolesOptionsStatus"
-        [onRetryLoadStates]="onRetryLoadStates()" [onRetryLoadRoles]="onRetryLoadRoles()"></app-user-form-fields>
+        [rolesOptionsStatus]="rolesOptionsStatus" [onRetryLoadRoles]="onRetryLoadRoles()"></app-user-form-fields>
     <div class="password-field">
         <div class="user-form-input">
             <label>Contraseña</label>
@@ -81,8 +70,7 @@
 
 <ng-template #updateItemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
     <app-user-form-fields [errors]="errors" [controls]="userUpdateFormControls(formGroup)"
-        [statesOptionsStatus]="statesOptionsStatus" [rolesOptionsStatus]="rolesOptionsStatus"
-        [onRetryLoadStates]="onRetryLoadStates()" [onRetryLoadRoles]="onRetryLoadRoles()">
+        [rolesOptionsStatus]="rolesOptionsStatus" [onRetryLoadRoles]="onRetryLoadRoles()">
     </app-user-form-fields>
 </ng-template>
 

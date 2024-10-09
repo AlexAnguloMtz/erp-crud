@@ -2,13 +2,12 @@ import { Component } from '@angular/core';
 import { CrudItem, CrudModuleComponent, DisplayableError } from '../crud-module/crud-module.component';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaginatedResponse } from '../../common/paginated-response';
-import { CreateUserCommand, State, UpdateUserCommand, UpdateUserResponse, UserDetails, UsersService } from '../../services/users-service';
+import { CreateUserCommand, UpdateUserCommand, UpdateUserResponse, UserDetails, UsersService } from '../../services/users-service';
 import { PaginatedRequest } from '../../common/paginated-request';
 import { Observable } from 'rxjs';
-import { SortOption } from '../users/users.component';
+import { SortOption } from '../../common/sort-option';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
-import { LocationsService } from '../../services/locations-service';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthService, Role } from '../../services/auth-service';
@@ -27,7 +26,7 @@ type FirstSurfaceState = {
 
 type SecondSurfaceState = {
   type: 'second-surface',
-  surface: 'state' | 'role'
+  surface: 'role'
 }
 
 type FiltersFormState = FirstSurfaceState | SecondSurfaceState
@@ -70,26 +69,21 @@ type PasswordFieldProps = {
 })
 export class Users2Component {
 
-  statesOptionsStatus: OptionsStatus<State>;
   rolesOptionsStatus: OptionsStatus<Role>;
   passwordFieldProps: PasswordFieldProps;
-  selectedRoles: Array<string>;
-  selectedStates: Array<string>;
+  selectedRoles: Array<number>;
   filtersFormState: FiltersFormState;
 
   constructor(
     private userService: UsersService,
-    private locationsService: LocationsService,
     private authenticationProofVault: AuthenticationProofVault,
     private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
-    this.statesOptionsStatus = { _type: 'base' };
     this.rolesOptionsStatus = { _type: 'base' };
     this.filtersFormState = { type: 'first-surface' }
     this.selectedRoles = [];
-    this.selectedStates = [];
     this.passwordFieldProps = passwordNotVisibleProps;
   }
 
@@ -106,11 +100,7 @@ export class Users2Component {
   }
 
   get loadingFilters(): boolean {
-    return this.statesOptionsStatus._type === 'loading-options' || this.rolesOptionsStatus._type === 'loading-options';
-  }
-
-  get states(): Array<State> {
-    return options(this.statesOptionsStatus);
+    return this.rolesOptionsStatus._type === 'loading-options';
   }
 
   get roles(): Array<Role> {
@@ -131,7 +121,6 @@ export class Users2Component {
       'Nombre',
       'Apellido',
       'Rol',
-      'Ubicación',
       'Correo',
       'Teléfono'
     ];
@@ -155,32 +144,10 @@ export class Users2Component {
     }
 
     const surfaceNameMap = {
-      'state': 'Estado de la República',
       'role': 'Rol',
     }
 
     return surfaceNameMap[this.filtersFormState.surface];
-  }
-
-  get selectedStatesSummary(): string {
-    const defaultText: string = 'Cualquiera';
-
-    if (this.selectedStates.length === 0) {
-      return defaultText;
-    }
-
-    if (this.statesOptionsStatus._type !== 'options-ready') {
-      return defaultText;
-    }
-
-    const statesNames: Array<string> = [];
-    for (const id of this.selectedStates) {
-      const state: State | undefined = this.statesOptionsStatus.items.find(x => x.id == id);
-      if (state) {
-        statesNames.push(state.name);
-      }
-    }
-    return statesNames.sort((x, y) => x.localeCompare(y)).join(', ');
   }
 
   get selectedRolesSummary(): string {
@@ -208,7 +175,6 @@ export class Users2Component {
     return (item: CrudItem, updateItemForm: FormGroup) => {
       const user: UserDetails = (item as UserDetails);
       this.loadRolesOnRowClick(user.role.id, updateItemForm);
-      this.loadStatesOnRowClick(user.address.state.id, updateItemForm);
     }
   }
 
@@ -224,20 +190,11 @@ export class Users2Component {
     return () => this.loadRoles();
   }
 
-  onRetryLoadStates(): () => void {
-    return () => this.loadStates();
-  }
-
   getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
     return (request: PaginatedRequest) => this.userService.getUsers(
       request, {
       roles: this.selectedRoles,
-      states: this.selectedStates,
     });
-  }
-
-  formatUserLocation(user: UserDetails): string {
-    return `${user.address.city}, ${user.address.state.id}`
   }
 
   getCreationErrors(): (formGroup: FormGroup) => { [key: string]: string } {
@@ -267,8 +224,8 @@ export class Users2Component {
     });
   }
 
-  deleteItemById(): (id: string) => Observable<void> {
-    return (id: string) => this.userService.deleteUserById(id);
+  deleteItemById(): (id: number) => Observable<void> {
+    return (id: number) => this.userService.deleteUserById(id);
   }
 
   onGoBackToChoosingFilter(): () => void {
@@ -277,12 +234,8 @@ export class Users2Component {
     }
   }
 
-  onRoleCheckboxClick(id: string): void {
+  onRoleCheckboxClick(id: number): void {
     this.selectedRoles = toggle(id, this.selectedRoles);
-  }
-
-  onStateCheckboxClick(id: string): void {
-    this.selectedStates = toggle(id, this.selectedStates);
   }
 
   createCreationForm(): (formBuilder: FormBuilder) => FormGroup {
@@ -312,14 +265,6 @@ export class Users2Component {
           ]
         ],
         district: [
-          '',
-          [Validators.required, Validators.maxLength(60)]
-        ],
-        city: [
-          '',
-          [Validators.required, Validators.maxLength(60)]
-        ],
-        state: [
           '',
           [Validators.required, Validators.maxLength(60)]
         ],
@@ -382,10 +327,6 @@ export class Users2Component {
       if (this.rolesOptionsStatus._type === 'base') {
         this.loadRoles();
       }
-
-      if (this.statesOptionsStatus._type === 'base') {
-        this.loadStates();
-      }
     }
   }
 
@@ -409,8 +350,8 @@ export class Users2Component {
     return (dto: CreateUserCommand) => this.userService.createUser(dto);
   }
 
-  updateItem(): (id: string, dto: UpdateUserCommand) => Observable<UpdateUserResponse> {
-    return (id: string, dto: UpdateUserCommand) => this.userService.updateUser(id, dto);
+  updateItem(): (id: number, dto: UpdateUserCommand) => Observable<UpdateUserResponse> {
+    return (id: number, dto: UpdateUserCommand) => this.userService.updateUser(id, dto);
   }
 
   handleUpdateResponse(): (response: UpdateUserResponse) => void {
@@ -429,13 +370,6 @@ export class Users2Component {
 
   userUpdateFormControls(formGroup: FormGroup): { [key: string]: FormControl } {
     return this.getControlsAsFormControls(formGroup);
-  }
-
-  onStateFilterClick(): void {
-    this.filtersFormState = { type: 'second-surface', surface: 'state' }
-    if (this.statesOptionsStatus._type === 'base') {
-      this.loadStates();
-    }
   }
 
   onRoleFilterClick(): void {
@@ -464,21 +398,13 @@ export class Users2Component {
   private loadRoles(): void {
     this.rolesOptionsStatus = { _type: 'loading-options' };
     this.authService.getRoles().subscribe({
-      next: (roles: Array<Role>) => this.rolesOptionsStatus = {
-        _type: 'options-ready', items: roles,
+      next: (roles: Array<Role>) => {
+        this.rolesOptionsStatus = {
+          _type: 'options-ready', items: roles,
+        }
       },
       error: (_) => this.rolesOptionsStatus = { _type: 'error' },
     });
-  }
-
-  private loadStates(): void {
-    this.statesOptionsStatus = { _type: 'loading-options' };
-    this.locationsService.getStates().subscribe({
-      next: (states: Array<State>) => {
-        this.statesOptionsStatus = { _type: 'options-ready', items: states };
-      },
-      error: (_) => this.statesOptionsStatus = { _type: 'error' },
-    })
   }
 
   private getControlsAsFormControls(formGroup: FormGroup): { [key: string]: FormControl } {
@@ -489,26 +415,17 @@ export class Users2Component {
     return controls;
   }
 
-  private loadRolesOnRowClick(roleId: string, form: FormGroup) {
+  private loadRolesOnRowClick(roleId: number, form: FormGroup) {
     if (this.rolesOptionsStatus._type === 'base') {
       this.loadRoles();
     }
     form.get('role')?.setValue(roleId);
   }
 
-  private loadStatesOnRowClick(stateId: string, form: FormGroup) {
-    if (this.statesOptionsStatus._type === 'base') {
-      this.loadStates();
-    }
-    form.get('state')?.setValue(stateId);
-  }
-
   private commonUserErrors(formGroup: FormGroup): { [key: string]: string } {
     const errors: { [key: string]: string } = {};
     errors['name'] = this.nameError(formGroup);
     errors['lastName'] = this.lastNameError(formGroup);
-    errors['state'] = this.stateError(formGroup);
-    errors['city'] = this.cityError(formGroup);
     errors['district'] = this.districtError(formGroup);
     errors['street'] = this.streetError(formGroup);
     errors['streetNumber'] = this.streetNumberError(formGroup);
@@ -543,50 +460,6 @@ export class Users2Component {
 
   private lastNameError(form: FormGroup): string {
     const control: FormControl = form.get('lastName') as FormControl;
-
-    if (control.valid) {
-      return '';
-    }
-
-    if (!(control.touched || control.dirty)) {
-      return '';
-    }
-
-    if (control.errors?.['required']) {
-      return 'Valor requerido';
-    }
-
-    if (control.errors?.['maxlength']) {
-      return 'Máximo 60 caracteres';
-    }
-
-    return '';
-  }
-
-  private stateError(form: FormGroup): string {
-    const control: FormControl = form.get('state') as FormControl;
-
-    if (control.valid) {
-      return '';
-    }
-
-    if (!(control.touched || control.dirty)) {
-      return '';
-    }
-
-    if (control.errors?.['required']) {
-      return 'Valor requerido';
-    }
-
-    if (control.errors?.['maxlength']) {
-      return 'Máximo 60 caracteres';
-    }
-
-    return '';
-  }
-
-  private cityError(form: FormGroup): string {
-    const control: FormControl = form.get('city') as FormControl;
 
     if (control.valid) {
       return '';

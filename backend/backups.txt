@@ -1,0 +1,12 @@
+1. Mostrar presencia de registros
+
+2. Generar backup
+   pg_dump -U myuser -f backup.dump mydatabase
+
+3. Borrar tablas
+   CALL borrar_tablas();
+
+4. Restablecer las tablas mediante el backup
+   psql -U myuser -W -d mydatabase -f backup.dump
+
+5. Mostrar presencia de registros nuevamente

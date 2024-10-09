@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { PaginatedRequest } from '../../common/paginated-request';
 import { capitalize } from '../../common/strings';
-import { SortOption } from '../users/users.component';
+import { SortOption } from '../../common/sort-option';
 
 @Component({
   selector: 'app-movements',

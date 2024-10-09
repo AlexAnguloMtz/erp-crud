@@ -51,23 +51,29 @@ const links: Array<SidebarLink> = [
     text: 'Usuarios',
     icon: 'user',
   },
+  // {
+  //   id: 'module-inventory',
+  //   href: '/home/inventory',
+  //   text: 'Inventario',
+  //   icon: 'warehouse',
+  // },
+  //{
+  //  id: 'module-movements',
+  //  href: '/home/movements',
+  //  text: 'Movimientos',
+  //  icon: 'truck',
+  //},
+  // {
+  //   id: 'module-brands',
+  //   href: '/home/brands',
+  //   text: 'Marcas',
+  //   icon: 'bookmark',
+  // },
   {
-    id: 'module-inventory',
-    href: '/home/inventory',
-    text: 'Inventario',
-    icon: 'warehouse',
-  },
-  {
-    id: 'module-movements',
-    href: '/home/movements',
-    text: 'Movimientos',
-    icon: 'truck',
-  },
-  {
-    id: 'module-brands',
-    href: '/home/brands',
-    text: 'Marcas',
-    icon: 'bookmark',
+    id: 'module-backups',
+    href: '/home/backups',
+    text: 'Respaldos',
+    icon: 'download',
   },
 ];
 

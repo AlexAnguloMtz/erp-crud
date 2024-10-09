@@ -63,8 +63,7 @@
 }
 
 .filters-second-surface .loading,
-.filters-second-surface .role,
-.filters-second-surface .state {
+.filters-second-surface .role {
     display: none;
 }
 
@@ -73,9 +72,5 @@
 }
 
 .filters-second-surface.role .role {
-    display: block;
-}
-
-.filters-second-surface.state .state {
     display: block;
 }

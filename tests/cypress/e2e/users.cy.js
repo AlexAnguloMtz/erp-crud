@@ -20,7 +20,6 @@ describe('users module', () => {
 
             fillCreateUserForm({
                 values: validUser(),
-                selectState: true,
                 selectRole: true
             });
 
@@ -37,7 +36,6 @@ describe('users module', () => {
 
             fillCreateUserForm({
                 values: firstUser,
-                selectState: true,
                 selectRole: true
             });
 
@@ -56,7 +54,6 @@ describe('users module', () => {
 
             fillCreateUserForm({
                 values: firstUser,
-                selectState: true,
                 selectRole: true
             });
 
@@ -81,18 +78,6 @@ describe('users module', () => {
                     testName: 'Last name is required',
                     prepareInput: (input) => input.values.lastName = '',
                     errorSelector: 'last-name',
-                    expectedError: 'Valor requerido',
-                },
-                {
-                    testName: 'State is required',
-                    prepareInput: (input) => input.selectState = false,
-                    errorSelector: 'state',
-                    expectedError: 'Valor requerido',
-                },
-                {
-                    testName: 'City is required',
-                    prepareInput: (input) => input.values.city = '',
-                    errorSelector: 'city',
                     expectedError: 'Valor requerido',
                 },
                 {
@@ -169,12 +154,6 @@ describe('users module', () => {
                     expectedError: 'Máximo 60 caracteres',
                 },
                 {
-                    testName: 'City max length',
-                    prepareInput: (input) => input.values.city = 'x'.repeat(61),
-                    errorSelector: 'city',
-                    expectedError: 'Máximo 60 caracteres',
-                },
-                {
                     testName: 'District max length',
                     prepareInput: (input) => input.values.district = 'x'.repeat(61),
                     errorSelector: 'district',
@@ -243,7 +222,6 @@ const validUser = () => {
     return {
         name: faker.person.firstName(),
         lastName: faker.person.lastName(),
-        city: faker.location.city(),
         district: faker.location.secondaryAddress(),
         street: faker.location.street(),
         streetNumber: faker.location.buildingNumber(),
@@ -255,11 +233,10 @@ const validUser = () => {
     }
 }
 
-function fillCreateUserForm({ values, selectState, selectRole }) {
+function fillCreateUserForm({ values, selectRole }) {
     cy.get('#create-item-form').within(() => {
         type('input[name="user-name"]', values.name);
         type('input[name="user-last-name"]', values.lastName);
-        type('input[name="user-city"]', values.city);
         type('input[name="user-district"]', values.district);
         type('input[name="user-street"]', values.street);
         type('input[name="user-street-number"]', values.streetNumber);
@@ -268,10 +245,6 @@ function fillCreateUserForm({ values, selectState, selectRole }) {
         type('input[name="user-phone"]', values.phone);
         type('input[name="user-password"]', values.password);
         type('input[name="user-confirmed-password"]', values.confirmedPassword);
-
-        if (selectState) {
-            clickRandomDropdownValue('#create-user-state');
-        }
 
         if (selectRole) {
             clickRandomDropdownValue('#create-user-role');
@@ -304,7 +277,6 @@ function runInvalidCreateUserInputTest(test) {
     it(test.testName, () => {
         const input = {
             values: validUser(),
-            selectState: true,
             selectRole: true
         };
 
@@ -314,7 +286,6 @@ function runInvalidCreateUserInputTest(test) {
 
         fillCreateUserForm({
             values: input.values,
-            selectState: input.selectState,
             selectRole: input.selectRole
         })
 

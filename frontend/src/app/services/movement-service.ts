@@ -5,41 +5,41 @@ import { PaginatedResponse } from "../common/paginated-response";
 import { ApiClient } from "./api-client";
 
 export type BrandDTO = {
-    id: string;
+    id: number;
     name: string;
 }
 
 export type ProductCategoryDTO = {
-    id: string;
+    id: number;
     name: string;
 }
 
 export type ProductDTO = {
-    id: string;
+    id: number;
     name: string;
     brand: BrandDTO;
     category: ProductCategoryDTO;
 }
 
 export type ProductQuantityDTO = {
-    id: string;
+    id: number;
     product: ProductDTO;
     quantity: number;
 }
 
 export type PersonalNameDTO = {
-    id: string;
+    id: number;
     name: string;
     lastName: string;
 }
 
 export type MovementTypeDTO = {
-    id: string;
+    id: number;
     description: string;
 }
 
 export type Movement = {
-    id: string;
+    id: number;
     responsible: PersonalNameDTO;
     movementType: MovementTypeDTO;
     productQuantities: Array<ProductQuantityDTO>;
@@ -48,10 +48,10 @@ export type Movement = {
 }
 
 export type GetMovementsParams = {
-    responsibleId?: string;
+    responsibleId?: number;
     start?: Date;
     end?: Date;
-    productId?: string;
+    productId?: number;
 }
 
 @Injectable({

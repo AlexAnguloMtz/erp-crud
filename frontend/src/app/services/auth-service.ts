@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, Observable, retry, throwError } from "rxjs";
+import { catchError, Observable, retry, tap, throwError } from "rxjs";
 import { ApiClient } from "./api-client";
 
 type LoginCredentials = {
@@ -13,7 +13,7 @@ export type AuthenticationResponse = {
 }
 
 export type Role = {
-    id: string
+    id: number
     name: string,
     canonicalName: string,
 }
@@ -44,7 +44,7 @@ export class AuthService {
 
     getRoles(): Observable<Array<Role>> {
         return this.apiClient.get<Array<Role>>(this.rolesEndpoint).pipe(
-            retry(5)
+            retry(5),
         );
     }
 

@@ -15,9 +15,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 })
 export class FiltersFormCheckboxComponent {
 
-  @Input() value: string;
   @Input() text: string;
-  @Input() model: Array<string>;
+  @Input() checked: boolean;
   @Output() onClick: EventEmitter<void> = new EventEmitter<void>();
 
   onCheckboxClick(): void {

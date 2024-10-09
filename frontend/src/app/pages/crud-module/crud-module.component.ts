@@ -21,7 +21,7 @@ import { AuthenticationProofVault } from '../../services/authentication-proof-va
 const RECORDS_PER_PAGE: number = 15;
 
 export type CrudItem = {
-  id: string
+  id: number
 }
 
 export type DisplayableError = {
@@ -133,8 +133,8 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() mapItemOperationError: (error: Error) => DisplayableError
   @Input() getItems: (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>>
   @Input() createItem: (formValues: CreationItemDto) => Observable<void>
-  @Input() updateItem: (id: string, formValues: UpdateItemDto) => Observable<ItemUpdateResponse>
-  @Input() deleteItemById: (id: string) => Observable<void>
+  @Input() updateItem: (id: number, formValues: UpdateItemDto) => Observable<ItemUpdateResponse>
+  @Input() deleteItemById: (id: number) => Observable<void>
   @Input() loadOptionsOnRowClick: (item: CrudItem, form: FormGroup) => void;
   @Input() getCreationErrors: (form: FormGroup) => { [key: string]: string };
   @Input() getUpdateErrors: (form: FormGroup) => { [key: string]: string };
@@ -171,7 +171,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   itemSavedDialogVisible: boolean;
 
-  itemToUpdateId: string;
+  itemToUpdateId: number;
 
   itemDeletedDialogVisible: boolean;
 
@@ -187,7 +187,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
       this.router.navigate(['/login']);
     }
 
-    this.itemToUpdateId = '';
+    this.itemToUpdateId = -1;
     this.searchControl = new FormControl('');
     this.selectedPageNumber = 0;
     this.lastSeenTotalItems = 0;
@@ -403,7 +403,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     this.itemDeletedDialogVisible = false;
   }
 
-  onDeleteItem(id: string): void {
+  onDeleteItem(id: number): void {
     this.deleteItemStatus = { _type: 'deleting-item' }
     this.deleteItemById(id).subscribe({
       next: () => {
@@ -416,7 +416,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     });
   }
 
-  private removeDeletedRow(id: string): void {
+  private removeDeletedRow(id: number): void {
     if (this.status._type !== 'base') {
       return;
     }

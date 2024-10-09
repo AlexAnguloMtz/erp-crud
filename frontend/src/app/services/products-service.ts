@@ -14,7 +14,7 @@ class BrandExistsError extends Error {
 }
 
 export type Brand = {
-    id: string,
+    id: number,
     name: string
 }
 
@@ -48,7 +48,7 @@ export class ProductsService {
         );
     }
 
-    updateBrand(id: string, command: BrandCommand): Observable<void> {
+    updateBrand(id: number, command: BrandCommand): Observable<void> {
         const url = `${this.brandsEndpoint}/${id}`;
 
         return this.apiClient.put<void>(url, command).pipe(
@@ -61,7 +61,7 @@ export class ProductsService {
         );
     }
 
-    deleteBrandById(id: string): Observable<void> {
+    deleteBrandById(id: number): Observable<void> {
         const url = `${this.brandsEndpoint}/${id}`;
         return this.apiClient.delete<void>(url).pipe(
             catchError(error => {

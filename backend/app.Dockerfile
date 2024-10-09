@@ -18,6 +18,8 @@ RUN ./mvnw clean package -DskipTests
 # Run
 FROM amazoncorretto:22-alpine-jdk
 
+RUN apk add --no-cache postgresql-client
+
 WORKDIR /opt/app
 
 EXPOSE 8080

@@ -1,0 +1,43 @@
+.top-row {}
+
+.top-row .title {
+    color: rgb(25, 53, 74);
+    font-size: 16px;
+}
+
+
+.file-download-area-container {
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-download-area {
+    margin: 0 auto;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 20px;
+    transition: all 200ms ease;
+    border: 2px dotted rgb(105, 105, 106);
+    max-width: 500px;
+    max-height: 500px;
+    text-align: center;
+}
+
+.file-download-area:hover {
+    background-color: rgb(143, 194, 239);
+}
+
+.image-container {
+    margin: 0 auto;
+}
+
+.image {
+    max-width: 100%;
+}
+
+.text-container .title {
+    text-align: center;
+    color: rgb(34, 46, 55);
+}

@@ -5,8 +5,8 @@ import { PaginatedRequest } from '../../common/paginated-request';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { Observable } from 'rxjs';
 import { BrandCommand, ProductsService } from '../../services/products-service';
-import { SortOption } from '../users/users.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { SortOption } from '../../common/sort-option';
 
 @Component({
   selector: 'app-brands',
@@ -69,12 +69,12 @@ export class BrandsComponent {
     return (dto: BrandCommand) => this.productsService.createBrand(dto);
   }
 
-  updateItem(): (id: string, dto: BrandCommand) => Observable<void> {
-    return (id: string, dto: BrandCommand) => this.productsService.updateBrand(id, dto);
+  updateItem(): (id: number, dto: BrandCommand) => Observable<void> {
+    return (id: number, dto: BrandCommand) => this.productsService.updateBrand(id, dto);
   }
 
-  deleteItemById(): (id: string) => Observable<void> {
-    return (id: string) => this.productsService.deleteBrandById(id);
+  deleteItemById(): (id: number) => Observable<void> {
+    return (id: number) => this.productsService.deleteBrandById(id);
   }
 
   mapFormToDto(): (formGroup: FormGroup) => BrandCommand {

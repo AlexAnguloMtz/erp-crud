@@ -18,15 +18,8 @@ class UserExistsError extends Error {
     }
 }
 
-export type State = {
-    id: string,
-    name: string,
-}
-
 export type Address = {
-    id: string,
-    state: State,
-    city: string,
+    id: number,
     district: string,
     street: string,
     streetNumber: string,
@@ -36,8 +29,6 @@ export type Address = {
 export type CreateUserCommand = {
     name: string,
     lastName: string,
-    state: string,
-    city: string,
     district: string,
     street: string,
     streetNumber: string,
@@ -52,8 +43,6 @@ export type CreateUserCommand = {
 export type UpdateUserCommand = {
     name: string,
     lastName: string,
-    state: string,
-    city: string,
     district: string,
     street: string,
     streetNumber: string,
@@ -64,7 +53,7 @@ export type UpdateUserCommand = {
 }
 
 export type UserDetails = {
-    id: string,
+    id: number,
     name: string,
     lastName: string,
     email: string,
@@ -79,8 +68,7 @@ export type UpdateUserResponse = {
 }
 
 export type GetUsersParams = {
-    states?: Array<string>,
-    roles?: Array<string>,
+    roles?: Array<number>,
 }
 
 export class ForbiddenError extends Error {
@@ -130,7 +118,7 @@ export class UsersService {
         );
     }
 
-    updateUser(id: string, command: UpdateUserCommand): Observable<UpdateUserResponse> {
+    updateUser(id: number, command: UpdateUserCommand): Observable<UpdateUserResponse> {
         const url = `${this.usersEndpoint}/${id}`;
 
         return this.apiClient.put<UpdateUserResponse>(url, command).pipe(
@@ -143,7 +131,7 @@ export class UsersService {
         );
     }
 
-    deleteUserById(id: string): Observable<void> {
+    deleteUserById(id: number): Observable<void> {
         const url = `${this.usersEndpoint}/${id}`;
         return this.apiClient.delete<void>(url).pipe(
             catchError(error => {
