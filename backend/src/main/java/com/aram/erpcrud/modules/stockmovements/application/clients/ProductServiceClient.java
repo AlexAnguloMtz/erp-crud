@@ -1,6 +1,6 @@
 package com.aram.erpcrud.modules.stockmovements.application.clients;
 
-import com.aram.erpcrud.modules.products.payload.ProductDTO;
+import com.aram.erpcrud.modules.productdetails.payload.ProductDTO;
 
 import java.util.List;
 

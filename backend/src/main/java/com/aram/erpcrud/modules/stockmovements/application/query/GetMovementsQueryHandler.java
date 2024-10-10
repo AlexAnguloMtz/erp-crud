@@ -10,7 +10,7 @@ import com.aram.erpcrud.modules.stockmovements.domain.StockMovementRepository;
 import com.aram.erpcrud.modules.stockmovements.domain.StockMovementType;
 import com.aram.erpcrud.modules.stockmovements.domain.StockMovementProduct;
 import com.aram.erpcrud.modules.stockmovements.payload.*;
-import com.aram.erpcrud.modules.products.payload.ProductDTO;
+import com.aram.erpcrud.modules.productdetails.payload.ProductDTO;
 import com.aram.erpcrud.modules.personaldetails.payload.PersonalNameDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

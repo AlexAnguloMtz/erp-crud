@@ -1,7 +1,7 @@
 package com.aram.erpcrud.modules.stockmovements.application.clients;
 
-import com.aram.erpcrud.modules.products.ProductService;
-import com.aram.erpcrud.modules.products.payload.ProductDTO;
+import com.aram.erpcrud.modules.productdetails.ProductDetailsService;
+import com.aram.erpcrud.modules.productdetails.payload.ProductDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.List;
 @Component
 class SimpleProductsServiceClient implements ProductServiceClient {
 
-    private final ProductService productService;
+    private final ProductDetailsService productService;
 
-    SimpleProductsServiceClient(ProductService productService) {
+    SimpleProductsServiceClient(ProductDetailsService productService) {
         this.productService = productService;
     }
 

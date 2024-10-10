@@ -63,12 +63,12 @@ const links: Array<SidebarLink> = [
   //  text: 'Movimientos',
   //  icon: 'truck',
   //},
-  // {
-  //   id: 'module-brands',
-  //   href: '/home/brands',
-  //   text: 'Marcas',
-  //   icon: 'bookmark',
-  // },
+  {
+    id: 'module-brands',
+    href: '/home/brands',
+    text: 'Marcas',
+    icon: 'bookmark',
+  },
   {
     id: 'module-backups',
     href: '/home/backups',
