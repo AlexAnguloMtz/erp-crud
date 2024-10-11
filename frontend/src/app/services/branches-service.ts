@@ -16,6 +16,7 @@ class BranchExistsError extends Error {
 export type Branch = {
     id: number
     name: string
+    phone: string
     address: BranchAddress
 }
 
@@ -29,6 +30,7 @@ export type BranchAddress = {
 
 export type BranchCommand = {
     name: string
+    phone: string
     district: string
     street: string
     streetNumber: string

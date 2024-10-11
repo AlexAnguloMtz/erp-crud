@@ -42,6 +42,7 @@ public class UpdateBranchCommandHandler {
         }
 
         branch.setName(command.name());
+        branch.setPhone(command.phone());
 
         BranchAddress address = branch.getAddress();
         address.setDistrict(command.district());

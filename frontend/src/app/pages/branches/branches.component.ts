@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { PaginatedResponse } from '../../common/paginated-response';
 
 const NAME_MAX_LENGTH: number = 60;
+const PHONE_LENGTH: number = 10;
 const DISTRICT_MAX_LENGTH: number = 60;
 const STREET_MAX_LENGTH: number = 60;
 const STREET_NUMBER_MAX_LENGTH: number = 10;
@@ -43,6 +44,13 @@ export class BranchesComponent {
           [
             Validators.required,
             Validators.maxLength(NAME_MAX_LENGTH),
+          ]
+        ],
+        phone: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^\d{10}$/)
           ]
         ],
         district: [
@@ -81,6 +89,7 @@ export class BranchesComponent {
     return (formGroup: FormGroup) => {
       const errors: { [key: string]: string } = {};
       errors['name'] = this.nameError(formGroup);
+      errors['phone'] = this.phoneError(formGroup);
       errors['district'] = this.districtError(formGroup);
       errors['street'] = this.streetError(formGroup);
       errors['streetNumber'] = this.streetNumberError(formGroup);
@@ -136,6 +145,7 @@ export class BranchesComponent {
       'Colonia',
       'Calle y número',
       'Código postal',
+      'Teléfono',
     ];
   }
 
@@ -152,6 +162,9 @@ export class BranchesComponent {
 
       { name: 'Código postal (0 - 9)', key: 'zipCode-asc' },
       { name: 'Código postal (9 - 0)', key: 'zipCode-desc' },
+
+      { name: 'Teléfono (0 - 9)', key: 'phone-asc' },
+      { name: 'Teléfono (9 - 0)', key: 'phone-desc' },
     ];
   }
 
@@ -172,6 +185,28 @@ export class BranchesComponent {
 
     if (control.errors?.['maxlength']) {
       return `Máximo ${NAME_MAX_LENGTH} caracteres`;
+    }
+
+    return '';
+  }
+
+  private phoneError(form: FormGroup): string {
+    const control: FormControl = form.get('phone') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
+    }
+
+    if (control.errors?.['pattern']) {
+      return `Deben ser ${PHONE_LENGTH} dígitos`;
     }
 
     return '';

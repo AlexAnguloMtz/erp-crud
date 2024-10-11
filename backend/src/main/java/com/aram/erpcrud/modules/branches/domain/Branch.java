@@ -19,7 +19,11 @@ public class Branch {
     @Column(name = "nombre")
     private String name;
 
+    @Column(name = "telefono")
+    private String phone;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "domicilio_id")
     private BranchAddress address;
+
 }

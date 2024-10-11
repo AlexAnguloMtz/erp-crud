@@ -9,6 +9,10 @@ public record BranchCommand(
         @Size(max = 60, message = "name cannot exceed 60 characters")
         String name,
 
+        @NotBlank(message = "Phone is required")
+        @Pattern(regexp = "\\d{10}", message = "Phone must be exactly 10 digits")
+        String phone,
+
         @NotBlank(message = "District is required")
         @Size(max = 60, message = "District cannot exceed 60 characters")
         String district,

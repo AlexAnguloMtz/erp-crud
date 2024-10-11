@@ -10,6 +10,7 @@ CREATE TABLE sucursal(
     id SERIAL PRIMARY KEY,
     domicilio_id INT NOT NULL,
     nombre VARCHAR(60) NOT NULL,
+    telefono CHAR(10) NOT NULL CHECK (telefono ~ '^\d{10}$'),
     FOREIGN KEY (domicilio_id) REFERENCES domicilio_sucursal(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 

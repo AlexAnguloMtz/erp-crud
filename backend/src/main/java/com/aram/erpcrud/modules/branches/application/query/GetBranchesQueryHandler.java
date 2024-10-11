@@ -20,6 +20,8 @@ public class GetBranchesQueryHandler {
     enum BranchSort {
         NameAsc("name", Sort.Direction.ASC),
         NameDesc("name", Sort.Direction.DESC),
+        PhoneAsc("phone", Sort.Direction.ASC),
+        PhoneDesc("phone", Sort.Direction.DESC),
         DistrictAsc("address.district", Sort.Direction.ASC),
         DistrictDesc("address.district", Sort.Direction.DESC),
         StreetAsc("address.street", Sort.Direction.ASC),
@@ -78,6 +80,12 @@ public class GetBranchesQueryHandler {
     private BranchSort toBranchSort(String sort) {
         if ("name-desc".equals(sort)) {
             return BranchSort.NameDesc;
+        }
+        if ("phone-asc".equals(sort)) {
+            return BranchSort.PhoneAsc;
+        }
+        if ("phone-desc".equals(sort)) {
+            return BranchSort.PhoneDesc;
         }
         if ("district-asc".equals(sort)) {
             return BranchSort.DistrictAsc;

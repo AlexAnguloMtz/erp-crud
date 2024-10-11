@@ -3,6 +3,7 @@
     <td>{{ item.address.district }}</td>
     <td>{{ formatStreetWithNumber(item.address) }}</td>
     <td>{{ item.address.zipCode }}</td>
+    <td>{{ item.phone }}</td>
 </ng-template>
 
 <ng-template #itemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
@@ -11,6 +12,13 @@
         <input pInputText name="name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
         <div class="form-error name">
             {{ errors['name'] }}
+        </div>
+    </div>
+    <div class="form-input">
+        <label>Teléfono</label>
+        <input pInputText name="phone" [formControl]="formGroup.get('phone')" [style]="{'width': '100%'}" />
+        <div class="form-error phone">
+            {{ errors['phone'] }}
         </div>
     </div>
     <div class="double-input-container">

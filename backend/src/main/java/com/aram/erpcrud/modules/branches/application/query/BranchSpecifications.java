@@ -19,6 +19,7 @@ public interface BranchSpecifications {
 
             return builder.or(
                     builder.like(builder.lower(root.get("name")), searchPattern),
+                    builder.like(builder.lower(root.get("phone")), searchPattern),
                     builder.like(builder.lower(addressJoin.get("district")), searchPattern),
                     builder.like(builder.lower(addressJoin.get("street")), searchPattern),
                     builder.like(builder.lower(addressJoin.get("streetNumber")), searchPattern),

@@ -14,6 +14,7 @@ public class BranchModelMapper {
         return BranchDTO.builder()
                 .id(branch.getId())
                 .name(branch.getName())
+                .phone(branch.getPhone())
                 .address(toBranchAddressDTO(branch.getAddress()))
                 .build();
     }
@@ -31,6 +32,7 @@ public class BranchModelMapper {
     public Branch toBranch(BranchCommand command) {
         return Branch.builder()
                 .name(command.name())
+                .phone(command.phone())
                 .address(makeBranchAddress(command))
                 .build();
     }

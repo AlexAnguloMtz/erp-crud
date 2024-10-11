@@ -6,6 +6,7 @@ import lombok.Builder;
 public record BranchDTO(
         Long id,
         String name,
+        String phone,
         BranchAddressDTO address
 ) {
 }
