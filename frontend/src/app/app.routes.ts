@@ -7,6 +7,7 @@ import { Users2Component } from './pages/users2/users2.component';
 import { BrandsComponent } from './pages/brands/brands.component';
 import { MovementsComponent } from './pages/movements/movements.component';
 import { BackupsComponent } from './pages/backups/backups.component';
+import { BranchesComponent } from './pages/branches/branches.component';
 
 export const routes: Routes = [
     {
@@ -33,6 +34,10 @@ export const routes: Routes = [
             {
                 path: 'inventory',
                 component: InventoryComponent,
+            },
+            {
+                path: 'branches',
+                component: BranchesComponent,
             },
             {
                 path: 'brands',

@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/login").permitAll()
                 .anyRequest().authenticated()
             )
-            //.cors(cors -> cors.configurationSource(request -> corsConfiguration()))
+            .cors(cors -> cors.configurationSource(request -> corsConfiguration()))
             .formLogin(AbstractHttpConfigurer::disable)
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();

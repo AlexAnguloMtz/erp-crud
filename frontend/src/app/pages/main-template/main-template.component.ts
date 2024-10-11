@@ -39,38 +39,44 @@ type MainTemplateStatus = LoadingStatus | BaseStatus | ErrorStatus
 
 const links: Array<SidebarLink> = [
   {
-    id: 'module-home',
+    id: 'home',
     href: '/home',
     text: 'Inicio',
     icon: 'home',
 
   },
   {
-    id: 'module-users',
+    id: 'users',
     href: '/home/users',
     text: 'Usuarios',
     icon: 'user',
   },
-  // {
-  //   id: 'module-inventory',
-  //   href: '/home/inventory',
-  //   text: 'Inventario',
-  //   icon: 'warehouse',
-  // },
   //{
-  //  id: 'module-movements',
+  //  id: 'inventory',
+  //  href: '/home/inventory',
+  //  text: 'Inventario',
+  //  icon: 'warehouse',
+  //},
+  //{
+  //  id: 'movements',
   //  href: '/home/movements',
   //  text: 'Movimientos',
   //  icon: 'truck',
   //},
   {
-    id: 'module-brands',
+    id: 'brands',
     href: '/home/brands',
     text: 'Marcas',
     icon: 'bookmark',
   },
   {
-    id: 'module-backups',
+    id: 'branches',
+    href: '/home/branches',
+    text: 'Sucursales',
+    icon: 'map-marker',
+  },
+  {
+    id: 'backups',
     href: '/home/backups',
     text: 'Respaldos',
     icon: 'download',

@@ -1,9 +1,9 @@
 package com.aram.erpcrud.seeder;
 
-import com.aram.erpcrud.modules.auth.domain.AuthRole;
-import com.aram.erpcrud.modules.auth.domain.AuthRoleRepository;
-import com.aram.erpcrud.modules.auth.domain.Account;
-import com.aram.erpcrud.modules.auth.domain.AccountRepository;
+import com.aram.erpcrud.modules.authorization.domain.Role;
+import com.aram.erpcrud.modules.authorization.domain.RoleRepository;
+import com.aram.erpcrud.modules.authorization.domain.Account;
+import com.aram.erpcrud.modules.authorization.domain.AccountRepository;
 import com.aram.erpcrud.modules.personaldetails.domain.PersonalAddress;
 import com.aram.erpcrud.modules.personaldetails.domain.PersonalDetails;
 import com.aram.erpcrud.modules.personaldetails.domain.PersonalDetailsRepository;
@@ -18,7 +18,7 @@ public class RootUserSeeder {
     private final String rootUserPassword;
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
-    private final AuthRoleRepository authRoleRepository;
+    private final RoleRepository roleRepository;
     private final PersonalDetailsRepository personalDetailsRepository;
 
     public RootUserSeeder(
@@ -26,19 +26,19 @@ public class RootUserSeeder {
             @Value("${config.root-user.password}") String rootUserPassword,
             PasswordEncoder passwordEncoder,
             AccountRepository accountRepository,
-            AuthRoleRepository authRoleRepository,
+            RoleRepository roleRepository,
             PersonalDetailsRepository personalDetailsRepository
     ) {
         this.rootUserEmail = rootUserEmail;
         this.rootUserPassword = rootUserPassword;
         this.passwordEncoder = passwordEncoder;
         this.accountRepository = accountRepository;
-        this.authRoleRepository = authRoleRepository;
+        this.roleRepository = roleRepository;
         this.personalDetailsRepository = personalDetailsRepository;
     }
 
     public void seed() {
-        AuthRole superUserRole = authRoleRepository.findByCanonicalName("super_user")
+        Role superUserRole = roleRepository.findByCanonicalName("super_user")
                 .orElseThrow(() -> new RuntimeException("Could not find root user role"));
 
         if (accountRepository.countByRole(superUserRole) == 0) {
@@ -48,7 +48,7 @@ public class RootUserSeeder {
         }
     }
 
-    private Account rootUserAccount(AuthRole superUserRole) {
+    private Account rootUserAccount(Role superUserRole) {
         Account account = new Account();
         account.setRole(superUserRole);
         account.setEmail(rootUserEmail);

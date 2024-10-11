@@ -31,6 +31,17 @@
     </form>
 </p-dialog>
 }
+<p-dialog header="Ordenar" [(visible)]="sortDialogVisible" modal="true" [closable]="true" [resizable]="false"
+    [draggable]="false" [dismissableMask]="true" [style]="{'width': '95%', 'max-width': '400px'}">
+    <fieldset>
+        @for (sortOption of sortOptions; track sortOption.key) {
+        <div class="sort-option" [class.selected]="isSelectedSortOption(sortOption)" aria-label="option"
+            (click)="onSortOptionClick(sortOption)">
+            {{ sortOption.name }}
+        </div>
+        }
+    </fieldset>
+</p-dialog>
 <p-dialog class="form-dialog" [draggable]="false" [dismissableMask]="false" (onHide)="onHideItemForm()"
     header="{{ formTitle }}" [modal]="true" [(visible)]="createItemVisible" [style]="{'padding-bottom': '0'}">
     <form id="create-item-form" class="create-item-form" [formGroup]="itemCreationForm"
@@ -91,7 +102,7 @@
             <p-inputGroupAddon [style]="{'height': '0px', 'padding': '0'}">
                 <i class="pi pi-search" [style]="{'fontSize': '12px', 'position': 'relative', 'bottom': '9px'}"></i>
             </p-inputGroupAddon>
-            <input pInputText placeholder="{{ searchPlaceholder }}" [formControl]="searchControl"
+            <input pInputText placeholder="Buscar" [formControl]="searchControl"
                 [style]="{'fontSize':'12px', 'height': '12px', 'color': 'black'}" />
         </p-inputGroup>
     </div>
@@ -105,8 +116,8 @@
                 </p-inputGroupAddon>
                 <div class="sort-dropdown-container">
                     <p-dropdown [options]="sortOptions" [(ngModel)]="selectedSort" optionLabel="name"
-                        placeholder="Ordenar por" [style]="{'width': '100%', 'height': '26px', 'padding': '0'}"
-                        (onChange)="onSortChanged()" />
+                        placeholder="Ordenar" [style]="{'width': '100%', 'height': '26px', 'padding': '0'}"
+                        readonly="true" (click)="onSortInputClick()" />
                 </div>
             </p-inputGroup>
         </div>

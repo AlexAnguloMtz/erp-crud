@@ -106,7 +106,7 @@ type DeleteItemStatus = DeleteItemBase | DeletingItem
     ButtonModule,
     DialogModule,
     ConfirmDialogModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [ConfirmationService, AuthenticationProofVault],
   templateUrl: './crud-module.component.html',
@@ -120,7 +120,6 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() formTitle: string;
   @Input() tableHeaders: Array<string>
   @Input() updateItemFieldsStyle: { [key: string]: string } = {};
-  @Input() searchPlaceholder: string;
   @Input() hasSearchBar: boolean = true;
   @Input() hasFilters: boolean = true;
   @Input() pluralNoun: string = '';
@@ -171,6 +170,8 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   itemSavedDialogVisible: boolean;
 
+  sortDialogVisible: boolean;
+
   itemToUpdateId: number;
 
   itemDeletedDialogVisible: boolean;
@@ -194,6 +195,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
     this.createItemVisible = false;
     this.itemSavedDialogVisible = false;
     this.itemDeletedDialogVisible = false;
+    this.sortDialogVisible = false;
     this.filtersVisible = false;
     this.createItemStatus = { _type: 'item-creation-base' }
     this.updateItemStatus = { _type: 'item-update-base' }
@@ -250,6 +252,20 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   get updatingItem(): boolean {
     return this.updateItemStatus._type === 'updating-item';
+  }
+
+  isSelectedSortOption(option: SortOption): boolean {
+    return this.selectedSort?.key === option.key;
+  }
+
+  onSortInputClick(): void {
+    this.sortDialogVisible = true;
+  }
+
+  onSortOptionClick(option: SortOption): void {
+    this.selectedSort = option;
+    this.onSortChanged();
+    this.sortDialogVisible = false;
   }
 
   onEditClick(item: CrudItem): void {

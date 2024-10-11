@@ -1,6 +1,6 @@
 package com.aram.erpcrud.config;
 
-import com.aram.erpcrud.modules.auth.domain.Account;
+import com.aram.erpcrud.modules.authorization.domain.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

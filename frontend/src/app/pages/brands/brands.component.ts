@@ -4,9 +4,11 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { PaginatedRequest } from '../../common/paginated-request';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { Observable } from 'rxjs';
-import { BrandCommand, ProductsService } from '../../services/products-service';
+import { BrandCommand, BrandsService } from '../../services/brands-service';
 import { InputTextModule } from 'primeng/inputtext';
 import { SortOption } from '../../common/sort-option';
+
+const NAME_MAX_LENGTH: number = 60;
 
 @Component({
   selector: 'app-brands',
@@ -23,11 +25,11 @@ import { SortOption } from '../../common/sort-option';
 export class BrandsComponent {
 
   constructor(
-    private productsService: ProductsService,
+    private brandsService: BrandsService,
   ) { }
 
   getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
-    return (request: PaginatedRequest) => this.productsService.getBrands(request);
+    return (request: PaginatedRequest) => this.brandsService.getBrands(request);
   }
 
   createForm(): (formBuilder: FormBuilder) => FormGroup {
@@ -35,7 +37,10 @@ export class BrandsComponent {
       return formBuilder.group({
         name: [
           '',
-          [Validators.required, Validators.maxLength(60)]
+          [
+            Validators.required,
+            Validators.maxLength(NAME_MAX_LENGTH),
+          ]
         ],
       });
     }
@@ -66,15 +71,15 @@ export class BrandsComponent {
   }
 
   createItem(): (dto: BrandCommand) => Observable<void> {
-    return (dto: BrandCommand) => this.productsService.createBrand(dto);
+    return (dto: BrandCommand) => this.brandsService.createBrand(dto);
   }
 
   updateItem(): (id: number, dto: BrandCommand) => Observable<void> {
-    return (id: number, dto: BrandCommand) => this.productsService.updateBrand(id, dto);
+    return (id: number, dto: BrandCommand) => this.brandsService.updateBrand(id, dto);
   }
 
   deleteItemById(): (id: number) => Observable<void> {
-    return (id: number) => this.productsService.deleteBrandById(id);
+    return (id: number) => this.brandsService.deleteBrandById(id);
   }
 
   mapFormToDto(): (formGroup: FormGroup) => BrandCommand {
@@ -112,7 +117,7 @@ export class BrandsComponent {
     }
 
     if (control.errors?.['maxlength']) {
-      return 'Máximo 60 caracteres';
+      return `Máximo ${NAME_MAX_LENGTH} caracteres`;
     }
 
     return '';

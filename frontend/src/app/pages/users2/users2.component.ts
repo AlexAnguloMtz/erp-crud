@@ -20,6 +20,13 @@ import { range, toggle } from '../../common/arrays';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FiltersFormCheckboxComponent } from '../../components/filters-form-checkbox/filters-form-checkbox.component';
 
+const NAME_MAX_LENGTH: number = 60;
+const LAST_NAME_MAX_LENGTH: number = 60;
+const EMAIL_MAX_LENGTH: number = 60;
+const DISTRICT_MAX_LENGTH: number = 60;
+const STREET_MAX_LENGTH: number = 60;
+const STREET_NUMBER_MAX_LENGTH: number = 10;
+
 type FirstSurfaceState = {
   type: 'first-surface'
 }
@@ -111,8 +118,18 @@ export class Users2Component {
     return [
       { name: 'Nombre (A - Z)', key: 'name-asc' },
       { name: 'Nombre (Z - A)', key: 'name-desc' },
+
       { name: 'Apellido (A - Z)', key: 'lastName-asc' },
       { name: 'Apellido (Z - A)', key: 'lastName-desc' },
+
+      { name: 'Rol (A - Z)', key: 'role-asc' },
+      { name: 'Rol (Z - A)', key: 'role-desc' },
+
+      { name: 'Correo (A - Z)', key: 'email-asc' },
+      { name: 'Correo (Z - A)', key: 'email-desc' },
+
+      { name: 'Teléfono (0 - 9)', key: 'phone-asc' },
+      { name: 'Teléfono (9 - 0)', key: 'phone-desc' },
     ];
   }
 
@@ -243,11 +260,11 @@ export class Users2Component {
       return formBuilder.group({
         name: [
           '',
-          [Validators.required, Validators.maxLength(60)]
+          [Validators.required, Validators.maxLength(NAME_MAX_LENGTH)]
         ],
         lastName: [
           '',
-          [Validators.required, Validators.maxLength(60)]
+          [Validators.required, Validators.maxLength(LAST_NAME_MAX_LENGTH)]
         ],
         phone: [
           '',
@@ -261,20 +278,20 @@ export class Users2Component {
           [
             Validators.required,
             Validators.email,
-            Validators.maxLength(60),
+            Validators.maxLength(EMAIL_MAX_LENGTH),
           ]
         ],
         district: [
           '',
-          [Validators.required, Validators.maxLength(60)]
+          [Validators.required, Validators.maxLength(DISTRICT_MAX_LENGTH)]
         ],
         street: [
           '',
-          [Validators.required, Validators.maxLength(60)]
+          [Validators.required, Validators.maxLength(STREET_MAX_LENGTH)]
         ],
         streetNumber: [
           '',
-          [Validators.required, Validators.maxLength(10)]
+          [Validators.required, Validators.maxLength(STREET_NUMBER_MAX_LENGTH)]
         ],
         zipCode: [
           '',
@@ -452,7 +469,7 @@ export class Users2Component {
     }
 
     if (control.errors?.['maxlength']) {
-      return 'Máximo 60 caracteres';
+      return `Máximo ${NAME_MAX_LENGTH} caracteres`;
     }
 
     return '';
@@ -474,7 +491,7 @@ export class Users2Component {
     }
 
     if (control.errors?.['maxlength']) {
-      return 'Máximo 60 caracteres';
+      return `Máximo ${LAST_NAME_MAX_LENGTH} caracteres`;
     }
 
     return '';
@@ -496,7 +513,7 @@ export class Users2Component {
     }
 
     if (control.errors?.['maxlength']) {
-      return 'Máximo 60 caracteres';
+      return `Máximo ${DISTRICT_MAX_LENGTH} caracteres`;
     }
 
     return '';
@@ -518,7 +535,7 @@ export class Users2Component {
     }
 
     if (control.errors?.['maxlength']) {
-      return 'Máximo 60 caracteres';
+      return `Máximo ${STREET_MAX_LENGTH} caracteres`;
     }
 
     return '';
@@ -540,7 +557,7 @@ export class Users2Component {
     }
 
     if (control.errors?.['maxlength']) {
-      return 'Máximo 10 caracteres';
+      return `Máximo ${STREET_NUMBER_MAX_LENGTH} caracteres`;
     }
 
     return '';
@@ -566,7 +583,7 @@ export class Users2Component {
     }
 
     if (control.errors?.['maxlength']) {
-      return 'Máximo 60 caracteres';
+      return `Máximo ${EMAIL_MAX_LENGTH} caracteres`;
     }
 
     return '';

@@ -1,7 +1,7 @@
 package com.aram.erpcrud.config;
 
-import com.aram.erpcrud.modules.auth.domain.Account;
-import com.aram.erpcrud.modules.auth.domain.AccountRepository;
+import com.aram.erpcrud.modules.authorization.domain.Account;
+import com.aram.erpcrud.modules.authorization.domain.AccountRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

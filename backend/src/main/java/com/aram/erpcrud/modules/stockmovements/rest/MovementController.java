@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 
 @RestController
-@RequestMapping("/api/v1/movements")
+@RequestMapping("/api/v1/stock-movements")
 public class MovementController {
 
     private final MovementFacade movementFacade;

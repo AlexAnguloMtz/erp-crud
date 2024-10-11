@@ -1,5 +1,5 @@
 -- Insertar domicilios
-INSERT INTO domicilio(colonia, calle, numero_calle, codigo_postal) VALUES 
+INSERT INTO domicilio_personal(colonia, calle, numero_calle, codigo_postal) VALUES 
 ('Centro', 'Avenida 1', '101', '01010'),
 ('Roma', 'Calle 2', '202', '02020'),
 ('Polanco', 'Calle 3', '303', '03030'),
@@ -7,7 +7,7 @@ INSERT INTO domicilio(colonia, calle, numero_calle, codigo_postal) VALUES
 ('Santa Fe', 'Calle 5', '505', '05050'),
 ('Coyoacán', 'Calle 6', '606', '06060'),
 ('Tlalpan', 'Calle 7', '707', '07070'),
-('Gustavo A. Madero', 'Avenida 8', '808', '08080'),
+('Gustavo A. Madero', '8', '808', '08080'),
 ('Iztapalapa', 'Calle 9', '909', '09090'),
 ('Xochimilco', 'Avenida 10', '1000', '10101'),
 ('Roma', 'Paseo de la Reforma', '123', '83000'),

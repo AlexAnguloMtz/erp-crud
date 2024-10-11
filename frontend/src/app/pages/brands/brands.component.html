@@ -5,7 +5,7 @@
 <ng-template #itemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
     <div class="form-input">
         <label>Nombre</label>
-        <input pInputText name="user-last-name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
+        <input pInputText name="name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
         <div class="form-error name">
             {{ errors['name'] }}
         </div>
@@ -18,5 +18,5 @@
     [updateItemFieldsTemplate]="itemFieldsTemplate" [getCreationErrors]="getFormErrors()"
     [getUpdateErrors]="getFormErrors()" [mapItemOperationError]="mapItemOperationError()" [createItem]="createItem()"
     [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToDto()" [mapFormToUpdateDto]="mapFormToDto()"
-    [deleteItemById]="deleteItemById()" [searchPlaceholder]="'Buscar por nombre'" [hasFilters]="false">
+    [deleteItemById]="deleteItemById()" [hasFilters]="false">
 </app-crud-module>

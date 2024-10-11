@@ -1,6 +1,6 @@
 package com.aram.erpcrud.config;
 
-import com.aram.erpcrud.modules.auth.util.JwtHandler;
+import com.aram.erpcrud.modules.authorization.util.JwtHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
