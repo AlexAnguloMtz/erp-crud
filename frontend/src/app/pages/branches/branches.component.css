@@ -23,6 +23,11 @@
     padding-bottom: 20px;
 }
 
+.form__progress-container {
+    display: flex;
+    justify-content: center;
+}
+
 @media screen and (min-width: 570px) {
     .double-input-container {
         flex-direction: row;

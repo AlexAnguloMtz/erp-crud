@@ -26,4 +26,8 @@ public class Branch {
     @JoinColumn(name = "domicilio_id")
     private BranchAddress address;
 
+    @OneToOne
+    @JoinColumn(name = "tipo_sucursal_id")
+    private BranchType branchType;
+
 }

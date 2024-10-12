@@ -3,10 +3,15 @@ import { CrudItem, CrudModuleComponent, DisplayableError } from '../crud-module/
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { SortOption } from '../../common/sort-option';
-import { Branch, BranchAddress, BranchCommand, BranchesService } from '../../services/branches-service';
+import { Branch, BranchAddress, BranchCommand, BranchesService, BranchType } from '../../services/branches-service';
 import { PaginatedRequest } from '../../common/paginated-request';
 import { Observable } from 'rxjs';
 import { PaginatedResponse } from '../../common/paginated-response';
+import { BranchTypesService } from '../../services/branch-types-service';
+import { loadingError, loadingOptions, options, OptionsStatus } from '../../common/options-status';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
 
 const NAME_MAX_LENGTH: number = 60;
 const PHONE_LENGTH: number = 10;
@@ -22,15 +27,25 @@ const STREET_NUMBER_MAX_LENGTH: number = 10;
     FormsModule,
     ReactiveFormsModule,
     InputTextModule,
+    ProgressSpinnerModule,
+    ButtonModule,
+    DropdownModule,
   ],
   templateUrl: './branches.component.html',
   styleUrl: './branches.component.css'
 })
 export class BranchesComponent {
 
+  branchTypesStatus: OptionsStatus<BranchType>;
+
   constructor(
     private branchesService: BranchesService,
+    private branchTypesService: BranchTypesService,
   ) { }
+
+  ngOnInit(): void {
+    this.branchTypesStatus = { _type: 'base' };
+  }
 
   getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
     return (request: PaginatedRequest) => this.branchesService.getBranches(request);
@@ -51,6 +66,12 @@ export class BranchesComponent {
           [
             Validators.required,
             Validators.pattern(/^\d{10}$/)
+          ]
+        ],
+        branchType: [
+          '',
+          [
+            Validators.required,
           ]
         ],
         district: [
@@ -90,6 +111,7 @@ export class BranchesComponent {
       const errors: { [key: string]: string } = {};
       errors['name'] = this.nameError(formGroup);
       errors['phone'] = this.phoneError(formGroup);
+      errors['branchType'] = this.branchTypeError(formGroup);
       errors['district'] = this.districtError(formGroup);
       errors['street'] = this.streetError(formGroup);
       errors['streetNumber'] = this.streetNumberError(formGroup);
@@ -121,7 +143,8 @@ export class BranchesComponent {
 
   mapFormToDto(): (formGroup: FormGroup) => BranchCommand {
     return (formGroup: FormGroup) => ({
-      ...formGroup.value
+      ...formGroup.value,
+      branchTypeId: formGroup.get('branchType')?.value
     });
   }
 
@@ -135,17 +158,45 @@ export class BranchesComponent {
       formGroup.patchValue({
         ...model,
         ...model.address,
+        branchType: model.branchType.id,
       });
     }
+  }
+
+  onCreateNewClick(): () => void {
+    return () => {
+      if (this.branchTypesStatus._type === 'base') {
+        this.loadBranchTypes();
+      }
+    }
+  }
+
+  onRetryLoadBranchTypes(): () => void {
+    return () => this.loadBranchTypes();
+  }
+
+  loadOptionsOnRowClick(): (item: CrudItem, formGroup: FormGroup) => void {
+    return (item: CrudItem, updateItemForm: FormGroup) => {
+      const model: Branch = (item as Branch);
+      this.loadBranchTypesOnRowClick(model.branchType.id, updateItemForm);
+    }
+  }
+
+  loadBranchTypesOnRowClick(branchTypeId: number, form: FormGroup): void {
+    if (this.branchTypesStatus._type === 'base') {
+      this.loadBranchTypes();
+    }
+    form.get('branchType')?.setValue(branchTypeId);
   }
 
   get tableHeaders(): Array<string> {
     return [
       'Nombre',
+      'Tipo de sucursal',
+      'Teléfono',
       'Colonia',
       'Calle y número',
       'Código postal',
-      'Teléfono',
     ];
   }
 
@@ -153,6 +204,12 @@ export class BranchesComponent {
     return [
       { name: 'Nombre (A - Z)', key: 'name-asc' },
       { name: 'Nombre (Z - A)', key: 'name-desc' },
+
+      { name: 'Tipo de sucursal (A - Z)', key: 'branchType-asc' },
+      { name: 'Tipo de sucursal (Z - A)', key: 'branchType-desc' },
+
+      { name: 'Teléfono (0 - 9)', key: 'phone-asc' },
+      { name: 'Teléfono (9 - 0)', key: 'phone-desc' },
 
       { name: 'Colonia (A - Z)', key: 'district-asc' },
       { name: 'Colonia (Z - A)', key: 'district-desc' },
@@ -162,10 +219,31 @@ export class BranchesComponent {
 
       { name: 'Código postal (0 - 9)', key: 'zipCode-asc' },
       { name: 'Código postal (9 - 0)', key: 'zipCode-desc' },
-
-      { name: 'Teléfono (0 - 9)', key: 'phone-asc' },
-      { name: 'Teléfono (9 - 0)', key: 'phone-desc' },
     ];
+  }
+
+  get loadingBranchTypesOptions(): boolean {
+    return loadingOptions(this.branchTypesStatus);
+  }
+
+  get loadingBranchTypesError(): boolean {
+    return loadingError(this.branchTypesStatus);
+  }
+
+  get branchTypesOptions(): Array<BranchType> {
+    return options(this.branchTypesStatus);
+  }
+
+  private loadBranchTypes(): void {
+    this.branchTypesStatus = { _type: 'loading-options' };
+    this.branchTypesService.getAllBranchTypes().subscribe({
+      next: (branchTypes: Array<BranchType>) => {
+        this.branchTypesStatus = {
+          _type: 'options-ready', items: branchTypes,
+        }
+      },
+      error: (_) => this.branchTypesStatus = { _type: 'error' },
+    });
   }
 
   private nameError(form: FormGroup): string {
@@ -207,6 +285,24 @@ export class BranchesComponent {
 
     if (control.errors?.['pattern']) {
       return `Deben ser ${PHONE_LENGTH} dígitos`;
+    }
+
+    return '';
+  }
+
+  private branchTypeError(form: FormGroup): string {
+    const control: FormControl = form.get('branchType') as FormControl;
+
+    if (control.valid) {
+      return '';
+    }
+
+    if (!(control.touched || control.dirty)) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Valor requerido';
     }
 
     return '';

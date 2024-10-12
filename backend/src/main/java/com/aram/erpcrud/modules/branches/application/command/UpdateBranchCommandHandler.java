@@ -1,8 +1,6 @@
 package com.aram.erpcrud.modules.branches.application.command;
 
-import com.aram.erpcrud.modules.branches.domain.Branch;
-import com.aram.erpcrud.modules.branches.domain.BranchAddress;
-import com.aram.erpcrud.modules.branches.domain.BranchRepository;
+import com.aram.erpcrud.modules.branches.domain.*;
 import com.aram.erpcrud.modules.branches.payload.BranchCommand;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -16,15 +14,23 @@ import java.util.Optional;
 public class UpdateBranchCommandHandler {
 
     private final BranchRepository branchRepository;
+    private final BranchTypeRepository branchTypeRepository;
 
     public UpdateBranchCommandHandler(
-            BranchRepository branchRepository
+            BranchRepository branchRepository,
+            BranchTypeRepository branchTypeRepository
     ) {
         this.branchRepository = branchRepository;
+        this.branchTypeRepository = branchTypeRepository;
     }
 
     @Transactional
     public void handle(Long id, BranchCommand command) {
+        Optional<BranchType> branchTypeOptional = branchTypeRepository.findById(command.branchTypeId());
+        if (branchTypeOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
         Optional<Branch> byIdOptional = branchRepository.findById(id);
         if (byIdOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -43,6 +49,7 @@ public class UpdateBranchCommandHandler {
 
         branch.setName(command.name());
         branch.setPhone(command.phone());
+        branch.setBranchType(branchTypeOptional.get());
 
         BranchAddress address = branch.getAddress();
         address.setDistrict(command.district());

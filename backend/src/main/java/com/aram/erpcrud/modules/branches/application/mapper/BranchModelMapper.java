@@ -2,9 +2,8 @@ package com.aram.erpcrud.modules.branches.application.mapper;
 
 import com.aram.erpcrud.modules.branches.domain.Branch;
 import com.aram.erpcrud.modules.branches.domain.BranchAddress;
-import com.aram.erpcrud.modules.branches.payload.BranchAddressDTO;
-import com.aram.erpcrud.modules.branches.payload.BranchCommand;
-import com.aram.erpcrud.modules.branches.payload.BranchDTO;
+import com.aram.erpcrud.modules.branches.domain.BranchType;
+import com.aram.erpcrud.modules.branches.payload.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,6 +15,7 @@ public class BranchModelMapper {
                 .name(branch.getName())
                 .phone(branch.getPhone())
                 .address(toBranchAddressDTO(branch.getAddress()))
+                .branchType(toBranchTypeDTO(branch.getBranchType()))
                 .build();
     }
 
@@ -29,20 +29,36 @@ public class BranchModelMapper {
                 .build();
     }
 
-    public Branch toBranch(BranchCommand command) {
+    public Branch toBranch(BranchCommand command, BranchType branchType) {
         return Branch.builder()
                 .name(command.name())
                 .phone(command.phone())
-                .address(makeBranchAddress(command))
+                .address(toBranchAddress(command))
+                .branchType(branchType)
                 .build();
     }
 
-    public BranchAddress makeBranchAddress(BranchCommand command) {
+    public BranchAddress toBranchAddress(BranchCommand command) {
         return BranchAddress.builder()
                 .district(command.district())
                 .street(command.street())
                 .streetNumber(command.streetNumber())
                 .zipCode(command.zipCode())
+                .build();
+    }
+
+    public BranchTypeDTO toBranchTypeDTO(BranchType branchType) {
+        return BranchTypeDTO.builder()
+                .id(branchType.getId())
+                .name(branchType.getName())
+                .description(branchType.getDescription())
+                .build();
+    }
+
+    public BranchType toBranchType(BranchTypeCommand command) {
+        return BranchType.builder()
+                .name(command.name())
+                .description(command.description())
                 .build();
     }
 }

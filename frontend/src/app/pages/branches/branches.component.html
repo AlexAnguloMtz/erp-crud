@@ -1,9 +1,10 @@
 <ng-template #rowTemplate let-item>
     <td>{{ item.name }}</td>
+    <td>{{ item.branchType.name }}</td>
+    <td>{{ item.phone }}</td>
     <td>{{ item.address.district }}</td>
     <td>{{ formatStreetWithNumber(item.address) }}</td>
     <td>{{ item.address.zipCode }}</td>
-    <td>{{ item.phone }}</td>
 </ng-template>
 
 <ng-template #itemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
@@ -14,11 +15,34 @@
             {{ errors['name'] }}
         </div>
     </div>
-    <div class="form-input">
-        <label>Teléfono</label>
-        <input pInputText name="phone" [formControl]="formGroup.get('phone')" [style]="{'width': '100%'}" />
-        <div class="form-error phone">
-            {{ errors['phone'] }}
+    <div class="double-input-container">
+        <div class="form-input">
+            <label>Tipo de sucursal</label>
+            @if (loadingBranchTypesOptions) {
+            <div class="form__progress-container">
+                <p-progressSpinner class="form__progress" ariaLabel="loading"
+                    [style]="{'width': '40px', 'height': '40px'}" />
+            </div>
+            } @else if (loadingBranchTypesError) {
+            <div class="dropdown-load-error">
+                <div>Error de carga</div>
+                <p-button (click)="onRetryLoadBranchTypes()" [outlined]="true" icon="pi pi-refresh"
+                    severity="secondary" />
+            </div>
+            } @else {
+            <p-dropdown name="branchType" [formControl]="formGroup.get('branchType')" [options]="branchTypesOptions"
+                optionLabel="name" optionValue="id" placeholder="Tipo de sucursal" [style]="{'width': '100%'}" />
+            }
+            <div class="form-error branchType">
+                {{ errors['branchType'] }}
+            </div>
+        </div>
+        <div class="form-input">
+            <label>Teléfono</label>
+            <input pInputText name="phone" [formControl]="formGroup.get('phone')" [style]="{'width': '100%'}" />
+            <div class="form-error phone">
+                {{ errors['phone'] }}
+            </div>
         </div>
     </div>
     <div class="double-input-container">
@@ -62,5 +86,6 @@
     [updateItemFieldsTemplate]="itemFieldsTemplate" [getCreationErrors]="getFormErrors()"
     [getUpdateErrors]="getFormErrors()" [mapItemOperationError]="mapItemOperationError()" [createItem]="createItem()"
     [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToDto()" [mapFormToUpdateDto]="mapFormToDto()"
-    [deleteItemById]="deleteItemById()" [hasFilters]="false" [onPatchUpdateForm]="onPatchUpdateForm()">
+    [deleteItemById]="deleteItemById()" [hasFilters]="false" [onPatchUpdateForm]="onPatchUpdateForm()"
+    [onCreateNewClick]="onCreateNewClick()" [loadOptionsOnRowClick]="loadOptionsOnRowClick()">
 </app-crud-module>

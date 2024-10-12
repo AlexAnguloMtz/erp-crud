@@ -18,6 +18,13 @@ export type Branch = {
     name: string
     phone: string
     address: BranchAddress
+    branchType: BranchType
+}
+
+export type BranchType = {
+    id: number
+    name: string
+    description: string
 }
 
 export type BranchAddress = {
@@ -31,6 +38,7 @@ export type BranchAddress = {
 export type BranchCommand = {
     name: string
     phone: string
+    branchTypeId: number
     district: string
     street: string
     streetNumber: string
@@ -88,5 +96,4 @@ export class BranchesService {
             })
         );
     }
-
 }

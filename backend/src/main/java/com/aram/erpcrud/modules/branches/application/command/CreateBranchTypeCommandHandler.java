@@ -1,11 +1,9 @@
 package com.aram.erpcrud.modules.branches.application.command;
 
 import com.aram.erpcrud.modules.branches.application.mapper.BranchModelMapper;
-import com.aram.erpcrud.modules.branches.domain.Branch;
-import com.aram.erpcrud.modules.branches.domain.BranchRepository;
 import com.aram.erpcrud.modules.branches.domain.BranchType;
 import com.aram.erpcrud.modules.branches.domain.BranchTypeRepository;
-import com.aram.erpcrud.modules.branches.payload.BranchCommand;
+import com.aram.erpcrud.modules.branches.payload.BranchTypeCommand;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -14,36 +12,29 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @Component
-public class CreateBranchCommandHandler {
+public class CreateBranchTypeCommandHandler {
 
     private final BranchModelMapper branchModelMapper;
-    private final BranchRepository branchRepository;
     private final BranchTypeRepository branchTypeRepository;
 
-    public CreateBranchCommandHandler(
+    public CreateBranchTypeCommandHandler(
             BranchModelMapper branchModelMapper,
-            BranchRepository branchRepository,
             BranchTypeRepository branchTypeRepository
     ) {
         this.branchModelMapper = branchModelMapper;
-        this.branchRepository = branchRepository;
         this.branchTypeRepository = branchTypeRepository;
     }
 
     @Transactional
-    public void handle(BranchCommand command) {
-        Optional<Branch> branchOptional = branchRepository.findByName(command.name());
-        if (branchOptional.isPresent()) {
+    public void handle(BranchTypeCommand command) {
+        Optional<BranchType> byNameOptional = branchTypeRepository.findByName(command.name());
+        if (byNameOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
 
-        Optional<BranchType> branchTypeOptional = branchTypeRepository.findById(command.branchTypeId());
-        if (branchTypeOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+        BranchType branchType = branchModelMapper.toBranchType(command);
 
-        Branch branch = branchModelMapper.toBranch(command, branchTypeOptional.get());
-
-        branchRepository.save(branch);
+        branchTypeRepository.save(branchType);
     }
+
 }

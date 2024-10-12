@@ -3,11 +3,9 @@ package com.aram.erpcrud.modules.branches.payload;
 import lombok.Builder;
 
 @Builder
-public record BranchDTO(
+public record BranchTypeDTO(
         Long id,
         String name,
-        String phone,
-        BranchAddressDTO address,
-        BranchTypeDTO branchType
+        String description
 ) {
 }

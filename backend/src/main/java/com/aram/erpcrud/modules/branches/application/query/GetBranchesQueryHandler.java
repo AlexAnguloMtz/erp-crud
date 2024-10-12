@@ -20,14 +20,21 @@ public class GetBranchesQueryHandler {
     enum BranchSort {
         NameAsc("name", Sort.Direction.ASC),
         NameDesc("name", Sort.Direction.DESC),
+
         PhoneAsc("phone", Sort.Direction.ASC),
         PhoneDesc("phone", Sort.Direction.DESC),
+
         DistrictAsc("address.district", Sort.Direction.ASC),
         DistrictDesc("address.district", Sort.Direction.DESC),
+
         StreetAsc("address.street", Sort.Direction.ASC),
         StreetDesc("address.street", Sort.Direction.DESC),
+
         ZipCodeAsc("address.zipCode", Sort.Direction.ASC),
-        ZipCodeDesc("address.zipCode", Sort.Direction.DESC);
+        ZipCodeDesc("address.zipCode", Sort.Direction.DESC),
+
+        BranchTypeAsc("branchType.name", Sort.Direction.ASC),
+        BranchTypeDesc("branchType.name", Sort.Direction.DESC);
 
         private final String field;
         private final Sort.Direction direction;
@@ -104,6 +111,12 @@ public class GetBranchesQueryHandler {
         }
         if ("zipCode-desc".equals(sort)) {
             return BranchSort.ZipCodeDesc;
+        }
+        if ("branchType-asc".equals(sort)) {
+            return BranchSort.BranchTypeAsc;
+        }
+        if ("branchType-desc".equals(sort)) {
+            return BranchSort.BranchTypeDesc;
         }
         return BranchSort.NameAsc;
     }
