@@ -4,6 +4,8 @@ import { catchError, Observable, retry, throwError } from "rxjs";
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
 import { DataIntegrityError } from "../common/data-integrity-error";
 import { BranchType } from "./branches-service";
+import { PaginatedResponse } from "../common/paginated-response";
+import { PaginatedRequest } from "../common/paginated-request";
 
 class BranchTypeExistsError extends Error {
     constructor(message: string) {
@@ -28,8 +30,14 @@ export class BranchTypesService {
         private apiClient: ApiClient,
     ) { }
 
+    getBranchTypes(pagination: PaginatedRequest): Observable<PaginatedResponse<BranchType>> {
+        return this.apiClient.get<PaginatedResponse<BranchType>>(this.branchTypesEndpoint, { params: pagination }).pipe(
+            retry(5),
+        );
+    }
+
     getAllBranchTypes(): Observable<Array<BranchType>> {
-        return this.apiClient.get<Array<BranchType>>(this.branchTypesEndpoint).pipe(
+        return this.apiClient.get<Array<BranchType>>(this.branchTypesEndpoint + '/all').pipe(
             retry(5),
         );
     }

@@ -45,24 +45,24 @@ public class GetBranchesQueryHandler {
         }
     }
 
-    private final BranchRepository branchRepository;
-    private final BranchModelMapper branchModelMapper;
     private final SafePagination safePagination;
+    private final BranchModelMapper branchModelMapper;
+    private final BranchRepository branchRepository;
 
     public GetBranchesQueryHandler(
-            BranchRepository branchRepository,
+            SafePagination safePagination,
             BranchModelMapper branchModelMapper,
-            SafePagination safePagination
+            BranchRepository branchRepository
     ) {
-        this.branchRepository = branchRepository;
-        this.branchModelMapper = branchModelMapper;
         this.safePagination = safePagination;
+        this.branchModelMapper = branchModelMapper;
+        this.branchRepository = branchRepository;
     }
 
     public PageResponse<BranchDTO> handle(GetBranchesQuery query) {
-        BranchSort brandSort = toBranchSort(query.sort());
+        BranchSort branchSort = toBranchSort(query.sort());
 
-        Sort sort = Sort.by(Sort.Order.by(brandSort.field).with(brandSort.direction));
+        Sort sort = Sort.by(Sort.Order.by(branchSort.field).with(branchSort.direction));
 
         Pageable pageable = PageRequest.of(
                 safePagination.safePageNumber(query.pageNumber()),

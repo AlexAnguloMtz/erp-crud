@@ -10,7 +10,7 @@ public record BranchTypeCommand(
         String name,
 
         @NotBlank(message = "Description is required")
-        @Size(max = 100, message = "description cannot exceed 100 characters")
+        @Size(max = 300, message = "description cannot exceed 300 characters")
         String description
 
 ) {

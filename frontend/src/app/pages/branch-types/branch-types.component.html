@@ -1,0 +1,31 @@
+<ng-template #rowTemplate let-item>
+    <td>{{ item.name }}</td>
+    <td>{{ item.description }}</td>
+</ng-template>
+
+<ng-template #itemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
+    <div class="form-input">
+        <label>Nombre</label>
+        <input pInputText name="name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
+        <div class="form-error name">
+            {{ errors['name'] }}
+        </div>
+    </div>
+    <div class="form-input">
+        <label>Descripción</label>
+        <textarea name="description" rows="5" cols="30" pInputTextarea
+            [formControl]="formGroup.get('description')"></textarea>
+        <div class="form-error description">
+            {{ errors['description'] }}
+        </div>
+    </div>
+</ng-template>
+
+<app-crud-module [title]="'Tipos de sucursal'" [formTitle]="'Tipos de sucursal'" [createItemCreationForm]="createForm()"
+    [createItemUpdateForm]="createForm()" [getItems]="getItems()" [sortOptions]="sortOptions"
+    [tableHeaders]="tableHeaders" [rowTemplate]="rowTemplate" [createItemFieldsTemplate]="itemFieldsTemplate"
+    [updateItemFieldsTemplate]="itemFieldsTemplate" [getCreationErrors]="getFormErrors()"
+    [getUpdateErrors]="getFormErrors()" [mapItemOperationError]="mapItemOperationError()" [createItem]="createItem()"
+    [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToDto()" [mapFormToUpdateDto]="mapFormToDto()"
+    [deleteItemById]="deleteItemById()" [hasFilters]="false">
+</app-crud-module>

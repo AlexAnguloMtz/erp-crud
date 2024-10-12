@@ -8,6 +8,7 @@ import { BrandsComponent } from './pages/brands/brands.component';
 import { MovementsComponent } from './pages/movements/movements.component';
 import { BackupsComponent } from './pages/backups/backups.component';
 import { BranchesComponent } from './pages/branches/branches.component';
+import { BranchTypesComponent } from './pages/branch-types/branch-types.component';
 
 export const routes: Routes = [
     {
@@ -38,6 +39,10 @@ export const routes: Routes = [
             {
                 path: 'branches',
                 component: BranchesComponent,
+            },
+            {
+                path: 'branch-types',
+                component: BranchTypesComponent,
             },
             {
                 path: 'brands',

@@ -1,9 +1,11 @@
 package com.aram.erpcrud.modules.branches.rest;
 
 import com.aram.erpcrud.modules.branches.application.BranchTypeFacade;
-import com.aram.erpcrud.modules.branches.payload.BranchTypeCommand;
-import com.aram.erpcrud.modules.branches.payload.BranchTypeDTO;
+import com.aram.erpcrud.modules.branches.payload.*;
+import com.aram.erpcrud.utils.PageResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,23 @@ public class BranchTypeController {
     }
 
     @GetMapping
+    public ResponseEntity<PageResponse<BranchTypeDTO>> getBranchTypes(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) @Min(0) Integer pageNumber,
+            @RequestParam(required = false) @Min(1) @Max(50) Integer pageSize,
+            @RequestParam(required = false) String sort
+    ) {
+        GetBranchTypesQuery query = GetBranchTypesQuery.builder()
+                .search(search)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
+                .sort(sort)
+                .build();
+
+        return new ResponseEntity<>(branchTypeFacade.getBranchTypes(query), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<Iterable<BranchTypeDTO>> getAllBranchTypes() {
         return new ResponseEntity<>(branchTypeFacade.getAllBranchTypes(), HttpStatus.OK);
     }

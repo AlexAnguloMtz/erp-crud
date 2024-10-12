@@ -76,6 +76,12 @@ const links: Array<SidebarLink> = [
     icon: 'map-marker',
   },
   {
+    id: 'branch-tyés',
+    href: '/home/branch-types',
+    text: 'Tipos de sucursal',
+    icon: 'list',
+  },
+  {
     id: 'backups',
     href: '/home/backups',
     text: 'Respaldos',
