@@ -20,20 +20,17 @@ type DisplayableError = {
   message: string,
 }
 
-const passwordVisibleProps: PasswordFieldProps = {
+type PasswordHidden = {
   type: 'text',
   icon: 'eye-slash',
 }
 
-const passwordNotVisibleProps: PasswordFieldProps = {
+type PasswordVisible = {
   type: 'password',
   icon: 'eye',
 }
 
-type PasswordFieldProps = {
-  type: 'text' | 'password'
-  icon: 'eye' | 'eye-slash'
-}
+type PasswordFieldProps = PasswordVisible | PasswordHidden;
 
 type BaseStatus = {
   _type: 'login-base'
@@ -48,6 +45,13 @@ type LoginSuccess = {
 }
 
 type LoginFormStatus = BaseStatus | LoggingUser | LoginSuccess
+
+const makePasswordFieldProps = (type: 'text' | 'password'): PasswordFieldProps => {
+  if (type === 'text') {
+    return { type: 'text', icon: 'eye-slash' }
+  }
+  return { type: 'password', icon: 'eye' }
+}
 
 @Component({
   selector: 'app-login',
@@ -88,18 +92,14 @@ export class LoginComponent {
     if (this.authenticationHolder.hasValidAuthentication()) {
       this.router.navigate(['/home']);
     }
-
     this.loginFormStatus = { _type: 'login-base' };
-    this.passwordFieldProps = passwordNotVisibleProps;
+    this.passwordFieldProps = makePasswordFieldProps('password');
     this.loginForm = this.createLoginForm();
   }
 
   onPasswordVisibilityClick() {
-    if (this.passwordFieldProps === passwordVisibleProps) {
-      this.passwordFieldProps = passwordNotVisibleProps;
-    } else {
-      this.passwordFieldProps = passwordVisibleProps
-    }
+    const nextPasswordFieldProps: 'text' | 'password' = this.passwordFieldProps.type === 'text' ? 'password' : 'text';
+    this.passwordFieldProps = makePasswordFieldProps(nextPasswordFieldProps);
   }
 
   onSubmit(): void {
@@ -210,7 +210,6 @@ export class LoginComponent {
   get loggingUser(): boolean {
     return this.loginFormStatus._type === 'login-logging';
   }
-
 
   private createLoginForm(): FormGroup {
     return this.formBuilder.group({
