@@ -119,6 +119,16 @@
 
 </ng-template>
 
+<p-dialog header="Imagen inválida" [(visible)]="branchImageErrorDialogVisible" modal="true"
+    (onHide)="onHideImageErrorDialog()" [closable]="true" [resizable]="false" [draggable]="false"
+    [dismissableMask]="true">
+
+    <div class="image-error-content">
+        <p>{{ branchImageError }}</p>
+    </div>
+
+</p-dialog>
+
 <app-crud-module [title]="'Sucursales'" [formTitle]="'Sucursal'" [createItemCreationForm]="createForm()"
     [createItemUpdateForm]="createForm()" [getItems]="getItems()" [sortOptions]="sortOptions"
     [tableHeaders]="tableHeaders" [rowTemplate]="rowTemplate" [createItemFieldsTemplate]="itemFieldsTemplate"

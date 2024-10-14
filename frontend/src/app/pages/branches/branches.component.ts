@@ -13,6 +13,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { ImageModule } from 'primeng/image';
+import { DialogModule } from 'primeng/dialog';
 
 const NAME_MAX_LENGTH: number = 60;
 const PHONE_LENGTH: number = 10;
@@ -33,11 +34,6 @@ type BranchImageLoading = {
   type: 'loading'
 }
 
-type BranchImageValidationError = {
-  type: 'error',
-  error: string
-}
-
 type BranchImageShowing = {
   type: 'ready',
   imageSrc: string
@@ -46,7 +42,6 @@ type BranchImageShowing = {
 
 type BranchImageStatus =
   | BranchImageBase
-  | BranchImageValidationError
   | BranchImageLoading
   | BranchImageShowing
 
@@ -62,6 +57,7 @@ type BranchImageStatus =
     ButtonModule,
     DropdownModule,
     ImageModule,
+    DialogModule,
   ],
   templateUrl: './branches.component.html',
   styleUrl: './branches.component.css'
@@ -71,6 +67,8 @@ export class BranchesComponent {
   branchTypesStatus: OptionsStatus<BranchType>;
   branchImageStatus: BranchImageStatus;
   branchImageAction: BranchImageAction;
+  branchImageErrorDialogVisible: boolean;
+  branchImageError: string;
 
   constructor(
     private branchesService: BranchesService,
@@ -270,7 +268,16 @@ export class BranchesComponent {
     const validExtensions = ['image/jpeg', 'image/png'];
 
     if (!validExtensions.includes(file.type)) {
-      this.branchImageStatus = { type: 'error', error: 'Selecciona una imagen con extensión JPG, JPEG o PNG' }
+      this.branchImageError = 'Selecciona una imagen con extensión JPG, JPEG o PNG';
+      this.branchImageErrorDialogVisible = true;
+      return;
+    }
+
+    const maxMegabytes: number = 3
+    const maxSizeInBytes = maxMegabytes * 1024 * 1024;
+    if (file.size > maxSizeInBytes) {
+      this.branchImageError = `La imagen supera el tamaño máximo de ${maxMegabytes} MB`;
+      this.branchImageErrorDialogVisible = true;
       return;
     }
 
@@ -287,6 +294,11 @@ export class BranchesComponent {
     reader.readAsDataURL(file);
 
     this.branchImageAction = 'edit';
+  }
+
+  onHideImageErrorDialog(): void {
+    this.branchImageErrorDialogVisible = false;
+    this.branchImageError = '';
   }
 
   onHideItemFormClick(): () => void {
