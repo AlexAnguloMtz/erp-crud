@@ -16,7 +16,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
+import { AuthenticationHolder } from '../../services/authentication-holder';
 
 const RECORDS_PER_PAGE: number = 15;
 
@@ -108,7 +108,7 @@ type DeleteItemStatus = DeleteItemBase | DeletingItem
     ConfirmDialogModule,
     CommonModule,
   ],
-  providers: [ConfirmationService, AuthenticationProofVault],
+  providers: [ConfirmationService, AuthenticationHolder],
   templateUrl: './crud-module.component.html',
   styleUrl: './crud-module.component.css'
 })
@@ -164,28 +164,22 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   createItemStatus: CreateItemStatus;
   updateItemStatus: UpdateItemStatus;
   deleteItemStatus: DeleteItemStatus;
-
   itemCreationForm: FormGroup;
-
   updateItemForm: FormGroup;
-
   itemSavedDialogVisible: boolean;
-
   sortDialogVisible: boolean;
-
   itemToUpdateId: number;
-
   itemDeletedDialogVisible: boolean;
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private authenticationProofVault: AuthenticationProofVault,
+    private authenticationHolder: AuthenticationHolder,
     private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
-    if (!this.authenticationProofVault.hasValidAuthenticationProof()) {
+    if (!this.authenticationHolder.hasValidAuthentication()) {
       this.router.navigate(['/login']);
     }
 

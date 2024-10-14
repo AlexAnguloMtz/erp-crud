@@ -13,7 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AuthService, Role } from '../../services/auth-service';
 import { UserFormFieldsComponent } from './user-form-fields/user-form-fields.component';
 import { options, OptionsStatus } from '../../common/options-status';
-import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
+import { AuthenticationHolder } from '../../services/authentication-holder';
 import { FiltersFormFieldComponent } from '../../components/filters-form-field/filters-form-field.component';
 import { SkeletonModule } from 'primeng/skeleton';
 import { range, toggle } from '../../common/arrays';
@@ -70,7 +70,7 @@ type PasswordFieldProps = {
     CheckboxModule,
     FiltersFormCheckboxComponent,
   ],
-  providers: [AuthenticationProofVault],
+  providers: [AuthenticationHolder],
   templateUrl: './users2.component.html',
   styleUrl: './users2.component.css'
 })
@@ -83,7 +83,7 @@ export class Users2Component {
 
   constructor(
     private userService: UsersService,
-    private authenticationProofVault: AuthenticationProofVault,
+    private authenticationHolder: AuthenticationHolder,
     private authService: AuthService,
   ) { }
 
@@ -376,7 +376,7 @@ export class Users2Component {
       // Set new jwt if user changed their own email, 
       // so they can keep working without interruption 
       if (response.jwt) {
-        this.authenticationProofVault.setAuthenticationProof({ token: response.jwt });
+        this.authenticationHolder.setAuthentication({ token: response.jwt });
       }
     }
   }

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AuthenticationProof, AuthenticationProofVault } from "./authentication-proof-vault";
+import { Authentication, AuthenticationHolder } from "./authentication-holder";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
@@ -33,7 +33,7 @@ export class ApiClient {
 
     constructor(
         private http: HttpClient,
-        private authenticationProofVault: AuthenticationProofVault,
+        private authenticationHolder: AuthenticationHolder,
     ) { }
 
     get<T>(path: string, options?: ApiClientOptions): Observable<T>;
@@ -98,15 +98,15 @@ export class ApiClient {
     }
 
     private getAccessToken(): string {
-        const authenticationProof: AuthenticationProof | undefined = this.authenticationProofVault.getAuthenticationProof();
+        const authentication: Authentication | undefined = this.authenticationHolder.getAuthentication();
 
-        if (!authenticationProof || !this.authenticationProofVault.isValidAuthenticationProof(authenticationProof)) {
+        if (!authentication || !this.authenticationHolder.isValidAuthentication(authentication)) {
             // TODO 
             // IMPORTANT: Catch this error SOMEWHERE and DO SOMETHING!!!
-            throw new InvalidAuthenticationError("cannot use authentication proof because it is invalid");
+            throw new InvalidAuthenticationError("cannot use authentication because it is invalid");
         }
 
-        return authenticationProof.token;
+        return authentication.token;
     }
 
     private isPublicPath(path: string) {

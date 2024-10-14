@@ -9,7 +9,7 @@ import { UsersService } from '../../services/users-service';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
-import { AuthenticationProof, AuthenticationProofVault } from '../../services/authentication-proof-vault';
+import { AuthenticationHolder } from '../../services/authentication-holder';
 
 type SidebarLink = {
   id: string
@@ -111,7 +111,7 @@ export class MainTemplateComponent {
   status: MainTemplateStatus;
 
   constructor(
-    private authenticationProofVault: AuthenticationProofVault,
+    private authenticationHolder: AuthenticationHolder,
     private usersService: UsersService,
     private router: Router,
   ) { }
@@ -121,7 +121,7 @@ export class MainTemplateComponent {
 
     this.sidebarOpen = false;
 
-    if (!this.authenticationProofVault.hasValidAuthenticationProof()) {
+    if (!this.authenticationHolder.hasValidAuthentication()) {
       this.router.navigate(['/login']);
       return;
     }
@@ -177,7 +177,7 @@ export class MainTemplateComponent {
   }
 
   onLogoutClick(): void {
-    this.authenticationProofVault.removeAuthenticationProof();
+    this.authenticationHolder.removeAuthentication();
     this.router.navigate(['/login']);
   }
 
@@ -207,7 +207,7 @@ export class MainTemplateComponent {
 
   private handleGetMeError(error: any): void {
     if (error.name === 'ForbiddenError') {
-      this.authenticationProofVault.removeAuthenticationProof();
+      this.authenticationHolder.removeAuthentication();
       this.router.navigate(['/login']);
       return;
     }

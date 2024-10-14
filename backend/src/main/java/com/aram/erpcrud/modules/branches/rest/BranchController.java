@@ -71,7 +71,7 @@ public class BranchController {
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(value = "/branch-image/{image}", produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @GetMapping(value = "/branch-image/{image}", produces = { MediaType.APPLICATION_OCTET_STREAM_VALUE })
     public ResponseEntity<byte[]> getBranchImage(@PathVariable String image) {
         return new ResponseEntity<>(branchImageService.getBranchImage(image), HttpStatus.OK);
     }

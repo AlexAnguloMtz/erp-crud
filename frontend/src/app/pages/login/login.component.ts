@@ -9,14 +9,13 @@ import { AuthenticationResponse, AuthService } from '../../services/auth-service
 import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-import { AuthenticationProofVault } from '../../services/authentication-proof-vault';
+import { AuthenticationHolder } from '../../services/authentication-holder';
 
 const emailMaxLength: number = 60;
-
 const passwordMinLength: number = 8;
 const passwordMaxLength: number = 60;
 
-type LoginError = {
+type DisplayableError = {
   header: string,
   message: string,
 }
@@ -64,7 +63,7 @@ type LoginFormStatus = BaseStatus | LoggingUser | LoginSuccess
     ConfirmDialogModule,
   ],
   providers: [
-    AuthenticationProofVault,
+    AuthenticationHolder,
     AuthService,
     ConfirmationService,
   ],
@@ -82,11 +81,11 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService,
     private loginService: AuthService,
-    private authenticationProofVault: AuthenticationProofVault
+    private authenticationHolder: AuthenticationHolder
   ) { }
 
   ngOnInit(): void {
-    if (this.authenticationProofVault.hasValidAuthenticationProof()) {
+    if (this.authenticationHolder.hasValidAuthentication()) {
       this.router.navigate(['/home']);
     }
 
@@ -132,7 +131,7 @@ export class LoginComponent {
   }
 
   private handleAuthenticationResponse(response: AuthenticationResponse): void {
-    this.authenticationProofVault.setAuthenticationProof({ token: response.accessToken });
+    this.authenticationHolder.setAuthentication({ token: response.accessToken });
     this.router.navigate(['/home']);
   }
 
@@ -149,7 +148,7 @@ export class LoginComponent {
     });
   }
 
-  private mapLoginError(error: Error): LoginError {
+  private mapLoginError(error: Error): DisplayableError {
     if (error.name === 'BadCredentialsError') {
       return {
         header: 'Credenciales inválidas',
