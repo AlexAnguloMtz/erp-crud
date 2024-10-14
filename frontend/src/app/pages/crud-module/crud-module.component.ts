@@ -275,8 +275,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
       // If a custom way to update the form was provided, apply it
       this.onPatchUpdateForm(this.updateItemForm, item);
     } else {
-      // If a custom way to update the form was not provided,
-      // just patch the form directly as a fallback
+      // Just patch the form directly as a fallback
       this.updateItemForm.patchValue(item);
     }
   }
@@ -300,6 +299,9 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
       return;
     }
 
+    // TODO
+    // Move this check to the users module. 
+    // It is too specific and is not related to other modules.
     if (this.itemCreationForm.get('password')?.value !== this.itemCreationForm.get('confirmedPassword')?.value) {
       this.itemCreationForm.markAllAsTouched();
       return;
