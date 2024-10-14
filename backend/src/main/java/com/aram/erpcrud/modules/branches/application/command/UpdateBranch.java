@@ -34,7 +34,9 @@ public class UpdateBranch {
     public void handle(Long id, UpdateBranchCommand command, MultipartFile imageFile) {
         ValidImageAction validImageAction = ValidImageAction.makeOrThrow(command.imageAction(), imageFile);
 
-        Branch branch = findBranchWithUniqueFieldsOrThrow(id, command.name());
+        Branch branch = findBranchByIdOrThrow(id);
+        checkUniqueName(branch, command.name());
+
         BranchType branchType = findBranchTypeByIdOrThrow(command.branchTypeId());
 
         String imageReference = executeBranchImageAction(validImageAction, branch.getImage());
@@ -45,15 +47,14 @@ public class UpdateBranch {
         branchRepository.save(branch);
     }
 
-    private Branch findBranchWithUniqueFieldsOrThrow(Long branchId, String newBranchName) {
-        Optional<Branch> byIdOptional = branchRepository.findById(branchId);
-        if (byIdOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+    private Branch findBranchByIdOrThrow(Long id) {
+        return branchRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+    }
 
-        Branch branch = byIdOptional.get();
-
-        Optional<Branch> byNameOptional = branchRepository.findByName(newBranchName);
+    private void checkUniqueName(Branch branch, String newName) {
+        Optional<Branch> byNameOptional = branchRepository.findByName(newName);
 
         boolean nameConflict = byNameOptional.isPresent() &&
                 (!Objects.equals(branch.getId(), byNameOptional.get().getId()));
@@ -61,8 +62,6 @@ public class UpdateBranch {
         if (nameConflict) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
-
-        return branch;
     }
 
     private BranchType findBranchTypeByIdOrThrow(Long id) {

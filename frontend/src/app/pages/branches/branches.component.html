@@ -39,7 +39,7 @@
             }
         </div>
         <div class="branch-form-fields">
-            <div class="form-input">
+            <div class="form-input" [style]="{'paddingBottom': '14px'}">
                 <label>Nombre</label>
                 <input pInputText name="name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
                 <div class="form-error name">
