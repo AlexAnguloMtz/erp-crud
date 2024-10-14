@@ -91,22 +91,7 @@ export class LoginComponent {
 
     this.loginFormStatus = { _type: 'login-base' };
     this.passwordFieldProps = passwordNotVisibleProps;
-    this.loginForm = this.formBuilder.group({
-      email: [
-        '', [
-          Validators.required,
-          Validators.email,
-          Validators.maxLength(emailMaxLength)
-        ]
-      ],
-      password: [
-        '', [
-          Validators.required,
-          Validators.minLength(passwordMinLength),
-          Validators.maxLength(passwordMaxLength)
-        ]
-      ],
-    });
+    this.loginForm = this.createLoginForm();
   }
 
   onPasswordVisibilityClick() {
@@ -224,6 +209,26 @@ export class LoginComponent {
 
   get loggingUser(): boolean {
     return this.loginFormStatus._type === 'login-logging';
+  }
+
+
+  private createLoginForm(): FormGroup {
+    return this.formBuilder.group({
+      email: [
+        '', [
+          Validators.required,
+          Validators.email,
+          Validators.maxLength(emailMaxLength)
+        ]
+      ],
+      password: [
+        '', [
+          Validators.required,
+          Validators.minLength(passwordMinLength),
+          Validators.maxLength(passwordMaxLength)
+        ]
+      ],
+    });
   }
 
 }
