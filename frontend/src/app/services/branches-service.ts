@@ -17,6 +17,7 @@ export type Branch = {
     id: number
     name: string
     phone: string
+    image: string | undefined
     address: BranchAddress
     branchType: BranchType
 }
@@ -51,6 +52,7 @@ export type BranchCommand = {
 export class BranchesService {
 
     private branchesEndpoint = '/api/v1/branches';
+    private branchImagePath = this.branchesEndpoint + '/branch-image';
 
     constructor(private apiClient: ApiClient) { }
 
@@ -60,8 +62,21 @@ export class BranchesService {
         );
     }
 
-    createBranch(dto: BranchCommand): Observable<void> {
-        return this.apiClient.post<void>(this.branchesEndpoint, dto).pipe(
+    getBranchImage(image: string): Observable<ArrayBuffer> {
+        image = image.startsWith("/") ? image : "/" + image;
+        return this.apiClient.get(this.branchImagePath + image, { responseType: 'arraybuffer' });
+    }
+
+    createBranch(dto: BranchCommand, image: File | undefined): Observable<void> {
+        const formData: FormData = new FormData();
+
+        if (image) {
+            formData.append('image', image, image.name);
+        }
+
+        formData.append('command', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+
+        return this.apiClient.post<void>(this.branchesEndpoint, formData).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Conflict) {
                     return throwError(() => new BranchExistsError('Branch already exists.'));
@@ -71,7 +86,7 @@ export class BranchesService {
         );
     }
 
-    updateBranch(id: number, dto: BranchCommand): Observable<void> {
+    updateBranch(id: number, dto: BranchCommand, image: File | undefined): Observable<void> {
         const url = `${this.branchesEndpoint}/${id}`;
 
         return this.apiClient.put<void>(url, dto).pipe(

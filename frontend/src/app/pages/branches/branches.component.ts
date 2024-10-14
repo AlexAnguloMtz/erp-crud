@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CrudItem, CrudModuleComponent, DisplayableError } from '../crud-module/crud-module.component';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,12 +12,43 @@ import { loadingError, loadingOptions, options, OptionsStatus } from '../../comm
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
+import { ImageModule } from 'primeng/image';
 
 const NAME_MAX_LENGTH: number = 60;
 const PHONE_LENGTH: number = 10;
 const DISTRICT_MAX_LENGTH: number = 60;
 const STREET_MAX_LENGTH: number = 60;
 const STREET_NUMBER_MAX_LENGTH: number = 10;
+
+type BranchForm = {
+  command: BranchCommand,
+  image: File | undefined
+}
+
+type BranchImageBase = {
+  type: 'base'
+}
+
+type BranchImageLoading = {
+  type: 'loading'
+}
+
+type BranchImageValidationError = {
+  type: 'error',
+  error: string
+}
+
+type BranchImageShowing = {
+  type: 'ready',
+  imageSrc: string
+  imageFile?: File
+}
+
+type BranchImageStatus =
+  | BranchImageBase
+  | BranchImageValidationError
+  | BranchImageLoading
+  | BranchImageShowing
 
 @Component({
   selector: 'app-branches',
@@ -30,6 +61,7 @@ const STREET_NUMBER_MAX_LENGTH: number = 10;
     ProgressSpinnerModule,
     ButtonModule,
     DropdownModule,
+    ImageModule,
   ],
   templateUrl: './branches.component.html',
   styleUrl: './branches.component.css'
@@ -37,6 +69,7 @@ const STREET_NUMBER_MAX_LENGTH: number = 10;
 export class BranchesComponent {
 
   branchTypesStatus: OptionsStatus<BranchType>;
+  branchImageStatus: BranchImageStatus;
 
   constructor(
     private branchesService: BranchesService,
@@ -44,6 +77,7 @@ export class BranchesComponent {
   ) { }
 
   ngOnInit(): void {
+    this.branchImageStatus = { type: 'base' }
     this.branchTypesStatus = { _type: 'base' };
   }
 
@@ -129,22 +163,25 @@ export class BranchesComponent {
     }
   }
 
-  createItem(): (dto: BranchCommand) => Observable<void> {
-    return (dto: BranchCommand) => this.branchesService.createBranch(dto);
+  createItem(): (form: BranchForm) => Observable<void> {
+    return (form: BranchForm) => this.branchesService.createBranch(form.command, form.image);
   }
 
-  updateItem(): (id: number, dto: BranchCommand) => Observable<void> {
-    return (id: number, dto: BranchCommand) => this.branchesService.updateBranch(id, dto);
+  updateItem(): (id: number, form: BranchForm) => Observable<void> {
+    return (id: number, form: BranchForm) => this.branchesService.updateBranch(id, form.command, form.image);
   }
 
   deleteItemById(): (id: number) => Observable<void> {
     return (id: number) => this.branchesService.deleteBranchById(id);
   }
 
-  mapFormToDto(): (formGroup: FormGroup) => BranchCommand {
+  mapFormToDto(): (formGroup: FormGroup) => BranchForm {
     return (formGroup: FormGroup) => ({
-      ...formGroup.value,
-      branchTypeId: formGroup.get('branchType')?.value
+      image: this.selectedBranchImageFile(),
+      command: {
+        ...formGroup.value,
+        branchTypeId: formGroup.get('branchType')?.value,
+      },
     });
   }
 
@@ -175,11 +212,30 @@ export class BranchesComponent {
     return () => this.loadBranchTypes();
   }
 
-  loadOptionsOnRowClick(): (item: CrudItem, formGroup: FormGroup) => void {
+  onEditRowClick(): (item: CrudItem, formGroup: FormGroup) => void {
     return (item: CrudItem, updateItemForm: FormGroup) => {
       const model: Branch = (item as Branch);
+
       this.loadBranchTypesOnRowClick(model.branchType.id, updateItemForm);
+
+      if (model.image) {
+        this.loadBranchImage(model.image);
+      }
     }
+  }
+
+  loadBranchImage(image: string): void {
+    this.branchImageStatus = { type: 'loading' }
+    this.branchesService.getBranchImage(image).subscribe({
+      next: (data: ArrayBuffer) => {
+        const blob = new Blob([data]);
+        const blobUrl = URL.createObjectURL(blob);
+        this.branchImageStatus = { type: 'ready', imageSrc: blobUrl }
+      },
+      error: (err: Error) => {
+        console.log(err.message);
+      }
+    });
   }
 
   loadBranchTypesOnRowClick(branchTypeId: number, form: FormGroup): void {
@@ -187,6 +243,70 @@ export class BranchesComponent {
       this.loadBranchTypes();
     }
     form.get('branchType')?.setValue(branchTypeId);
+  }
+
+  onBranchImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const validExtensions = ['image/jpeg', 'image/png'];
+
+    if (!validExtensions.includes(file.type)) {
+      this.branchImageStatus = { type: 'error', error: 'Selecciona una imagen con extensión JPG, JPEG o PNG' }
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imageUrl = e.target?.result as string;
+      this.branchImageStatus = {
+        type: 'ready',
+        imageFile: file,
+        imageSrc: imageUrl,
+      }
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  onHideItemFormClick(): () => void {
+    return () => {
+      this.cleanBranchImageState();
+    }
+  }
+
+  onDeleteBranchImage(): void {
+    this.cleanBranchImageState();
+  }
+
+  cleanBranchImageState(): void {
+    this.branchImageStatus = { type: 'base' };
+  }
+
+  selectedBranchImageFile(): File | undefined {
+    if (this.branchImageStatus.type !== 'ready') {
+      return undefined;
+    }
+    return this.branchImageStatus.imageFile;
+  }
+
+  get loadingBranchImage(): boolean {
+    return this.branchImageStatus.type === 'loading';
+  }
+
+  get selectedBranchImageSrc(): string {
+    if (this.branchImageStatus.type !== 'ready') {
+      return '';
+    }
+    return this.branchImageStatus.imageSrc;
+  }
+
+  get showingBranchImage(): boolean {
+    return this.branchImageStatus.type === 'ready';
   }
 
   get tableHeaders(): Array<string> {
@@ -395,4 +515,5 @@ export class BranchesComponent {
 
     return '';
   }
+
 }

@@ -134,7 +134,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() createItem: (formValues: CreationItemDto) => Observable<void>
   @Input() updateItem: (id: number, formValues: UpdateItemDto) => Observable<ItemUpdateResponse>
   @Input() deleteItemById: (id: number) => Observable<void>
-  @Input() loadOptionsOnRowClick: (item: CrudItem, form: FormGroup) => void;
+  @Input() onEditRowClick: (item: CrudItem, form: FormGroup) => void;
   @Input() getCreationErrors: (form: FormGroup) => { [key: string]: string };
   @Input() getUpdateErrors: (form: FormGroup) => { [key: string]: string };
   @Input() mapFormToCreationDto: (form: FormGroup) => CreationItemDto
@@ -144,6 +144,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   @Input() onHideFiltersFormClick: () => void;
   @Input() onGoBackToChoosingFilter: () => void;
   @Input() onPatchUpdateForm: (formGroup: FormGroup, item: CrudItem) => void;
+  @Input() onHideItemFormClick: () => void;
 
   // Templates
   @Input() filterFieldsTemplate: TemplateRef<any>;
@@ -271,14 +272,17 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
   onEditClick(item: CrudItem): void {
     this.itemToUpdateId = item.id;
     this.patchUpdateForm(item);
+    this.onEditRowClick?.(item, this.updateItemForm);
     this.updateItemVisible = true;
-    this.loadOptionsOnRowClick?.(item, this.updateItemForm);
   }
 
   patchUpdateForm(item: CrudItem): void {
     if (this.onPatchUpdateForm) {
+      // If a custom way to update the form was provided, apply it
       this.onPatchUpdateForm(this.updateItemForm, item);
     } else {
+      // If a custom way to update the form was not provided,
+      // just patch the form directly as a fallback
       this.updateItemForm.patchValue(item);
     }
   }
@@ -404,6 +408,7 @@ export class CrudModuleComponent<CreationItemDto, UpdateItemDto, ItemUpdateRespo
 
   onHideItemForm(): void {
     this.itemCreationForm.reset();
+    this.onHideItemFormClick?.();
   }
 
   onHideFiltersForm(): void {

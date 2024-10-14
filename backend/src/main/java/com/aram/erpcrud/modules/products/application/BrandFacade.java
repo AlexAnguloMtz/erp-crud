@@ -1,7 +1,7 @@
 package com.aram.erpcrud.modules.products.application;
 
 import com.aram.erpcrud.utils.PageResponse;
-import com.aram.erpcrud.modules.products.application.query.GetBrandsQueryHandler;
+import com.aram.erpcrud.modules.products.application.query.GetBrands;
 import com.aram.erpcrud.modules.products.domain.Brand;
 import com.aram.erpcrud.modules.products.domain.BrandRepository;
 import com.aram.erpcrud.modules.products.payload.BrandCommand;
@@ -18,10 +18,10 @@ import java.util.Optional;
 @Component
 public class BrandFacade {
 
-    private final GetBrandsQueryHandler getBrands;
+    private final GetBrands getBrands;
     private final BrandRepository brandRepository;
 
-    public BrandFacade(GetBrandsQueryHandler getBrands, BrandRepository brandRepository) {
+    public BrandFacade(GetBrands getBrands, BrandRepository brandRepository) {
         this.getBrands = getBrands;
         this.brandRepository = brandRepository;
     }

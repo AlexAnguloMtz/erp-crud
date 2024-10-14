@@ -22,6 +22,9 @@ public class Branch {
     @Column(name = "telefono")
     private String phone;
 
+    @Column(name = "imagen")
+    private String image;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "domicilio_id")
     private BranchAddress address;

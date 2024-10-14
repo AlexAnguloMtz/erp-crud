@@ -1,7 +1,7 @@
 package com.aram.erpcrud.modules.stockmovements.application;
 
 import com.aram.erpcrud.utils.PageResponse;
-import com.aram.erpcrud.modules.stockmovements.application.query.GetMovementsQueryHandler;
+import com.aram.erpcrud.modules.stockmovements.application.query.GetMovements;
 import com.aram.erpcrud.modules.stockmovements.payload.GetMovementsQuery;
 import com.aram.erpcrud.modules.stockmovements.payload.MovementDTO;
 import org.springframework.stereotype.Component;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MovementFacade {
 
-    private final GetMovementsQueryHandler getMovementsQueryHandler;
+    private final GetMovements getMovementsQueryHandler;
 
-    public MovementFacade(GetMovementsQueryHandler getMovementsQueryHandler) {
+    public MovementFacade(GetMovements getMovementsQueryHandler) {
         this.getMovementsQueryHandler = getMovementsQueryHandler;
     }
 

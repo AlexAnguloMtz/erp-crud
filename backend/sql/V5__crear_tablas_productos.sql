@@ -18,10 +18,12 @@ CREATE TABLE producto(
 );
 
 CREATE TABLE stock(
-    id SERIAL PRIMARY KEY,
     producto_id INT NOT NULL,
+    sucursal_id INT NOT NULL,
     cantidad INT NOT NULL CHECK (cantidad >= 0),
-    FOREIGN KEY (producto_id) REFERENCES producto(id) ON UPDATE CASCADE ON DELETE CASCADE
+    PRIMARY KEY (producto_id, sucursal_id),
+    FOREIGN KEY (producto_id) REFERENCES producto(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (sucursal_id) REFERENCES sucursal(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 ALTER TABLE marca ADD CONSTRAINT uk_marca_nombre UNIQUE (nombre);

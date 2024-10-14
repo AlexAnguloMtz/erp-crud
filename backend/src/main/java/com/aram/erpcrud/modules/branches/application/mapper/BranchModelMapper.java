@@ -14,6 +14,7 @@ public class BranchModelMapper {
                 .id(branch.getId())
                 .name(branch.getName())
                 .phone(branch.getPhone())
+                .image(branch.getImage())
                 .address(toBranchAddressDTO(branch.getAddress()))
                 .branchType(toBranchTypeDTO(branch.getBranchType()))
                 .build();

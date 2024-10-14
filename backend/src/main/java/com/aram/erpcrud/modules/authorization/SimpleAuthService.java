@@ -1,28 +1,28 @@
 package com.aram.erpcrud.modules.authorization;
 
-import com.aram.erpcrud.modules.authorization.application.command.CreateAccountCommandHandler;
-import com.aram.erpcrud.modules.authorization.application.command.DeleteAccountByIdCommandHandler;
-import com.aram.erpcrud.modules.authorization.application.command.UpdateAccountCommandHandler;
-import com.aram.erpcrud.modules.authorization.application.query.GetAccountByEmailQueryHandler;
-import com.aram.erpcrud.modules.authorization.application.query.GetAccountByIdQueryHandler;
+import com.aram.erpcrud.modules.authorization.application.command.CreateAccount;
+import com.aram.erpcrud.modules.authorization.application.command.DeleteAccountById;
+import com.aram.erpcrud.modules.authorization.application.command.UpdateAccount;
+import com.aram.erpcrud.modules.authorization.application.query.GetAccountByEmail;
+import com.aram.erpcrud.modules.authorization.application.query.GetAccountById;
 import com.aram.erpcrud.modules.authorization.payload.*;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleAuthService implements AuthService {
 
-    private final CreateAccountCommandHandler createAccountCommandHandler;
-    private final GetAccountByEmailQueryHandler getAccountByEmailQueryHandler;
-    private final GetAccountByIdQueryHandler getAccountByIdQueryHandler;
-    private final UpdateAccountCommandHandler updateAccountCommandHandler;
-    private final DeleteAccountByIdCommandHandler deleteAccountByIdHandler;
+    private final CreateAccount createAccountCommandHandler;
+    private final GetAccountByEmail getAccountByEmailQueryHandler;
+    private final GetAccountById getAccountByIdQueryHandler;
+    private final UpdateAccount updateAccountCommandHandler;
+    private final DeleteAccountById deleteAccountByIdHandler;
 
     public SimpleAuthService(
-            CreateAccountCommandHandler createAccountCommandHandler,
-            GetAccountByEmailQueryHandler getAccountByEmailQueryHandler,
-            GetAccountByIdQueryHandler getAccountByIdQueryHandler,
-            UpdateAccountCommandHandler updateAccountCommandHandler,
-            DeleteAccountByIdCommandHandler deleteAccountByIdHandler
+            CreateAccount createAccountCommandHandler,
+            GetAccountByEmail getAccountByEmailQueryHandler,
+            GetAccountById getAccountByIdQueryHandler,
+            UpdateAccount updateAccountCommandHandler,
+            DeleteAccountById deleteAccountByIdHandler
     ) {
         this.createAccountCommandHandler = createAccountCommandHandler;
         this.getAccountByEmailQueryHandler = getAccountByEmailQueryHandler;

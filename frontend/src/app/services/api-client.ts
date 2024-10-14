@@ -15,7 +15,8 @@ type RawParams = { [param: string]: string | number | boolean | Date | ReadonlyA
 type ParsedParams = { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean> }
 
 export type ApiClientOptions = {
-    params?: RawParams
+    params?: RawParams,
+    responseType?: 'json' | 'arraybuffer'
 }
 
 export class InvalidAuthenticationError extends Error {
@@ -35,8 +36,31 @@ export class ApiClient {
         private authenticationProofVault: AuthenticationProofVault,
     ) { }
 
-    get<T>(path: string, options?: ApiClientOptions): Observable<T> {
-        return this.http.get<T>(this.prepareUrl(path), { headers: this.makeHeaders(path), params: this.parseParams(options?.params) });
+    get<T>(path: string, options?: ApiClientOptions): Observable<T>;
+
+    get(path: string, options?: ApiClientOptions): Observable<ArrayBuffer>;
+
+    get<T>(path: string, options?: ApiClientOptions): Observable<T | ArrayBuffer> {
+        // Prepare url, headers and params
+        const url = this.prepareUrl(path);
+        const headers = this.makeHeaders(path);
+        const params = this.parseParams(options?.params);
+
+        // Return response as raw binary data (ArrayBuffer) only if necessary
+        if (options && options.responseType === 'arraybuffer') {
+            return this.http.get(url, {
+                headers,
+                params,
+                responseType: 'arraybuffer'
+            })
+        }
+
+        // Return response as json by default 
+        return this.http.get<T>(url, {
+            headers,
+            params,
+            responseType: 'json'
+        });
     }
 
     post<T>(path: string, body: any | null, options?: ApiClientOptions): Observable<T> {
@@ -88,5 +112,6 @@ export class ApiClient {
     private isPublicPath(path: string) {
         return PUBLIC_PATHS.includes(path);
     }
+
 
 }

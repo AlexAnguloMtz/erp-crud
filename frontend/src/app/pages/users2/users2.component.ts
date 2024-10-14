@@ -188,7 +188,7 @@ export class Users2Component {
     return rolesNames.sort((x, y) => x.localeCompare(y)).join(', ');
   }
 
-  loadOptionsOnRowClick(): (item: CrudItem, formGroup: FormGroup) => void {
+  onEditRowClick(): (item: CrudItem, formGroup: FormGroup) => void {
     return (item: CrudItem, updateItemForm: FormGroup) => {
       const user: UserDetails = (item as UserDetails);
       this.loadRolesOnRowClick(user.role.id, updateItemForm);

@@ -26,6 +26,12 @@ config:
     email: ${CONFIG_ROOT_USER_EMAIL}
     password: ${CONFIG_ROOT_USER_PASSWORD}
 
+images:
+  modules:
+    path: ${IMAGES_MODULES_PATH}
+    branch:
+      path: ${IMAGES_MODULE_BRANCH_PATH}
+
 logging:
   level:
     org.springframework.security: DEBUG

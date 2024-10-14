@@ -1,10 +1,10 @@
 package com.aram.erpcrud.modules.branches.application;
 
-import com.aram.erpcrud.modules.branches.application.command.CreateBranchTypeCommandHandler;
-import com.aram.erpcrud.modules.branches.application.command.DeleteBranchTypeByIdCommandHandler;
-import com.aram.erpcrud.modules.branches.application.command.UpdateBranchTypeCommandHandler;
-import com.aram.erpcrud.modules.branches.application.query.GetAllBranchTypesQueryHandler;
-import com.aram.erpcrud.modules.branches.application.query.GetBranchTypesQueryHandler;
+import com.aram.erpcrud.modules.branches.application.command.CreateBranchType;
+import com.aram.erpcrud.modules.branches.application.command.DeleteBranchTypeById;
+import com.aram.erpcrud.modules.branches.application.command.UpdateBranchType;
+import com.aram.erpcrud.modules.branches.application.query.GetAllBranchTypes;
+import com.aram.erpcrud.modules.branches.application.query.GetBranchTypes;
 import com.aram.erpcrud.modules.branches.payload.BranchTypeCommand;
 import com.aram.erpcrud.modules.branches.payload.BranchTypeDTO;
 import com.aram.erpcrud.modules.branches.payload.GetBranchTypesQuery;
@@ -14,44 +14,44 @@ import org.springframework.stereotype.Component;
 @Component
 public class BranchTypeFacade {
 
-    private final GetBranchTypesQueryHandler getBranchTypesQueryHandler;
-    private final GetAllBranchTypesQueryHandler getAllBranchTypesQueryHandler;
-    private final CreateBranchTypeCommandHandler createBranchTypeCommandHandler;
-    private final UpdateBranchTypeCommandHandler updateBranchTypeCommandHandler;
-    private final DeleteBranchTypeByIdCommandHandler deleteBranchTypeByIdCommandHandler;
+    private final GetBranchTypes getBranchTypes;
+    private final GetAllBranchTypes getAllBranchTypes;
+    private final CreateBranchType createBranchType;
+    private final UpdateBranchType updateBranchType;
+    private final DeleteBranchTypeById deleteBranchTypeById;
 
     public BranchTypeFacade(
-            GetBranchTypesQueryHandler getBranchTypesQueryHandler,
-            GetAllBranchTypesQueryHandler getAllBranchTypesQueryHandler,
-            CreateBranchTypeCommandHandler createBranchTypeCommandHandler,
-            UpdateBranchTypeCommandHandler updateBranchTypeCommandHandler,
-            DeleteBranchTypeByIdCommandHandler deleteBranchTypeByIdCommandHandler
+            GetBranchTypes getBranchTypes,
+            GetAllBranchTypes getAllBranchTypes,
+            CreateBranchType createBranchType,
+            UpdateBranchType updateBranchType,
+            DeleteBranchTypeById deleteBranchTypeById
     ) {
-        this.getBranchTypesQueryHandler = getBranchTypesQueryHandler;
-        this.getAllBranchTypesQueryHandler = getAllBranchTypesQueryHandler;
-        this.createBranchTypeCommandHandler = createBranchTypeCommandHandler;
-        this.updateBranchTypeCommandHandler = updateBranchTypeCommandHandler;
-        this.deleteBranchTypeByIdCommandHandler = deleteBranchTypeByIdCommandHandler;
+        this.getBranchTypes = getBranchTypes;
+        this.getAllBranchTypes = getAllBranchTypes;
+        this.createBranchType = createBranchType;
+        this.updateBranchType = updateBranchType;
+        this.deleteBranchTypeById = deleteBranchTypeById;
     }
 
     public PageResponse<BranchTypeDTO> getBranchTypes(GetBranchTypesQuery query) {
-        return getBranchTypesQueryHandler.handle(query);
+        return getBranchTypes.handle(query);
     }
 
     public Iterable<BranchTypeDTO> getAllBranchTypes() {
-        return getAllBranchTypesQueryHandler.get();
+        return getAllBranchTypes.get();
     }
 
     public void createBranchType(BranchTypeCommand command) {
-        createBranchTypeCommandHandler.handle(command);
+        createBranchType.handle(command);
     }
 
     public void updateBranchType(Long id, BranchTypeCommand command) {
-        updateBranchTypeCommandHandler.handle(id, command);
+        updateBranchType.handle(id, command);
     }
 
     public void deleteBranchTypeById(Long id) {
-        deleteBranchTypeByIdCommandHandler.handle(id);
+        deleteBranchTypeById.handle(id);
     }
 
 }

@@ -1,9 +1,9 @@
 package com.aram.erpcrud.modules.personaldetails.application;
 
-import com.aram.erpcrud.modules.personaldetails.application.command.CreatePersonalDetailsCommandHandler;
-import com.aram.erpcrud.modules.personaldetails.application.command.DeleteByAccountIdCommandHandler;
-import com.aram.erpcrud.modules.personaldetails.application.command.UpdatePersonalDetailsCommandHandler;
-import com.aram.erpcrud.modules.personaldetails.application.query.GetPersonalNameByAccountIdQueryHandler;
+import com.aram.erpcrud.modules.personaldetails.application.command.CreatePersonalDetails;
+import com.aram.erpcrud.modules.personaldetails.application.command.DeleteByAccountId;
+import com.aram.erpcrud.modules.personaldetails.application.command.UpdatePersonalDetails;
+import com.aram.erpcrud.modules.personaldetails.application.query.GetPersonalNameByAccountId;
 import com.aram.erpcrud.modules.personaldetails.payload.CreatePersonalDetailsCommand;
 import com.aram.erpcrud.modules.personaldetails.payload.PersonalDetailsDTO;
 import com.aram.erpcrud.modules.personaldetails.payload.PersonalNameDTO;
@@ -13,16 +13,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class PersonalDetailsFacade {
 
-    private final GetPersonalNameByAccountIdQueryHandler getPersonalNameByAccountIdQueryHandler;
-    private final CreatePersonalDetailsCommandHandler createPersonalDetailsCommandHandler;
-    private final DeleteByAccountIdCommandHandler deleteByAccountIdCommandHandler;
-    private final UpdatePersonalDetailsCommandHandler updatePersonalDetailsCommandHandler;
+    private final GetPersonalNameByAccountId getPersonalNameByAccountIdQueryHandler;
+    private final CreatePersonalDetails createPersonalDetailsCommandHandler;
+    private final DeleteByAccountId deleteByAccountIdCommandHandler;
+    private final UpdatePersonalDetails updatePersonalDetailsCommandHandler;
 
     public PersonalDetailsFacade(
-            GetPersonalNameByAccountIdQueryHandler getPersonalNameByAccountIdQueryHandler,
-            CreatePersonalDetailsCommandHandler createPersonalDetailsCommandHandler,
-            DeleteByAccountIdCommandHandler deleteByAccountIdCommandHandler,
-            UpdatePersonalDetailsCommandHandler updatePersonalDetailsCommandHandler
+            GetPersonalNameByAccountId getPersonalNameByAccountIdQueryHandler,
+            CreatePersonalDetails createPersonalDetailsCommandHandler,
+            DeleteByAccountId deleteByAccountIdCommandHandler,
+            UpdatePersonalDetails updatePersonalDetailsCommandHandler
     ) {
         this.getPersonalNameByAccountIdQueryHandler = getPersonalNameByAccountIdQueryHandler;
         this.createPersonalDetailsCommandHandler = createPersonalDetailsCommandHandler;

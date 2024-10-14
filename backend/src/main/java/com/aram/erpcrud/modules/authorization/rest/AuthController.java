@@ -1,6 +1,6 @@
 package com.aram.erpcrud.modules.authorization.rest;
 
-import com.aram.erpcrud.modules.authorization.application.query.LoginCommandHandler;
+import com.aram.erpcrud.modules.authorization.application.query.Login;
 import com.aram.erpcrud.modules.authorization.domain.Role;
 import com.aram.erpcrud.modules.authorization.domain.RoleRepository;
 import com.aram.erpcrud.modules.authorization.payload.LoginCommand;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final LoginCommandHandler loginCommandHandler;
+    private final Login loginCommandHandler;
     private final RoleRepository roleRepository;
 
     public AuthController(
-            LoginCommandHandler loginCommandHandler,
+            Login loginCommandHandler,
             RoleRepository roleRepository
     ) {
         this.loginCommandHandler = loginCommandHandler;

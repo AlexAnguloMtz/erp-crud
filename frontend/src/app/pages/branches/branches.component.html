@@ -8,76 +8,115 @@
 </ng-template>
 
 <ng-template #itemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
-    <div class="form-input">
-        <label>Nombre</label>
-        <input pInputText name="name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
-        <div class="form-error name">
-            {{ errors['name'] }}
-        </div>
-    </div>
-    <div class="double-input-container">
-        <div class="form-input">
-            <label>Tipo de sucursal</label>
-            @if (loadingBranchTypesOptions) {
-            <div class="form__progress-container">
-                <p-progressSpinner class="form__progress" ariaLabel="loading"
-                    [style]="{'width': '40px', 'height': '40px'}" />
+    <div class="branch-form-top-container">
+        <div class="image-section">
+            <input type="file" #fileInput (change)="onBranchImageSelected($event)" accept=".jpg, .jpeg, .png"
+                style="display: none;" />
+            <label class="image-label">Foto</label>
+            @if (loadingBranchImage) {
+            <div class="image-spinner-container">
+                <p-progressSpinner ariaLabel="loading" />
             </div>
-            } @else if (loadingBranchTypesError) {
-            <div class="dropdown-load-error">
-                <div>Error de carga</div>
-                <p-button (click)="onRetryLoadBranchTypes()" [outlined]="true" icon="pi pi-refresh"
-                    severity="secondary" />
+            }
+            @else if (showingBranchImage) {
+            <div class="selected-image-container">
+                <p-image [src]="selectedBranchImageSrc" alt="branch-image" [preview]="true" [appendTo]="'body'"
+                    [imageStyle]="{'width': '100%', 'maxWidth': '100%', 'height': '300px', 'objectFit': 'cover'}" />
+            </div>
+            <div class="selected-image-actions">
+                <p-button (click)="onDeleteBranchImage()" icon="pi pi-trash" label="Borrar" styleClass="p-button-sm"
+                    [outlined]="true" severity="danger" [style]="{'fontSize': '12px', 'padding': '6px 10px'}" />
+                <p-button (click)="fileInput.click()" icon="pi pi-pencil" label="Cambiar" styleClass="p-button-sm"
+                    [outlined]="true" severity="success" [style]="{'fontSize': '12px', 'padding': '6px 10px'}" />
             </div>
             } @else {
-            <p-dropdown name="branchType" [formControl]="formGroup.get('branchType')" [options]="branchTypesOptions"
-                optionLabel="name" optionValue="id" placeholder="Tipo de sucursal" [style]="{'width': '100%'}" />
+            <div class="image-frame" (click)="fileInput.click()">
+                <div class="add-image-icon-container">
+                    <img class="add-image-icon" src="images/camera.svg" alt="add-image">
+                </div>
+                <h4 class="add-image-text">Subir foto</h4>
+            </div>
             }
-            <div class="form-error branchType">
-                {{ errors['branchType'] }}
-            </div>
         </div>
-        <div class="form-input">
-            <label>Teléfono</label>
-            <input pInputText name="phone" [formControl]="formGroup.get('phone')" [style]="{'width': '100%'}" />
-            <div class="form-error phone">
-                {{ errors['phone'] }}
+        <div class="branch-form-fields">
+            <div class="form-input">
+                <label>Nombre</label>
+                <input pInputText name="name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
+                <div class="form-error name">
+                    {{ errors['name'] }}
+                </div>
+            </div>
+            <div class="double-input-container">
+                <div class="form-input">
+                    <label>Tipo de sucursal</label>
+                    @if (loadingBranchTypesOptions) {
+                    <div class="form__progress-container">
+                        <p-progressSpinner class="form__progress" ariaLabel="loading"
+                            [style]="{'width': '40px', 'height': '40px'}" />
+                    </div>
+                    } @else if (loadingBranchTypesError) {
+                    <div class="dropdown-load-error">
+                        <div>Error de carga</div>
+                        <p-button (click)="onRetryLoadBranchTypes()" [outlined]="true" icon="pi pi-refresh"
+                            severity="secondary" />
+                    </div>
+                    } @else {
+                    <p-dropdown name="branchType" [formControl]="formGroup.get('branchType')"
+                        [options]="branchTypesOptions" optionLabel="name" optionValue="id"
+                        placeholder="Tipo de sucursal" [style]="{'width': '100%'}" />
+                    }
+                    <div class="form-error branchType">
+                        {{ errors['branchType'] }}
+                    </div>
+                </div>
+                <div class="form-input">
+                    <label>Teléfono</label>
+                    <input pInputText name="phone" [formControl]="formGroup.get('phone')" [style]="{'width': '100%'}" />
+                    <div class="form-error phone">
+                        {{ errors['phone'] }}
+                    </div>
+                </div>
+            </div>
+            <div class="double-input-container">
+                <div class="form-input">
+                    <label>Colonia</label>
+                    <input pInputText name="district" [formControl]="formGroup.get('district')"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error district">
+                        {{ errors['district'] }}
+                    </div>
+                </div>
+                <div class="form-input">
+                    <label>Calle</label>
+                    <input pInputText name="street" [formControl]="formGroup.get('street')"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error street">
+                        {{ errors['street'] }}
+                    </div>
+                </div>
+            </div>
+            <div class="double-input-container">
+                <div class="form-input">
+                    <label>Número</label>
+                    <input pInputText name="streetNumber" [formControl]="formGroup.get('streetNumber')"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error streetNumber">
+                        {{ errors['streetNumber'] }}
+                    </div>
+                </div>
+                <div class="form-input">
+                    <label>Código Postal</label>
+                    <input pInputText name="zipCode" [formControl]="formGroup.get('zipCode')"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error zipCode">
+                        {{ errors['zipCode'] }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="double-input-container">
-        <div class="form-input">
-            <label>Colonia</label>
-            <input pInputText name="district" [formControl]="formGroup.get('district')" [style]="{'width': '100%'}" />
-            <div class="form-error district">
-                {{ errors['district'] }}
-            </div>
-        </div>
-        <div class="form-input">
-            <label>Calle</label>
-            <input pInputText name="street" [formControl]="formGroup.get('street')" [style]="{'width': '100%'}" />
-            <div class="form-error street">
-                {{ errors['street'] }}
-            </div>
-        </div>
-    </div>
-    <div class="double-input-container">
-        <div class="form-input">
-            <label>Número</label>
-            <input pInputText name="streetNumber" [formControl]="formGroup.get('streetNumber')"
-                [style]="{'width': '100%'}" />
-            <div class="form-error streetNumber">
-                {{ errors['streetNumber'] }}
-            </div>
-        </div>
-        <div class="form-input">
-            <label>Código Postal</label>
-            <input pInputText name="zipCode" [formControl]="formGroup.get('zipCode')" [style]="{'width': '100%'}" />
-            <div class="form-error zipCode">
-                {{ errors['zipCode'] }}
-            </div>
-        </div>
-    </div>
+
+
 </ng-template>
 
 <app-crud-module [title]="'Sucursales'" [formTitle]="'Sucursal'" [createItemCreationForm]="createForm()"
@@ -87,5 +126,6 @@
     [getUpdateErrors]="getFormErrors()" [mapItemOperationError]="mapItemOperationError()" [createItem]="createItem()"
     [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToDto()" [mapFormToUpdateDto]="mapFormToDto()"
     [deleteItemById]="deleteItemById()" [hasFilters]="false" [onPatchUpdateForm]="onPatchUpdateForm()"
-    [onCreateNewClick]="onCreateNewClick()" [loadOptionsOnRowClick]="loadOptionsOnRowClick()">
+    [onCreateNewClick]="onCreateNewClick()" [onEditRowClick]="onEditRowClick()"
+    [onHideItemFormClick]="onHideItemFormClick()">
 </app-crud-module>

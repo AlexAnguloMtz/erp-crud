@@ -7,6 +7,7 @@ public record BranchDTO(
         Long id,
         String name,
         String phone,
+        String image,
         BranchAddressDTO address,
         BranchTypeDTO branchType
 ) {

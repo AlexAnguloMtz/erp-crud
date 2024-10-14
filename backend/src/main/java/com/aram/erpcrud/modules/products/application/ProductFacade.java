@@ -1,7 +1,7 @@
 package com.aram.erpcrud.modules.products.application;
 
-import com.aram.erpcrud.modules.products.application.query.GetProductsByIdsQueryHandler;
-import com.aram.erpcrud.modules.products.application.query.GetProductsQueryHandler;
+import com.aram.erpcrud.modules.products.application.query.GetProductsByIds;
+import com.aram.erpcrud.modules.products.application.query.GetProducts;
 import com.aram.erpcrud.modules.products.payload.GetProductsQuery;
 import com.aram.erpcrud.modules.products.payload.ProductDTO;
 import com.aram.erpcrud.utils.PageResponse;
@@ -12,12 +12,12 @@ import java.util.List;
 @Component
 public class ProductFacade {
 
-    private final GetProductsQueryHandler getProductsQueryHandler;
-    private final GetProductsByIdsQueryHandler getProductsByIdsQueryHandler;
+    private final GetProducts getProductsQueryHandler;
+    private final GetProductsByIds getProductsByIdsQueryHandler;
 
     public ProductFacade(
-            GetProductsQueryHandler getProductsQueryHandler,
-            GetProductsByIdsQueryHandler getProductsByIdsQueryHandler
+            GetProducts getProductsQueryHandler,
+            GetProductsByIds getProductsByIdsQueryHandler
     ) {
         this.getProductsQueryHandler = getProductsQueryHandler;
         this.getProductsByIdsQueryHandler = getProductsByIdsQueryHandler;

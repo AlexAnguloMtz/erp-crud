@@ -18,6 +18,7 @@ CREATE TABLE sucursal(
     tipo_sucursal_id INT NOT NULL,
     nombre VARCHAR(60) NOT NULL,
     telefono CHAR(10) NOT NULL CHECK (telefono ~ '^\d{10}$'),
+    imagen VARCHAR(255) NULL,
     FOREIGN KEY (domicilio_id) REFERENCES domicilio_sucursal(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (tipo_sucursal_id) REFERENCES tipo_sucursal(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
