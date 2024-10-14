@@ -1,9 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CrudItem, CrudModuleComponent, DisplayableError } from '../crud-module/crud-module.component';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { SortOption } from '../../common/sort-option';
-import { Branch, BranchAddress, BranchCommand, BranchesService, BranchType } from '../../services/branches-service';
+import { Branch, BranchAddress, BranchesService, BranchImageAction, BranchType, BranchCommand } from '../../services/branches-service';
 import { PaginatedRequest } from '../../common/paginated-request';
 import { Observable } from 'rxjs';
 import { PaginatedResponse } from '../../common/paginated-response';
@@ -21,7 +21,7 @@ const STREET_MAX_LENGTH: number = 60;
 const STREET_NUMBER_MAX_LENGTH: number = 10;
 
 type BranchForm = {
-  command: BranchCommand,
+  command: BranchCommand
   image: File | undefined
 }
 
@@ -70,6 +70,7 @@ export class BranchesComponent {
 
   branchTypesStatus: OptionsStatus<BranchType>;
   branchImageStatus: BranchImageStatus;
+  branchImageAction: BranchImageAction;
 
   constructor(
     private branchesService: BranchesService,
@@ -79,6 +80,7 @@ export class BranchesComponent {
   ngOnInit(): void {
     this.branchImageStatus = { type: 'base' }
     this.branchTypesStatus = { _type: 'base' };
+    this.branchImageAction = 'none';
   }
 
   getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
@@ -175,12 +177,23 @@ export class BranchesComponent {
     return (id: number) => this.branchesService.deleteBranchById(id);
   }
 
-  mapFormToDto(): (formGroup: FormGroup) => BranchForm {
+  mapFormToCreationDto(): (formGroup: FormGroup) => BranchForm {
     return (formGroup: FormGroup) => ({
       image: this.selectedBranchImageFile(),
       command: {
         ...formGroup.value,
         branchTypeId: formGroup.get('branchType')?.value,
+      },
+    });
+  }
+
+  mapFormToUpdateDto(): (formGroup: FormGroup) => BranchForm {
+    return (formGroup: FormGroup) => ({
+      image: this.selectedBranchImageFile(),
+      command: {
+        ...formGroup.value,
+        branchTypeId: formGroup.get('branchType')?.value,
+        imageAction: this.branchImageAction,
       },
     });
   }
@@ -192,6 +205,7 @@ export class BranchesComponent {
   onPatchUpdateForm(): (formGroup: FormGroup, item: CrudItem) => void {
     return (formGroup, item) => {
       const model: Branch = (item as Branch);
+      this.branchImageAction = 'none';
       formGroup.patchValue({
         ...model,
         ...model.address,
@@ -271,16 +285,20 @@ export class BranchesComponent {
     };
 
     reader.readAsDataURL(file);
+
+    this.branchImageAction = 'edit';
   }
 
   onHideItemFormClick(): () => void {
     return () => {
       this.cleanBranchImageState();
+      this.branchImageAction = 'none';
     }
   }
 
   onDeleteBranchImage(): void {
     this.cleanBranchImageState();
+    this.branchImageAction = 'delete';
   }
 
   cleanBranchImageState(): void {

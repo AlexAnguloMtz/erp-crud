@@ -8,4 +8,7 @@ public interface BranchImageService {
 
     byte[] getBranchImage(String image);
 
+    String updateBranchImage(String image, MultipartFile imageFile);
+
+    void deleteBranchImage(String image);
 }

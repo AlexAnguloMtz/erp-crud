@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Slf4j
@@ -23,6 +25,26 @@ public class FileSystemBranchImageService implements BranchImageService {
 
     @Value("${images.modules.branch.path}")
     private String branchImagesPath;
+
+    @Override
+    public byte[] getBranchImage(String image) {
+        try {
+
+            // Construct the full path to the image
+            Path imagePath = Paths.get(fullBranchImagesPath(), image);
+
+            // Check if image exists
+            if (!Files.exists(imagePath)) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+
+            // Read the image file as a byte array
+            return Files.readAllBytes(imagePath);
+
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @Override
     public String saveBranchImage(MultipartFile image) {
@@ -52,22 +74,51 @@ public class FileSystemBranchImageService implements BranchImageService {
     }
 
     @Override
-    public byte[] getBranchImage(String image) {
+    public String updateBranchImage(String image, MultipartFile imageFile) {
+        if (!StringUtils.hasText(image)) {
+            throw new IllegalArgumentException("Image reference is empty or null");
+        }
+
+        if (imageFile == null || imageFile.isEmpty()) {
+            throw new IllegalArgumentException("Image file is empty or null");
+        }
+
         try {
+            // Construct the full path to the existing image
+            Path existingImagePath = Paths.get(fullBranchImagesPath(), image);
 
-            // Construct the full path to the image
-            Path imagePath = Paths.get(fullBranchImagesPath(), image);
-
-            // Check if image exists
-            if (!Files.exists(imagePath)) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            // If the image does not exist, just save it and return the pointer to it
+            if (!Files.exists(existingImagePath)) {
+                return saveBranchImage(imageFile);
             }
 
-            // Read the image file as a byte array
-            return Files.readAllBytes(imagePath);
+            // Overwrite the existing image with the new one
+            Files.copy(imageFile.getInputStream(), existingImagePath, StandardCopyOption.REPLACE_EXISTING);
 
+            // Return the filename of the updated image
+            return image;
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException("Failed to update image", e);
+        }
+    }
+
+    @Override
+    public void deleteBranchImage(String image) {
+        if (!StringUtils.hasText(image)) {
+            throw new IllegalArgumentException("Image reference is empty or null");
+        }
+
+        try {
+            Path imagePath = Paths.get(fullBranchImagesPath(), image);
+            if (Files.exists(imagePath)) {
+                Files.delete(imagePath);
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new RuntimeException("Failed to delete image", e);
         }
     }
 

@@ -30,7 +30,7 @@ public class BranchModelMapper {
                 .build();
     }
 
-    public Branch toBranch(BranchCommand command, BranchType branchType) {
+    public Branch toBranch(CreateBranchCommand command, BranchType branchType) {
         return Branch.builder()
                 .name(command.name())
                 .phone(command.phone())
@@ -39,7 +39,7 @@ public class BranchModelMapper {
                 .build();
     }
 
-    public BranchAddress toBranchAddress(BranchCommand command) {
+    public BranchAddress toBranchAddress(CreateBranchCommand command) {
         return BranchAddress.builder()
                 .district(command.district())
                 .street(command.street())

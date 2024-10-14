@@ -36,15 +36,18 @@ export type BranchAddress = {
     zipCode: string
 }
 
+export type BranchImageAction = 'none' | 'edit' | 'delete'
+
 export type BranchCommand = {
-    name: string
-    phone: string
-    branchTypeId: number
-    district: string
-    street: string
-    streetNumber: string
-    zipCode: string
-}
+    name: string;
+    phone: string;
+    branchTypeId: number;
+    district: string;
+    street: string;
+    streetNumber: string;
+    zipCode: string;
+    imageAction: BranchImageAction;
+};
 
 @Injectable({
     providedIn: 'root'
@@ -89,7 +92,15 @@ export class BranchesService {
     updateBranch(id: number, dto: BranchCommand, image: File | undefined): Observable<void> {
         const url = `${this.branchesEndpoint}/${id}`;
 
-        return this.apiClient.put<void>(url, dto).pipe(
+        const formData: FormData = new FormData();
+
+        if (image) {
+            formData.append('image', image, image.name);
+        }
+
+        formData.append('command', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+
+        return this.apiClient.put<void>(url, formData).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Conflict) {
                     return throwError(() => new BranchExistsError('Branch already exists.'));

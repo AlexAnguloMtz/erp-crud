@@ -5,7 +5,7 @@ import com.aram.erpcrud.modules.branches.domain.Branch;
 import com.aram.erpcrud.modules.branches.domain.BranchRepository;
 import com.aram.erpcrud.modules.branches.domain.BranchType;
 import com.aram.erpcrud.modules.branches.domain.BranchTypeRepository;
-import com.aram.erpcrud.modules.branches.payload.BranchCommand;
+import com.aram.erpcrud.modules.branches.payload.CreateBranchCommand;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,7 +37,7 @@ public class CreateBranch {
     }
 
     @Transactional
-    public void handle(BranchCommand command, MultipartFile image) {
+    public void handle(CreateBranchCommand command, MultipartFile image) {
         Optional<Branch> branchOptional = branchRepository.findByName(command.name());
         if (branchOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);

@@ -4,8 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
-public record BranchCommand(
+@Builder
+public record UpdateBranchCommand(
         @NotBlank(message = "Name is required")
         @Size(max = 60, message = "name cannot exceed 60 characters")
         String name,
@@ -31,6 +33,9 @@ public record BranchCommand(
         String zipCode,
 
         @NotNull(message = "Branch Type id is required")
-        Long branchTypeId
+        Long branchTypeId,
+
+        @NotBlank(message = "Image action is required")
+        String imageAction
 ) {
 }

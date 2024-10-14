@@ -2,9 +2,10 @@ package com.aram.erpcrud.modules.branches.rest;
 
 import com.aram.erpcrud.modules.branches.application.BranchFacade;
 import com.aram.erpcrud.modules.branches.application.command.BranchImageService;
-import com.aram.erpcrud.modules.branches.payload.BranchCommand;
+import com.aram.erpcrud.modules.branches.payload.CreateBranchCommand;
 import com.aram.erpcrud.modules.branches.payload.BranchDTO;
 import com.aram.erpcrud.modules.branches.payload.GetBranchesQuery;
+import com.aram.erpcrud.modules.branches.payload.UpdateBranchCommand;
 import com.aram.erpcrud.utils.PageResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -49,19 +50,20 @@ public class BranchController {
 
     @PostMapping(consumes = { "multipart/form-data" })
     public ResponseEntity<Void> createBranch(
-            @Valid @RequestPart BranchCommand command,
+            @Valid @RequestPart CreateBranchCommand command,
             @RequestPart(required = false) MultipartFile image
     ) {
         branchFacade.createBranch(command, image);
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
     public ResponseEntity<Void> updateBranch(
             @PathVariable Long id,
-            @Valid @RequestBody BranchCommand command
+            @Valid @RequestPart UpdateBranchCommand command,
+            @RequestPart(required = false) MultipartFile image
     ) {
-        branchFacade.updateBranch(id, command);
+        branchFacade.updateBranch(id, command, image);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
