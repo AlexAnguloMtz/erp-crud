@@ -19,6 +19,8 @@ services:
       context: ./backend
       dockerfile: app.Dockerfile
     container_name: erp_backend
+    volumes:
+      - /var/apps/erp-crud/images:/opt/app/images/
     depends_on:
       erp_database:
         condition: service_healthy
