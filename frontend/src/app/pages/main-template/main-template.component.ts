@@ -64,28 +64,28 @@ const links: Array<SidebarLink> = [
   //  icon: 'truck',
   //},
   {
-    id: 'brands',
-    href: '/home/brands',
-    text: 'Marcas',
-    icon: 'bookmark',
-  },
-  {
     id: 'branches',
     href: '/home/branches',
     text: 'Sucursales',
     icon: 'map-marker',
   },
   {
-    id: 'branch-tyés',
+    id: 'branch-types',
     href: '/home/branch-types',
     text: 'Tipos de sucursal',
-    icon: 'list',
+    icon: 'home',
   },
   {
     id: 'product-categories',
     href: '/home/product-categories',
     text: 'Categorías de productos',
-    icon: 'list',
+    icon: 'bookmark',
+  },
+  {
+    id: 'brands',
+    href: '/home/brands',
+    text: 'Marcas',
+    icon: 'tags',
   },
   {
     id: 'backups',
