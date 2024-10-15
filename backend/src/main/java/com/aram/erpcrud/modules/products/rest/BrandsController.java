@@ -29,8 +29,14 @@ public class BrandsController {
             @RequestParam(required = false) @Min(1) @Max(50) Integer pageSize,
             @RequestParam(required = false) String sort
     ) {
-        GetBrandsQuery getBrandsQuery = new GetBrandsQuery(search, pageNumber, pageSize, sort);
-        return new ResponseEntity<>(brandFacade.getBrands(getBrandsQuery), HttpStatus.OK);
+        GetBrandsQuery query = GetBrandsQuery.builder()
+                .search(search)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
+                .sort(sort)
+                .build();
+
+        return new ResponseEntity<>(brandFacade.getBrands(query), HttpStatus.OK);
     }
 
     @PostMapping

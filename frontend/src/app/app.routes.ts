@@ -9,6 +9,7 @@ import { MovementsComponent } from './pages/movements/movements.component';
 import { BackupsComponent } from './pages/backups/backups.component';
 import { BranchesComponent } from './pages/branches/branches.component';
 import { BranchTypesComponent } from './pages/branch-types/branch-types.component';
+import { ProductCategoriesComponent } from './pages/product-categories/product-categories.component';
 
 export const routes: Routes = [
     {
@@ -43,6 +44,10 @@ export const routes: Routes = [
             {
                 path: 'branch-types',
                 component: BranchTypesComponent,
+            },
+            {
+                path: 'product-categories',
+                component: ProductCategoriesComponent,
             },
             {
                 path: 'brands',

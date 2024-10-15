@@ -82,6 +82,12 @@ const links: Array<SidebarLink> = [
     icon: 'list',
   },
   {
+    id: 'product-categories',
+    href: '/home/product-categories',
+    text: 'Categorías de productos',
+    icon: 'list',
+  },
+  {
     id: 'backups',
     href: '/home/backups',
     text: 'Respaldos',
