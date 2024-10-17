@@ -23,7 +23,13 @@ public class GetProducts {
         BrandAsc("brand.name", Sort.Direction.ASC),
         BrandDesc("brand.name", Sort.Direction.DESC),
         ProductCategoryAsc("productCategory.name", Sort.Direction.ASC),
-        ProductCategoryDesc("productCategory.name", Sort.Direction.DESC);
+        ProductCategoryDesc("productCategory.name", Sort.Direction.DESC),
+        SkuAsc("sku", Sort.Direction.ASC),
+        SkuDesc("sku", Sort.Direction.DESC),
+        SalePriceAsc("salePrice", Sort.Direction.ASC),
+        SalePriceDesc("salePrice", Sort.Direction.DESC),
+        InventoryUnitAsc("inventoryUnit", Sort.Direction.ASC),
+        InventoryUnitDesc("inventoryUnit", Sort.Direction.DESC);
 
         private final String field;
         private final Sort.Direction direction;
@@ -88,6 +94,24 @@ public class GetProducts {
         }
         if ("productCategory-desc".equals(sort)) {
             return ProductSort.ProductCategoryDesc;
+        }
+        if ("sku-asc".equals(sort)) {
+            return ProductSort.SkuAsc;
+        }
+        if ("sku-desc".equals(sort)) {
+            return ProductSort.SkuDesc;
+        }
+        if ("salePrice-asc".equals(sort)) {
+            return ProductSort.SalePriceAsc;
+        }
+        if ("salePrice-desc".equals(sort)) {
+            return ProductSort.SalePriceDesc;
+        }
+        if ("inventoryUnit-asc".equals(sort)) {
+            return ProductSort.InventoryUnitAsc;
+        }
+        if ("inventoryUnit-desc".equals(sort)) {
+            return ProductSort.InventoryUnitDesc;
         }
         return ProductSort.NameAsc;
     }

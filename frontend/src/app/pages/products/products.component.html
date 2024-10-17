@@ -1,7 +1,10 @@
 <ng-template #rowTemplate let-item>
+    <td>{{ item.sku }}</td>
     <td>{{ item.name }}</td>
     <td>{{ item.productCategory.name }}</td>
     <td>{{ item.brand.name }}</td>
+    <td>{{ formatProductPrice(item.salePrice) }}</td>
+    <td>{{ item.inventoryUnit.name }}</td>
 </ng-template>
 
 <ng-template #itemFieldsTemplate let-errors="errors" let-formGroup="formGroup">

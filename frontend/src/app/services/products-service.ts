@@ -13,7 +13,9 @@ export type ProductCategory = {
 export type Product = {
     id: number
     name: string
-    brand: Brand,
+    sku: string
+    salePrice: number
+    brand: Brand
     productCategory: ProductCategory
 }
 
@@ -27,9 +29,7 @@ export type ProductCommand = {
     providedIn: 'root'
 })
 export class ProductsService {
-    deleteProductById(id: number): Observable<void> {
-        throw new Error('Method not implemented.');
-    }
+
 
     private brandsEndpoint = '/api/v1/products';
 
@@ -46,6 +46,10 @@ export class ProductsService {
     }
 
     updateProduct(id: number, dto: ProductCommand): Observable<void> {
+        throw new Error('Method not implemented.');
+    }
+
+    deleteProductById(id: number): Observable<void> {
         throw new Error('Method not implemented.');
     }
 

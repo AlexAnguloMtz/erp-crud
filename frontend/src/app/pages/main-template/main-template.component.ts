@@ -51,12 +51,12 @@ const links: Array<SidebarLink> = [
     text: 'Usuarios',
     icon: 'user',
   },
-  //{
-  //  id: 'inventory',
-  //  href: '/home/inventory',
-  //  text: 'Inventario',
-  //  icon: 'warehouse',
-  //},
+  {
+    id: 'products',
+    href: '/home/products',
+    text: 'Productos',
+    icon: 'products',
+  },
   //{
   //  id: 'movements',
   //  href: '/home/movements',

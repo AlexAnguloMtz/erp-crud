@@ -11,7 +11,7 @@ import { SortOption } from '../../common/sort-option';
 const NAME_MAX_LENGTH: number = 100;
 
 @Component({
-  selector: 'app-inventory',
+  selector: 'app-products',
   standalone: true,
   imports: [
     CrudModuleComponent,
@@ -19,10 +19,10 @@ const NAME_MAX_LENGTH: number = 100;
     ReactiveFormsModule,
     InputTextModule,
   ],
-  templateUrl: './inventory.component.html',
-  styleUrl: './inventory.component.css'
+  templateUrl: './products.component.html',
+  styleUrl: './products.component.css'
 })
-export class InventoryComponent {
+export class ProductsComponent {
 
   constructor(
     private productsService: ProductsService
@@ -81,22 +81,35 @@ export class InventoryComponent {
     });
   }
 
+  formatProductPrice(priceInCents: number): string {
+    return `$${(priceInCents / 100).toFixed(2)}`;
+  }
+
   get tableHeaders(): Array<string> {
     return [
+      'SKU',
       'Nombre',
       'Categoría',
       'Marca',
+      'Precio de venta',
+      'Unidad de inventariado'
     ];
   }
 
   get sortOptions(): Array<SortOption> {
     return [
+      { name: 'SKU (A - Z)', key: 'sku-asc' },
+      { name: 'SKU (Z - A)', key: 'sku-desc' },
       { name: 'Nombre (A - Z)', key: 'name-asc' },
       { name: 'Nombre (Z - A)', key: 'name-desc' },
       { name: 'Categoría (A - Z)', key: 'productCategory-asc' },
       { name: 'Categoría (Z - A)', key: 'productCategory-desc' },
       { name: 'Marca (A - Z)', key: 'brand-asc' },
       { name: 'Marca (Z - A)', key: 'brand-desc' },
+      { name: 'Precio de venta (0 - 9)', key: 'salePrice-asc' },
+      { name: 'Precio de venta (9 - 0)', key: 'salePrice-desc' },
+      { name: 'Unidad de inventariado (A - Z)', key: 'inventoryUnit-asc' },
+      { name: 'Unidad de inventariado (Z - A)', key: 'inventoryUnit-desc' },
     ];
   }
 

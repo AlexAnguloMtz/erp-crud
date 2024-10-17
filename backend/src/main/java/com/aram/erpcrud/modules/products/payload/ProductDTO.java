@@ -6,7 +6,10 @@ import lombok.Builder;
 public record ProductDTO(
         Long id,
         String name,
+        String sku,
+        Integer salePrice,
         BrandDTO brand,
-        ProductCategoryDTO productCategory
+        ProductCategoryDTO productCategory,
+        InventoryUnitDTO inventoryUnit
 ) {
 }

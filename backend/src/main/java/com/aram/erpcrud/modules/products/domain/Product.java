@@ -20,6 +20,12 @@ public class Product {
     @Column(name = "nombre")
     private String name;
 
+    @Column(name = "precio_venta_centavos")
+    private Integer salePrice;
+
+    @Column(name = "sku")
+    private String sku;
+
     @ManyToOne
     @JoinColumn(name = "marca_id")
     private Brand brand;
@@ -27,5 +33,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "categoria_producto_id")
     private ProductCategory productCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "unidad_inventario_id")
+    private InventoryUnit inventoryUnit;
 
 }
