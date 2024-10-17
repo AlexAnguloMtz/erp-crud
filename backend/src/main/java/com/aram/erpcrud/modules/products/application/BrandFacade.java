@@ -1,5 +1,6 @@
 package com.aram.erpcrud.modules.products.application;
 
+import com.aram.erpcrud.modules.products.application.query.GetAllBrands;
 import com.aram.erpcrud.utils.PageResponse;
 import com.aram.erpcrud.modules.products.application.query.GetBrands;
 import com.aram.erpcrud.modules.products.domain.Brand;
@@ -19,15 +20,25 @@ import java.util.Optional;
 public class BrandFacade {
 
     private final GetBrands getBrands;
+    private final GetAllBrands getAllBrands;
     private final BrandRepository brandRepository;
 
-    public BrandFacade(GetBrands getBrands, BrandRepository brandRepository) {
+    public BrandFacade(
+            GetBrands getBrands,
+            GetAllBrands getAllBrands,
+            BrandRepository brandRepository
+    ) {
         this.getBrands = getBrands;
+        this.getAllBrands = getAllBrands;
         this.brandRepository = brandRepository;
     }
 
     public PageResponse<BrandDTO> getBrands(GetBrandsQuery query) {
         return getBrands.handle(query);
+    }
+
+    public Iterable<BrandDTO> getAllBrands() {
+        return getAllBrands.get();
     }
 
     @Transactional
@@ -70,4 +81,6 @@ public class BrandFacade {
     public void deleteBrandById(Long id) {
         brandRepository.deleteById(id);
     }
+
+
 }

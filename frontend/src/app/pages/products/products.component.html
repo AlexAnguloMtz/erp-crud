@@ -8,13 +8,150 @@
 </ng-template>
 
 <ng-template #itemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
+    <div class="product-form-top-container">
+        <div class="image-section">
+            <input type="file" #fileInput (change)="onProductImageSelected($event)" accept=".jpg, .jpeg, .png"
+                style="display: none;" />
+            <label class="image-label">Foto</label>
+            @if (loadingProductImage) {
+            <div class="image-spinner-container">
+                <p-progressSpinner ariaLabel="loading" />
+            </div>
+            }
+            @else if (showingProductImage) {
+            <div class="selected-image-container">
+                <p-image [src]="selectedProductImageSrc" alt="branch-image" [preview]="true" [appendTo]="'body'"
+                    [imageStyle]="{'width': '100%', 'maxWidth': '100%', 'height': '300px', 'objectFit': 'cover'}" />
+            </div>
+            <div class="selected-image-actions">
+                <p-button (click)="onDeleteProductImage()" icon="pi pi-trash" label="Borrar" styleClass="p-button-sm"
+                    [outlined]="true" severity="danger" [style]="{'fontSize': '12px', 'padding': '6px 10px'}" />
+                <p-button (click)="fileInput.click()" icon="pi pi-pencil" label="Cambiar" styleClass="p-button-sm"
+                    [outlined]="true" severity="success" [style]="{'fontSize': '12px', 'padding': '6px 10px'}" />
+            </div>
+            } @else {
+            <div class="image-frame" (click)="fileInput.click()">
+                <div class="add-image-icon-container">
+                    <img class="add-image-icon" src="images/camera.svg" alt="add-image">
+                </div>
+                <h4 class="add-image-text">Subir foto</h4>
+            </div>
+            }
+        </div>
+        <div class="product-form-fields">
+            <div class="form-input" [style]="{'paddingBottom': '14px'}">
+                <label>Nombre</label>
+                <input pInputText name="name" [formControl]="formGroup.get('name')" [style]="{'width': '100%'}" />
+                <div class="form-error name">
+                    {{ errors['name'] }}
+                </div>
+            </div>
+            <div class="double-input-container">
+
+                <div class="form-input" [style]="{'paddingBottom': '14px'}">
+                    <label>SKU</label>
+                    <input pInputText name="sku" [formControl]="formGroup.get('sku')" [style]="{'width': '100%'}" />
+                    <div class="form-error sku">
+                        {{ errors['sku'] }}
+                    </div>
+                </div>
+                <div class="form-input" [style]="{'paddingBottom': '14px'}">
+                    <label>Precio de venta</label>
+                    <input pInputText name="salePrice" [formControl]="formGroup.get('salePrice')"
+                        [style]="{'width': '100%'}" />
+                    <div class="form-error salePrice">
+                        {{ errors['salePrice'] }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-input">
+                <label>Marca</label>
+                @if (loadingBrandsOptions) {
+                <div class="form__progress-container">
+                    <p-progressSpinner class="form__progress" ariaLabel="loading"
+                        [style]="{'width': '40px', 'height': '40px'}" />
+                </div>
+                } @else if (loadingBrandsError) {
+                <div class="dropdown-load-error">
+                    <div>Error de carga</div>
+                    <p-button (click)="onRetryLoadBrands()" [outlined]="true" icon="pi pi-refresh"
+                        severity="secondary" />
+                </div>
+                } @else {
+                <p-dropdown name="brand" [formControl]="formGroup.get('brand')" [options]="brandsOptions"
+                    optionLabel="name" optionValue="id" placeholder="Marca" [style]="{'width': '100%'}" />
+                }
+                <div class="form-error brand">
+                    {{ errors['brand'] }}
+                </div>
+            </div>
+            <div class="form-input">
+                <label>Categoría</label>
+                @if (loadingProductCategories) {
+                <div class="form__progress-container">
+                    <p-progressSpinner class="form__progress" ariaLabel="loading"
+                        [style]="{'width': '40px', 'height': '40px'}" />
+                </div>
+                } @else if (loadingProductCategoriesError) {
+                <div class="dropdown-load-error">
+                    <div>Error de carga</div>
+                    <p-button (click)="onRetryLoadProductCategories()" [outlined]="true" icon="pi pi-refresh"
+                        severity="secondary" />
+                </div>
+                } @else {
+                <p-dropdown name="productCategory" [formControl]="formGroup.get('productCategory')"
+                    [options]="productCategoriesOptions" optionLabel="name" optionValue="id" placeholder="Categoría"
+                    [style]="{'width': '100%'}" />
+                }
+                <div class="form-error productCategory">
+                    {{ errors['productCategory'] }}
+                </div>
+            </div>
+            <div class="form-input">
+                <label>Unidad de inventariado</label>
+                @if (loadingInventoryUnits) {
+                <div class="form__progress-container">
+                    <p-progressSpinner class="form__progress" ariaLabel="loading"
+                        [style]="{'width': '40px', 'height': '40px'}" />
+                </div>
+                } @else if (loadingInventoryUnitsError) {
+                <div class="dropdown-load-error">
+                    <div>Error de carga</div>
+                    <p-button (click)="onRetryLoadProductCategories()" [outlined]="true" icon="pi pi-refresh"
+                        severity="secondary" />
+                </div>
+                } @else {
+                <p-dropdown name="inventoryUnit" [formControl]="formGroup.get('inventoryUnit')"
+                    [options]="inventoryUnitsOptions" optionLabel="name" optionValue="id"
+                    placeholder="Unidad de inventariado" [style]="{'width': '100%'}" />
+                }
+                <div class="form-error inventoryUnit">
+                    {{ errors['inventoryUnit'] }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </ng-template>
+
+<p-dialog header="Imagen inválida" [(visible)]="productImageErrorDialogVisible" modal="true"
+    (onHide)="onHideImageErrorDialog()" [closable]="true" [resizable]="false" [draggable]="false"
+    [dismissableMask]="true">
+
+    <div class="image-error-content">
+        <p>{{ productImageError }}</p>
+    </div>
+
+</p-dialog>
 
 <app-crud-module [title]="'Productos'" [formTitle]="'Producto'" [createItemCreationForm]="createForm()"
     [createItemUpdateForm]="createForm()" [getItems]="getItems()" [sortOptions]="sortOptions"
     [tableHeaders]="tableHeaders" [rowTemplate]="rowTemplate" [createItemFieldsTemplate]="itemFieldsTemplate"
     [updateItemFieldsTemplate]="itemFieldsTemplate" [getCreationErrors]="getFormErrors()"
     [getUpdateErrors]="getFormErrors()" [mapItemOperationError]="mapItemOperationError()" [createItem]="createItem()"
-    [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToDto()" [mapFormToUpdateDto]="mapFormToDto()"
-    [deleteItemById]="deleteItemById()" [hasFilters]="false">
+    [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToCreationDto()"
+    [mapFormToUpdateDto]="mapFormToUpdateDto()" [deleteItemById]="deleteItemById()" [hasFilters]="false"
+    [onHideItemFormClick]="onHideItemFormClick()" [onCreateNewClick]="onCreateNewClick()"
+    [onEditRowClick]="onEditRowClick()">
 </app-crud-module>

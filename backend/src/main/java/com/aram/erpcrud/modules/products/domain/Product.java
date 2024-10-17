@@ -1,14 +1,13 @@
 package com.aram.erpcrud.modules.products.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "producto")
+@Builder
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class Product {
@@ -25,6 +24,9 @@ public class Product {
 
     @Column(name = "sku")
     private String sku;
+
+    @Column(name = "imagen")
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "marca_id")

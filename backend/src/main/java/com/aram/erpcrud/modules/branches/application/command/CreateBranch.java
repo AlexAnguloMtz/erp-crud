@@ -1,5 +1,6 @@
 package com.aram.erpcrud.modules.branches.application.command;
 
+import com.aram.erpcrud.modules.branches.application.BranchImageService;
 import com.aram.erpcrud.modules.branches.application.mapper.BranchModelMapper;
 import com.aram.erpcrud.modules.branches.domain.Branch;
 import com.aram.erpcrud.modules.branches.domain.BranchRepository;

@@ -1,5 +1,6 @@
 package com.aram.erpcrud.modules.branches.application.command;
 
+import com.aram.erpcrud.modules.branches.application.BranchImageService;
 import com.aram.erpcrud.modules.branches.domain.*;
 import com.aram.erpcrud.modules.branches.payload.UpdateBranchCommand;
 import jakarta.transaction.Transactional;

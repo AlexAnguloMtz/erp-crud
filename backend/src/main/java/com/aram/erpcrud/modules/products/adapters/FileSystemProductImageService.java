@@ -1,7 +1,6 @@
-package com.aram.erpcrud.modules.branches.adapters;
+package com.aram.erpcrud.modules.products.adapters;
 
-import com.aram.erpcrud.modules.branches.application.BranchImageService;
-import lombok.extern.slf4j.Slf4j;
+import com.aram.erpcrud.modules.products.application.ProductImageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -16,22 +15,21 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-@Slf4j
 @Component
-public class FileSystemBranchImageService implements BranchImageService {
+public class FileSystemProductImageService implements ProductImageService {
 
     @Value("${images.modules.path}")
     private String imagesDirectoryPath;
 
-    @Value("${images.modules.branch.path}")
-    private String branchImagesPath;
+    @Value("${images.modules.product.path}")
+    private String productImagesPath;
 
     @Override
-    public byte[] getBranchImage(String image) {
+    public byte[] getProductImage(String image) {
         try {
 
             // Construct the full path to the image
-            Path imagePath = Paths.get(fullBranchImagesPath(), image);
+            Path imagePath = Paths.get(fullProductImagesPath(), image);
 
             // Check if image exists
             if (!Files.exists(imagePath)) {
@@ -47,7 +45,7 @@ public class FileSystemBranchImageService implements BranchImageService {
     }
 
     @Override
-    public String saveBranchImage(MultipartFile image) {
+    public String saveProductImage(MultipartFile image) {
         if (image == null || image.isEmpty()) {
             throw new IllegalArgumentException("Image file is empty or null");
         }
@@ -57,7 +55,7 @@ public class FileSystemBranchImageService implements BranchImageService {
             String fileName = UUID.randomUUID() + "." + getExtension(image);
 
             // Assemble path
-            Path destinationPath = Paths.get(fullBranchImagesPath(), fileName);
+            Path destinationPath = Paths.get(fullProductImagesPath(), fileName);
 
             // Create the storage directory if it doesn't exist
             Files.createDirectories(destinationPath.getParent());
@@ -74,7 +72,7 @@ public class FileSystemBranchImageService implements BranchImageService {
     }
 
     @Override
-    public String updateBranchImage(String image, MultipartFile imageFile) {
+    public String updateProductImage(String image, MultipartFile imageFile) {
         if (!StringUtils.hasText(image)) {
             throw new IllegalArgumentException("Image reference is empty or null");
         }
@@ -85,11 +83,11 @@ public class FileSystemBranchImageService implements BranchImageService {
 
         try {
             // Construct the full path to the existing image
-            Path existingImagePath = Paths.get(fullBranchImagesPath(), image);
+            Path existingImagePath = Paths.get(fullProductImagesPath(), image);
 
             // If the image does not exist, just save it and return the pointer to it
             if (!Files.exists(existingImagePath)) {
-                return saveBranchImage(imageFile);
+                return saveProductImage(imageFile);
             }
 
             // Overwrite the existing image with the new one
@@ -99,19 +97,18 @@ public class FileSystemBranchImageService implements BranchImageService {
             return image;
 
         } catch (Exception e) {
-            log.error(e.getMessage());
             throw new RuntimeException("Failed to update image", e);
         }
     }
 
     @Override
-    public void deleteBranchImage(String image) {
+    public void deleteProductImage(String image) {
         if (!StringUtils.hasText(image)) {
             throw new IllegalArgumentException("Image reference is empty or null");
         }
 
         try {
-            Path imagePath = Paths.get(fullBranchImagesPath(), image);
+            Path imagePath = Paths.get(fullProductImagesPath(), image);
             if (Files.exists(imagePath)) {
                 Files.delete(imagePath);
             } else {
@@ -122,8 +119,8 @@ public class FileSystemBranchImageService implements BranchImageService {
         }
     }
 
-    private String fullBranchImagesPath() {
-        return imagesDirectoryPath + branchImagesPath;
+    private String fullProductImagesPath() {
+        return imagesDirectoryPath + productImagesPath;
     }
 
     private String getExtension(MultipartFile file) {
@@ -133,5 +130,4 @@ public class FileSystemBranchImageService implements BranchImageService {
         }
         return "";
     }
-
 }

@@ -8,6 +8,7 @@ public record ProductDTO(
         String name,
         String sku,
         Integer salePrice,
+        String image,
         BrandDTO brand,
         ProductCategoryDTO productCategory,
         InventoryUnitDTO inventoryUnit

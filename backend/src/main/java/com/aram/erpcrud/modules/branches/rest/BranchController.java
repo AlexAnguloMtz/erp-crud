@@ -1,7 +1,7 @@
 package com.aram.erpcrud.modules.branches.rest;
 
 import com.aram.erpcrud.modules.branches.application.BranchFacade;
-import com.aram.erpcrud.modules.branches.application.command.BranchImageService;
+import com.aram.erpcrud.modules.branches.application.BranchImageService;
 import com.aram.erpcrud.modules.branches.payload.CreateBranchCommand;
 import com.aram.erpcrud.modules.branches.payload.BranchDTO;
 import com.aram.erpcrud.modules.branches.payload.GetBranchesQuery;

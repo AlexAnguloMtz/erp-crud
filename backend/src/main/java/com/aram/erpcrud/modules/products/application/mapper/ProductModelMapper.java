@@ -4,10 +4,7 @@ import com.aram.erpcrud.modules.products.domain.Brand;
 import com.aram.erpcrud.modules.products.domain.InventoryUnit;
 import com.aram.erpcrud.modules.products.domain.Product;
 import com.aram.erpcrud.modules.products.domain.ProductCategory;
-import com.aram.erpcrud.modules.products.payload.BrandDTO;
-import com.aram.erpcrud.modules.products.payload.InventoryUnitDTO;
-import com.aram.erpcrud.modules.products.payload.ProductCategoryDTO;
-import com.aram.erpcrud.modules.products.payload.ProductDTO;
+import com.aram.erpcrud.modules.products.payload.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,6 +19,7 @@ public class ProductModelMapper {
                 .brand(toBrandDTO(product.getBrand()))
                 .productCategory(toProductCategoryDTO(product.getProductCategory()))
                 .inventoryUnit(toInventoryUnitDTO(product.getInventoryUnit()))
+                .image(product.getImage())
                 .build();
     }
 
@@ -33,8 +31,23 @@ public class ProductModelMapper {
         return new BrandDTO(brand.getId(), brand.getName());
     }
 
-    private InventoryUnitDTO toInventoryUnitDTO(InventoryUnit inventoryUnit) {
+    public InventoryUnitDTO toInventoryUnitDTO(InventoryUnit inventoryUnit) {
         return new InventoryUnitDTO(inventoryUnit.getId(), inventoryUnit.getName());
     }
 
+    public Product toProduct(
+            CreateProductCommand command,
+            Brand brand,
+            ProductCategory productCategory,
+            InventoryUnit inventoryUnit
+    ) {
+        return Product.builder()
+                .name(command.name())
+                .sku(command.sku())
+                .salePrice(command.salePrice())
+                .brand(brand)
+                .productCategory(productCategory)
+                .inventoryUnit(inventoryUnit)
+                .build();
+    }
 }

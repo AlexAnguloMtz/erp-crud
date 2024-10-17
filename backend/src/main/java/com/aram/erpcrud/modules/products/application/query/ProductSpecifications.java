@@ -16,7 +16,6 @@ public interface ProductSpecifications {
             return builder.or(
                     builder.like(builder.lower(root.get("name")), searchPattern),
                     builder.like(builder.lower(root.get("sku")), searchPattern),
-                    builder.like(builder.lower(root.get("salePrice")), searchPattern),
                     builder.like(builder.lower(root.join("brand").get("name")), searchPattern),
                     builder.like(builder.lower(root.join("productCategory").get("name")), searchPattern),
                     builder.like(builder.lower(root.join("inventoryUnit").get("name")), searchPattern)

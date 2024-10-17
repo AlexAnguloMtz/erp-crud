@@ -226,6 +226,7 @@ export class BranchesComponent {
 
   onEditRowClick(): (item: CrudItem, formGroup: FormGroup) => void {
     return (item: CrudItem, updateItemForm: FormGroup) => {
+
       const model: Branch = (item as Branch);
 
       this.loadBranchTypesOnRowClick(model.branchType.id, updateItemForm);

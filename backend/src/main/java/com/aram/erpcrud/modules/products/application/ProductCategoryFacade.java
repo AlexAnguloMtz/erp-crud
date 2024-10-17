@@ -1,5 +1,6 @@
 package com.aram.erpcrud.modules.products.application;
 
+import com.aram.erpcrud.modules.products.application.query.GetAllProductCategories;
 import com.aram.erpcrud.modules.products.application.query.GetProductCategories;
 import com.aram.erpcrud.modules.products.domain.ProductCategory;
 import com.aram.erpcrud.modules.products.domain.ProductCategoryRepository;
@@ -19,18 +20,25 @@ import java.util.Optional;
 public class ProductCategoryFacade {
 
     private final GetProductCategories getProductCategories;
+    private final GetAllProductCategories getAllProductCategories;
     private final ProductCategoryRepository productCategoryRepository;
 
     public ProductCategoryFacade(
             GetProductCategories getProductCategories,
+            GetAllProductCategories getAllProductCategories,
             ProductCategoryRepository productCategoryRepository
     ) {
         this.getProductCategories = getProductCategories;
+        this.getAllProductCategories = getAllProductCategories;
         this.productCategoryRepository = productCategoryRepository;
     }
 
     public PageResponse<ProductCategoryDTO> getProductCategories(GetProductCategoriesQuery query) {
         return getProductCategories.handle(query);
+    }
+
+    public Iterable<ProductCategoryDTO> getAllProductCategories() {
+        return getAllProductCategories.get();
     }
 
     @Transactional
@@ -73,4 +81,6 @@ public class ProductCategoryFacade {
     public void deleteProductCategoryById(Long id) {
         productCategoryRepository.deleteById(id);
     }
+
+
 }

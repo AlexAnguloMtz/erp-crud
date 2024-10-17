@@ -37,6 +37,12 @@ export class ProductCategoryService {
         );
     }
 
+    getAllProductCategories(): Observable<Array<ProductCategory>> {
+        return this.apiClient.get<Array<ProductCategory>>(this.productCategoriesEndpoint + "/all").pipe(
+            retry(5),
+        )
+    }
+
     createProductCategory(dto: ProductCategoryCommand): Observable<void> {
         return this.apiClient.post<void>(this.productCategoriesEndpoint, dto).pipe(
             catchError(error => {

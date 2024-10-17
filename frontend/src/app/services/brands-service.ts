@@ -37,6 +37,12 @@ export class BrandsService {
         );
     }
 
+    getAllBrands(): Observable<Array<Brand>> {
+        return this.apiClient.get<Array<Brand>>(this.brandsEndpoint + "/all").pipe(
+            retry(5)
+        );
+    }
+
     createBrand(dto: BrandCommand): Observable<void> {
         return this.apiClient.post<void>(this.brandsEndpoint, dto).pipe(
             catchError(error => {

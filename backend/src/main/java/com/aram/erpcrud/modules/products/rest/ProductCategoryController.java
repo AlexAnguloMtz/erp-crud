@@ -37,6 +37,11 @@ public class ProductCategoryController {
         return new ResponseEntity<>(productCategoryFacade.getProductCategories(query), HttpStatus.OK);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<ProductCategoryDTO>> getAllProductCategories() {
+        return new ResponseEntity<>(productCategoryFacade.getAllProductCategories(), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Void> createProductCategory(@Valid @RequestBody ProductCategoryCommand command) {
         productCategoryFacade.createProductCategory(command);

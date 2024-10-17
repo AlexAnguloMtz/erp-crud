@@ -1,4 +1,4 @@
-package com.aram.erpcrud.modules.branches.application.command;
+package com.aram.erpcrud.modules.branches.application;
 
 import org.springframework.web.multipart.MultipartFile;
 

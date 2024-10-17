@@ -1,5 +1,6 @@
 package com.aram.erpcrud.modules.products.rest;
 
+import com.aram.erpcrud.modules.products.payload.ProductCategoryDTO;
 import com.aram.erpcrud.utils.PageResponse;
 import com.aram.erpcrud.modules.products.application.BrandFacade;
 import com.aram.erpcrud.modules.products.payload.BrandCommand;
@@ -37,6 +38,11 @@ public class BrandsController {
                 .build();
 
         return new ResponseEntity<>(brandFacade.getBrands(query), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<BrandDTO>> getAllBrands() {
+        return new ResponseEntity<>(brandFacade.getAllBrands(), HttpStatus.OK);
     }
 
     @PostMapping

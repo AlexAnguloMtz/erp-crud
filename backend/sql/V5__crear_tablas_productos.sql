@@ -19,8 +19,9 @@ CREATE TABLE producto(
     categoria_producto_id INT NOT NULL,
     marca_id INT NOT NULL,
     unidad_inventario_id INT NOT NULL,
-    nombre VARCHAR(100) NOT NULL,
+    nombre VARCHAR(60) NOT NULL,
     precio_venta_centavos INT NOT NULL,
+    imagen VARCHAR(255) NULL,
     FOREIGN KEY (categoria_producto_id) REFERENCES categoria_producto(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (unidad_inventario_id) REFERENCES unidad_inventario(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (marca_id) REFERENCES marca(id) ON UPDATE CASCADE ON DELETE CASCADE
