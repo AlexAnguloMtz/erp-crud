@@ -342,11 +342,11 @@ export class ProductsComponent {
     this.brandsStatus = { _type: 'loading-options' };
     this.brandsService.getAllBrands().subscribe({
       next: (brands: Array<Brand>) => {
-        const sortedBrands = brands.sort((a, b) => a.name.localeCompare(b.name));
+        const sorted = brands.sort((a, b) => a.name.localeCompare(b.name));
 
         this.brandsStatus = {
           _type: 'options-ready',
-          items: sortedBrands,
+          items: sorted,
         };
       },
       error: (_) => this.brandsStatus = { _type: 'error' },
@@ -357,11 +357,11 @@ export class ProductsComponent {
     this.productCategoriesStatus = { _type: 'loading-options' };
     this.productCategoriesService.getAllProductCategories().subscribe({
       next: (productCategories: Array<ProductCategory>) => {
-        const sortedCategories = productCategories.sort((x, y) => x.name.localeCompare(y.name));
+        const sorted = productCategories.sort((x, y) => x.name.localeCompare(y.name));
 
         this.productCategoriesStatus = {
           _type: 'options-ready',
-          items: sortedCategories,
+          items: sorted,
         };
       },
       error: (_) => this.productCategoriesStatus = { _type: 'error' },
@@ -372,11 +372,11 @@ export class ProductsComponent {
     this.inventoryUnitsStatus = { _type: 'loading-options' };
     this.inventoryUnitsService.getAllInventoryUnits().subscribe({
       next: (inventoryUnits: Array<InventoryUnit>) => {
-        const sortedUnits = inventoryUnits.sort((x, y) => x.name.localeCompare(y.name));
+        const sorted = inventoryUnits.sort((x, y) => x.name.localeCompare(y.name));
 
         this.inventoryUnitsStatus = {
           _type: 'options-ready',
-          items: sortedUnits,
+          items: sorted,
         };
       },
       error: (_) => this.inventoryUnitsStatus = { _type: 'error' },
