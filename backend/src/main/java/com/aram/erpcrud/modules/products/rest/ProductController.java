@@ -8,6 +8,7 @@ import com.aram.erpcrud.modules.products.payload.ProductDTO;
 import com.aram.erpcrud.utils.PageResponse;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/products")
+@Slf4j
 public class ProductController {
 
     private final ProductFacade productsFacade;
@@ -57,6 +59,7 @@ public class ProductController {
 
     @GetMapping(value = "/product-image/{image}", produces = { MediaType.APPLICATION_OCTET_STREAM_VALUE })
     public ResponseEntity<byte[]> getProductImage(@PathVariable String image) {
+        log.error("received fetch for product image {}", image);
         return new ResponseEntity<>(productImageService.getProductImage(image), HttpStatus.OK);
     }
 
