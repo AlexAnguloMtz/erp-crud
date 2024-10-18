@@ -52,10 +52,10 @@ const links: Array<SidebarLink> = [
     icon: 'user',
   },
   {
-    id: 'products',
-    href: '/home/products',
-    text: 'Productos',
-    icon: 'products',
+    id: 'inventory',
+    href: '/home/inventory',
+    text: 'Inventario',
+    icon: 'box',
   },
   //{
   //  id: 'movements',

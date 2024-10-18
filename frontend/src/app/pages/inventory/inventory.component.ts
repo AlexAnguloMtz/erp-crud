@@ -45,7 +45,7 @@ type ProductImageStatus =
   | ProductImageShowing
 
 @Component({
-  selector: 'app-products',
+  selector: 'app-inventory',
   standalone: true,
   imports: [
     CrudModuleComponent,
@@ -58,12 +58,12 @@ type ProductImageStatus =
     ButtonModule,
     DropdownModule,
   ],
-  templateUrl: './products.component.html',
-  styleUrl: './products.component.css'
+  templateUrl: './inventory.component.html',
+  styleUrl: './inventory.component.css'
 })
-export class ProductsComponent {
+export class InventoryComponent {
 
-  // Form options
+  // Product form options
   brandsStatus: OptionsStatus<Brand>;
   inventoryUnitsStatus: OptionsStatus<InventoryUnit>;
   productCategoriesStatus: OptionsStatus<ProductCategory>;
@@ -172,7 +172,7 @@ export class ProductsComponent {
   }
 
   updateItem(): (id: number, form: ProductForm) => Observable<void> {
-    return (id: number, form: ProductForm) => this.productsService.updateProduct(id, form.command);
+    return (id: number, form: ProductForm) => this.productsService.updateProduct(id, form.command, form.image);
   }
 
   deleteItemById(): (id: number) => Observable<void> {

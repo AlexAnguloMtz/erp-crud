@@ -2,7 +2,7 @@ package com.aram.erpcrud.modules.products.payload;
 
 import jakarta.validation.constraints.*;
 
-public record CreateProductCommand(
+public record UpdateProductCommand(
 
         @NotBlank(message = "Name is required")
         @Size(max = 60, message = "name cannot exceed 60 characters")
@@ -24,7 +24,9 @@ public record CreateProductCommand(
         Long productCategoryId,
 
         @NotNull(message = "Inventory Unit id is required")
-        Long inventoryUnitId
+        Long inventoryUnitId,
 
-) {
-}
+        @NotBlank(message = "Image action is required")
+        String imageAction
+
+) { }

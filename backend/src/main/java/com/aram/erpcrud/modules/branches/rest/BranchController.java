@@ -48,7 +48,7 @@ public class BranchController {
         return new ResponseEntity<>(branchFacade.getBranches(query), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = { "multipart/form-data" })
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<Void> createBranch(
             @Valid @RequestPart CreateBranchCommand command,
             @RequestPart(required = false) MultipartFile image
@@ -57,7 +57,7 @@ public class BranchController {
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
+    @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<Void> updateBranch(
             @PathVariable Long id,
             @Valid @RequestPart UpdateBranchCommand command,

@@ -80,15 +80,32 @@ export class ProductsService {
         return this.apiClient.post<void>(this.productsEndpoint, formData).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Conflict) {
-                    return throwError(() => new ProductExistsError('Branch already exists.'));
+                    return throwError(() => new ProductExistsError('Product already exists.'));
                 }
                 return throwError(() => new Error('An unexpected error occurred.'));
             })
         );
     }
 
-    updateProduct(id: number, dto: ProductCommand): Observable<void> {
-        throw new Error('Method not implemented.');
+    updateProduct(id: number, dto: ProductCommand, image: File | undefined): Observable<void> {
+        const url = `${this.productsEndpoint}/${id}`;
+
+        const formData: FormData = new FormData();
+
+        if (image) {
+            formData.append('image', image, image.name);
+        }
+
+        formData.append('command', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+
+        return this.apiClient.put<void>(url, formData).pipe(
+            catchError(error => {
+                if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Conflict) {
+                    return throwError(() => new ProductExistsError('Product already exists.'));
+                }
+                return throwError(() => new Error('An unexpected error occurred.'));
+            })
+        );
     }
 
     deleteProductById(id: number): Observable<void> {
