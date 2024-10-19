@@ -1,5 +1,6 @@
 package com.aram.erpcrud.modules.products.application.command;
 
+import com.aram.erpcrud.modules.branches.application.command.UpdateBranch;
 import com.aram.erpcrud.modules.products.application.ProductImageService;
 import com.aram.erpcrud.modules.products.application.mapper.ProductModelMapper;
 import com.aram.erpcrud.modules.products.domain.*;
@@ -48,7 +49,7 @@ public class UpdateProduct {
         ProductCategory productCategory = findProductCategoryByIdOrThrow(command.productCategoryId());
         InventoryUnit inventoryUnit = findInventoryUnitByIdOrThrow(command.inventoryUnitId());
 
-        String imageReference = executeProductImageAction(product.getImage(), validImageAction.imageFile());
+        String imageReference = executeProductImageAction(validImageAction, product.getImage());
 
         product.setBrand(brand);
         product.setProductCategory(productCategory);
@@ -60,11 +61,30 @@ public class UpdateProduct {
         productRepository.save(product);
     }
 
-    private String executeProductImageAction(String imageReference, MultipartFile imageFile) {
+    private String executeProductImageAction(
+            ValidImageAction imageAction,
+            String imageReference
+    ) {
+        if (Objects.equals("edit", imageAction.action)) {
+            return editBranchImage(imageReference, imageAction.imageFile);
+        } else if (Objects.equals("delete", imageAction.action)) {
+            deleteBranchImage(imageReference);
+            return null;
+        }
+        return imageReference;
+    }
+
+    private String editBranchImage(String imageReference, MultipartFile imageFile) {
         if (StringUtils.hasText(imageReference)) {
             return productImageService.updateProductImage(imageReference, imageFile);
         } else {
             return productImageService.saveProductImage(imageFile);
+        }
+    }
+
+    private void deleteBranchImage(String imageReference) {
+        if (StringUtils.hasText(imageReference)) {
+            productImageService.deleteProductImage(imageReference);
         }
     }
 
