@@ -3,7 +3,7 @@ import { CrudItem, CrudModuleComponent, DisplayableError } from '../crud-module/
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatedRequest } from '../../common/paginated-request';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { PaginatedResponse } from '../../common/paginated-response';
 import { InventoryUnit, Product, ProductCategory, ProductCommand, ProductImageAction, ProductsService } from '../../services/products-service';
 import { SortOption } from '../../common/sort-option';
@@ -63,6 +63,8 @@ type ProductImageStatus =
 })
 export class InventoryComponent {
 
+  productsImages: Array<Blob>
+
   // Product form options
   brandsStatus: OptionsStatus<Brand>;
   inventoryUnitsStatus: OptionsStatus<InventoryUnit>;
@@ -90,7 +92,13 @@ export class InventoryComponent {
   }
 
   getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
-    return (request: PaginatedRequest) => this.productsService.getProducts(request);
+    return (request: PaginatedRequest) => this.productsService.getProducts(request).pipe(
+      tap((response: PaginatedResponse<CrudItem>) => {
+        response.items.forEach((item: CrudItem) => {
+          const product: Product = item as Product;
+        })
+      })
+    );
   }
 
   createForm(): (formBuilder: FormBuilder) => FormGroup {
@@ -450,6 +458,7 @@ export class InventoryComponent {
 
   get tableHeaders(): Array<string> {
     return [
+      'Foto',
       'SKU',
       'Nombre',
       'Categoría',
@@ -474,6 +483,14 @@ export class InventoryComponent {
       { name: 'Unidad de inventariado (A - Z)', key: 'inventoryUnit-asc' },
       { name: 'Unidad de inventariado (Z - A)', key: 'inventoryUnit-desc' },
     ];
+  }
+
+  productImageReady(image: string): boolean {
+    return false;
+  }
+
+  productImageLoading(image: string): boolean {
+    return false;
   }
 
   private nameError(form: FormGroup): string {

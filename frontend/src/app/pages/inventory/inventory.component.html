@@ -1,4 +1,13 @@
 <ng-template #rowTemplate let-item>
+    <td>
+        @if (productImageReady(item.image)) {
+        ready
+        } @else if (productImageLoading(item.image)) {
+        loading
+        } @else {
+        error
+        }
+    </td>
     <td>{{ item.sku }}</td>
     <td>{{ item.name }}</td>
     <td>{{ item.productCategory.name }}</td>
