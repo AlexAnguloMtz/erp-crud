@@ -25,7 +25,6 @@
     display: flex;
     flex-direction: column;
     gap: 22px;
-    padding-bottom: 20px;
 }
 
 .form__progress-container {
@@ -92,6 +91,10 @@
     justify-content: flex-end;
     gap: 8px;
     align-items: center;
+}
+
+.single-input-container {
+    padding: 10px 0;
 }
 
 @media screen and (min-width: 570px) {
