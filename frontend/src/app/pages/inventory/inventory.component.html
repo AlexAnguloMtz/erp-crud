@@ -1,9 +1,12 @@
 <ng-template #rowTemplate let-item>
     <td>
-        @if (productImageReady(item.image)) {
-        ready
-        } @else if (productImageLoading(item.image)) {
-        loading
+        @if (!item.image) {
+        <img src="images/product-image-placeholder.svg" alt="none-product-image" class="product-image-placeholder">
+        } @else if (productImageLoading(item)) {
+        <p-skeleton width="6rem" height="4rem" />
+        } @else if (productImageReady(item)) {
+        <p-image [src]="productImageSrc(item)" alt="product-image" [preview]="true" [appendTo]="'body'"
+            [imageStyle]="{'width': '60px', 'height': '60px', 'objectFit': 'cover', 'borderRadius': '4px'}" />
         } @else {
         error
         }

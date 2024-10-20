@@ -97,6 +97,12 @@
     padding: 10px 0;
 }
 
+.product-image-placeholder {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
 @media screen and (min-width: 570px) {
     .double-input-container {
         flex-direction: row;

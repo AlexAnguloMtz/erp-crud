@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { ProductCategoryService } from '../../services/product-categories-service';
 import { InventoryUnitService } from '../../services/inventory-unit-service';
 import { DropdownModule } from 'primeng/dropdown';
+import { SkeletonModule } from 'primeng/skeleton';
 
 const NAME_MAX_LENGTH: number = 60;
 const SKU_LENGTH: number = 8;
@@ -57,6 +58,7 @@ type ProductImageStatus =
     DialogModule,
     ButtonModule,
     DropdownModule,
+    SkeletonModule,
   ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.css'
@@ -76,6 +78,9 @@ export class InventoryComponent {
   productImageErrorDialogVisible: boolean;
   productImageError: string;
 
+  // Retreived product images state
+  productsImagesStatuses: Map<number, ProductImageStatus>;
+
   constructor(
     private productsService: ProductsService,
     private brandsService: BrandsService,
@@ -89,13 +94,38 @@ export class InventoryComponent {
     this.brandsStatus = { _type: 'base' };
     this.productCategoriesStatus = { _type: 'base' }
     this.inventoryUnitsStatus = { _type: 'base' }
+    this.productsImagesStatuses = new Map();
   }
 
   getItems(): (request: PaginatedRequest) => Observable<PaginatedResponse<CrudItem>> {
     return (request: PaginatedRequest) => this.productsService.getProducts(request).pipe(
       tap((response: PaginatedResponse<CrudItem>) => {
+
+        this.productsImagesStatuses.clear();
+
         response.items.forEach((item: CrudItem) => {
           const product: Product = item as Product;
+
+          if (!product.image) {
+            return;
+          }
+
+          if (this.productsImagesStatuses.has(product.id)) {
+            return;
+          }
+
+          this.productsImagesStatuses.set(product.id, { type: 'loading' })
+
+          this.productsService.getProductImage(product.image).subscribe({
+            next: (data: ArrayBuffer) => {
+              const blob = new Blob([data]);
+              const blobUrl = URL.createObjectURL(blob);
+              this.productsImagesStatuses.set(product.id, { type: 'ready', imageSrc: blobUrl });
+            },
+            error: (error: Error) => {
+              console.log(error.message);
+            }
+          });
         })
       })
     );
@@ -346,6 +376,25 @@ export class InventoryComponent {
     }
   }
 
+  productImageLoading(product: Product): boolean {
+    return this.productsImagesStatuses.get(product.id)?.type === 'loading';
+  }
+
+  productImageReady(product: Product): boolean {
+    return this.productsImagesStatuses.get(product.id)?.type === 'ready';
+  }
+
+  productImageSrc(product: Product): string {
+    const status: ProductImageStatus | undefined = this.productsImagesStatuses.get(product.id);
+    if (!status) {
+      return '';
+    }
+    if (status.type !== 'ready') {
+      return '';
+    }
+    return status.imageSrc;
+  }
+
   private loadBrands(): void {
     this.brandsStatus = { _type: 'loading-options' };
     this.brandsService.getAllBrands().subscribe({
@@ -483,14 +532,6 @@ export class InventoryComponent {
       { name: 'Unidad de inventariado (A - Z)', key: 'inventoryUnit-asc' },
       { name: 'Unidad de inventariado (Z - A)', key: 'inventoryUnit-desc' },
     ];
-  }
-
-  productImageReady(image: string): boolean {
-    return false;
-  }
-
-  productImageLoading(image: string): boolean {
-    return false;
   }
 
   private nameError(form: FormGroup): string {
