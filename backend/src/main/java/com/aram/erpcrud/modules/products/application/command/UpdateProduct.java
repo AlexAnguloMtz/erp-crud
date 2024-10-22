@@ -133,7 +133,10 @@ public class UpdateProduct {
 
         private static ValidImageAction makeOrThrow(String imageAction, MultipartFile image) {
             if (!List.of("none", "edit", "delete").contains(imageAction)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid image action: %s".formatted(imageAction));
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Invalid image action: %s".formatted(imageAction)
+                );
             }
 
             if (!Objects.equals("edit", imageAction) && image != null) {

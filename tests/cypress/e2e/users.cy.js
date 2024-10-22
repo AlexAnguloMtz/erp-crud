@@ -1,5 +1,7 @@
 import { WEB_URL } from '../environment/environment';
 import { faker } from '@faker-js/faker';
+import { getCreateNewItemButton, getItemFormSubmitButton, getItemSavedDialog, getCloseSavedItemDialog, getCreationErrorDialog, getItemCreationForm } from '../helpers/crud-module-helpers';
+import { getSideBarLink } from '../helpers/main-screen-helpers';
 
 describe('users module', () => {
     beforeEach(() => {
@@ -11,56 +13,56 @@ describe('users module', () => {
 
         cy.url().should('eq', WEB_URL + '/home');
 
-        cy.get('#module-users').click();
+        getSideBarLink('#users').click();
     });
 
     context('create user', () => {
         it('user was created successfully', () => {
-            cy.get('#create-new').click();
+            getCreateNewItemButton().click();
 
             fillCreateUserForm({
                 values: validUser(),
                 selectRole: true
             });
 
-            cy.get('#create-user-submit').click();
+            getItemFormSubmitButton().click();
 
-            cy.get('#user-saved-dialog').should('contain', 'Se guardó el usuario');
+            getItemSavedDialog().should('contain', 'Se guardó el registro');
         });
 
         it('two users cannot have the same email', () => {
             // Save first user
             const firstUser = validUser();
 
-            cy.get('#create-new').click();
+            getCreateNewItemButton().click();
 
             fillCreateUserForm({
                 values: firstUser,
                 selectRole: true
             });
 
-            cy.get('#create-user-submit').click();
+            getItemFormSubmitButton().click();
 
-            cy.get('#user-saved-dialog').should('contain', 'Se guardó el usuario');
+            getItemSavedDialog().should('contain', 'Se guardó el registro');
 
-            cy.get("#close-saved-user-dialog").click();
+            getCloseSavedItemDialog().click();
 
             // Try to save second user with same email
             const secondUser = validUser();
 
             secondUser.email = firstUser.email;
 
-            cy.get('#create-new').click();
+            getCreateNewItemButton().click();
 
             fillCreateUserForm({
                 values: firstUser,
                 selectRole: true
             });
 
-            cy.get('#create-user-submit').click();
+            getItemFormSubmitButton().click();
 
             // Check error message for duplicated email
-            cy.get('#message-dialog').within(() => {
+            getCreationErrorDialog().within(() => {
                 cy.contains('Usuario ya existe').should('exist');
                 cy.contains('El correo ya pertenece a otro usuario').should('exist');
             });
@@ -234,7 +236,7 @@ const validUser = () => {
 }
 
 function fillCreateUserForm({ values, selectRole }) {
-    cy.get('#create-item-form').within(() => {
+    getItemCreationForm().within(() => {
         type('input[name="user-name"]', values.name);
         type('input[name="user-last-name"]', values.lastName);
         type('input[name="user-district"]', values.district);
@@ -247,7 +249,7 @@ function fillCreateUserForm({ values, selectRole }) {
         type('input[name="user-confirmed-password"]', values.confirmedPassword);
 
         if (selectRole) {
-            clickRandomDropdownValue('#create-user-role');
+            clickRandomDropdownValue('#user-role-dropdown');
         }
     });
 }
@@ -282,15 +284,16 @@ function runInvalidCreateUserInputTest(test) {
 
         test.prepareInput(input);
 
-        cy.get('#create-new').click();
+        getCreateNewItemButton().click();
 
         fillCreateUserForm({
             values: input.values,
             selectRole: input.selectRole
         })
 
-        cy.get('#create-user-submit').click();
+        getItemFormSubmitButton().click();
 
         cy.get(`.form-error.${test.errorSelector}`).should('contain', test.expectedError);
     })
 }
+

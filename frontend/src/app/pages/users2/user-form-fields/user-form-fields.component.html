@@ -76,8 +76,8 @@
         <p-button (click)="onRetryLoadRoles()" [outlined]="true" icon="pi pi-refresh" severity="secondary" />
     </div>
     } @else {
-    <p-dropdown name="user-role" [formControl]="controls['role']" [options]="rolesOptions" optionLabel="name"
-        optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
+    <p-dropdown id="user-role-dropdown" name="user-role" [formControl]="controls['role']" [options]="rolesOptions"
+        optionLabel="name" optionValue="id" placeholder="Rol" [style]="{'width': '100%'}" />
     }
     <div class="form-error role">
         {{ errors['role'] }}
