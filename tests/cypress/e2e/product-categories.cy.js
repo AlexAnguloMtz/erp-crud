@@ -5,22 +5,22 @@ import { getSideBarLink } from '../helpers/main-screen-helpers';
 import { visitLoginPage, logIn } from '../helpers/login-helpers';
 import { type } from '../helpers/form-helpers';
 
-describe('brands module', () => {
+describe('product categories module', () => {
 
     beforeEach(() => {
         visitLoginPage();
 
         logIn(testUserCredentials());
 
-        getSideBarLink('#brands').click();
+        getSideBarLink('#product-categories').click();
 
     });
 
-    context('create brand', () => {
-        it('brand is created successfully', () => {
+    context('create product category', () => {
+        it('product category is created successfully', () => {
             getCreateNewItemButton().click();
 
-            fillCreateBrandForm(validBrand());
+            fillCreateProductCategoryForm(validProductCategory());
 
             getItemFormSubmitButton().click();
 
@@ -43,34 +43,34 @@ describe('brands module', () => {
                 },
             ];
 
-            testCases.forEach(test => runInvalidCreateBrandInputTest(test));
+            testCases.forEach(test => runInvalidCreateProductCategoryInputTest(test));
         })
     });
 });
 
 // ######################## Helper functions ########################
 
-const validBrand = () => {
+const validProductCategory = () => {
     return {
         name: faker.company.name(),
     }
 }
 
-function fillCreateBrandForm({ name }) {
+function fillCreateProductCategoryForm({ name }) {
     getItemCreationForm().within(() => {
         type('input[name="name"]', name);
     });
 }
 
-function runInvalidCreateBrandInputTest(test) {
+function runInvalidCreateProductCategoryInputTest(test) {
     it(test.testName, () => {
-        const input = validBrand();
+        const input = validProductCategory();
 
         test.prepareInput(input);
 
         getCreateNewItemButton().click();
 
-        fillCreateBrandForm(input);
+        fillCreateProductCategoryForm(input);
 
         getItemFormSubmitButton().click();
 

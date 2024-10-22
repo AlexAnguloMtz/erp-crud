@@ -61,7 +61,7 @@
                             severity="secondary" />
                     </div>
                     } @else {
-                    <p-dropdown name="branchType" [formControl]="formGroup.get('branchType')"
+                    <p-dropdown id="branch-type-dropdown" name="branchType" [formControl]="formGroup.get('branchType')"
                         [options]="branchTypesOptions" optionLabel="name" optionValue="id"
                         placeholder="Tipo de sucursal" [style]="{'width': '100%'}" />
                     }

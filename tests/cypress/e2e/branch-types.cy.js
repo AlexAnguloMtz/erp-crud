@@ -5,22 +5,22 @@ import { getSideBarLink } from '../helpers/main-screen-helpers';
 import { visitLoginPage, logIn } from '../helpers/login-helpers';
 import { type } from '../helpers/form-helpers';
 
-describe('brands module', () => {
+describe('branch types module', () => {
 
     beforeEach(() => {
         visitLoginPage();
 
         logIn(testUserCredentials());
 
-        getSideBarLink('#brands').click();
+        getSideBarLink('#branch-types').click();
 
     });
 
-    context('create brand', () => {
-        it('brand is created successfully', () => {
+    context('create branch type', () => {
+        it('branch type is created successfully', () => {
             getCreateNewItemButton().click();
 
-            fillCreateBrandForm(validBrand());
+            fillCreateBranchTypeForm(validBranchType());
 
             getItemFormSubmitButton().click();
 
@@ -41,36 +41,44 @@ describe('brands module', () => {
                     errorClass: 'name',
                     expectedError: 'Máximo 60 caracteres',
                 },
+                {
+                    testName: 'Description is required',
+                    prepareInput: (input) => input.description = '',
+                    errorClass: 'description',
+                    expectedError: 'Valor requerido',
+                },
             ];
 
-            testCases.forEach(test => runInvalidCreateBrandInputTest(test));
+            testCases.forEach(test => runInvalidCreateBranchTypeInputTest(test));
         })
     });
 });
 
 // ######################## Helper functions ########################
 
-const validBrand = () => {
+const validBranchType = () => {
     return {
         name: faker.company.name(),
+        description: faker.company.buzzAdjective(),
     }
 }
 
-function fillCreateBrandForm({ name }) {
+function fillCreateBranchTypeForm({ name, description }) {
     getItemCreationForm().within(() => {
         type('input[name="name"]', name);
+        type('textarea[name="description"]', description);
     });
 }
 
-function runInvalidCreateBrandInputTest(test) {
+function runInvalidCreateBranchTypeInputTest(test) {
     it(test.testName, () => {
-        const input = validBrand();
+        const input = validBranchType();
 
         test.prepareInput(input);
 
         getCreateNewItemButton().click();
 
-        fillCreateBrandForm(input);
+        fillCreateBranchTypeForm(input);
 
         getItemFormSubmitButton().click();
 

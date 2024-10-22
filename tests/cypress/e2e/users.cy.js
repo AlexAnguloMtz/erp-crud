@@ -71,67 +71,67 @@ describe('users module', () => {
                 {
                     testName: 'Name is required',
                     prepareInput: (input) => input.values.name = '',
-                    errorSelector: 'name',
+                    errorClass: 'name',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'Last name is required',
                     prepareInput: (input) => input.values.lastName = '',
-                    errorSelector: 'last-name',
+                    errorClass: 'last-name',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'District is required',
                     prepareInput: (input) => input.values.district = '',
-                    errorSelector: 'district',
+                    errorClass: 'district',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'Street is required',
                     prepareInput: (input) => input.values.street = '',
-                    errorSelector: 'street',
+                    errorClass: 'street',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'Street number is required',
                     prepareInput: (input) => input.values.streetNumber = '',
-                    errorSelector: 'street-number',
+                    errorClass: 'street-number',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'Phone is required',
                     prepareInput: (input) => input.values.phone = '',
-                    errorSelector: 'phone',
+                    errorClass: 'phone',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'Zip code is required',
                     prepareInput: (input) => input.values.zipCode = '',
-                    errorSelector: 'zip-code',
+                    errorClass: 'zip-code',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'Email is required',
                     prepareInput: (input) => input.values.email = '',
-                    errorSelector: 'email',
+                    errorClass: 'email',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'Role is required',
                     prepareInput: (input) => input.selectRole = false,
-                    errorSelector: 'role',
+                    errorClass: 'role',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'Password is required',
                     prepareInput: (input) => input.values.password = '',
-                    errorSelector: 'password',
+                    errorClass: 'password',
                     expectedError: 'Valor requerido',
                 },
                 {
                     testName: 'Confirmed password is required',
                     prepareInput: (input) => input.values.confirmedPassword = '',
-                    errorSelector: 'confirmed-password',
+                    errorClass: 'confirmed-password',
                     expectedError: 'Valor requerido',
                 },
             ];
@@ -144,43 +144,43 @@ describe('users module', () => {
                 {
                     testName: 'Name max length',
                     prepareInput: (input) => input.values.name = 'x'.repeat(61),
-                    errorSelector: 'name',
+                    errorClass: 'name',
                     expectedError: 'Máximo 60 caracteres',
                 },
                 {
                     testName: 'Last name max lenght',
                     prepareInput: (input) => input.values.lastName = 'x'.repeat(61),
-                    errorSelector: 'last-name',
+                    errorClass: 'last-name',
                     expectedError: 'Máximo 60 caracteres',
                 },
                 {
                     testName: 'District max length',
                     prepareInput: (input) => input.values.district = 'x'.repeat(61),
-                    errorSelector: 'district',
+                    errorClass: 'district',
                     expectedError: 'Máximo 60 caracteres',
                 },
                 {
                     testName: 'Street max length',
                     prepareInput: (input) => input.values.street = 'x'.repeat(61),
-                    errorSelector: 'street',
+                    errorClass: 'street',
                     expectedError: 'Máximo 60 caracteres',
                 },
                 {
                     testName: 'Street number max length',
                     prepareInput: (input) => input.values.streetNumber = 'x'.repeat(11),
-                    errorSelector: 'street-number',
+                    errorClass: 'street-number',
                     expectedError: 'Máximo 10 caracteres',
                 },
                 {
                     testName: 'Password max length',
                     prepareInput: (input) => input.values.password = 'x'.repeat(61),
-                    errorSelector: 'password',
+                    errorClass: 'password',
                     expectedError: 'Máximo 60 caracteres',
                 },
                 {
                     testName: 'Confirmed password max length',
                     prepareInput: (input) => input.values.confirmedPassword = 'x'.repeat(61),
-                    errorSelector: 'confirmed-password',
+                    errorClass: 'confirmed-password',
                     expectedError: 'Máximo 60 caracteres',
                 },
             ];
@@ -193,19 +193,19 @@ describe('users module', () => {
                 {
                     testName: 'Email must have a valid structure',
                     prepareInput: (input) => input.values.email = 'fake-email',
-                    errorSelector: 'email',
+                    errorClass: 'email',
                     expectedError: 'Correo inválido',
                 },
                 {
                     testName: 'Zip code must be exactly 5 digits',
                     prepareInput: (input) => input.values.zipCode = 'abcde',
-                    errorSelector: 'zip-code',
+                    errorClass: 'zip-code',
                     expectedError: 'Deben ser 5 dígitos',
                 },
                 {
                     testName: 'Phone must be exactly 10 digits',
                     prepareInput: (input) => input.values.phone = 'abcdefghij',
-                    errorSelector: 'phone',
+                    errorClass: 'phone',
                     expectedError: 'Deben ser 10 dígitos',
                 },
             ];
@@ -285,7 +285,6 @@ function runInvalidCreateUserInputTest(test) {
 
         getItemFormSubmitButton().click();
 
-        cy.get(`.form-error.${test.errorSelector}`).should('contain', test.expectedError);
+        cy.get(`.form-error.${test.errorClass}`).should('contain', test.expectedError);
     })
 }
-
