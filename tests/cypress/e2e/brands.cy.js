@@ -27,6 +27,24 @@ describe('brands module', () => {
             getItemSavedDialog().should('contain', 'Se guardó el registro');
         });
 
+        describe('field validations', () => {
+            const testCases = [
+                {
+                    testName: 'Name is required',
+                    prepareInput: (input) => input.name = '',
+                    errorSelector: 'name',
+                    expectedError: 'Valor requerido',
+                },
+                {
+                    testName: 'Name max length',
+                    prepareInput: (input) => input.name = 'x'.repeat(61),
+                    errorSelector: 'name',
+                    expectedError: 'Máximo 60 caracteres',
+                },
+            ];
+
+            testCases.forEach(test => runInvalidCreateBrandInputTest(test));
+        })
     });
 });
 
@@ -42,4 +60,20 @@ function fillCreateBrandForm({ name }) {
     getItemCreationForm().within(() => {
         type('input[name="name"]', name);
     });
+}
+
+function runInvalidCreateBrandInputTest(test) {
+    it(test.testName, () => {
+        const input = validBrand();
+
+        test.prepareInput(input);
+
+        getCreateNewItemButton().click();
+
+        fillCreateBrandForm(input);
+
+        getItemFormSubmitButton().click();
+
+        cy.get(`.form-error.${test.errorSelector}`).should('contain', test.expectedError);
+    })
 }
