@@ -1,23 +1,21 @@
-import { WEB_URL } from '../environment/environment';
+import { testUserCredentials } from '../environment/environment';
 import { faker } from '@faker-js/faker';
 import { getCreateNewItemButton, getItemFormSubmitButton, getItemSavedDialog, getCloseSavedItemDialog, getCreationErrorDialog, getItemCreationForm } from '../helpers/crud-module-helpers';
 import { getSideBarLink } from '../helpers/main-screen-helpers';
+import { visitLoginPage, logIn } from '../helpers/login-helpers';
+import { type } from '../helpers/form-helpers';
 
 describe('users module', () => {
     beforeEach(() => {
-        cy.visit(WEB_URL + '/login');
+        visitLoginPage();
 
-        cy.get('#email').type('abarrey_root@gmail.com');
-        cy.get('#password').type('12345678');
-        cy.get('#submit').click();
-
-        cy.url().should('eq', WEB_URL + '/home');
+        logIn(testUserCredentials());
 
         getSideBarLink('#users').click();
     });
 
     context('create user', () => {
-        it('user was created successfully', () => {
+        it('user is created successfully', () => {
             getCreateNewItemButton().click();
 
             fillCreateUserForm({
@@ -268,12 +266,6 @@ function clickRandomDropdownValue(id) {
             cy.wrap(randomChild).click();
         });
 }
-
-const type = (selector, value) => {
-    if (value !== undefined && value !== null && value !== '') {
-        cy.get(selector).clear({ force: true }).type(value, { force: true });
-    }
-};
 
 function runInvalidCreateUserInputTest(test) {
     it(test.testName, () => {

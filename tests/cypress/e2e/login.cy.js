@@ -1,12 +1,9 @@
 import { WEB_URL } from '../environment/environment';
+import { visitLoginPage } from '../helpers/login-helpers';
 
 describe('Login Page Tests', () => {
   beforeEach(() => {
-    cy.visit(WEB_URL + '/login');
-  });
-
-  it('visits login page', () => {
-    cy.url().should('include', '/login');
+    visitLoginPage();
   });
 
   it('fails on empty email', () => {
