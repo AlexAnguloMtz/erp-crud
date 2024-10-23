@@ -17,6 +17,7 @@ import { ProductCategoryService } from '../../services/product-categories-servic
 import { InventoryUnitService } from '../../services/inventory-unit-service';
 import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
+import { CommonModule } from '@angular/common';
 
 const NAME_MAX_LENGTH: number = 60;
 const SKU_LENGTH: number = 8;
@@ -46,7 +47,7 @@ type ProductImageStatus =
   | ProductImageShowing
 
 @Component({
-  selector: 'app-inventory',
+  selector: 'app-products',
   standalone: true,
   imports: [
     CrudModuleComponent,
@@ -59,11 +60,12 @@ type ProductImageStatus =
     ButtonModule,
     DropdownModule,
     SkeletonModule,
+    CommonModule,
   ],
-  templateUrl: './inventory.component.html',
-  styleUrl: './inventory.component.css'
+  templateUrl: './products.component.html',
+  styleUrl: './products.component.css'
 })
-export class InventoryComponent {
+export class ProductsComponent {
 
   productsImages: Array<Blob>
 
@@ -171,6 +173,7 @@ export class InventoryComponent {
           '',
           [
             Validators.required,
+            Validators.pattern(/^(?!0)(\d{1,5})(\.\d{2})?$/),
           ]
         ]
       });
@@ -321,6 +324,7 @@ export class InventoryComponent {
       image: this.selectedProductImageFile(),
       command: {
         ...formGroup.value,
+        salePrice: this.parseSalePrice(formGroup.get('salePrice')?.value),
         brandId: formGroup.get('brand')?.value,
         productCategoryId: formGroup.get('productCategory')?.value,
         inventoryUnitId: formGroup.get('inventoryUnit')?.value,
@@ -333,6 +337,7 @@ export class InventoryComponent {
       image: this.selectedProductImageFile(),
       command: {
         ...formGroup.value,
+        salePrice: this.parseSalePrice(formGroup.get('salePrice')?.value),
         brandId: formGroup.get('brand')?.value,
         productCategoryId: formGroup.get('productCategory')?.value,
         inventoryUnitId: formGroup.get('inventoryUnit')?.value,
@@ -393,6 +398,23 @@ export class InventoryComponent {
       return '';
     }
     return status.imageSrc;
+  }
+
+  onPatchUpdateForm(): (formGroup: FormGroup, item: CrudItem) => void {
+    return (formGroup: FormGroup, item: CrudItem) => {
+      const product: Product = item as Product;
+      formGroup.patchValue({
+        ...product,
+        salePrice: (product.salePrice / 100).toFixed(2),
+      });
+    }
+  }
+
+  private parseSalePrice(value: string | undefined): number {
+    if (!value) {
+      return 0;
+    }
+    return Math.round(parseFloat(value) * 100); // The backend handles prices in integer cents
   }
 
   private loadBrands(): void {
@@ -513,7 +535,7 @@ export class InventoryComponent {
       'Categoría',
       'Marca',
       'Precio de venta',
-      'Unidad de inventariado'
+      'Unidad de inventariado',
     ];
   }
 
@@ -532,6 +554,12 @@ export class InventoryComponent {
       { name: 'Unidad de inventariado (A - Z)', key: 'inventoryUnit-asc' },
       { name: 'Unidad de inventariado (Z - A)', key: 'inventoryUnit-desc' },
     ];
+  }
+
+  get tableCellStyles(): { [key: string]: string } {
+    return {
+      height: '100px'
+    }
   }
 
   private nameError(form: FormGroup): string {
@@ -649,6 +677,10 @@ export class InventoryComponent {
 
     if (control.errors?.['required']) {
       return 'Valor requerido';
+    }
+
+    if (control.errors?.['pattern']) {
+      return 'Precio no válido';
     }
 
     return '';

@@ -67,6 +67,12 @@ public class ProductController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable("id") Long id) {
+        productsFacade.deleteProductById(id);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping(value = "/product-image/{image}", produces = { MediaType.APPLICATION_OCTET_STREAM_VALUE })
     public ResponseEntity<byte[]> getProductImage(@PathVariable String image) {
         return new ResponseEntity<>(productImageService.getProductImage(image), HttpStatus.OK);

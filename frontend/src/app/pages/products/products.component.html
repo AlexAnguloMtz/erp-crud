@@ -1,7 +1,9 @@
 <ng-template #rowTemplate let-item>
-    <td>
+    <td [ngStyle]="tableCellStyles">
         @if (!item.image) {
-        <img src="images/product-image-placeholder.svg" alt="none-product-image" class="product-image-placeholder">
+        <div class="product-image-placeholder-container">
+            <img src="images/product-image-placeholder.svg" alt="none-product-image" class="product-image-placeholder">
+        </div>
         } @else if (productImageLoading(item)) {
         <p-skeleton width="6rem" height="4rem" />
         } @else if (productImageReady(item)) {
@@ -11,12 +13,12 @@
         error
         }
     </td>
-    <td>{{ item.sku }}</td>
-    <td>{{ item.name }}</td>
-    <td>{{ item.productCategory.name }}</td>
-    <td>{{ item.brand.name }}</td>
-    <td>{{ formatProductPrice(item.salePrice) }}</td>
-    <td>{{ item.inventoryUnit.name }}</td>
+    <td [ngStyle]="tableCellStyles">{{ item.sku }}</td>
+    <td [ngStyle]="tableCellStyles">{{ item.name }}</td>
+    <td [ngStyle]="tableCellStyles">{{ item.productCategory.name }}</td>
+    <td [ngStyle]="tableCellStyles">{{ item.brand.name }}</td>
+    <td [ngStyle]="tableCellStyles">{{ formatProductPrice(item.salePrice) }}</td>
+    <td [ngStyle]="tableCellStyles">{{ item.inventoryUnit.name }}</td>
 </ng-template>
 
 <ng-template #itemFieldsTemplate let-errors="errors" let-formGroup="formGroup">
@@ -68,7 +70,7 @@
                     </div>
                 </div>
                 <div class="form-input" [style]="{'paddingBottom': '14px'}">
-                    <label>Precio de venta</label>
+                    <label>Precio de venta MXN</label>
                     <input pInputText name="salePrice" [formControl]="formGroup.get('salePrice')"
                         [style]="{'width': '100%'}" />
                     <div class="form-error salePrice">
@@ -157,7 +159,7 @@
 
 </p-dialog>
 
-<app-crud-module [title]="'Inventario'" [formTitle]="'Producto'" [createItemCreationForm]="createForm()"
+<app-crud-module [title]="'Productos'" [formTitle]="'Producto'" [createItemCreationForm]="createForm()"
     [createItemUpdateForm]="createForm()" [getItems]="getItems()" [sortOptions]="sortOptions"
     [tableHeaders]="tableHeaders" [rowTemplate]="rowTemplate" [createItemFieldsTemplate]="itemFieldsTemplate"
     [updateItemFieldsTemplate]="itemFieldsTemplate" [getCreationErrors]="getFormErrors()"
@@ -165,5 +167,5 @@
     [updateItem]="updateItem()" [mapFormToCreationDto]="mapFormToCreationDto()"
     [mapFormToUpdateDto]="mapFormToUpdateDto()" [deleteItemById]="deleteItemById()" [hasFilters]="false"
     [onHideItemFormClick]="onHideItemFormClick()" [onCreateNewClick]="onCreateNewClick()"
-    [onEditRowClick]="onEditRowClick()">
+    [onEditRowClick]="onEditRowClick()" [tableCellStyles]="tableCellStyles" [onPatchUpdateForm]="onPatchUpdateForm()">
 </app-crud-module>

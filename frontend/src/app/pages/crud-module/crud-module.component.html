@@ -164,10 +164,10 @@
                     </th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-item>
+            <ng-template pTemplate="body" let-item class="a">
                 <tr class="row">
                     <ng-container *ngTemplateOutlet="rowTemplate; context: { $implicit: item }"></ng-container>
-                    <td class="row-actions">
+                    <td [ngStyle]="tableCellStyles" class="row-actions">
                         <div class="row-actions-buttons">
                             <p-button icon="pi pi-pencil" severity="success" (click)="onEditClick(item)"
                                 [style]="{'width': '28px', 'height': '28px'}" />

@@ -5,6 +5,7 @@ import { PaginatedRequest } from "../common/paginated-request";
 import { catchError, Observable, retry, throwError } from "rxjs";
 import { Brand } from "./brands-service";
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
+import { DataIntegrityError } from "../common/data-integrity-error";
 
 export class ProductExistsError extends Error {
     constructor(message: string) {
@@ -109,7 +110,16 @@ export class ProductsService {
     }
 
     deleteProductById(id: number): Observable<void> {
-        throw new Error('Method not implemented.');
+        const url = `${this.productsEndpoint}/${id}`;
+
+        return this.apiClient.delete<void>(url).pipe(
+            catchError(error => {
+                if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.BadRequest) {
+                    return throwError(() => new DataIntegrityError('Data integrity error'));
+                }
+                return throwError(() => new Error('An unexpected error occurred.'));
+            })
+        );
     }
 
 }
