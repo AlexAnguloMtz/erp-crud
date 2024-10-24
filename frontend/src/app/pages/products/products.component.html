@@ -92,8 +92,9 @@
                         severity="secondary" />
                 </div>
                 } @else {
-                <p-dropdown name="brand" [formControl]="formGroup.get('brand')" [options]="brandsOptions"
-                    optionLabel="name" optionValue="id" placeholder="Marca" [style]="{'width': '100%'}" />
+                <p-dropdown id="brand-dropdown" name="brand" [formControl]="formGroup.get('brand')"
+                    [options]="brandsOptions" optionLabel="name" optionValue="id" placeholder="Marca"
+                    [style]="{'width': '100%'}" />
                 }
                 <div class="form-error brand">
                     {{ errors['brand'] }}
@@ -113,9 +114,9 @@
                         severity="secondary" />
                 </div>
                 } @else {
-                <p-dropdown name="productCategory" [formControl]="formGroup.get('productCategory')"
-                    [options]="productCategoriesOptions" optionLabel="name" optionValue="id" placeholder="Categoría"
-                    [style]="{'width': '100%'}" />
+                <p-dropdown id="product-category-dropdown" name="productCategory"
+                    [formControl]="formGroup.get('productCategory')" [options]="productCategoriesOptions"
+                    optionLabel="name" optionValue="id" placeholder="Categoría" [style]="{'width': '100%'}" />
                 }
                 <div class="form-error productCategory">
                     {{ errors['productCategory'] }}
@@ -135,9 +136,9 @@
                         severity="secondary" />
                 </div>
                 } @else {
-                <p-dropdown name="inventoryUnit" [formControl]="formGroup.get('inventoryUnit')"
-                    [options]="inventoryUnitsOptions" optionLabel="name" optionValue="id"
-                    placeholder="Unidad de inventariado" [style]="{'width': '100%'}" />
+                <p-dropdown id="inventory-unit-dropdown" name="inventoryUnit"
+                    [formControl]="formGroup.get('inventoryUnit')" [options]="inventoryUnitsOptions" optionLabel="name"
+                    optionValue="id" placeholder="Unidad de inventariado" [style]="{'width': '100%'}" />
                 }
                 <div class="form-error inventoryUnit">
                     {{ errors['inventoryUnit'] }}
